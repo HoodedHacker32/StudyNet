@@ -1,0 +1,9 @@
+# Local dev tools
+serve.py
+deploy.py
+
+# Claude Code local config
+.claude/
+
+# Remove template
+template.html
