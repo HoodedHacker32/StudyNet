@@ -175,21 +175,32 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
   .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
 }
-/* ── Timeline ── */
+/* ── Timeline (drag-drop) ── */
 .tl-sets{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
 .tl-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
 .tl-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
-.tl-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:.85rem;flex-wrap:wrap;gap:.4rem;}
+.tl-status{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
 .tl-inst{font-size:.8rem;color:var(--muted);}
 .tl-count{font-size:.8rem;color:var(--muted);}
-.tl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.5rem;}
-.tl-tile{padding:.8rem 1rem;border:1px solid var(--border);border-radius:var(--radius);font-size:.82rem;cursor:pointer;transition:background .15s,border-color .15s,opacity .2s;background:var(--bg);color:var(--fg);text-align:center;min-height:64px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;line-height:1.4;}
-.tl-tile:hover:not(.placed){background:var(--hover);}
-.tl-tile.placed{background:var(--fg);color:var(--bg);cursor:default;pointer-events:none;}
-.tl-tile.wrong{animation:shake .3s ease;}
-.tl-pos{font-size:.68rem;opacity:.55;font-weight:700;letter-spacing:.04em;}
-.tl-year{font-size:.7rem;opacity:.55;}
-.tl-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);}
+.tl-visual{position:relative;overflow-x:auto;margin-bottom:2rem;padding-bottom:1rem;}
+.tl-line{position:absolute;top:32px;left:0;right:0;height:2px;background:var(--border);z-index:0;}
+.tl-nodes{display:flex;position:relative;z-index:1;min-width:100%;padding:0 1rem;justify-content:space-between;align-items:flex-start;}
+.tl-node{display:flex;flex-direction:column;align-items:center;gap:.3rem;min-width:90px;flex:1;cursor:default;}
+.tl-node-dot{width:12px;height:12px;border-radius:50%;background:var(--border);border:2px solid var(--fg);flex-shrink:0;transition:background .2s;margin-top:26px;}
+.tl-node-year{font-size:.68rem;font-weight:700;color:var(--muted);white-space:nowrap;margin-top:.2rem;}
+.tl-node-drop{min-height:60px;border:1.5px dashed var(--border);border-radius:var(--radius);padding:.3rem;margin-top:.4rem;width:90px;transition:background .15s,border-color .15s;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);text-align:center;line-height:1.3;}
+.tl-node-drop.drag-over{background:var(--hover);border-color:var(--fg);border-style:solid;}
+.tl-node-drop.filled{border-style:solid;border-color:var(--fg);background:var(--fg);color:var(--bg);font-size:.72rem;font-weight:600;}
+.tl-node-drop.wrong-flash{animation:wrongFlash .4s ease;}
+@keyframes wrongFlash{0%,100%{background:transparent;border-color:var(--border);}50%{background:#fdd;border-color:#c00;}}
+.tl-node.filled .tl-node-dot{background:var(--fg);}
+.tl-tray-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.5rem;}
+.tl-tray{display:flex;flex-wrap:wrap;gap:.5rem;min-height:60px;border:1px dashed var(--border);border-radius:var(--radius);padding:.75rem;}
+.tl-card{padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font-size:.78rem;line-height:1.3;cursor:grab;user-select:none;max-width:200px;transition:opacity .2s,box-shadow .15s;}
+.tl-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.tl-card.dragging{opacity:.4;cursor:grabbing;}
+.tl-card.placed{display:none;}
+.tl-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);margin-top:1rem;}
 .tl-complete h3{font-size:1.1rem;font-weight:700;}
 .tl-complete p{color:var(--muted);font-size:.83rem;margin:.4rem 0 1rem;}
 
@@ -366,11 +377,16 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 <!-- TIMELINE -->
 <div class="panel" id="panel-timeline">
   <div class="tl-sets" id="tl-sets"></div>
-  <div class="tl-header">
-    <span class="tl-inst">Click events in chronological order — earliest first.</span>
+  <div class="tl-status">
+    <span class="tl-inst">Drag each event card onto the correct year on the timeline.</span>
     <span class="tl-count" id="tl-count">0 / 0 placed</span>
   </div>
-  <div id="tl-area"></div>
+  <div class="tl-visual" id="tl-visual">
+    <div class="tl-line"></div>
+    <div class="tl-nodes" id="tl-nodes"></div>
+  </div>
+  <div class="tl-tray-label">Events to place:</div>
+  <div class="tl-tray" id="tl-tray"></div>
 </div>
 
 <!-- PROGRESS -->
@@ -1088,10 +1104,10 @@ function resetPrac(key){
 renderPrac('sources');
 
 // ═══════════════════════════════════════════════════════════
-// TIMELINE
+// TIMELINE (drag-drop)
 // ═══════════════════════════════════════════════════════════
 const tlSetsEl=document.getElementById('tl-sets');
-let tlEvents=[], tlNextIdx=0;
+let tlSetDef=null, tlPlaced=0;
 
 timelineSetsData.forEach((s,i)=>{
   const btn=document.createElement('button');
@@ -1105,61 +1121,83 @@ timelineSetsData.forEach((s,i)=>{
   tlSetsEl.appendChild(btn);
 });
 
+function fmtYear(y){ return y<0?Math.abs(y)+' BC':y+' AD'; }
+
 function loadTimeline(setDef){
-  // Sort events chronologically, assign each a correct-order index
+  tlSetDef=setDef; tlPlaced=0;
+  const total=setDef.events.length;
+  document.getElementById('tl-count').textContent=`0 / ${total} placed`;
+
+  // ── Build timeline nodes (sorted) ──
   const sorted=[...setDef.events].sort((a,b)=>a.year-b.year);
-  // Shuffle for display, keeping reference to sorted position
-  tlEvents=sorted.map((e,i)=>({...e,orderIdx:i,placed:false,placeNum:0}))
-    .sort(()=>Math.random()-.5);
-  tlNextIdx=0;
-  document.getElementById('tl-count').textContent=`0 / ${sorted.length} placed`;
-  renderTimeline();
-}
+  const nodesEl=document.getElementById('tl-nodes');
+  nodesEl.innerHTML='';
+  // Remove any previous complete message
+  const prev=document.getElementById('tl-visual').nextElementSibling;
+  if(prev&&prev.querySelector('.tl-complete')) prev.remove();
 
-function renderTimeline(){
-  const area=document.getElementById('tl-area');
-  area.innerHTML='';
-  const grid=document.createElement('div'); grid.className='tl-grid';
-  tlEvents.forEach((ev,i)=>{
-    const tile=document.createElement('div');
-    tile.className='tl-tile'+(ev.placed?' placed':'');
-    if(ev.placed){
-      const yearStr=ev.year<0?Math.abs(ev.year)+' BC':ev.year+' AD';
-      tile.innerHTML=`<span class="tl-pos">#${ev.placeNum}</span><span>${ev.text}</span><span class="tl-year">${yearStr}</span>`;
-    } else {
-      tile.textContent=ev.text;
-      tile.addEventListener('click',()=>tlClick(i));
-    }
-    grid.appendChild(tile);
+  sorted.forEach(ev=>{
+    const node=document.createElement('div');
+    node.className='tl-node';
+    node.innerHTML=
+      `<div class="tl-node-dot"></div>`+
+      `<div class="tl-node-year">${fmtYear(ev.year)}</div>`+
+      `<div class="tl-node-drop" data-year="${ev.year}">Drop here</div>`;
+    const drop=node.querySelector('.tl-node-drop');
+
+    drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', ()=>drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e=>{
+      e.preventDefault();
+      drop.classList.remove('drag-over');
+      if(drop.classList.contains('filled')) return;
+      const cardYear=parseInt(e.dataTransfer.getData('text/plain'));
+      const nodeYear=parseInt(drop.dataset.year);
+      const card=document.querySelector(`.tl-card[data-year="${cardYear}"]`);
+      if(!card) return;
+      if(cardYear===nodeYear){
+        drop.textContent=card.textContent;
+        drop.classList.add('filled');
+        card.classList.add('placed');
+        node.classList.add('filled');
+        tlPlaced++;
+        document.getElementById('tl-count').textContent=`${tlPlaced} / ${total} placed`;
+        if(tlPlaced===total) setTimeout(showTlComplete,400);
+      } else {
+        drop.classList.add('wrong-flash');
+        setTimeout(()=>drop.classList.remove('wrong-flash'),450);
+      }
+    });
+    nodesEl.appendChild(node);
   });
-  area.appendChild(grid);
-}
 
-function tlClick(i){
-  const ev=tlEvents[i];
-  if(ev.placed) return;
-  // The next expected event is the unplaced one with the lowest orderIdx
-  const nextExpected=Math.min(...tlEvents.filter(e=>!e.placed).map(e=>e.orderIdx));
-  if(ev.orderIdx===nextExpected){
-    ev.placed=true; ev.placeNum=++tlNextIdx;
-    const total=tlEvents.length;
-    document.getElementById('tl-count').textContent=`${tlNextIdx} / ${total} placed`;
-    renderTimeline();
-    if(tlNextIdx===total) setTimeout(showTlComplete,400);
-  } else {
-    // Wrong — shake that tile in the current DOM
-    const tiles=document.getElementById('tl-area').querySelectorAll('.tl-tile');
-    const tile=tiles[i];
-    if(tile){tile.classList.add('wrong');setTimeout(()=>tile.classList.remove('wrong'),400);}
-  }
+  // ── Build tray (shuffled) ──
+  const trayEl=document.getElementById('tl-tray');
+  trayEl.innerHTML='';
+  [...setDef.events].sort(()=>Math.random()-.5).forEach(ev=>{
+    const card=document.createElement('div');
+    card.className='tl-card';
+    card.draggable=true;
+    card.dataset.year=ev.year;
+    card.textContent=ev.text;
+    card.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('text/plain',String(ev.year));
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', ()=>card.classList.remove('dragging'));
+    trayEl.appendChild(card);
+  });
 }
 
 function showTlComplete(){
-  document.getElementById('tl-area').innerHTML=`<div class="tl-complete">
-    <h3>Perfect timeline! 🎉</h3>
-    <p>You sorted all ${tlEvents.length} events in chronological order.</p>
-    <button class="btn" onclick="document.querySelector('.tl-set-btn.active').click()">Try again</button>
-  </div>`;
+  const total=tlSetDef.events.length;
+  document.getElementById('tl-tray').innerHTML='';
+  const vis=document.getElementById('tl-visual');
+  const comp=document.createElement('div'); comp.className='tl-complete';
+  comp.innerHTML=`<h3>Perfect timeline!</h3>`+
+    `<p>You placed all ${total} events on the correct year.</p>`+
+    `<button class="btn" onclick="document.querySelector('.tl-set-btn.active').click()">Try again</button>`;
+  vis.insertAdjacentElement('afterend',comp);
 }
 
 loadTimeline(timelineSetsData[0]);
