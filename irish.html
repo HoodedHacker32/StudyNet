@@ -385,6 +385,70 @@ footer{
 @media(max-width:400px){
   .topic-grid{grid-template-columns:1fr;}
 }
+
+/* ── Topic card: selected state (step 1, before confirm) ── */
+.topic-card.selected{border-color:var(--fg);background:var(--hover);box-shadow:0 0 0 2px var(--fg);}
+.tc-dots{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.45rem;}
+.tc-dot{font-size:.68rem;font-weight:600;padding:.1rem .35rem;border:1px solid var(--border);border-radius:10px;color:var(--muted);background:var(--bg);}
+
+/* ── Sidebar step-state visibility ── */
+[data-step="step-1"] .sb-modes-dyn,[data-step="step-2"] .sb-modes-dyn{display:none!important;}
+[data-step="step-3"] .sb-modes-dyn{display:flex!important;flex-direction:column;gap:3px;}
+[data-step="step-1"] .sb-active-ctx,[data-step="step-1"] .sb-topic-list{display:none!important;}
+[data-step="step-2"] .sb-active-ctx,[data-step="step-3"] .sb-active-ctx{display:block!important;}
+[data-step="step-2"] .sb-topic-list{display:none!important;}
+[data-step="step-3"] .sb-topic-list{display:block!important;}
+[data-step="step-2"] .sb-continue-wrap,[data-step="step-3"] .sb-continue-wrap{display:none!important;}
+[data-step="step-1"] .sb-continue-wrap{display:flex!important;}
+
+/* ── Sidebar: continue button (step 1) ── */
+.sb-continue-wrap{display:flex;flex-direction:column;gap:.4rem;margin-top:.25rem;}
+.sb-continue-btn{width:100%;padding:.55rem .65rem;border:1px solid var(--border);background:none;color:var(--muted);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:default;text-align:left;transition:all .15s;}
+.sb-continue-btn.ready{border-color:var(--fg);background:var(--fg);color:var(--bg);cursor:pointer;}
+.sb-continue-btn.ready:hover{opacity:.88;}
+
+/* ── Sidebar: active context (steps 2 & 3) ── */
+.sb-active-ctx{margin-bottom:.25rem;}
+.sb-back-link{display:flex;align-items:center;gap:.35em;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer;border-radius:var(--radius);text-align:left;transition:background .15s;}
+.sb-back-link:hover{background:var(--hover);color:var(--fg);}
+.sb-active-topic{font-size:.88rem;font-weight:600;padding:.15rem .5rem .35rem;}
+
+/* ── Sidebar: topic quick-list (step 3) ── */
+.sb-topic-list{border-top:1px solid var(--border);padding-top:.5rem;margin-top:.25rem;}
+.sb-tlist-btn{display:block;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--fg);font:inherit;font-size:.8rem;border-radius:var(--radius);cursor:pointer;text-align:left;transition:background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-tlist-btn:hover{background:var(--hover);}
+.sb-tlist-btn.active{font-weight:600;}
+
+/* ── Activity picker panel (step 2) ── */
+.act-head{display:flex;align-items:flex-start;gap:1rem;padding:.5rem 0 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.act-back-btn{display:flex;align-items:center;gap:.35em;flex-shrink:0;padding:.4rem .75rem;border:1px solid var(--border);background:none;color:var(--fg);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:pointer;white-space:nowrap;transition:background .15s;}
+.act-back-btn:hover{background:var(--hover);}
+.act-head-info h2{font-size:1.3rem;font-weight:700;margin-bottom:.2rem;}
+.act-head-info p{color:var(--muted);font-size:.88rem;}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;}
+.act-tile{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:2rem 1rem 1.5rem;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;font:inherit;color:var(--fg);text-align:center;width:100%;}
+.act-tile:hover:not(.act-tile--off){background:var(--hover);border-color:var(--fg);}
+.act-tile--off{opacity:.38;cursor:default;}
+.at-icon{font-size:2.2rem;line-height:1;}
+.at-name{font-weight:600;font-size:.98rem;}
+.at-count{font-size:.8rem;color:var(--muted);}
+
+/* ── Mobile confirm bar (step 1, mobile only) ── */
+.mob-confirm-bar{display:none;position:sticky;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:.75rem 1.25rem;z-index:40;}
+.mob-confirm-btn{width:100%;padding:.7rem;border:1px solid var(--border);background:none;color:var(--muted);font:inherit;font-size:.9rem;border-radius:var(--radius);cursor:default;transition:all .15s;}
+.mob-confirm-btn.ready{border-color:var(--fg);background:var(--fg);color:var(--bg);cursor:pointer;}
+@media(max-width:700px){
+  [data-step="step-1"] .mob-confirm-bar{display:block;}
+  [data-step="step-3"] .modes{display:none!important;}
+}
+
+/* ── Mobile pill strip (step 3, mobile only) ── */
+.mob-pill-strip{display:none;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
+.mob-pill{display:flex;align-items:center;gap:.3em;padding:.35rem .75rem;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:.8rem;border-radius:20px;cursor:pointer;transition:background .15s;}
+.mob-pill:hover{background:var(--hover);}
+@media(max-width:700px){
+  [data-step="step-3"] .mob-pill-strip{display:flex;}
+}
 </style>
 </head>
 <body>
@@ -424,22 +488,28 @@ footer{
     StudyNet
   </a>
   <div class="sb-brand">Gaeilge<small>Irish Language</small></div>
-  <div class="sb-label">Activities</div>
-  <button class="sb-mode-btn active" id="sb-topic" onclick="setMode('topic')">
-    <svg viewBox="0 0 24 24"><use href="#icon-books"/></svg> Chapters
-  </button>
-  <button class="sb-mode-btn" id="sb-flashcards" onclick="setMode('flashcards')">
-    <svg viewBox="0 0 24 24"><use href="#icon-cards"/></svg> Flashcards
-  </button>
-  <button class="sb-mode-btn" id="sb-quiz" onclick="setMode('quiz')">
-    <svg viewBox="0 0 24 24"><use href="#icon-quiz"/></svg> Quiz
-  </button>
-  <button class="sb-mode-btn" id="sb-match" onclick="setMode('match')">
-    <svg viewBox="0 0 24 24"><use href="#icon-match"/></svg> Match
-  </button>
-  <button class="sb-mode-btn" id="sb-practice" onclick="setMode('practice')">
-    <svg viewBox="0 0 24 24"><use href="#icon-pencil"/></svg> Practice
-  </button>
+
+  <!-- Step 1: choose topic + continue -->
+  <div class="sb-continue-wrap">
+    <div class="sb-label">Topics</div>
+    <button class="sb-continue-btn" id="sb-continue" onclick="confirmTopic()">Select a topic to continue →</button>
+  </div>
+
+  <!-- Steps 2 & 3: back link + active topic name -->
+  <div class="sb-active-ctx" id="sb-active-ctx">
+    <button class="sb-back-link" onclick="setMode('topic')">← Topics</button>
+    <div class="sb-active-topic" id="sb-topic-name"></div>
+  </div>
+
+  <!-- Step 3: mode buttons (populated by buildSidebarModes) -->
+  <div class="sb-modes-dyn" id="sb-modes-dyn"></div>
+
+  <!-- Step 3: quick topic list (populated by buildSidebarTopicList) -->
+  <div class="sb-topic-list" id="sb-topic-list">
+    <div class="sb-label">Switch topic</div>
+    <div id="sb-tlist"></div>
+  </div>
+
   <div class="sb-spacer"></div>
   <div class="sb-score">Score: <b id="sb-score-val">0 / 65</b></div>
   <button class="sb-theme" id="theme-btn" onclick="toggleTheme()">
@@ -469,6 +539,20 @@ footer{
     </button>
   </div>
 
+  <!-- Mobile pill strip (Step 3 only) -->
+  <div class="mob-pill-strip" id="mob-pill-strip">
+    <button class="mob-pill" id="mob-topic-pill" onclick="setMode('topic')">
+      <span id="mob-topic-pill-text">Topics</span> ▾
+    </button>
+    <button class="mob-pill" id="mob-mode-pill" onclick="setMode('activities')">
+      <span id="mob-mode-pill-text">Activities</span> ▾
+    </button>
+  </div>
+  <!-- Mobile confirm bar (Step 1 only) -->
+  <div class="mob-confirm-bar" id="mob-confirm-bar">
+    <button class="mob-confirm-btn" id="mob-confirm-btn" onclick="confirmTopic()">Select a topic to continue →</button>
+  </div>
+
   <div class="page">
 
     <!-- Hero -->
@@ -496,6 +580,18 @@ footer{
         <h2>Your Progress</h2>
         <div class="prog-list" id="prog-list"></div>
       </div>
+    </div>
+
+    <!-- Panel: Activities -->
+    <div id="panel-activities" class="panel">
+      <div class="act-head">
+        <button class="act-back-btn" onclick="setMode('topic')">← Topics</button>
+        <div class="act-head-info">
+          <h2 id="act-title"></h2>
+          <p id="act-desc"></p>
+        </div>
+      </div>
+      <div class="act-grid" id="act-grid"></div>
     </div>
 
     <!-- Panel: Flashcards -->
@@ -604,6 +700,36 @@ const fcDecks={
   'ar+Pronoun': pronouns.map((p,i)=>({front:'ar + '+p,back:prepTable.ar[i],sub:'"on" + '+p.toLowerCase()})),
   'do+Pronoun': pronouns.map((p,i)=>({front:'do + '+p,back:prepTable.do[i],sub:'"to/for" + '+p.toLowerCase()})),
   'le+Pronoun': pronouns.map((p,i)=>({front:'le + '+p,back:prepTable.le[i],sub:'"with" + '+p.toLowerCase()})),
+  'Aidiacht Shealbhach': [
+    {front:'Mo — my',sub:'Possessive adjective',
+     back:"Séimhiú (lenition) before consonants: mo theach, mo charr. Elision before vowels: m'aintín, m'athair"},
+    {front:'Do — your',sub:'Possessive adjective',
+     back:"Séimhiú (lenition) before consonants: do theach, do charr. Elision before vowels: d'aintín, d'athair"},
+    {front:'A (sé) — his',sub:'Possessive adjective',
+     back:'Séimhiú (lenition) before consonants: a theach, a charr. No change before vowels: a aintín'},
+    {front:'A (sí) — her',sub:'Possessive adjective',
+     back:'No change before consonants: a teach, a carr. H-prefix before vowels: a haintín, a hathair'},
+    {front:'Ár — our',sub:'Possessive adjective',
+     back:"Urú (eclipsis) before consonants: ár dteach, ár gcarr. N-prefix before vowels: ár n-aintín"},
+    {front:'Bhur — your (plural)',sub:'Possessive adjective',
+     back:"Urú (eclipsis) before consonants: bhur dteach, bhur gcarr. N-prefix before vowels: bhur n-aintín"},
+    {front:'A (siad) — their',sub:'Possessive adjective',
+     back:'Urú (eclipsis) before consonants: a dteach, a gcarr. N-prefix before vowels: a n-aintín'},
+    {front:'Séimhiú (lenition)',sub:'Mutation rule',
+     back:'Used with: Mo, Do, A (his). Adds "h" after first consonant. teach → theach, carr → charr, bean → bhean'},
+    {front:'Urú (eclipsis)',sub:'Mutation rule',
+     back:'Used with: Ár, Bhur, A (their). Replaces the initial consonant. teach → dteach, carr → gcarr, bord → mbord, doras → ndoras'},
+    {front:'H-prefix',sub:'Mutation rule',
+     back:'Used with: A (her) before words starting with a vowel. aintín → haintín, athair → hathair'},
+    {front:'N-prefix',sub:'Mutation rule',
+     back:'Used with: Ár, Bhur, A (their) before words starting with a vowel. aintín → n-aintín'},
+    {front:"Elision (')",sub:'Mutation rule',
+     back:"Mo and Do use elision (drop the 'o') before words starting with a vowel. m'aintín, d'athair"},
+    {front:'Which pronouns cause lenition?',sub:'Quick test',
+     back:'Mo, Do, and A (his) — séimhiú / elision'},
+    {front:'Which pronouns cause eclipsis?',sub:'Quick test',
+     back:'Ár, Bhur, and A (their) — urú / n-prefix'},
+  ],
 };
 
 const exData={
@@ -693,6 +819,19 @@ const exData={
       {b:'Sílim gur',h:'[cealaigh: sí]',a:'an lá spóirt.',ans:['chealaigh sí','chealaigh si']},
     ]
   },
+  aidiacht:{
+    label:'Aidiacht Shealbhach', total:8,
+    questions:[
+      {b:'', h:'[Mo (my) + teach (house)]', a:'→ ?', ans:['mo theach']},
+      {b:'', h:'[Do (your) + teach (house)]', a:'→ ?', ans:['do theach']},
+      {b:'', h:'[A (his) + teach (house)]', a:'→ ?', ans:['a theach']},
+      {b:'', h:'[A (her) + teach (house)]', a:'→ ?', ans:['a teach']},
+      {b:'', h:'[Ár (our) + teach (house)]', a:'→ ?', ans:['ár dteach','ar dteach']},
+      {b:'', h:'[Bhur (your pl.) + teach (house)]', a:'→ ?', ans:['bhur dteach']},
+      {b:'', h:'[A (their) + teach (house)]', a:'→ ?', ans:['a dteach']},
+      {b:'', h:'[A (her) + aintín (aunt)]', a:'→ ?', ans:['a haintín']},
+    ]
+  },
 };
 
 const aidiacht={
@@ -707,6 +846,15 @@ const matchSets=[
   {label:'ar',pairs:pronouns.map((p,i)=>({left:'ar + '+p,right:prepTable.ar[i]}))},
   {label:'do',pairs:pronouns.map((p,i)=>({left:'do + '+p,right:prepTable.do[i]}))},
   {label:'le',pairs:pronouns.map((p,i)=>({left:'le + '+p,right:prepTable.le[i]}))},
+  {label:'Mutations', pairs:[
+    {left:'Mo', right:"Séimhiú: mo theach, m'aintín"},
+    {left:'Do', right:"Séimhiú: do theach, d'aintín"},
+    {left:'A (sé — his)', right:'Séimhiú: a theach, a aintín'},
+    {left:'A (sí — her)', right:'H-prefix: a teach, a haintín'},
+    {left:'Ár', right:'Urú: ár dteach, ár n-aintín'},
+    {left:'Bhur', right:'Urú: bhur dteach, bhur n-aintín'},
+    {left:'A (siad — their)', right:'Urú: a dteach, a n-aintín'},
+  ]},
 ];
 
 const scoreMeta=[
@@ -734,7 +882,7 @@ const topicDefs=[
   {id:'irregulars',label:'Briathra Neamhrialta',iconId:'bolt',desc:'Irregular verbs',
     fc:[],quiz:['irregulars'],matchIdx:[],prac:['irregulars']},
   {id:'aidiacht',label:'Aidiacht Shealbhach',iconId:'user',desc:'Possessive adjectives',
-    fc:[],quiz:[],matchIdx:[],prac:['aidiacht']},
+    fc:['Aidiacht Shealbhach'],quiz:['aidiacht'],matchIdx:[4],prac:['aidiacht']},
 ];
 
 /* ================================================================
@@ -783,13 +931,31 @@ function chk(inp,ans){return ans.some(function(a){return norm(a)===norm(inp);});
 var currentMode='topic';
 function setMode(mode){
   currentMode=mode;
-  ['topic','flashcards','quiz','match','practice'].forEach(function(m){
-    document.getElementById('panel-'+m).classList.toggle('active',m===mode);
-    var sb=document.getElementById('sb-'+m);
-    if(sb) sb.classList.toggle('active',m===mode);
-    var mob=document.getElementById('mob-'+m);
-    if(mob) mob.classList.toggle('active',m===mode);
+  // Toggle panels
+  var allModes=['topic','activities','flashcards','quiz','match','practice'];
+  allModes.forEach(function(m){
+    var panel=document.getElementById('panel-'+m);
+    if(panel) panel.classList.toggle('active',m===mode);
   });
+  // Set step state on body
+  var step=mode==='topic'?'step-1':mode==='activities'?'step-2':'step-3';
+  document.body.dataset.step=step;
+  // When returning to topic, clear pending selection
+  if(mode==='topic'){
+    pendingTopic=null;
+    var sb=document.getElementById('sb-continue');
+    if(sb){sb.textContent='Select a topic to continue →';sb.classList.remove('ready');}
+    var mb=document.getElementById('mob-confirm-btn');
+    if(mb){mb.textContent='Select a topic to continue →';mb.classList.remove('ready');}
+    buildTopicGrid();
+  }
+  // Update mobile pill labels in step 3
+  if(mode!=='topic'&&mode!=='activities'&&currentTopic){
+    var tp=document.getElementById('mob-topic-pill-text');
+    var mp=document.getElementById('mob-mode-pill-text');
+    if(tp) tp.textContent=currentTopic.label;
+    if(mp) mp.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
+  }
   if(mode==='flashcards') initFlashcards();
   if(mode==='quiz') initQuiz();
   if(mode==='match') initMatch();
@@ -799,28 +965,134 @@ function setMode(mode){
 /* ================================================================
    TOPIC
 ================================================================ */
-var currentTopic='all';
+var currentTopic=topicDefs[0];
+var pendingTopic=null;
+
 function buildTopicGrid(){
   var grid=document.getElementById('topic-grid');
   grid.innerHTML='';
   topicDefs.forEach(function(t){
     var card=document.createElement('div');
-    card.className='topic-card'+(t.id===currentTopic?' active-topic':'');
+    var isSel=pendingTopic&&pendingTopic.id===t.id;
+    card.className='topic-card'+(isSel?' selected':'');
     card.dataset.id=t.id;
+    var dots=[
+      t.fc.length?'<span class="tc-dot">FC</span>':'',
+      t.quiz.length?'<span class="tc-dot">Quiz</span>':'',
+      t.matchIdx.length?'<span class="tc-dot">Match</span>':'',
+      t.prac.length?'<span class="tc-dot">Prac</span>':'',
+    ].filter(Boolean).join('');
     card.innerHTML='<div class="tc-icon"><svg viewBox="0 0 24 24"><use href="#icon-'+t.iconId+'"/></svg></div>'
       +'<div class="tc-label">'+t.label+'</div>'
-      +'<div class="tc-desc">'+t.desc+'</div>';
-    card.addEventListener('click',function(){selectTopic(t.id);});
+      +'<div class="tc-desc">'+t.desc+'</div>'
+      +(dots?'<div class="tc-dots">'+dots+'</div>':'');
+    card.addEventListener('click',function(){
+      pendingTopic=t;
+      buildTopicGrid();
+      var sb=document.getElementById('sb-continue');
+      if(sb){sb.textContent=t.label+' →';sb.classList.add('ready');}
+      var mb=document.getElementById('mob-confirm-btn');
+      if(mb){mb.textContent='Continue with '+t.label+' →';mb.classList.add('ready');}
+    });
     grid.appendChild(card);
   });
 }
-function selectTopic(id){
-  currentTopic=id;
-  document.querySelectorAll('.topic-card').forEach(function(c){
-    c.classList.toggle('active-topic',c.dataset.id===id);
+
+function confirmTopic(){
+  if(!pendingTopic) return;
+  currentTopic=pendingTopic;
+  var tn=document.getElementById('sb-topic-name');
+  if(tn) tn.textContent=currentTopic.label;
+  buildActivityGrid(currentTopic);
+  buildSidebarModes(currentTopic);
+  buildSidebarTopicList();
+  setMode('activities');
+}
+
+function buildActivityGrid(t){
+  var el=document.getElementById('act-title');
+  if(el) el.textContent=t.label;
+  var de=document.getElementById('act-desc');
+  if(de) de.textContent=t.desc||'';
+
+  var fcCount=t.fc.reduce(function(n,d){return n+(fcDecks[d]?fcDecks[d].length:0);},0);
+  var qCount=t.quiz.reduce(function(n,k){return n+(exData[k]?exData[k].questions.length:0);},0);
+
+  var MODES=[
+    {id:'flashcards',label:'Flashcards',icon:'🃏',
+     avail:t.fc.length>0,
+     count:t.fc.length?(fcCount+' card'+(fcCount!==1?'s':'')):'No content for this topic'},
+    {id:'quiz',label:'Quiz',icon:'❓',
+     avail:t.quiz.length>0,
+     count:t.quiz.length?(qCount+' question'+(qCount!==1?'s':'')):'No content for this topic'},
+    {id:'match',label:'Match',icon:'🔗',
+     avail:t.matchIdx.length>0,
+     count:t.matchIdx.length?'Pair matching':'No content for this topic'},
+    {id:'practice',label:'Practice',icon:'✏️',
+     avail:t.prac.length>0,
+     count:t.prac.length?'Fill-in exercises':'No content for this topic'},
+  ];
+
+  var grid=document.getElementById('act-grid');
+  grid.innerHTML='';
+  MODES.forEach(function(m){
+    var btn=document.createElement('button');
+    btn.className='act-tile'+(m.avail?'':' act-tile--off');
+    btn.innerHTML='<span class="at-icon">'+m.icon+'</span>'
+      +'<span class="at-name">'+m.label+'</span>'
+      +'<span class="at-count">'+m.count+'</span>';
+    if(m.avail) btn.onclick=function(){setMode(m.id);};
+    else btn.disabled=true;
+    grid.appendChild(btn);
   });
-  var t=topicDefs.find(function(x){return x.id===id;});
-  document.getElementById('topic-mob-label').textContent=t.label;
+}
+
+function buildSidebarModes(t){
+  var modesDef=[
+    {id:'flashcards',label:'Flashcards',icon:'cards',  avail:t.fc.length>0},
+    {id:'quiz',      label:'Quiz',      icon:'quiz',   avail:t.quiz.length>0},
+    {id:'match',     label:'Match',     icon:'match',  avail:t.matchIdx.length>0},
+    {id:'practice',  label:'Practice',  icon:'pencil', avail:t.prac.length>0},
+  ];
+  var container=document.getElementById('sb-modes-dyn');
+  container.innerHTML='<div class="sb-label">Activities</div>';
+  modesDef.forEach(function(m){
+    var btn=document.createElement('button');
+    btn.className='sb-mode-btn';
+    btn.style.opacity=m.avail?'':'0.38';
+    btn.disabled=!m.avail;
+    btn.innerHTML='<svg viewBox="0 0 24 24"><use href="#icon-'+m.icon+'"/></svg> '+m.label;
+    if(m.avail) btn.onclick=function(){
+      container.querySelectorAll('.sb-mode-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      setMode(m.id);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function buildSidebarTopicList(){
+  var container=document.getElementById('sb-tlist');
+  container.innerHTML='';
+  topicDefs.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.className='sb-tlist-btn'+(currentTopic&&t.id===currentTopic.id?' active':'');
+    btn.textContent=t.label;
+    btn.onclick=function(){
+      currentTopic=t;
+      var tn=document.getElementById('sb-topic-name');
+      if(tn) tn.textContent=t.label;
+      buildActivityGrid(t);
+      buildSidebarModes(t);
+      buildSidebarTopicList();
+      var modeAvail=(currentMode==='flashcards'&&t.fc.length)||
+                    (currentMode==='quiz'&&t.quiz.length)||
+                    (currentMode==='match'&&t.matchIdx.length)||
+                    (currentMode==='practice'&&t.prac.length);
+      setMode(modeAvail?currentMode:'activities');
+    };
+    container.appendChild(btn);
+  });
 }
 
 /* ================================================================
@@ -872,7 +1144,7 @@ function updateProgress(){
 ================================================================ */
 var fcDeckKey=null, fcIdx=0;
 function initFlashcards(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.fc.length>0?topic.fc:Object.keys(fcDecks);
   var pillsEl=document.getElementById('fc-pills');
   pillsEl.innerHTML='';
@@ -920,7 +1192,7 @@ function fcNav(dir){
 ================================================================ */
 var quizPool=[], quizCur=0, quizScore=0, quizCurrentKey='';
 function initQuiz(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.quiz.length>0?topic.quiz:Object.keys(exData);
   var pillsEl=document.getElementById('quiz-pills');
   pillsEl.innerHTML='';
@@ -1028,7 +1300,7 @@ function quizRetry(){
 ================================================================ */
 var matchSel={left:null,right:null}, matchRemaining=0;
 function initMatch(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.matchIdx.length>0?topic.matchIdx:[0,1,2,3];
   var pillsEl=document.getElementById('match-pills');
   pillsEl.innerHTML='';
@@ -1098,7 +1370,7 @@ function checkMatchPair(){
    PRACTICE
 ================================================================ */
 function initPractice(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.prac.length>0?topic.prac:['reamhfhocail','aidiacht','irregulars','laithreach1','laithreach2','chaite'];
   var pillsEl=document.getElementById('prac-pills');
   pillsEl.innerHTML='';
@@ -1261,6 +1533,7 @@ function escHtml(s){
 /* ================================================================
    INIT
 ================================================================ */
+document.body.dataset.step='step-1';
 buildTopicGrid();
 updateProgress();
 
