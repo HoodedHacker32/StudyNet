@@ -216,68 +216,6 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   .match-grid{grid-template-columns:1fr;}
 }
 .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ── Topic card: selected state (step 1, before confirm) ── */
-.topic-card.selected{border:2px solid var(--fg);background:var(--hover);box-shadow:0 0 0 2px var(--fg);}
-
-/* ── Sidebar step-state visibility ── */
-[data-step="step-1"] .sb-modes,[data-step="step-2"] .sb-modes{display:none!important;}
-[data-step="step-3"] .sb-modes{display:flex!important;flex-direction:column;gap:3px;}
-[data-step="step-1"] .sb-active-ctx,[data-step="step-1"] .sb-topic-list{display:none!important;}
-[data-step="step-2"] .sb-active-ctx,[data-step="step-3"] .sb-active-ctx{display:block!important;}
-[data-step="step-2"] .sb-topic-list{display:none!important;}
-[data-step="step-3"] .sb-topic-list{display:block!important;}
-[data-step="step-2"] .sb-continue-wrap,[data-step="step-3"] .sb-continue-wrap{display:none!important;}
-[data-step="step-1"] .sb-continue-wrap{display:flex!important;}
-
-/* ── Sidebar: continue button (step 1) ── */
-.sb-continue-wrap{display:flex;flex-direction:column;gap:.4rem;margin-top:.25rem;}
-.sb-continue-btn{width:100%;padding:.55rem .75rem;border:1px solid var(--border);background:none;color:var(--muted);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:default;text-align:left;transition:all .15s;}
-.sb-continue-btn.ready{border-color:var(--fg);background:var(--fg);color:var(--bg);cursor:pointer;}
-.sb-continue-btn.ready:hover{opacity:.88;}
-
-/* ── Sidebar: active context (steps 2 & 3) ── */
-.sb-active-ctx{margin-bottom:.25rem;}
-.sb-back-link{display:flex;align-items:center;gap:.35em;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer;border-radius:var(--radius);text-align:left;transition:background .15s;}
-.sb-back-link:hover{background:var(--hover);color:var(--fg);}
-.sb-active-topic{font-size:.88rem;font-weight:600;padding:.15rem .5rem .35rem;}
-
-/* ── Sidebar: topic quick-list (step 3) ── */
-.sb-topic-list{border-top:1px solid var(--border);padding-top:.5rem;margin-top:.25rem;}
-.sb-tlist-btn{display:block;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--fg);font:inherit;font-size:.8rem;border-radius:var(--radius);cursor:pointer;text-align:left;transition:background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.sb-tlist-btn:hover{background:var(--hover);}
-.sb-tlist-btn.active{font-weight:600;}
-
-/* ── Activity picker panel (step 2) ── */
-.act-head{display:flex;align-items:flex-start;gap:1rem;padding:.5rem 0 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
-.act-back-btn{display:flex;align-items:center;gap:.35em;flex-shrink:0;padding:.4rem .75rem;border:1px solid var(--border);background:none;color:var(--fg);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:pointer;white-space:nowrap;transition:background .15s;}
-.act-back-btn:hover{background:var(--hover);}
-.act-head-info h2{font-size:1.3rem;font-weight:700;margin-bottom:.2rem;}
-.act-head-info p{color:var(--muted);font-size:.88rem;}
-.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1rem;}
-.act-tile{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1.75rem 1rem 1.5rem;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;font:inherit;color:var(--fg);text-align:center;width:100%;}
-.act-tile:hover:not(.act-tile--off){background:var(--hover);border-color:var(--fg);}
-.act-tile--off{opacity:.38;cursor:default;}
-.at-icon{font-size:2rem;line-height:1;}
-.at-name{font-weight:600;font-size:.95rem;}
-.at-count{font-size:.78rem;color:var(--muted);}
-
-/* ── Mobile confirm bar (step 1, mobile only) ── */
-.mob-confirm-bar{display:none;position:sticky;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);padding:.75rem 1.25rem;z-index:40;}
-.mob-confirm-btn{width:100%;padding:.7rem;border:1px solid var(--border);background:none;color:var(--muted);font:inherit;font-size:.9rem;border-radius:var(--radius);cursor:default;transition:all .15s;}
-.mob-confirm-btn.ready{border-color:var(--fg);background:var(--fg);color:var(--bg);cursor:pointer;}
-@media(max-width:700px){
-  [data-step="step-1"] .mob-confirm-bar{display:block;}
-  [data-step="step-3"] .modes{display:none!important;}
-}
-
-/* ── Mobile pill strip (step 3, mobile only) ── */
-.mob-pill-strip{display:none;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
-.mob-pill{display:flex;align-items:center;gap:.3em;padding:.35rem .75rem;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:.8rem;border-radius:20px;cursor:pointer;transition:background .15s;}
-.mob-pill:hover{background:var(--hover);}
-@media(max-width:700px){
-  [data-step="step-3"] .mob-pill-strip{display:flex;}
-}
 </style>
 </head>
 <body>
@@ -306,35 +244,18 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 
 <!-- ═══ Sidebar (desktop) ═══ -->
 <aside class="sidebar">
-  <a href="index.html" class="sb-back"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>&nbsp;StudyNet</a>
+  <a href="index.html" class="sb-back">← &nbsp;StudyNet</a>
   <div class="sb-brand">History <span>/ Junior Cert</span></div>
-
-  <!-- Step 1: choose topic + continue -->
-  <div class="sb-continue-wrap">
-    <div class="sb-section">Topics</div>
-    <button class="sb-continue-btn" id="sb-continue" onclick="confirmTopic()">Select a topic to continue →</button>
-  </div>
-
-  <!-- Steps 2 & 3: back link + active topic name -->
-  <div class="sb-active-ctx" id="sb-active-ctx">
-    <button class="sb-back-link" onclick="setMode('topic')">← Topics</button>
-    <div class="sb-active-topic" id="sb-topic-name"></div>
-  </div>
-
-  <!-- Step 3: mode buttons (populated by buildSidebarModes) -->
-  <div class="sb-modes" id="sb-modes"></div>
-
-  <!-- Step 3: quick topic list (populated by buildSidebarTopicList) -->
-  <div class="sb-topic-list" id="sb-topic-list">
-    <div class="sb-section">Switch topic</div>
-    <div id="sb-tlist"></div>
-  </div>
-
+  <div class="sb-section">Activities</div>
+  <button class="sb-mode-btn active" data-mode="topic" onclick="setMode('topic')"><svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg> &nbsp;<span id="sb-topic-label">Chapters</span></button>
+  <button class="sb-mode-btn" data-mode="flashcards" onclick="setMode('flashcards')"><svg class="icon" aria-hidden="true"><use href="#icon-cards"/></svg> &nbsp;Flashcards</button>
+  <button class="sb-mode-btn" data-mode="quiz" onclick="setMode('quiz')"><svg class="icon" aria-hidden="true"><use href="#icon-quiz"/></svg> &nbsp;Quiz</button>
+  <button class="sb-mode-btn" data-mode="match" onclick="setMode('match')"><svg class="icon" aria-hidden="true"><use href="#icon-match"/></svg> &nbsp;Match</button>
+  <button class="sb-mode-btn" data-mode="practice" onclick="setMode('practice')"><svg class="icon" aria-hidden="true"><use href="#icon-pencil"/></svg> &nbsp;Practice</button>
+  <button class="sb-mode-btn" data-mode="timeline" onclick="setMode('timeline')"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg> &nbsp;Timeline</button>
   <div class="sb-spacer"></div>
   <div class="sb-score" id="sb-score">Score: 0 / —</div>
-  <button class="sb-btn" id="theme-btn" onclick="toggleTheme()">
-    <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>&nbsp;Toggle theme
-  </button>
+  <button class="sb-btn" id="theme-btn"><svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg> &nbsp;Theme</button>
 </aside>
 
 <!-- ═══ Main ═══ -->
@@ -346,16 +267,6 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
       <button class="mob-btn" id="theme-mob" aria-label="Toggle theme"><svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg></button>
     </div>
   </header>
-
-  <!-- Mobile pill strip (Step 3 only) -->
-  <div class="mob-pill-strip" id="mob-pill-strip">
-    <button class="mob-pill" id="mob-topic-pill" onclick="setMode('topic')">
-      <span id="mob-topic-pill-text">Topics</span> ▾
-    </button>
-    <button class="mob-pill" id="mob-mode-pill" onclick="setMode('activities')">
-      <span id="mob-mode-pill-text">Activities</span> ▾
-    </button>
-  </div>
 
   <div class="page">
 
@@ -392,27 +303,10 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   </button>
 </div>
 
-<!-- Mobile confirm bar (Step 1 only, visible on mobile) -->
-<div class="mob-confirm-bar" id="mob-confirm-bar">
-  <button class="mob-confirm-btn" id="mob-confirm-btn" onclick="confirmTopic()">Select a topic to continue →</button>
-</div>
-
 <!-- TOPIC SELECT -->
 <div class="panel active" id="panel-topic">
   <div class="panel-head"><h2>Choose a Topic</h2></div>
   <div class="topic-grid" id="topic-grid"></div>
-</div>
-
-<!-- ===== PANEL: ACTIVITIES ===== -->
-<div id="panel-activities" class="panel">
-  <div class="act-head">
-    <button class="act-back-btn" onclick="setMode('topic')">← Topics</button>
-    <div class="act-head-info">
-      <h2 id="act-title"></h2>
-      <p id="act-desc"></p>
-    </div>
-  </div>
-  <div class="act-grid" id="act-grid"></div>
 </div>
 
 <!-- FLASHCARDS -->
@@ -526,35 +420,15 @@ function toggleTheme(){
   html.classList.add('theme-'+next); localStorage.setItem('sn_theme',next);
   updateThemeIcons();
 }
+document.getElementById('theme-btn').addEventListener('click',toggleTheme);
 document.getElementById('theme-mob').addEventListener('click',toggleTheme);
 updateThemeIcons();
 
 // ── Mode switching ──────────────────────────────────────────
-let currentMode='topic';
 function setMode(id){
-  currentMode=id;
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===id));
   document.getElementById('panel-'+id).classList.add('active');
-  // Set step state
-  const step=id==='topic'?'step-1':id==='activities'?'step-2':'step-3';
-  document.body.dataset.step=step;
-  // Clear pending selection when returning to topic
-  if(id==='topic'){
-    pendingTopic=null;
-    const sb=document.getElementById('sb-continue');
-    if(sb){sb.textContent='Select a topic to continue →';sb.classList.remove('ready');}
-    const mb=document.getElementById('mob-confirm-btn');
-    if(mb){mb.textContent='Select a topic to continue →';mb.classList.remove('ready');}
-    buildTopicPanel();
-  }
-  // Update mobile pill labels
-  if(id!=='topic'&&id!=='activities'&&currentTopic){
-    const tp=document.getElementById('mob-topic-pill-text');
-    const mp=document.getElementById('mob-mode-pill-text');
-    if(tp)tp.textContent=currentTopic.label;
-    if(mp)mp.textContent=id.charAt(0).toUpperCase()+id.slice(1);
-  }
 }
 
 // ── Storage & normalisation ────────────────────────────────
@@ -1399,10 +1273,8 @@ function buildTopicPanel(){
 }
 
 function updateTopicLabel(t){
-  const sbl=document.getElementById('sb-topic-label');
-  if(sbl)sbl.textContent=t.label;
-  const tml=document.getElementById('topic-mob-label');
-  if(tml)tml.textContent=t.label;
+  document.getElementById('sb-topic-label').textContent=t.label;
+  document.getElementById('topic-mob-label').textContent=t.label;
   document.querySelectorAll('.topic-card').forEach((c,i)=>c.classList.toggle('topic-active',topicDefs[i]===t));
 }
 
@@ -1450,119 +1322,13 @@ function applyTopic(t){
 }
 
 function selectTopic(t){
-  // Step 1: just mark the card as selected, enable Continue button
-  pendingTopic=t;
-  // Update card highlights
-  document.querySelectorAll('.topic-card').forEach((c,i)=>c.classList.toggle('selected',topicDefs[i]===t));
-  // Enable continue buttons
-  const sb=document.getElementById('sb-continue');
-  if(sb){sb.textContent=`${t.label} →`;sb.classList.add('ready');}
-  const mb=document.getElementById('mob-confirm-btn');
-  if(mb){mb.textContent=`Continue with ${t.label} →`;mb.classList.add('ready');}
+  applyTopic(t);
+  const firstMode=t.fc.length?'flashcards':t.quiz.length?'quiz':t.matchIdx.length?'match':'practice';
+  setMode(firstMode);
 }
 
-let pendingTopic=null;
-
-function confirmTopic(){
-  if(!pendingTopic)return;
-  applyTopic(pendingTopic);
-  const tn=document.getElementById('sb-topic-name');
-  if(tn)tn.textContent=currentTopic.label;
-  buildActivityGrid(currentTopic);
-  buildSidebarModes(currentTopic);
-  buildSidebarTopicList();
-  setMode('activities');
-}
-
-function buildActivityGrid(t){
-  const el=document.getElementById('act-title');
-  if(el)el.textContent=t.label;
-  const de=document.getElementById('act-desc');
-  if(de)de.textContent=t.desc||'';
-
-  // Timeline is global (not per-topic) — always available
-  const hasTl=typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0;
-
-  const MODES=[
-    {id:'flashcards',label:'Flashcards',icon:'🃏',avail:t.fc.length>0,
-     count:t.fc.length?`${t.fc.length} deck${t.fc.length!==1?'s':''}`:'No content for this topic'},
-    {id:'quiz',label:'Quiz',icon:'❓',avail:t.quiz.length>0,
-     count:t.quiz.length?`${t.quiz.length} set${t.quiz.length!==1?'s':''}`:'No content for this topic'},
-    {id:'match',label:'Match',icon:'🔗',avail:t.matchIdx.length>0,
-     count:t.matchIdx.length?'Pair matching':'No content for this topic'},
-    {id:'practice',label:'Practice',icon:'✏️',avail:t.prac.length>0,
-     count:t.prac.length?'Fill-in exercises':'No content for this topic'},
-    {id:'timeline',label:'Timeline',icon:'📅',avail:hasTl,
-     count:hasTl?'Drag chronological order':'No content for this topic'},
-  ];
-
-  const grid=document.getElementById('act-grid');
-  grid.innerHTML='';
-  MODES.forEach(m=>{
-    const btn=document.createElement('button');
-    btn.className='act-tile'+(m.avail?'':' act-tile--off');
-    btn.innerHTML=`<span class="at-icon">${m.icon}</span><span class="at-name">${m.label}</span><span class="at-count">${m.count}</span>`;
-    if(m.avail) btn.onclick=()=>setMode(m.id);
-    else btn.disabled=true;
-    grid.appendChild(btn);
-  });
-}
-
-function buildSidebarModes(t){
-  const hasTl=typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0;
-  const modesDef=[
-    {id:'flashcards',label:'Flashcards',icon:'cards',  avail:t.fc.length>0},
-    {id:'quiz',      label:'Quiz',      icon:'quiz',   avail:t.quiz.length>0},
-    {id:'match',     label:'Match',     icon:'match',  avail:t.matchIdx.length>0},
-    {id:'practice',  label:'Practice',  icon:'pencil', avail:t.prac.length>0},
-    {id:'timeline',  label:'Timeline',  icon:'clock',  avail:hasTl},
-  ];
-  const container=document.getElementById('sb-modes');
-  container.innerHTML='<div class="sb-section">Activities</div>';
-  modesDef.forEach(m=>{
-    const btn=document.createElement('button');
-    btn.className='sb-mode-btn';
-    btn.dataset.mode=m.id;
-    btn.style.opacity=m.avail?'':'0.38';
-    btn.disabled=!m.avail;
-    btn.innerHTML=`<svg class="icon" aria-hidden="true"><use href="#icon-${m.icon}"/></svg>&nbsp;${m.label}`;
-    if(m.avail) btn.onclick=()=>{
-      container.querySelectorAll('.sb-mode-btn').forEach(b=>b.classList.remove('active'));
-      btn.classList.add('active');
-      setMode(m.id);
-    };
-    container.appendChild(btn);
-  });
-}
-
-function buildSidebarTopicList(){
-  const container=document.getElementById('sb-tlist');
-  container.innerHTML='';
-  topicDefs.forEach(t=>{
-    const btn=document.createElement('button');
-    btn.className='sb-tlist-btn'+(currentTopic&&t.id===currentTopic.id?' active':'');
-    btn.textContent=t.label;
-    btn.onclick=()=>{
-      applyTopic(t);
-      const tn=document.getElementById('sb-topic-name');
-      if(tn)tn.textContent=t.label;
-      buildActivityGrid(t);
-      buildSidebarModes(t);
-      buildSidebarTopicList();
-      // Stay on current mode if available, else show activity picker
-      const modeAvail=(currentMode==='flashcards'&&t.fc.length)||
-                      (currentMode==='quiz'&&t.quiz.length)||
-                      (currentMode==='match'&&t.matchIdx.length)||
-                      (currentMode==='practice'&&t.prac.length)||
-                      (currentMode==='timeline'&&typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0);
-      setMode(modeAvail?currentMode:'activities');
-    };
-    container.appendChild(btn);
-  });
-}
-
-document.body.dataset.step='step-1';
 buildTopicPanel();
+applyTopic(topicDefs[0]);
 
 // ── Service Worker ──────────────────────────────────────────
 if('serviceWorker' in navigator){
