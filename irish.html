@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Gaeilge / Irish — StudyNet</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -56,16 +62,16 @@ input{font-family:inherit;}
   text-transform:uppercase;letter-spacing:.06em;
   padding:.75rem .5rem .25rem;
 }
-.sb-mode-btn{
+.sb-btn{
   display:flex;align-items:center;gap:.55rem;
   padding:.5rem .65rem;border-radius:var(--radius);
-  border:none;background:none;color:var(--fg);
+  border:none;background:none;color:var(--muted);
   font-size:.85rem;font-weight:500;width:100%;text-align:left;
   transition:background .15s,color .15s;
 }
-.sb-mode-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
-.sb-mode-btn:hover{background:var(--hover);}
-.sb-mode-btn.active{background:var(--fg);color:var(--bg);}
+.sb-btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.sb-btn:hover{background:var(--hover);}
+.sb-btn.active{background:var(--fg);color:var(--bg);}
 .sb-spacer{flex:1;}
 .sb-score{
   font-size:.78rem;color:var(--muted);padding:.4rem .5rem;
@@ -139,7 +145,7 @@ input{font-family:inherit;}
 
 /* ── Panel ───────────────────────────────────────────────────── */
 .panel{display:none;}
-.panel.active{display:block;}
+.panel.active{display:block;animation:panelSlideIn .22s ease both;}
 
 /* ── Topic cards ─────────────────────────────────────────────── */
 .topic-grid{
@@ -159,16 +165,16 @@ input{font-family:inherit;}
 .tc-label{font-weight:600;font-size:.9rem;}
 .tc-desc{font-size:.78rem;color:var(--muted);}
 
-/* ── Progress section ────────────────────────────────────────── */
-.progress-section{margin-top:2.5rem;}
-.progress-section h2{font-size:1rem;font-weight:600;margin-bottom:1rem;}
-.prog-list{display:flex;flex-direction:column;gap:.65rem;}
-.prog-item{}
-.prog-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.3rem;}
-.prog-name{font-size:.82rem;font-weight:500;}
-.prog-frac{font-size:.75rem;color:var(--muted);}
-.prog-bar{height:6px;border-radius:99px;background:var(--border);overflow:hidden;}
-.prog-fill{height:100%;border-radius:99px;background:var(--fg);transition:width .4s ease;}
+/* ── Streak tracker ──────────────────────────────────────────── */
+.streak-section{margin-top:2rem;padding:.9rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius);}
+.streak-row{display:flex;align-items:center;gap:.65rem;}
+.streak-flame{font-size:1.4rem;line-height:1;}
+.streak-info{flex:1;}
+.streak-count{font-size:1.25rem;font-weight:700;line-height:1.2;color:var(--fg);}
+.streak-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.streak-dots{display:flex;gap:.35rem;margin-top:.65rem;}
+.streak-dot{width:9px;height:9px;border-radius:50%;background:var(--border);}
+.streak-dot.lit{background:#f97316;}
 
 /* ── Set pill buttons ────────────────────────────────────────── */
 .set-pills{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.25rem;}
@@ -204,6 +210,7 @@ input{font-family:inherit;}
 .fc-face.fc-front{background:var(--bg);}
 .fc-face.fc-back{background:var(--hover);transform:rotateY(180deg);}
 .fc-main{font-size:1.6rem;font-weight:700;letter-spacing:-.02em;}
+.fc-back .fc-main{font-size:1.1rem;font-weight:600;white-space:pre-line;line-height:1.55;}
 .fc-sub{font-size:.8rem;color:var(--muted);}
 .fc-hint{font-size:.72rem;color:var(--muted);margin-top:.25rem;opacity:.7;}
 .fc-controls{display:flex;gap:.6rem;align-items:center;justify-content:center;}
@@ -252,8 +259,8 @@ input{font-family:inherit;}
   min-height:52px;
 }
 .quiz-feedback{font-size:.83rem;}
-.quiz-feedback.ok{color:#16a34a;}
-.quiz-feedback.bad{color:#dc2626;}
+.quiz-feedback.ok{color:var(--fg);}
+.quiz-feedback.bad{color:var(--muted);}
 .quiz-next{
   padding:.45rem 1rem;border-radius:var(--radius);
   border:1px solid var(--border);background:none;color:var(--fg);
@@ -315,8 +322,8 @@ input{font-family:inherit;}
   transition:border-color .2s;font-family:inherit;
 }
 .prac-inp:focus{border-bottom-color:var(--fg);}
-.prac-inp.ok{border-bottom-color:#16a34a;color:#16a34a;}
-.prac-inp.err{animation:shake .35s ease;border-bottom-color:#dc2626;}
+.prac-inp.ok{border-bottom-color:var(--fg);opacity:.6;}
+.prac-inp.err{animation:shake .35s ease;border-bottom-color:var(--muted);}
 .ref-toggle{
   display:inline-flex;align-items:center;gap:.4rem;
   font-size:.78rem;padding:.35rem .75rem;border-radius:var(--radius);
@@ -343,8 +350,8 @@ input{font-family:inherit;}
   font-family:inherit;transition:border-color .2s;
 }
 .aid-inp:focus{border-bottom-color:var(--fg);}
-.aid-inp.ok{border-bottom-color:#16a34a;color:#16a34a;}
-.aid-inp.err{animation:shake .35s ease;border-bottom-color:#dc2626;}
+.aid-inp.ok{border-bottom-color:var(--fg);opacity:.6;}
+.aid-inp.err{animation:shake .35s ease;border-bottom-color:var(--muted);}
 
 /* ── Misc ────────────────────────────────────────────────────── */
 .prac-set{display:none;}
@@ -373,6 +380,8 @@ footer{
   0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}
 }
 
+.icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media(max-width:700px){
   body{flex-direction:column;}
@@ -385,28 +394,82 @@ footer{
 @media(max-width:400px){
   .topic-grid{grid-template-columns:1fr;}
 }
+
+/* ── Topic card: selected state (step 1, before confirm) ── */
+.topic-card.selected{border-color:var(--fg);background:var(--hover);box-shadow:0 0 0 2px var(--fg);}
+.tc-dots{display:flex;gap:.3rem;flex-wrap:wrap;margin-top:.45rem;}
+.tc-dot{font-size:.68rem;font-weight:600;padding:.1rem .35rem;border:1px solid var(--border);border-radius:10px;color:var(--muted);background:var(--bg);}
+
+/* ── Sidebar step-state visibility ── */
+[data-step="step-1"] .sb-modes,[data-step="step-2"] .sb-modes{display:none!important;}
+[data-step="step-3"] .sb-modes{display:flex!important;flex-direction:column;gap:3px;}
+[data-step="step-1"] .sb-active-ctx,[data-step="step-1"] .sb-topic-list{display:none!important;}
+[data-step="step-2"] .sb-active-ctx,[data-step="step-3"] .sb-active-ctx{display:block!important;}
+[data-step="step-2"] .sb-topic-list{display:none!important;}
+[data-step="step-3"] .sb-topic-list{display:block!important;}
+/* ── Sidebar: active context (steps 2 & 3) ── */
+.sb-active-ctx{margin-bottom:.25rem;}
+.sb-back-link{display:flex;align-items:center;gap:.35em;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer;border-radius:var(--radius);text-align:left;transition:background .15s;}
+.sb-back-link:hover{background:var(--hover);color:var(--fg);}
+.sb-active-topic{font-size:.88rem;font-weight:600;padding:.15rem .5rem .35rem;}
+
+/* ── Sidebar: topic quick-list (step 3) ── */
+.sb-topic-list{border-top:1px solid var(--border);padding-top:.5rem;margin-top:.25rem;}
+.sb-tlist-btn{display:block;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--fg);font:inherit;font-size:.8rem;border-radius:var(--radius);cursor:pointer;text-align:left;transition:background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-tlist-btn:hover{background:var(--hover);}
+.sb-tlist-btn.active{font-weight:600;}
+
+/* ── Activity picker panel (step 2) ── */
+.act-head{display:flex;align-items:flex-start;gap:1rem;padding:.5rem 0 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.act-back-btn{display:flex;align-items:center;gap:.35em;flex-shrink:0;padding:.4rem .75rem;border:1px solid var(--border);background:none;color:var(--fg);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:pointer;white-space:nowrap;transition:background .15s;}
+.act-back-btn:hover{background:var(--hover);}
+.act-head-info h2{font-size:1.3rem;font-weight:700;margin-bottom:.2rem;}
+.act-head-info p{color:var(--muted);font-size:.88rem;}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;}
+.act-tile{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:2rem 1rem 1.5rem;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;font:inherit;color:var(--fg);text-align:center;width:100%;}
+.act-tile:hover:not(.act-tile--off){background:var(--hover);border-color:var(--fg);}
+.act-tile--off{opacity:.38;cursor:default;}
+.at-icon{display:flex;align-items:center;justify-content:center;}
+.at-name{font-weight:600;font-size:.98rem;}
+.at-count{font-size:.8rem;color:var(--muted);}
+
+@media(max-width:700px){
+  [data-step="step-3"] .modes{display:none!important;}
+}
+@keyframes panelSlideIn{
+  from{opacity:0;transform:translateX(var(--slide-dir,40px));}
+  to{opacity:1;transform:translateX(0);}
+}
+
+/* ── Mobile pill strip (step 3, mobile only) ── */
+.mob-pill-strip{display:none;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
+.mob-pill{display:flex;align-items:center;gap:.3em;padding:.35rem .75rem;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:.8rem;border-radius:20px;cursor:pointer;transition:background .15s;}
+.mob-pill:hover{background:var(--hover);}
+@media(max-width:700px){
+  [data-step="step-3"] .mob-pill-strip{display:flex;}
+}
 </style>
 </head>
-<body>
+<body data-step="step-1">
 
 <!-- SVG icon defs -->
 <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-books" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
-  <symbol id="icon-cards" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></symbol>
-  <symbol id="icon-quiz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
-  <symbol id="icon-match" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
-  <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
-  <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></symbol>
-  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="icon-rewind" viewBox="0 0 24 24"><polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/></symbol>
-  <symbol id="icon-bolt" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
-  <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
-  <symbol id="icon-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></symbol>
-  <symbol id="icon-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-books" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></symbol>
+  <symbol id="icon-cards" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="icon-quiz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="icon-match" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></symbol>
+  <symbol id="icon-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="icon-rewind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="11 19 2 12 11 5 11 19"/><polygon points="22 19 13 12 22 5 22 19"/></symbol>
+  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+  <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
 </svg>
 
 <!-- Mobile header -->
@@ -424,22 +487,22 @@ footer{
     StudyNet
   </a>
   <div class="sb-brand">Gaeilge<small>Irish Language</small></div>
-  <div class="sb-label">Activities</div>
-  <button class="sb-mode-btn active" id="sb-topic" onclick="setMode('topic')">
-    <svg viewBox="0 0 24 24"><use href="#icon-books"/></svg> Chapters
-  </button>
-  <button class="sb-mode-btn" id="sb-flashcards" onclick="setMode('flashcards')">
-    <svg viewBox="0 0 24 24"><use href="#icon-cards"/></svg> Flashcards
-  </button>
-  <button class="sb-mode-btn" id="sb-quiz" onclick="setMode('quiz')">
-    <svg viewBox="0 0 24 24"><use href="#icon-quiz"/></svg> Quiz
-  </button>
-  <button class="sb-mode-btn" id="sb-match" onclick="setMode('match')">
-    <svg viewBox="0 0 24 24"><use href="#icon-match"/></svg> Match
-  </button>
-  <button class="sb-mode-btn" id="sb-practice" onclick="setMode('practice')">
-    <svg viewBox="0 0 24 24"><use href="#icon-pencil"/></svg> Practice
-  </button>
+
+  <!-- Steps 2 & 3: back link + active topic name -->
+  <div class="sb-active-ctx" id="sb-active-ctx">
+    <button class="sb-back-link" onclick="setMode('topic')">← Topics</button>
+    <div class="sb-active-topic" id="sb-topic-name"></div>
+  </div>
+
+  <!-- Step 3: mode buttons (populated by buildSidebarModes) -->
+  <div class="sb-modes" id="sb-modes"></div>
+
+  <!-- Step 3: quick topic list (populated by buildSidebarTopicList) -->
+  <div class="sb-topic-list" id="sb-topic-list">
+    <div class="sb-label">Switch topic</div>
+    <div id="sb-tlist"></div>
+  </div>
+
   <div class="sb-spacer"></div>
   <div class="sb-score">Score: <b id="sb-score-val">0 / 65</b></div>
   <button class="sb-theme" id="theme-btn" onclick="toggleTheme()">
@@ -469,6 +532,16 @@ footer{
     </button>
   </div>
 
+  <!-- Mobile pill strip (Step 3 only) -->
+  <div class="mob-pill-strip" id="mob-pill-strip">
+    <button class="mob-pill" id="mob-topic-pill" onclick="setMode('topic')">
+      <span id="mob-topic-pill-text">Topics</span> ▾
+    </button>
+    <button class="mob-pill" id="mob-mode-pill" onclick="setMode('activities')">
+      <span id="mob-mode-pill-text">Activities</span> ▾
+    </button>
+  </div>
+
   <div class="page">
 
     <!-- Hero -->
@@ -492,10 +565,28 @@ footer{
       <div class="section-title">Choose a topic</div>
       <div class="topic-grid" id="topic-grid"></div>
       <hr class="divider">
-      <div class="progress-section">
-        <h2>Your Progress</h2>
-        <div class="prog-list" id="prog-list"></div>
+      <div class="streak-section">
+        <div class="streak-row">
+          <span class="streak-flame">🔥</span>
+          <div class="streak-info">
+            <div class="streak-count" id="streak-count">—</div>
+            <div class="streak-sub">study streak</div>
+          </div>
+        </div>
+        <div class="streak-dots" id="streak-dots"></div>
       </div>
+    </div>
+
+    <!-- Panel: Activities -->
+    <div id="panel-activities" class="panel">
+      <div class="act-head">
+        <button class="act-back-btn" onclick="setMode('topic')">← Topics</button>
+        <div class="act-head-info">
+          <h2 id="act-title"></h2>
+          <p id="act-desc"></p>
+        </div>
+      </div>
+      <div class="act-grid" id="act-grid"></div>
     </div>
 
     <!-- Panel: Flashcards -->
@@ -604,6 +695,36 @@ const fcDecks={
   'ar+Pronoun': pronouns.map((p,i)=>({front:'ar + '+p,back:prepTable.ar[i],sub:'"on" + '+p.toLowerCase()})),
   'do+Pronoun': pronouns.map((p,i)=>({front:'do + '+p,back:prepTable.do[i],sub:'"to/for" + '+p.toLowerCase()})),
   'le+Pronoun': pronouns.map((p,i)=>({front:'le + '+p,back:prepTable.le[i],sub:'"with" + '+p.toLowerCase()})),
+  'Aidiacht Shealbhach': [
+    {front:'Mo — my',sub:'Possessive adjective',
+     back:"+ consan → séimhiú: mo theach\n+ guta → elision: m'aintín"},
+    {front:'Do — your',sub:'Possessive adjective',
+     back:"+ consan → séimhiú: do theach\n+ guta → elision: d'aintín"},
+    {front:'A (sé) — his',sub:'Possessive adjective',
+     back:'+ consan → séimhiú: a theach\n+ guta → gan athrú: a aintín'},
+    {front:'A (sí) — her',sub:'Possessive adjective',
+     back:'+ consan → gan athrú: a teach\n+ guta → h-: a haintín'},
+    {front:'Ár — our',sub:'Possessive adjective',
+     back:'+ consan → urú: ár dteach\n+ guta → n-: ár n-aintín'},
+    {front:'Bhur — your (pl)',sub:'Possessive adjective',
+     back:'+ consan → urú: bhur dteach\n+ guta → n-: bhur n-aintín'},
+    {front:'A (siad) — their',sub:'Possessive adjective',
+     back:'+ consan → urú: a dteach\n+ guta → n-: a n-aintín'},
+    {front:'Séimhiú',sub:'Mo, Do, A (sé)',
+     back:'h tar éis an chéad chonsan\nteach → theach · carr → charr · bean → bhean'},
+    {front:'Urú',sub:'Ár, Bhur, A (siad)',
+     back:'t→dt · c→gc · b→mb · d→nd · f→bhf · g→ng\nteach → dteach · carr → gcarr'},
+    {front:'H-réimír',sub:'A (sí) + guta',
+     back:'aintín → haintín · athair → hathair'},
+    {front:'N-réimír',sub:'Ár, Bhur, A (siad) + guta',
+     back:'aintín → n-aintín · athair → n-athair'},
+    {front:"Elision (')",sub:"Mo / Do + guta",
+     back:"mo + aintín → m'aintín\ndo + athair → d'athair"},
+    {front:'Séimhiú le cé?',sub:'Cuir i gceart',
+     back:'Mo · Do · A (sé)'},
+    {front:'Urú le cé?',sub:'Cuir i gceart',
+     back:'Ár · Bhur · A (siad)'},
+  ],
 };
 
 const exData={
@@ -693,6 +814,19 @@ const exData={
       {b:'Sílim gur',h:'[cealaigh: sí]',a:'an lá spóirt.',ans:['chealaigh sí','chealaigh si']},
     ]
   },
+  aidiacht:{
+    label:'Aidiacht Shealbhach', total:8,
+    questions:[
+      {b:'', h:'[Mo (my) + teach (house)]', a:'→ ?', ans:['mo theach']},
+      {b:'', h:'[Do (your) + teach (house)]', a:'→ ?', ans:['do theach']},
+      {b:'', h:'[A (his) + teach (house)]', a:'→ ?', ans:['a theach']},
+      {b:'', h:'[A (her) + teach (house)]', a:'→ ?', ans:['a teach']},
+      {b:'', h:'[Ár (our) + teach (house)]', a:'→ ?', ans:['ár dteach','ar dteach']},
+      {b:'', h:'[Bhur (your pl.) + teach (house)]', a:'→ ?', ans:['bhur dteach']},
+      {b:'', h:'[A (their) + teach (house)]', a:'→ ?', ans:['a dteach']},
+      {b:'', h:'[A (her) + aintín (aunt)]', a:'→ ?', ans:['a haintín']},
+    ]
+  },
 };
 
 const aidiacht={
@@ -707,6 +841,15 @@ const matchSets=[
   {label:'ar',pairs:pronouns.map((p,i)=>({left:'ar + '+p,right:prepTable.ar[i]}))},
   {label:'do',pairs:pronouns.map((p,i)=>({left:'do + '+p,right:prepTable.do[i]}))},
   {label:'le',pairs:pronouns.map((p,i)=>({left:'le + '+p,right:prepTable.le[i]}))},
+  {label:'Mutations', pairs:[
+    {left:'Mo', right:"Séimhiú: mo theach, m'aintín"},
+    {left:'Do', right:"Séimhiú: do theach, d'aintín"},
+    {left:'A (sé — his)', right:'Séimhiú: a theach, a aintín'},
+    {left:'A (sí — her)', right:'H-prefix: a teach, a haintín'},
+    {left:'Ár', right:'Urú: ár dteach, ár n-aintín'},
+    {left:'Bhur', right:'Urú: bhur dteach, bhur n-aintín'},
+    {left:'A (siad — their)', right:'Urú: a dteach, a n-aintín'},
+  ]},
 ];
 
 const scoreMeta=[
@@ -734,7 +877,7 @@ const topicDefs=[
   {id:'irregulars',label:'Briathra Neamhrialta',iconId:'bolt',desc:'Irregular verbs',
     fc:[],quiz:['irregulars'],matchIdx:[],prac:['irregulars']},
   {id:'aidiacht',label:'Aidiacht Shealbhach',iconId:'user',desc:'Possessive adjectives',
-    fc:[],quiz:[],matchIdx:[],prac:['aidiacht']},
+    fc:['Aidiacht Shealbhach'],quiz:['aidiacht'],matchIdx:[4],prac:['aidiacht']},
 ];
 
 /* ================================================================
@@ -783,13 +926,29 @@ function chk(inp,ans){return ans.some(function(a){return norm(a)===norm(inp);});
 var currentMode='topic';
 function setMode(mode){
   currentMode=mode;
-  ['topic','flashcards','quiz','match','practice'].forEach(function(m){
-    document.getElementById('panel-'+m).classList.toggle('active',m===mode);
-    var sb=document.getElementById('sb-'+m);
-    if(sb) sb.classList.toggle('active',m===mode);
-    var mob=document.getElementById('mob-'+m);
-    if(mob) mob.classList.toggle('active',m===mode);
+  var stepNum={'step-1':1,'step-2':2,'step-3':3};
+  var step=mode==='topic'?'step-1':mode==='activities'?'step-2':'step-3';
+  var fwd=(stepNum[step]||1)>=(stepNum[document.body.dataset.step||'step-1']||1);
+  document.body.style.setProperty('--slide-dir',fwd?'40px':'-40px');
+  // Toggle panels
+  var allModes=['topic','activities','flashcards','quiz','match','practice'];
+  allModes.forEach(function(m){
+    var panel=document.getElementById('panel-'+m);
+    if(panel) panel.classList.toggle('active',m===mode);
   });
+  // Set step state on body
+  document.body.dataset.step=step;
+  // Rebuild topic grid when returning
+  if(mode==='topic'){
+    buildTopicGrid();
+  }
+  // Update mobile pill labels in step 3
+  if(mode!=='topic'&&mode!=='activities'&&currentTopic){
+    var tp=document.getElementById('mob-topic-pill-text');
+    var mp=document.getElementById('mob-mode-pill-text');
+    if(tp) tp.textContent=currentTopic.label;
+    if(mp) mp.textContent=mode.charAt(0).toUpperCase()+mode.slice(1);
+  }
   if(mode==='flashcards') initFlashcards();
   if(mode==='quiz') initQuiz();
   if(mode==='match') initMatch();
@@ -799,28 +958,124 @@ function setMode(mode){
 /* ================================================================
    TOPIC
 ================================================================ */
-var currentTopic='all';
+var currentTopic=topicDefs[0];
+
+function selectTopic(t){
+  currentTopic=t;
+  var tn=document.getElementById('sb-topic-name');
+  if(tn) tn.textContent=t.label;
+  buildActivityGrid(t);
+  buildSidebarModes(t);
+  buildSidebarTopicList();
+  setMode('activities');
+}
+
 function buildTopicGrid(){
   var grid=document.getElementById('topic-grid');
   grid.innerHTML='';
   topicDefs.forEach(function(t){
     var card=document.createElement('div');
-    card.className='topic-card'+(t.id===currentTopic?' active-topic':'');
+    card.className='topic-card';
     card.dataset.id=t.id;
+    var dots=[
+      t.fc.length?'<span class="tc-dot">FC</span>':'',
+      t.quiz.length?'<span class="tc-dot">Quiz</span>':'',
+      t.matchIdx.length?'<span class="tc-dot">Match</span>':'',
+      t.prac.length?'<span class="tc-dot">Prac</span>':'',
+    ].filter(Boolean).join('');
     card.innerHTML='<div class="tc-icon"><svg viewBox="0 0 24 24"><use href="#icon-'+t.iconId+'"/></svg></div>'
       +'<div class="tc-label">'+t.label+'</div>'
-      +'<div class="tc-desc">'+t.desc+'</div>';
-    card.addEventListener('click',function(){selectTopic(t.id);});
+      +'<div class="tc-desc">'+t.desc+'</div>'
+      +(dots?'<div class="tc-dots">'+dots+'</div>':'');
+    card.addEventListener('click',function(){ selectTopic(t); });
     grid.appendChild(card);
   });
 }
-function selectTopic(id){
-  currentTopic=id;
-  document.querySelectorAll('.topic-card').forEach(function(c){
-    c.classList.toggle('active-topic',c.dataset.id===id);
+
+function buildActivityGrid(t){
+  var el=document.getElementById('act-title');
+  if(el) el.textContent=t.label;
+  var de=document.getElementById('act-desc');
+  if(de) de.textContent=t.desc||'';
+
+  var fcCount=t.fc.reduce(function(n,d){return n+(fcDecks[d]?fcDecks[d].length:0);},0);
+  var qCount=t.quiz.reduce(function(n,k){return n+(exData[k]?exData[k].questions.length:0);},0);
+
+  var MODES=[
+    {id:'flashcards',label:'Flashcards',icon:'cards',
+     avail:t.fc.length>0,
+     count:t.fc.length?(fcCount+' card'+(fcCount!==1?'s':'')):'No content for this topic'},
+    {id:'quiz',label:'Quiz',icon:'quiz',
+     avail:t.quiz.length>0,
+     count:t.quiz.length?(qCount+' question'+(qCount!==1?'s':'')):'No content for this topic'},
+    {id:'match',label:'Match',icon:'match',
+     avail:t.matchIdx.length>0,
+     count:t.matchIdx.length?'Pair matching':'No content for this topic'},
+    {id:'practice',label:'Practice',icon:'pencil',
+     avail:t.prac.length>0,
+     count:t.prac.length?'Fill-in exercises':'No content for this topic'},
+  ];
+
+  var grid=document.getElementById('act-grid');
+  grid.innerHTML='';
+  MODES.forEach(function(m){
+    var btn=document.createElement('button');
+    btn.className='act-tile'+(m.avail?'':' act-tile--off');
+    btn.innerHTML='<span class="at-icon"><svg class="icon" style="width:28px;height:28px" aria-hidden="true"><use href="#icon-'+m.icon+'"/></svg></span>'
+      +'<span class="at-name">'+m.label+'</span>'
+      +'<span class="at-count">'+m.count+'</span>';
+    if(m.avail) btn.onclick=function(){setMode(m.id);};
+    else btn.disabled=true;
+    grid.appendChild(btn);
   });
-  var t=topicDefs.find(function(x){return x.id===id;});
-  document.getElementById('topic-mob-label').textContent=t.label;
+}
+
+function buildSidebarModes(t){
+  var modesDef=[
+    {id:'flashcards',label:'Flashcards',icon:'cards',  avail:t.fc.length>0},
+    {id:'quiz',      label:'Quiz',      icon:'quiz',   avail:t.quiz.length>0},
+    {id:'match',     label:'Match',     icon:'match',  avail:t.matchIdx.length>0},
+    {id:'practice',  label:'Practice',  icon:'pencil', avail:t.prac.length>0},
+  ];
+  var container=document.getElementById('sb-modes');
+  container.innerHTML='<div class="sb-label">Activities</div>';
+  modesDef.forEach(function(m){
+    var btn=document.createElement('button');
+    btn.className='sb-btn';
+    btn.style.opacity=m.avail?'':'0.38';
+    btn.disabled=!m.avail;
+    btn.innerHTML='<svg class="icon" aria-hidden="true"><use href="#icon-'+m.icon+'"/></svg> '+m.label;
+    if(m.avail) btn.onclick=function(){
+      container.querySelectorAll('.sb-btn').forEach(function(b){b.classList.remove('active');});
+      btn.classList.add('active');
+      setMode(m.id);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function buildSidebarTopicList(){
+  var container=document.getElementById('sb-tlist');
+  container.innerHTML='';
+  topicDefs.forEach(function(t){
+    var btn=document.createElement('button');
+    btn.className='sb-tlist-btn'+(currentTopic&&t.id===currentTopic.id?' active':'');
+    btn.textContent=t.label;
+    btn.onclick=function(){
+      currentTopic=t;
+      var tn=document.getElementById('sb-topic-name');
+      if(tn) tn.textContent=t.label;
+      buildActivityGrid(t);
+      buildSidebarModes(t);
+      buildSidebarTopicList();
+      var modeAvail=(currentMode==='flashcards'&&t.fc.length)||
+                    (currentMode==='quiz'&&t.quiz.length)||
+                    (currentMode==='match'&&t.matchIdx.length)||
+                    (currentMode==='practice'&&t.prac.length);
+      setMode(modeAvail?currentMode:'activities');
+    };
+    container.appendChild(btn);
+  });
 }
 
 /* ================================================================
@@ -846,25 +1101,38 @@ function countPrac(key){
   });
   return cnt;
 }
+function renderStreak(){
+  var today=new Date().toDateString();
+  var s=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
+  var yesterday=new Date(Date.now()-86400000).toDateString();
+  if(s.last!==today){
+    if(s.last===yesterday){s.count++;s.last=today;}
+    else{s.count=1;s.last=today;}
+    localStorage.setItem('sn_streak',JSON.stringify(s));
+  }
+  var el=document.getElementById('streak-count');
+  if(el) el.textContent=s.count+' day'+(s.count!==1?'s':'');
+  var dotsEl=document.getElementById('streak-dots');
+  if(dotsEl){
+    var fill=Math.min(s.count,7);
+    dotsEl.innerHTML=Array.from({length:7},function(_,i){
+      return '<span class="streak-dot'+(i>=7-fill?' lit':'')+'"></span>';
+    }).join('');
+  }
+}
+
 function updateProgress(){
   var totalCorrect=0, totalAll=0;
-  var list=document.getElementById('prog-list');
-  if(list) list.innerHTML='';
   scoreMeta.forEach(function(sm){
     var c=countPrac(sm.key);
     totalCorrect+=c; totalAll+=sm.total;
-    if(list){
-      var pct=sm.total>0?Math.round(c/sm.total*100):0;
-      list.insertAdjacentHTML('beforeend',
-        '<div class="prog-item">'
-        +'<div class="prog-header"><span class="prog-name">'+sm.label+'</span><span class="prog-frac">'+c+' / '+sm.total+'</span></div>'
-        +'<div class="prog-bar"><div class="prog-fill" style="width:'+pct+'%"></div></div>'
-        +'</div>');
-    }
   });
   var scoreStr=totalCorrect+' / '+totalAll;
-  document.getElementById('hs-score').textContent=scoreStr;
-  document.getElementById('sb-score-val').textContent=scoreStr;
+  var hsSc=document.getElementById('hs-score');
+  if(hsSc) hsSc.textContent=scoreStr;
+  var sbSc=document.getElementById('sb-score-val');
+  if(sbSc) sbSc.textContent=scoreStr;
+  renderStreak();
 }
 
 /* ================================================================
@@ -872,7 +1140,7 @@ function updateProgress(){
 ================================================================ */
 var fcDeckKey=null, fcIdx=0;
 function initFlashcards(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.fc.length>0?topic.fc:Object.keys(fcDecks);
   var pillsEl=document.getElementById('fc-pills');
   pillsEl.innerHTML='';
@@ -920,7 +1188,7 @@ function fcNav(dir){
 ================================================================ */
 var quizPool=[], quizCur=0, quizScore=0, quizCurrentKey='';
 function initQuiz(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.quiz.length>0?topic.quiz:Object.keys(exData);
   var pillsEl=document.getElementById('quiz-pills');
   pillsEl.innerHTML='';
@@ -1028,7 +1296,7 @@ function quizRetry(){
 ================================================================ */
 var matchSel={left:null,right:null}, matchRemaining=0;
 function initMatch(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.matchIdx.length>0?topic.matchIdx:[0,1,2,3];
   var pillsEl=document.getElementById('match-pills');
   pillsEl.innerHTML='';
@@ -1098,7 +1366,7 @@ function checkMatchPair(){
    PRACTICE
 ================================================================ */
 function initPractice(){
-  var topic=topicDefs.find(function(t){return t.id===currentTopic;})||topicDefs[0];
+  var topic=currentTopic||topicDefs[0];
   var available=topic.prac.length>0?topic.prac:['reamhfhocail','aidiacht','irregulars','laithreach1','laithreach2','chaite'];
   var pillsEl=document.getElementById('prac-pills');
   pillsEl.innerHTML='';
@@ -1261,6 +1529,7 @@ function escHtml(s){
 /* ================================================================
    INIT
 ================================================================ */
+document.body.dataset.step='step-1';
 buildTopicGrid();
 updateProgress();
 

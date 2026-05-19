@@ -71,16 +71,17 @@ button{font:inherit;cursor:pointer;}
 /* ── Section ── */
 .section{margin-top:2.25rem;}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:.4rem;}
-.sec-head h2{font-size:.92rem;font-weight:700;letter-spacing:.01em;text-transform:uppercase;color:var(--muted);}
+.sec-head h2{font-size:.95rem;font-weight:700;}
 .sec-head a{font-size:.78rem;color:var(--muted);}
 .sec-head a:hover{color:var(--fg);}
 
 /* ── Subject grid ── */
 .subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.subject-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
-.subject-card:hover{background:var(--hover);}
+.subject-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
+.subject-card:hover{background:var(--hover);border-color:var(--fg);}
 .subject-card.locked{opacity:.45;cursor:default;pointer-events:none;}
-.sc-icon{font-size:1.2rem;font-weight:700;letter-spacing:-.03em;}
+.sc-icon{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;display:flex;align-items:center;min-height:1.5rem;}
+.sc-icon .icon{width:1.35em;height:1.35em;}
 .sc-name{font-size:.88rem;font-weight:600;}
 .sc-count{font-size:.73rem;color:var(--muted);}
 .sc-bar{height:2px;background:var(--border);border-radius:99px;margin-top:auto;}
@@ -88,8 +89,8 @@ button{font:inherit;cursor:pointer;}
 
 /* ── Language grid ── */
 .lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.lang-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
-.lang-card:hover{background:var(--hover);}
+.lang-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
+.lang-card:hover{background:var(--hover);border-color:var(--fg);}
 .lang-card.locked{opacity:.45;cursor:default;pointer-events:none;}
 .lc-flag{font-size:1.5rem;}
 .lc-name{font-size:.92rem;font-weight:700;}
@@ -139,6 +140,8 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 
 /* ── Animations ── */
 @keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(var(--slide-dir,40px))}to{opacity:1;transform:translateX(0)}}
+.qq-slide{animation:slideIn .18s ease both;}
 
 /* ── Mobile overrides ── */
 @media(max-width:700px){
@@ -225,6 +228,34 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .sn-save{width:100%;padding:.6rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;margin-top:.25rem;}
 .sn-save:hover{opacity:.8;}
 .sn-divider{border:none;border-top:1px solid var(--border);margin:.25rem 0 1.5rem;}
+.sn-danger-btn{width:100%;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--muted);font:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:background .15s,color .15s,border-color .15s;text-align:center;}
+.sn-danger-btn:hover{background:var(--hover);color:var(--fg);border-color:var(--fg);}
+
+/* ── Changelog overlay ── */
+.changelog-overlay{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.cl-box{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.75rem 1.5rem;max-height:80vh;overflow-y:auto;}
+.cl-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;}
+.cl-title{font-size:1.15rem;font-weight:800;letter-spacing:-.03em;}
+.cl-ver{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
+.cl-content{font-size:.875rem;line-height:1.65;color:var(--fg);}
+.cl-content h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:1.1rem 0 .4rem;}
+.cl-content h3:first-child{margin-top:0;}
+.cl-content ul{padding-left:1.2rem;}
+.cl-content li{margin-bottom:.25rem;color:var(--muted);}
+.cl-content li b{color:var(--fg);}
+.cl-dismiss{width:100%;margin-top:1.5rem;padding:.65rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;}
+.cl-dismiss:hover{opacity:.8;}
+
+/* ── Confirm dialog overlay ── */
+.confirm-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
+.confirm-box{width:100%;max-width:340px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.5rem;}
+.confirm-box h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+.confirm-box p{font-size:.85rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.5;}
+.confirm-actions{display:flex;gap:.6rem;}
+.confirm-cancel{flex:1;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--fg);font:inherit;font-size:.85rem;cursor:pointer;}
+.confirm-cancel:hover{background:var(--hover);}
+.confirm-ok{flex:1;padding:.55rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
+.confirm-ok:hover{opacity:.8;}
 </style>
 </head>
 <body>
@@ -310,13 +341,13 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
           <div class="sec-head"><h2>Subjects</h2></div>
           <div class="subject-grid">
             <a href="irish.html" class="subject-card">
-              <div class="sc-icon">Ga</div>
+              <div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-chat"/></svg></div>
               <div class="sc-name">Gaeilge</div>
               <div class="sc-count" id="sc-irish-count">0 / 65 correct</div>
               <div class="sc-bar"><div class="sc-fill" id="sc-irish-bar" style="width:0%"></div></div>
             </a>
-            <div class="subject-card locked"><div class="sc-icon">∑</div><div class="sc-name">Mathematics</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
-            <div class="subject-card locked"><div class="sc-icon">Aa</div><div class="sc-name">English</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
+            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bolt"/></svg></div><div class="sc-name">Mathematics</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
+            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-text"/></svg></div><div class="sc-name">English</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
             <a href="history.html" class="subject-card">
               <div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></div>
               <div class="sc-name">History</div>
@@ -505,6 +536,61 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 
       <button class="sn-save" onclick="saveSettings()">Save changes</button>
 
+      <hr class="sn-divider"/>
+
+      <div class="sn-sec">
+        <div class="sn-sec-label">Data</div>
+        <button class="sn-danger-btn" onclick="confirmClearData()">Clear all data…</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ═══ Changelog overlay ═══ -->
+<div id="changelog-overlay" class="changelog-overlay hidden">
+  <div class="cl-box">
+    <div class="cl-head">
+      <div>
+        <div class="cl-title">What's new</div>
+        <div class="cl-ver">May 2025 update</div>
+      </div>
+    </div>
+    <div class="cl-content">
+      <h3>Icons</h3>
+      <ul>
+        <li><b>All subject icons fixed</b> — flashcard, quiz, match, and practice icons now render correctly in both light and dark mode.</li>
+      </ul>
+      <h3>Theming</h3>
+      <ul>
+        <li><b>Consistent dark mode</b> — correct/wrong feedback states, match tiles, and practice inputs now use theme-aware colours across all pages.</li>
+        <li>French, Irish, and History pages now fully match the design of the dashboard.</li>
+      </ul>
+      <h3>Quiz</h3>
+      <ul>
+        <li><b>Randomised questions</b> — French and History quizzes now shuffle question order each time.</li>
+      </ul>
+      <h3>Streak tracker</h3>
+      <ul>
+        <li>Progress sections replaced with a <b>7-day streak tracker</b> on each subject page, synced with the dashboard.</li>
+      </ul>
+      <h3>Irish (Gaeilge)</h3>
+      <ul>
+        <li><b>Aidiacht Shealbhach flashcards simplified</b> — backs now show concise Irish grammar rules instead of lengthy English explanations.</li>
+      </ul>
+    </div>
+    <button class="cl-dismiss" onclick="dismissChangelog()">Got it</button>
+  </div>
+</div>
+
+<!-- ═══ Confirm dialog ═══ -->
+<div id="confirm-overlay" class="confirm-overlay hidden">
+  <div class="confirm-box">
+    <h3>Clear all data?</h3>
+    <p>This will permanently delete your profile, all study progress, and settings. This cannot be undone.</p>
+    <div class="confirm-actions">
+      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
+      <button class="confirm-ok" onclick="doClearData()">Clear data</button>
     </div>
   </div>
 </div>
@@ -697,6 +783,7 @@ const qqBody=document.getElementById('qq-body'),qqMoreLink=document.getElementBy
 function qqRender(){
   const q=qqQs[qqIdx]; qqAnswered=false;
   qqFeedback.textContent=''; qqNext.style.display='none';
+  qqBody.classList.remove('qq-slide'); void qqBody.offsetWidth; qqBody.classList.add('qq-slide');
   qqQ.textContent=q.q; qqOpts.innerHTML='';
   document.getElementById('qq-subject').textContent=q.subj;
   if(qqMoreLink) qqMoreLink.href=qqSubjLinks[q.subj]||'#';
@@ -772,6 +859,7 @@ function obSubmit(){
   document.getElementById('onboard-overlay').classList.add('hidden');
   document.body.style.overflow='';
   applyProfile();
+  checkChangelog();
 }
 
 // ── Settings drawer ─────────────────────────────────────────
@@ -854,8 +942,37 @@ function saveSettings(){
 document.getElementById('settings-btn').addEventListener('click',openSettings);
 document.getElementById('settings-mob').addEventListener('click',openSettings);
 
+// ── Changelog ──────────────────────────────────────────────
+const CHANGELOG_VER='2025-05-19-v1';
+function checkChangelog(){
+  // Don't show changelog if onboarding is still visible
+  if(!document.getElementById('onboard-overlay').classList.contains('hidden')) return;
+  if(localStorage.getItem('sn_changelog_seen')!==CHANGELOG_VER){
+    document.getElementById('changelog-overlay').classList.remove('hidden');
+    document.body.style.overflow='hidden';
+  }
+}
+function dismissChangelog(){
+  localStorage.setItem('sn_changelog_seen',CHANGELOG_VER);
+  document.getElementById('changelog-overlay').classList.add('hidden');
+  document.body.style.overflow='';
+}
+
+// ── Clear all data ──────────────────────────────────────────
+function confirmClearData(){
+  document.getElementById('confirm-overlay').classList.remove('hidden');
+}
+function closeConfirm(){
+  document.getElementById('confirm-overlay').classList.add('hidden');
+}
+function doClearData(){
+  localStorage.clear();
+  location.reload();
+}
+
 checkOnboard();
 applyProfile();
+checkChangelog();
 
 // ── Service Worker ─────────────────────────────────────────
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
