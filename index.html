@@ -230,6 +230,11 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .sn-divider{border:none;border-top:1px solid var(--border);margin:.25rem 0 1.5rem;}
 .sn-danger-btn{width:100%;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--muted);font:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:background .15s,color .15s,border-color .15s;text-align:center;}
 .sn-danger-btn:hover{background:var(--hover);color:var(--fg);border-color:var(--fg);}
+.sn-streak-stars{margin-bottom:.9rem;}
+.sn-star-row{display:flex;gap:.3rem;margin-bottom:.3rem;}
+.sn-star-icon{display:inline-flex;color:var(--border);}
+.sn-star-icon.lit{color:#f97316;}
+.sn-star-lbl{font-size:.73rem;color:var(--muted);}
 
 /* ── Changelog overlay ── */
 .changelog-overlay{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
@@ -325,7 +330,7 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
       <h1 id="greeting">Good morning.</h1>
       <p>Pick up where you left off or start something new.</p>
       <div class="stats-strip">
-        <div class="stat-chip">Streak: <b id="stat-streak">0 days</b></div>
+        <div class="stat-chip">Streak: <b id="stat-streak">0 stars</b></div>
         <div class="stat-chip">Correct: <b id="stat-correct">0</b></div>
         <div class="stat-chip">Active: <b>4 subjects</b></div>
       </div>
@@ -504,6 +509,11 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
           <button class="sn-av-btn" id="sn-remove-photo" onclick="removePhoto()" style="display:none">Remove</button>
         </div>
         <input type="file" id="sn-photo-input" accept="image/*" style="display:none"/>
+        <div class="sn-streak-stars">
+          <div class="sn-star-row" id="sn-star-row"></div>
+          <div class="sn-star-lbl" id="sn-star-lbl">0 stars earned</div>
+        </div>
+
         <div class="sn-field">
           <label for="sn-name">Name</label>
           <input id="sn-name" class="sn-input" type="text" placeholder="Your first name" maxlength="32" autocomplete="given-name"/>
@@ -742,7 +752,7 @@ updateStats();
   if(s.last===today){}
   else if(s.last===yesterday){s.count++;s.last=today;localStorage.setItem('sn_streak',JSON.stringify(s));}
   else{s.count=1;s.last=today;localStorage.setItem('sn_streak',JSON.stringify(s));}
-  document.getElementById('stat-streak').textContent=`${s.count} day${s.count!==1?'s':''}`;
+  document.getElementById('stat-streak').textContent=`${s.count} star${s.count!==1?'s':''}`;
 })();
 
 // ── Quick Quiz ────────────────────────────────────────────
@@ -872,6 +882,17 @@ function openSettings(){
   document.querySelectorAll('.sn-lang-opt').forEach(b=>b.classList.toggle('sel',b.dataset.lang===_snLang));
   refreshAvatar(profile.name||'',_snPhoto);
   document.getElementById('sn-remove-photo').style.display=_snPhoto?'':'none';
+  // Stars from streak
+  const sk=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
+  const today=new Date().toDateString();
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  const starCount=(sk.last===today||sk.last===yesterday)?sk.count:0;
+  const fill=Math.min(starCount,7);
+  const sv='<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+  document.getElementById('sn-star-row').innerHTML=Array.from({length:7},(_,i)=>
+    `<span class="sn-star-icon${i<fill?' lit':''}">${sv}</span>`
+  ).join('');
+  document.getElementById('sn-star-lbl').textContent=`${starCount} star${starCount!==1?'s':''} earned · miss a day to reset`;
   document.getElementById('settings-overlay').classList.remove('hidden');
   document.body.style.overflow='hidden';
 }

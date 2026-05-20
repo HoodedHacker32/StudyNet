@@ -55,9 +55,9 @@ header{display:flex;align-items:center;justify-content:space-between;padding:1.4
 .streak-info{flex:1;}
 .streak-count{font-size:1.25rem;font-weight:700;line-height:1.2;color:var(--fg);}
 .streak-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
-.streak-dots{display:flex;gap:.35rem;margin-top:.65rem;}
-.streak-dot{width:9px;height:9px;border-radius:50%;background:var(--border);}
-.streak-dot.lit{background:#f97316;}
+.streak-dots{display:flex;gap:.3rem;margin-top:.65rem;}
+.streak-star{display:inline-flex;color:var(--border);}
+.streak-star.lit{color:#f97316;}
 .modes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:2rem;}
 .mode-btn{padding:.9rem .5rem;text-align:center;background:var(--bg);border:none;color:var(--muted);font-size:.78rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s;display:flex;flex-direction:column;align-items:center;gap:.3rem;min-height:60px;}
 .mode-btn:hover{background:var(--hover);color:var(--fg);}
@@ -394,10 +394,10 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   <div class="topic-grid" id="topic-grid"></div>
   <div class="streak-section">
     <div class="streak-row">
-      <span class="streak-flame">🔥</span>
+      <span class="streak-flame"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
       <div class="streak-info">
         <div class="streak-count" id="streak-count">—</div>
-        <div class="streak-sub">study streak</div>
+        <div class="streak-sub">study streak · resets if you miss a day</div>
       </div>
     </div>
     <div class="streak-dots" id="streak-dots"></div>
@@ -1561,12 +1561,13 @@ function renderStreak(){
     localStorage.setItem('sn_streak',JSON.stringify(s));
   }
   const el=document.getElementById('streak-count');
-  if(el) el.textContent=s.count+' day'+(s.count!==1?'s':'');
+  if(el) el.textContent=s.count+' star'+(s.count!==1?'s':'');
   const dotsEl=document.getElementById('streak-dots');
   if(dotsEl){
     const fill=Math.min(s.count,7);
+    const sv='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
     dotsEl.innerHTML=Array.from({length:7},(_,i)=>
-      `<span class="streak-dot${i>=7-fill?' lit':''}"></span>`
+      `<span class="streak-star${i<fill?' lit':''}">${sv}</span>`
     ).join('');
   }
 }
