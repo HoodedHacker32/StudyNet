@@ -10,17 +10,32 @@
 <meta name="theme-color" content="#000000"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;--hover:#f5f5f5;--radius:8px;--font:"Inter",system-ui,sans-serif;--sb:210px;}
-@media(prefers-color-scheme:dark){:root{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}}
+/* ─── Design tokens ─────────────────────────────────────────── */
+:root{
+  --bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;
+  --hover:#f5f5f5;--radius:8px;
+  --font:"Inter",system-ui,sans-serif;
+  --sb:210px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
+}
 html.theme-light{--bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;--hover:#f5f5f5;}
-html.theme-dark{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
+html.theme-dark {--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:var(--font);background:var(--bg);color:var(--fg);min-height:100vh;transition:background .2s,color .2s;display:flex;}
 a{color:inherit;text-decoration:none;}
 button{font:inherit;cursor:pointer;}
+input{font-family:inherit;}
 
-/* ── Sidebar ── */
+/* ─── Page padding ──────────────────────────────────────────── */
+.page{padding:2rem 3rem max(5rem,env(safe-area-inset-bottom));}
+
+/* ─── Sidebar ───────────────────────────────────────────────── */
 .sidebar{
   width:var(--sb);flex-shrink:0;
   border-right:1px solid var(--border);
@@ -28,158 +43,165 @@ button{font:inherit;cursor:pointer;}
   display:flex;flex-direction:column;
   padding:1.5rem 1.1rem 1.25rem;
 }
-.sb-brand{font-size:1rem;font-weight:700;letter-spacing:-.02em;padding:.25rem .5rem .9rem;border-bottom:1px solid var(--border);margin-bottom:.75rem;}
-.sb-brand span{opacity:.35;font-weight:400;}
-.sb-section{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.8rem .5rem .3rem;}
-.sb-link{
+.sb-brand{
+  font-size:.95rem;font-weight:700;letter-spacing:-.02em;
+  padding:.5rem .5rem .9rem;
+  border-bottom:1px solid var(--border);margin-bottom:.6rem;
+}
+.sb-brand span{opacity:.35;font-weight:400;font-size:.82rem;}
+.sb-section{
+  font-size:.62rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--muted);
+  padding:.75rem .5rem .25rem;
+}
+.sb-mode-btn{
   display:flex;align-items:center;gap:.55rem;
   padding:.45rem .65rem;border-radius:var(--radius);
-  font-size:.83rem;color:var(--muted);
-  transition:background .15s,color .15s;white-space:nowrap;
+  font-size:.83rem;background:none;border:none;
+  color:var(--muted);text-align:left;width:100%;
+  cursor:pointer;transition:background .15s,color .15s;
+  white-space:nowrap;
 }
-.sb-link:hover,.sb-link.active{background:var(--fg);color:var(--bg);}
+.sb-mode-btn:hover,.sb-mode-btn.active{background:var(--fg);color:var(--bg);}
 .sb-spacer{flex:1;}
 .sb-btn{
   display:flex;align-items:center;gap:.55rem;
   width:100%;padding:.45rem .65rem;border-radius:var(--radius);
-  font-size:.83rem;background:none;border:none;color:var(--muted);text-align:left;
-  transition:background .15s,color .15s;
+  font-size:.83rem;background:none;border:none;color:var(--muted);
+  text-align:left;cursor:pointer;transition:background .15s,color .15s;
 }
 .sb-btn:hover{background:var(--hover);color:var(--fg);}
 #install-sb{display:none;}
 
-/* ── Main area ── */
+/* ─── Main area ─────────────────────────────────────────────── */
 .main{flex:1;min-width:0;display:flex;flex-direction:column;overflow-x:hidden;}
 .mob-header{display:none;}
 
-/* ── Content ── */
-.content{padding:2.5rem 3rem 5rem;width:100%;}
-
-/* Two-column dashboard grid */
-.dash-grid{display:grid;grid-template-columns:1fr 280px;gap:2rem;align-items:start;margin-top:2.5rem;}
-.dash-left{}
-.dash-right{}
-
-/* ── Hero ── */
+/* ─── Hero ──────────────────────────────────────────────────── */
 .hero{padding:3rem 0 1.5rem;}
 .hero h1{font-size:clamp(1.7rem,3vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;}
-.hero p{margin-top:.6rem;color:var(--muted);font-size:.95rem;}
-.stats-strip{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
-.stat-chip{display:inline-flex;align-items:center;gap:.35rem;padding:.3rem .75rem;border:1px solid var(--border);border-radius:99px;font-size:.78rem;color:var(--muted);}
-.stat-chip b{color:var(--fg);}
+.hero p{margin-top:.6rem;color:var(--muted);font-size:.9rem;}
+.hero-stats{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
+.h-chip{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.28rem .75rem;border:1px solid var(--border);
+  border-radius:99px;font-size:.75rem;color:var(--muted);
+}
+.h-chip b{color:var(--fg);}
 
-/* ── Section ── */
+/* ─── Dashboard grid ────────────────────────────────────────── */
+.dash-grid{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;margin-top:2.5rem;}
+
+/* ─── Section headings ──────────────────────────────────────── */
 .section{margin-top:2.25rem;}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:.4rem;}
 .sec-head h2{font-size:.95rem;font-weight:700;}
 .sec-head a{font-size:.78rem;color:var(--muted);}
 .sec-head a:hover{color:var(--fg);}
 
-/* ── Subject grid ── */
-.subject-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.subject-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
-.subject-card:hover{background:var(--hover);border-color:var(--fg);}
-.subject-card.locked{opacity:.45;cursor:default;pointer-events:none;}
-.sc-icon{font-size:1.15rem;font-weight:700;letter-spacing:-.03em;display:flex;align-items:center;min-height:1.5rem;}
-.sc-icon .icon{width:1.35em;height:1.35em;}
-.sc-name{font-size:.88rem;font-weight:600;}
-.sc-count{font-size:.73rem;color:var(--muted);}
-.sc-bar{height:2px;background:var(--border);border-radius:99px;margin-top:auto;}
-.sc-fill{height:100%;background:var(--fg);border-radius:99px;}
+/* ─── Topic/subject/language cards ──────────────────────────── */
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:.85rem;}
+.topic-card{
+  background:var(--bg);color:var(--fg);
+  border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.1rem 1rem;text-align:left;
+  display:flex;flex-direction:column;gap:.35rem;
+  transition:background .15s,border-color .15s;
+}
+a.topic-card:hover{background:var(--hover);border-color:var(--fg);}
+.topic-card.locked{opacity:.4;pointer-events:none;}
+.tc-icon{min-height:1.6rem;display:flex;align-items:center;}
+.tc-icon .icon{width:1.35em;height:1.35em;}
+.tc-label{font-size:.9rem;font-weight:700;}
+.tc-desc{font-size:.73rem;color:var(--muted);}
+.tc-yours{display:none;font-size:.65rem;font-weight:600;letter-spacing:.02em;color:var(--fg);opacity:.5;}
+.topic-card.your-lang .tc-yours{display:block;}
+.tc-bar{height:2px;background:var(--border);border-radius:99px;margin-top:auto;}
+.tc-fill{height:100%;background:var(--fg);border-radius:99px;}
 
-/* ── Language grid ── */
-.lang-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.lang-card{display:flex;flex-direction:column;padding:1.1rem 1.1rem;background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;border-right:1px solid var(--border);border-bottom:1px solid var(--border);gap:.4rem;text-decoration:none;color:inherit;min-height:92px;}
-.lang-card:hover{background:var(--hover);border-color:var(--fg);}
-.lang-card.locked{opacity:.45;cursor:default;pointer-events:none;}
-.lc-flag{font-size:1.5rem;}
-.lc-name{font-size:.92rem;font-weight:700;}
-.lc-sub{font-size:.73rem;color:var(--muted);}
-.lc-bar{height:2px;background:var(--border);border-radius:99px;margin-top:auto;}
-.lc-fill{height:100%;background:var(--fg);border-radius:99px;}
+/* ─── Quick Quiz (mcq) ───────────────────────────────────────── */
+.mcq-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.mcq-top{
+  padding:.85rem 1.1rem;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mcq-title{font-size:.82rem;font-weight:700;}
+.mcq-prog-txt{font-size:.75rem;color:var(--muted);}
+.mcq-prog-bar{height:2px;background:var(--border);}
+.mcq-prog-fill{height:100%;background:var(--fg);transition:width .3s;}
+.mcq-body{padding:1.3rem 1.1rem;}
+.mcq-q{font-size:.95rem;font-weight:600;margin-bottom:1rem;line-height:1.5;}
+.mcq-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.mcq-opt{
+  padding:.65rem .9rem;border:1px solid var(--border);
+  border-radius:var(--radius);background:var(--bg);color:var(--fg);
+  font-size:.82rem;text-align:left;
+  transition:border-color .2s,background .2s;min-height:44px;
+}
+.mcq-opt:hover:not(:disabled){background:var(--hover);}
+.mcq-opt.correct{background:var(--fg);color:var(--bg);border-color:var(--fg);animation:pop .25s ease;}
+.mcq-opt.wrong{opacity:.3;text-decoration:line-through;}
+.mcq-opt:disabled{cursor:default;}
+.mcq-footer{
+  padding:.85rem 1.1rem;border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.mcq-fb{font-size:.8rem;color:var(--muted);}
+.mcq-next{
+  padding:.45rem 1rem;border:1px solid var(--fg);
+  border-radius:var(--radius);background:var(--fg);color:var(--bg);
+  font-size:.78rem;font-weight:600;display:none;min-height:36px;
+}
+.mcq-next:hover{opacity:.75;}
+.mcq-result{padding:2rem 1.1rem;text-align:center;}
+.mcq-result h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;}
+.mcq-result p{color:var(--muted);margin:.5rem 0 1.2rem;font-size:.88rem;}
 
-/* ── Quick Quiz ── */
-.quiz-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.quiz-top{padding:.85rem 1.15rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.quiz-top h3{font-size:.88rem;font-weight:700;}
-.quiz-prog-text{font-size:.78rem;color:var(--muted);}
-.quiz-prog-bar{height:2px;background:var(--border);}
-.quiz-prog-fill{height:100%;background:var(--fg);transition:width .3s ease;}
-.quiz-body{padding:1.4rem 1.15rem;}
-.quiz-q{font-size:.95rem;font-weight:600;margin-bottom:1.1rem;line-height:1.5;}
-.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
-.opt-btn{padding:.65rem .9rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font-size:.83rem;text-align:left;transition:background .15s,border-color .15s;min-height:44px;}
-.opt-btn:hover:not(:disabled){background:var(--hover);}
-.opt-btn.correct{background:var(--fg);color:var(--bg);border-color:var(--fg);animation:pop .25s ease;}
-.opt-btn.wrong{opacity:.35;border-color:var(--muted);}
-.opt-btn:disabled{cursor:default;}
-.quiz-footer{padding:.85rem 1.15rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
-.quiz-feedback{font-size:.82rem;color:var(--muted);}
-.btn-next{padding:.45rem 1rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.8rem;font-weight:600;display:none;min-height:36px;}
-.btn-next:hover{opacity:.75;}
-.quiz-result{padding:2rem 1.15rem;text-align:center;}
-.quiz-result h3{font-size:1.4rem;font-weight:800;letter-spacing:-.02em;}
-.quiz-result p{color:var(--muted);margin:.5rem 0 1.2rem;font-size:.88rem;}
-.btn-restart{padding:.55rem 1.25rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.82rem;font-weight:600;min-height:40px;}
-.btn-restart:hover{opacity:.75;}
+/* ─── Shared button ─────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:.5rem 1.1rem;border:1px solid var(--fg);
+  border-radius:var(--radius);background:var(--fg);color:var(--bg);
+  font-size:.8rem;font-weight:600;cursor:pointer;min-height:40px;
+}
+.btn:hover{opacity:.75;}
 
-/* ── Progress panel (right column) ── */
-.prog-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:sticky;top:1.5rem;}
-.prog-card-head{padding:.8rem 1rem;border-bottom:1px solid var(--border);font-size:.82rem;font-weight:700;}
-.prog-list{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+/* ─── Progress panel ────────────────────────────────────────── */
+.prog-panel{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:sticky;top:1.5rem;}
 .prog-item{padding:.8rem 1.1rem;border-bottom:1px solid var(--border);}
 .prog-item:last-child{border-bottom:none;}
-.prog-row{display:flex;justify-content:space-between;font-size:.78rem;margin-bottom:.3rem;}
+.prog-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.3rem;}
 .prog-label{font-weight:500;}
 .prog-pct{color:var(--muted);}
-.prog-bar{height:2px;background:var(--border);border-radius:99px;}
-.prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .5s ease;}
+.prog-bar{height:3px;background:var(--border);border-radius:99px;}
+.prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .5s;}
 
-/* ── Footer ── */
-footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-top:auto;}
-
-/* ── Animations ── */
-@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(var(--slide-dir,40px))}to{opacity:1;transform:translateX(0)}}
-.qq-slide{animation:slideIn .18s ease both;}
-
-/* ── Mobile overrides ── */
-@media(max-width:700px){
-  body{display:block;}
-  .sidebar{display:none;}
-  .mob-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
-  .mob-logo{font-size:1rem;font-weight:700;letter-spacing:-.02em;}
-  .mob-logo span{opacity:.35;font-weight:400;}
-  .mob-btns{display:flex;gap:.3rem;}
-  .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);}
-  .content{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
-  .dash-grid{display:block;}
-  .dash-right{margin-top:2rem;}
-  .prog-card{position:static;}
-  .quiz-opts{grid-template-columns:1fr;}
-  footer{padding:2rem 1.25rem 1.5rem;}
-}
-@media(max-width:480px){
-  .subject-grid,.lang-grid{grid-template-columns:repeat(2,1fr);}
-  .stats-strip .stat-chip{font-size:.72rem;padding:.25rem .6rem;}
-}
+/* ─── Icon helper ───────────────────────────────────────────── */
 .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
 
-/* ── Your-language card highlight ── */
-.lang-card.your-lang.locked{opacity:.72;}
-.lang-card .lc-yours{display:none;font-size:.65rem;font-weight:600;letter-spacing:.02em;color:var(--fg);opacity:.5;margin-top:.1rem;}
-.lang-card.your-lang .lc-yours{display:block;}
+/* ─── Footer ────────────────────────────────────────────────── */
+footer{
+  margin-top:4rem;padding-top:1.4rem;
+  border-top:1px solid var(--border);
+  font-size:.75rem;color:var(--muted);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
+}
 
-/* ── Shared overlay utility ── */
+/* ─── Utilities ─────────────────────────────────────────────── */
 .hidden{display:none!important;}
 .icon-btn{background:none;border:none;color:var(--muted);padding:.3rem;border-radius:6px;display:flex;cursor:pointer;line-height:1;}
 .icon-btn:hover{background:var(--hover);color:var(--fg);}
 
-/* ── Onboarding overlay ── */
+/* ─── Animations ────────────────────────────────────────────── */
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
+.qq-slide{animation:slideIn .18s ease both;}
+
+/* ─── Onboarding overlay ────────────────────────────────────── */
 .onboard-overlay{position:fixed;inset:0;z-index:400;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
 .ob-box{width:100%;max-width:380px;}
-.ob-brand{font-size:.95rem;font-weight:700;letter-spacing:-.02em;color:var(--muted);margin-bottom:2.5rem;}
-.ob-brand b{color:var(--fg);font-weight:700;}
+.ob-brand{font-size:.9rem;font-weight:700;letter-spacing:-.02em;color:var(--muted);margin-bottom:2.5rem;}
+.ob-brand b{color:var(--fg);}
 .ob-h{font-size:1.65rem;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:.4rem;}
 .ob-sub{color:var(--muted);font-size:.875rem;margin-bottom:1.5rem;}
 .ob-field{margin-bottom:.85rem;}
@@ -188,17 +210,17 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .ob-input:focus{outline:none;border-color:var(--fg);}
 .ob-lang-label{font-size:.75rem;font-weight:500;color:var(--muted);margin:1.25rem 0 .6rem;}
 .ob-lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:1.5rem;}
-.ob-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .3rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1;}
+.ob-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .3rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1.2;}
 .ob-lang-opt:hover{background:var(--hover);}
 .ob-lang-opt.sel{border-color:var(--fg);background:var(--fg);color:var(--bg);}
 .ob-lang-flag{display:block;margin:0 auto .4rem;}
 .ob-lang-name{font-size:.8rem;font-weight:700;display:block;}
-.ob-lang-sub{font-size:.67rem;display:block;margin-top:.2rem;opacity:.55;}
+.ob-lang-sub{font-size:.67rem;display:block;margin-top:.15rem;opacity:.55;}
 .ob-btn{width:100%;padding:.7rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;}
 .ob-btn:hover:not(:disabled){opacity:.8;}
 .ob-btn:disabled{opacity:.3;cursor:default;}
 
-/* ── Settings drawer ── */
+/* ─── Settings drawer ───────────────────────────────────────── */
 .sn-overlay{position:fixed;inset:0;z-index:300;display:flex;}
 .sn-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.4);}
 .sn-drawer{position:relative;margin-left:auto;width:300px;max-width:100vw;background:var(--bg);border-left:1px solid var(--border);height:100%;overflow-y:auto;display:flex;flex-direction:column;}
@@ -208,7 +230,7 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .sn-sec{margin-bottom:1.75rem;}
 .sn-sec-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem;}
 .sn-av-wrap{position:relative;width:56px;height:56px;cursor:pointer;margin-bottom:.75rem;flex-shrink:0;}
-.sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;letter-spacing:-.02em;overflow:hidden;background-size:cover;background-position:center;}
+.sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;overflow:hidden;background-size:cover;background-position:center;}
 .sn-av-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;pointer-events:none;}
 .sn-av-wrap:hover .sn-av-overlay{opacity:1;}
 .sn-av-cam{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
@@ -220,7 +242,7 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .sn-input{width:100%;padding:.55rem .75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font:inherit;font-size:.875rem;}
 .sn-input:focus{outline:none;border-color:var(--fg);}
 .sn-lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;}
-.sn-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .25rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1;}
+.sn-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .25rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1.2;}
 .sn-lang-opt:hover{background:var(--hover);}
 .sn-lang-opt.sel{border-color:var(--fg);background:var(--fg);color:var(--bg);}
 .sn-lang-flag{display:block;margin:0 auto .3rem;}
@@ -230,19 +252,21 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .sn-divider{border:none;border-top:1px solid var(--border);margin:.25rem 0 1.5rem;}
 .sn-danger-btn{width:100%;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--muted);font:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:background .15s,color .15s,border-color .15s;text-align:center;}
 .sn-danger-btn:hover{background:var(--hover);color:var(--fg);border-color:var(--fg);}
-.sn-streak-stars{margin-bottom:.9rem;}
-.sn-star-row{display:flex;gap:.3rem;margin-bottom:.3rem;}
-.sn-star-icon{display:inline-flex;color:var(--border);}
-.sn-star-icon.lit{color:#f97316;}
-.sn-star-lbl{font-size:.73rem;color:var(--muted);}
+.sn-streak-wrap{margin-bottom:.9rem;padding:.75rem .9rem;border:1px solid var(--border);border-radius:var(--radius);}
+.sn-streak-top{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
+.sn-streak-count{font-size:1rem;font-weight:700;color:var(--fg);}
+.sn-streak-days{font-size:.7rem;color:var(--muted);margin-top:.05rem;}
+.sn-bar-wrap{height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:.35rem;}
+.sn-bar-fill{height:100%;background:#f97316;border-radius:99px;transition:width .4s;}
+.sn-bar-label{font-size:.7rem;color:var(--muted);}
 
-/* ── Changelog overlay ── */
+/* ─── Changelog overlay ─────────────────────────────────────── */
 .changelog-overlay{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
 .cl-box{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.75rem 1.5rem;max-height:80vh;overflow-y:auto;}
 .cl-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;}
 .cl-title{font-size:1.15rem;font-weight:800;letter-spacing:-.03em;}
 .cl-ver{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
-.cl-content{font-size:.875rem;line-height:1.65;color:var(--fg);}
+.cl-content{font-size:.875rem;line-height:1.65;}
 .cl-content h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:1.1rem 0 .4rem;}
 .cl-content h3:first-child{margin-top:0;}
 .cl-content ul{padding-left:1.2rem;}
@@ -251,7 +275,7 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .cl-dismiss{width:100%;margin-top:1.5rem;padding:.65rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;}
 .cl-dismiss:hover{opacity:.8;}
 
-/* ── Confirm dialog overlay ── */
+/* ─── Confirm dialog ────────────────────────────────────────── */
 .confirm-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
 .confirm-box{width:100%;max-width:340px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.5rem;}
 .confirm-box h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
@@ -261,122 +285,211 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 .confirm-cancel:hover{background:var(--hover);}
 .confirm-ok{flex:1;padding:.55rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
 .confirm-ok:hover{opacity:.8;}
+
+/* ─── Mobile overrides ──────────────────────────────────────── */
+@media(max-width:700px){
+  body{display:block;}
+  .sidebar{display:none;}
+  .mob-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
+  .mob-logo{font-size:.95rem;font-weight:700;letter-spacing:-.02em;}
+  .mob-logo span{opacity:.35;font-weight:400;}
+  .mob-btns{display:flex;gap:.3rem;}
+  .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
+  .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
+  .dash-grid{display:block;}
+  .dash-right{margin-top:2rem;}
+  .prog-panel{position:static;}
+  .mcq-opts{grid-template-columns:1fr;}
+  footer{padding-top:1.4rem;margin-top:2rem;}
+}
+@media(max-width:480px){
+  .topic-grid{grid-template-columns:repeat(2,1fr);}
+}
 </style>
 </head>
 <body>
+
+<!-- SVG Sprite -->
 <svg id="svg-sprite" aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="icon-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-books" viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
-  <symbol id="icon-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></symbol>
-  <symbol id="icon-chart" viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></symbol>
-  <symbol id="icon-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
-  <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
-  <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
-  <symbol id="icon-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L5 20h14L14 9V3"/></symbol>
-  <symbol id="icon-cards" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
-  <symbol id="icon-quiz" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
-  <symbol id="icon-match" viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></symbol>
-  <symbol id="icon-pencil" viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
-  <symbol id="icon-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="icon-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></symbol>
-  <symbol id="icon-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
-  <symbol id="icon-rewind" viewBox="0 0 24 24"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></symbol>
-  <symbol id="icon-bolt" viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="icon-user" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="icon-chat" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
-  <symbol id="icon-school" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
-  <symbol id="icon-cloud" viewBox="0 0 24 24"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></symbol>
-  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
-  <symbol id="icon-text" viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
-  <symbol id="icon-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></symbol>
-  <symbol id="icon-x" viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
+  <symbol id="icon-home"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-books"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
+  <symbol id="icon-globe"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></symbol>
+  <symbol id="icon-chart"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="icon-moon"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
+  <symbol id="icon-sun"      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="icon-bolt"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="icon-text"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+  <symbol id="icon-rewind"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></symbol>
+  <symbol id="icon-flask"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L5 20h14L14 9V3"/></symbol>
+  <symbol id="icon-gear"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></symbol>
+  <symbol id="icon-x"        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
 </svg>
 
-<!-- ═══ Sidebar (desktop) ═══ -->
+<!-- Sidebar -->
 <aside class="sidebar">
   <div class="sb-brand">StudyNet <span>/ Year 1</span></div>
 
   <div class="sb-section">Navigate</div>
-  <a href="#" class="sb-link active" id="sb-home" onclick="scrollToTop(event)"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg> &nbsp;Home</a>
-  <a href="#subjects" class="sb-link" onclick="sbScroll(event,'subjects')"><svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg> &nbsp;Subjects</a>
-  <a href="#languages" class="sb-link" onclick="sbScroll(event,'languages')"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg> &nbsp;Languages</a>
-  <a href="#progress" class="sb-link" onclick="sbScroll(event,'progress')"><svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg> &nbsp;Progress</a>
+  <button class="sb-mode-btn active" id="sb-home" onclick="scrollToTop(event)">
+    <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>&nbsp;Home
+  </button>
+  <button class="sb-mode-btn" onclick="sbScroll(event,'subjects')">
+    <svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg>&nbsp;Subjects
+  </button>
+  <button class="sb-mode-btn" onclick="sbScroll(event,'languages')">
+    <svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg>&nbsp;Languages
+  </button>
+  <button class="sb-mode-btn" onclick="sbScroll(event,'progress')">
+    <svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg>&nbsp;Progress
+  </button>
 
   <div class="sb-spacer"></div>
 
-  <button id="install-sb" class="sb-btn"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg> &nbsp;Install app</button>
-  <button class="sb-btn" id="settings-btn"><svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg> &nbsp;Settings</button>
-  <button class="sb-btn" id="theme-btn"><svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg> &nbsp;Theme</button>
+  <button id="install-sb" class="sb-btn">
+    <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>&nbsp;Install app
+  </button>
+  <button class="sb-btn" id="settings-btn">
+    <svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg>&nbsp;Settings
+  </button>
+  <button class="sb-btn" id="theme-btn">
+    <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>&nbsp;Theme
+  </button>
 </aside>
 
-<!-- ═══ Main ═══ -->
+<!-- Main -->
 <div class="main">
 
   <!-- Mobile header -->
   <header class="mob-header">
     <div class="mob-logo">StudyNet <span>/ Year 1</span></div>
     <div class="mob-btns">
-      <button class="mob-btn" id="install-mob" style="display:none" aria-label="Install app"><svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg></button>
-      <button class="mob-btn" id="settings-mob" aria-label="Settings"><svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg></button>
-      <button class="mob-btn" id="theme-mob" aria-label="Toggle theme"><svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg></button>
+      <button class="mob-btn" id="install-mob" style="display:none" aria-label="Install app">
+        <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>
+      </button>
+      <button class="mob-btn" id="settings-mob" aria-label="Settings">
+        <svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg>
+      </button>
+      <button class="mob-btn" id="theme-mob" aria-label="Toggle theme">
+        <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>
+      </button>
     </div>
   </header>
 
-  <div class="content">
+  <div class="page">
 
     <!-- Hero -->
     <section class="hero">
       <h1 id="greeting">Good morning.</h1>
       <p>Pick up where you left off or start something new.</p>
-      <div class="stats-strip">
-        <div class="stat-chip">Streak: <b id="stat-streak">0 stars</b></div>
-        <div class="stat-chip">Correct: <b id="stat-correct">0</b></div>
-        <div class="stat-chip">Active: <b>4 subjects</b></div>
+      <div class="hero-stats">
+        <div class="h-chip">Stars: <b id="stat-streak">0 stars</b></div>
+        <div class="h-chip">Correct: <b id="stat-correct">0</b></div>
+        <div class="h-chip">Active: <b>2 subjects</b></div>
       </div>
     </section>
 
-    <!-- Dashboard grid: left content + right progress -->
+    <!-- Dashboard grid -->
     <div class="dash-grid">
+
       <!-- Left column -->
       <div class="dash-left">
 
         <!-- Subjects -->
         <section class="section" id="subjects">
           <div class="sec-head"><h2>Subjects</h2></div>
-          <div class="subject-grid">
-            <a href="irish.html" class="subject-card">
-              <div class="sc-icon"><svg viewBox="0 0 3 2" width="28" height="19" role="img" aria-label="Irish flag" style="display:block;border-radius:2px"><rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/></svg></div>
-              <div class="sc-name">Gaeilge</div>
-              <div class="sc-count" id="sc-irish-count">0 / 65 correct</div>
-              <div class="sc-bar"><div class="sc-fill" id="sc-irish-bar" style="width:0%"></div></div>
+          <div class="topic-grid">
+
+            <a href="irish.html" class="topic-card">
+              <div class="tc-icon">
+                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="Irish flag" style="display:block;border-radius:2px">
+                  <rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/>
+                </svg>
+              </div>
+              <div class="tc-label">Gaeilge</div>
+              <div class="tc-desc" id="sc-irish-count">0 / 65 correct</div>
+              <div class="tc-bar"><div class="tc-fill" id="sc-irish-bar" style="width:0%"></div></div>
             </a>
-            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bolt"/></svg></div><div class="sc-name">Mathematics</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
-            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-text"/></svg></div><div class="sc-name">English</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
-            <a href="history.html" class="subject-card">
-              <div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></div>
-              <div class="sc-name">History</div>
-              <div class="sc-count" id="sc-history-count">0 / 48 correct</div>
-              <div class="sc-bar"><div class="sc-fill" id="sc-history-bar" style="width:0%"></div></div>
-            </a>
-            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg></div><div class="sc-name">Geography</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
-            <div class="subject-card locked"><div class="sc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-flask"/></svg></div><div class="sc-name">Science</div><div class="sc-count">Coming soon</div><div class="sc-bar"></div></div>
+
+            <div class="topic-card locked">
+              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bolt"/></svg></div>
+              <div class="tc-label">Mathematics</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-bar"></div>
+            </div>
+
+            <div class="topic-card locked">
+              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-text"/></svg></div>
+              <div class="tc-label">English</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-bar"></div>
+            </div>
+
+            <div class="topic-card locked">
+              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></div>
+              <div class="tc-label">History</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-bar"></div>
+            </div>
+
+            <div class="topic-card locked">
+              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg></div>
+              <div class="tc-label">Geography</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-bar"></div>
+            </div>
+
+            <div class="topic-card locked">
+              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-flask"/></svg></div>
+              <div class="tc-label">Science</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-bar"></div>
+            </div>
+
           </div>
         </section>
 
         <!-- Languages -->
         <section class="section" id="languages">
           <div class="sec-head"><h2>Languages</h2></div>
-          <div class="lang-grid">
-            <a href="french.html" class="lang-card" data-lang-card="fr">
-              <div class="lc-flag"><svg viewBox="0 0 3 2" width="28" height="19" role="img" aria-label="French flag" style="display:block;border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg></div>
-              <div class="lc-name">Français</div>
-              <div class="lc-sub" id="lc-fr-count">0 / 36 practice</div>
-              <div class="lc-yours">Your language</div>
-              <div class="lc-bar"><div class="lc-fill" id="lc-fr-bar" style="width:0%"></div></div>
+          <div class="topic-grid">
+
+            <a href="french.html" class="topic-card" data-lang-card="fr">
+              <div class="tc-icon">
+                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="French flag" style="display:block;border-radius:2px">
+                  <rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/>
+                </svg>
+              </div>
+              <div class="tc-label">Fran&#231;ais</div>
+              <div class="tc-desc" id="lc-fr-count">0 / 54 practice</div>
+              <div class="tc-yours">Your language</div>
+              <div class="tc-bar"><div class="tc-fill" id="lc-fr-bar" style="width:0%"></div></div>
             </a>
-            <div class="lang-card locked" data-lang-card="de"><div class="lc-flag"><svg viewBox="0 0 5 3" width="28" height="17" role="img" aria-label="German flag" style="display:block;border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg></div><div class="lc-name">Deutsch</div><div class="lc-sub">Coming soon</div><div class="lc-yours">Your language</div><div class="lc-bar"></div></div>
-            <div class="lang-card locked" data-lang-card="es"><div class="lc-flag"><svg viewBox="0 0 3 2" width="28" height="19" role="img" aria-label="Spanish flag" style="display:block;border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg></div><div class="lc-name">Español</div><div class="lc-sub">Coming soon</div><div class="lc-yours">Your language</div><div class="lc-bar"></div></div>
+
+            <div class="topic-card locked" data-lang-card="de">
+              <div class="tc-icon">
+                <svg viewBox="0 0 5 3" width="28" height="17" aria-label="German flag" style="display:block;border-radius:2px">
+                  <rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/>
+                </svg>
+              </div>
+              <div class="tc-label">Deutsch</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-yours">Your language</div>
+              <div class="tc-bar"></div>
+            </div>
+
+            <div class="topic-card locked" data-lang-card="es">
+              <div class="tc-icon">
+                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="Spanish flag" style="display:block;border-radius:2px">
+                  <rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/>
+                </svg>
+              </div>
+              <div class="tc-label">Espa&#241;ol</div>
+              <div class="tc-desc">Coming soon</div>
+              <div class="tc-yours">Your language</div>
+              <div class="tc-bar"></div>
+            </div>
+
           </div>
         </section>
 
@@ -384,76 +497,74 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
         <section class="section">
           <div class="sec-head">
             <h2>Quick Quiz</h2>
-            <a href="irish.html" id="qq-more-link">Study more →</a>
+            <a href="irish.html" id="qq-more-link">Study more &#8594;</a>
           </div>
-          <div class="quiz-card">
-            <div class="quiz-top">
-              <h3 id="qq-subject">Gaeilge — Réamhfhocail</h3>
-              <span class="quiz-prog-text" id="qq-prog-text">1 / 8</span>
+          <div class="mcq-card">
+            <div class="mcq-top">
+              <span class="mcq-title" id="qq-subject">Loading&hellip;</span>
+              <span class="mcq-prog-txt" id="qq-prog-text">1 / 8</span>
             </div>
-            <div class="quiz-prog-bar"><div class="quiz-prog-fill" id="qq-prog-fill" style="width:12.5%"></div></div>
-            <div class="quiz-body" id="qq-body">
-              <div class="quiz-q" id="qq-question"></div>
-              <div class="quiz-opts" id="qq-opts"></div>
+            <div class="mcq-prog-bar">
+              <div class="mcq-prog-fill" id="qq-prog-fill" style="width:12.5%"></div>
             </div>
-            <div class="quiz-footer">
-              <span class="quiz-feedback" id="qq-feedback"></span>
-              <button class="btn-next" id="qq-next">Next →</button>
+            <div class="mcq-body" id="qq-body">
+              <div class="mcq-q"    id="qq-question"></div>
+              <div class="mcq-opts" id="qq-opts"></div>
+            </div>
+            <div class="mcq-footer">
+              <span class="mcq-fb" id="qq-feedback"></span>
+              <button class="mcq-next" id="qq-next">Next &#8594;</button>
             </div>
           </div>
         </section>
 
       </div><!-- /dash-left -->
 
-      <!-- Right column: Progress (sticky on desktop) -->
+      <!-- Right column: Progress -->
       <div class="dash-right" id="progress">
         <section class="section" style="margin-top:0">
           <div class="sec-head"><h2>Progress</h2></div>
-          <div class="prog-card">
+          <div class="prog-panel">
             <div class="prog-item">
               <div class="prog-row"><span class="prog-label">Gaeilge</span><span class="prog-pct" id="pp-irish">0 / 65</span></div>
               <div class="prog-bar"><div class="prog-fill" id="pf-irish" style="width:0%"></div></div>
             </div>
             <div class="prog-item" id="prog-lang-row">
-              <div class="prog-row"><span class="prog-label" id="prog-lang-label">Français</span><span class="prog-pct" id="pp-french">0 / 36</span></div>
+              <div class="prog-row"><span class="prog-label" id="prog-lang-label">Fran&#231;ais</span><span class="prog-pct" id="pp-french">0 / 54</span></div>
               <div class="prog-bar"><div class="prog-fill" id="pf-french" style="width:0%"></div></div>
             </div>
             <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">History</span><span class="prog-pct" id="pp-history">0 / 48</span></div>
-              <div class="prog-bar"><div class="prog-fill" id="pf-history" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">Mathematics</span><span class="prog-pct" style="color:var(--muted)">—</span></div>
+              <div class="prog-row"><span class="prog-label">Mathematics</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
               <div class="prog-bar"></div>
             </div>
             <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">English</span><span class="prog-pct" style="color:var(--muted)">—</span></div>
+              <div class="prog-row"><span class="prog-label">English</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
               <div class="prog-bar"></div>
             </div>
             <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">Geography</span><span class="prog-pct" style="color:var(--muted)">—</span></div>
+              <div class="prog-row"><span class="prog-label">Geography</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
               <div class="prog-bar"></div>
             </div>
           </div>
         </section>
-      </div><!-- /dash-right -->
+      </div>
 
     </div><!-- /dash-grid -->
-  </div><!-- /content -->
 
-  <footer>
-    <span>StudyNet · Year 1</span>
-    <span>All progress saved locally in your browser.</span>
-  </footer>
+    <footer>
+      <span>StudyNet &middot; Year 1</span>
+      <span>All progress saved locally in your browser.</span>
+    </footer>
+
+  </div><!-- /page -->
 </div><!-- /main -->
 
-<!-- ═══ Onboarding overlay ═══ -->
+<!-- Onboarding overlay -->
 <div id="onboard-overlay" class="onboard-overlay hidden">
   <div class="ob-box">
-    <div class="ob-brand"><b>Study</b>Net <span style="font-weight:400;opacity:.45">/ Year 1</span></div>
+    <div class="ob-brand"><b>Study</b>Net <span style="opacity:.4;font-weight:400">/ Year 1</span></div>
     <h1 class="ob-h">Welcome.</h1>
     <p class="ob-sub">Set up your profile to get started. You can change everything later in Settings.</p>
-
     <div class="ob-field">
       <label for="ob-name">Your first name <span style="opacity:.45">(optional)</span></label>
       <input id="ob-name" class="ob-input" type="text" placeholder="e.g. Elliot" maxlength="32" autocomplete="given-name"/>
@@ -462,37 +573,34 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
       <label for="ob-year">School year <span style="opacity:.45">(optional)</span></label>
       <input id="ob-year" class="ob-input" type="text" placeholder="e.g. 1st Year" maxlength="24"/>
     </div>
-
     <p class="ob-lang-label">Which modern language are you studying?</p>
     <div class="ob-lang-grid">
       <button class="ob-lang-opt" data-lang="fr" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" role="img" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-        <span class="ob-lang-name">Français</span>
-        <span class="ob-lang-sub">French</span>
+        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
+        <span class="ob-lang-name">Fran&#231;ais</span><span class="ob-lang-sub">French</span>
       </button>
       <button class="ob-lang-opt" data-lang="es" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" role="img" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
-        <span class="ob-lang-name">Español</span>
-        <span class="ob-lang-sub">Spanish</span>
+        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
+        <span class="ob-lang-name">Espa&#241;ol</span><span class="ob-lang-sub">Spanish</span>
       </button>
       <button class="ob-lang-opt" data-lang="de" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 5 3" width="36" height="22" role="img" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
-        <span class="ob-lang-name">Deutsch</span>
-        <span class="ob-lang-sub">German</span>
+        <svg class="ob-lang-flag" viewBox="0 0 5 3" width="36" height="22" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
+        <span class="ob-lang-name">Deutsch</span><span class="ob-lang-sub">German</span>
       </button>
     </div>
-
-    <button id="ob-submit" class="ob-btn" disabled onclick="obSubmit()">Get started →</button>
+    <button id="ob-submit" class="ob-btn" disabled onclick="obSubmit()">Get started &#8594;</button>
   </div>
 </div>
 
-<!-- ═══ Settings drawer ═══ -->
+<!-- Settings drawer -->
 <div id="settings-overlay" class="sn-overlay hidden">
   <div class="sn-backdrop" onclick="closeSettings()"></div>
   <div class="sn-drawer">
     <div class="sn-drawer-head">
       <h2>Settings</h2>
-      <button class="icon-btn" onclick="closeSettings()" aria-label="Close"><svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg></button>
+      <button class="icon-btn" onclick="closeSettings()" aria-label="Close">
+        <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
+      </button>
     </div>
     <div class="sn-body">
 
@@ -509,9 +617,17 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
           <button class="sn-av-btn" id="sn-remove-photo" onclick="removePhoto()" style="display:none">Remove</button>
         </div>
         <input type="file" id="sn-photo-input" accept="image/*" style="display:none"/>
-        <div class="sn-streak-stars">
-          <div class="sn-star-row" id="sn-star-row"></div>
-          <div class="sn-star-lbl" id="sn-star-lbl">0 stars earned</div>
+
+        <div class="sn-streak-wrap">
+          <div class="sn-streak-top">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="#f97316" aria-hidden="true" style="flex-shrink:0"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div>
+              <div class="sn-streak-count" id="sn-streak-count">0 stars earned</div>
+              <div class="sn-streak-days" id="sn-streak-days">1 star per 10 days studied</div>
+            </div>
+          </div>
+          <div class="sn-bar-wrap"><div class="sn-bar-fill" id="sn-bar-fill" style="width:0%"></div></div>
+          <div class="sn-bar-label" id="sn-bar-label">0 / 10 days to next star</div>
         </div>
 
         <div class="sn-field">
@@ -530,15 +646,15 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
         <div class="sn-sec-label">Modern Language</div>
         <div class="sn-lang-grid">
           <button class="sn-lang-opt" data-lang="fr" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" role="img" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-            <span class="sn-lang-name">Français</span>
+            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
+            <span class="sn-lang-name">Fran&#231;ais</span>
           </button>
           <button class="sn-lang-opt" data-lang="es" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" role="img" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
-            <span class="sn-lang-name">Español</span>
+            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
+            <span class="sn-lang-name">Espa&#241;ol</span>
           </button>
           <button class="sn-lang-opt" data-lang="de" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 5 3" width="30" height="18" role="img" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
+            <svg class="sn-lang-flag" viewBox="0 0 5 3" width="30" height="18" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
             <span class="sn-lang-name">Deutsch</span>
           </button>
         </div>
@@ -550,50 +666,43 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 
       <div class="sn-sec">
         <div class="sn-sec-label">Data</div>
-        <button class="sn-danger-btn" onclick="confirmClearData()">Clear all data…</button>
+        <button class="sn-danger-btn" onclick="confirmClearData()">Clear all data&hellip;</button>
       </div>
 
     </div>
   </div>
 </div>
 
-<!-- ═══ Changelog overlay ═══ -->
+<!-- Changelog overlay -->
 <div id="changelog-overlay" class="changelog-overlay hidden">
   <div class="cl-box">
     <div class="cl-head">
       <div>
-        <div class="cl-title">What's new</div>
-        <div class="cl-ver">May 2025 update</div>
+        <div class="cl-title">What&#39;s new</div>
+        <div class="cl-ver">May 2026 update</div>
       </div>
     </div>
     <div class="cl-content">
-      <h3>Icons</h3>
+      <h3>French</h3>
       <ul>
-        <li><b>All subject icons fixed</b> — flashcard, quiz, match, and practice icons now render correctly in both light and dark mode.</li>
-      </ul>
-      <h3>Theming</h3>
-      <ul>
-        <li><b>Consistent dark mode</b> — correct/wrong feedback states, match tiles, and practice inputs now use theme-aware colours across all pages.</li>
-        <li>French, Irish, and History pages now fully match the design of the dashboard.</li>
-      </ul>
-      <h3>Quiz</h3>
-      <ul>
-        <li><b>Randomised questions</b> — French and History quizzes now shuffle question order each time.</li>
+        <li><b>Fran&#231;ais rebuilt from scratch</b> &#8212; all Allons-y 1 Modules 1&#8211;6 content now live: 4 flashcard decks, 5 quizzes, 4 match sets, 5 conjugation &amp; grammar exercises.</li>
       </ul>
       <h3>Streak tracker</h3>
       <ul>
-        <li>Progress sections replaced with a <b>7-day streak tracker</b> on each subject page, synced with the dashboard.</li>
+        <li><b>Stars are now permanent</b> &#8212; you earn 1 star every 10 days studied. Stars never reset, even if you miss a day.</li>
+        <li>Dashboard and subject pages now show a progress bar toward your next star.</li>
       </ul>
-      <h3>Irish (Gaeilge)</h3>
+      <h3>Design</h3>
       <ul>
-        <li><b>Aidiacht Shealbhach flashcards simplified</b> — backs now show concise Irish grammar rules instead of lengthy English explanations.</li>
+        <li><b>Dashboard redesigned</b> &#8212; consistent styling with all subject pages.</li>
+        <li>All icons now render correctly in both light and dark mode.</li>
       </ul>
     </div>
     <button class="cl-dismiss" onclick="dismissChangelog()">Got it</button>
   </div>
 </div>
 
-<!-- ═══ Confirm dialog ═══ -->
+<!-- Confirm dialog -->
 <div id="confirm-overlay" class="confirm-overlay hidden">
   <div class="confirm-box">
     <h3>Clear all data?</h3>
@@ -606,397 +715,399 @@ footer{padding:2rem 3rem 1.5rem;border-top:1px solid var(--border);font-size:.73
 </div>
 
 <script>
-// ── Profile (load first — used by quiz filter below) ────────
-const SETUP_VER='1';
-let profile=JSON.parse(localStorage.getItem('sn_profile')||'{}');
+// ── Profile ──────────────────────────────────────────────────
+const SETUP_VER = '1';
+let profile = JSON.parse(localStorage.getItem('sn_profile') || '{}');
 
-// ── Theme ──────────────────────────────────────────────────
-const html=document.documentElement;
-const st=localStorage.getItem('sn_theme');
-if(st) html.classList.add('theme-'+st);
-function updateThemeIcons(){
-  const isDark=html.classList.contains('theme-dark')||(!html.classList.contains('theme-light')&&matchMedia('(prefers-color-scheme:dark)').matches);
-  document.querySelectorAll('.theme-icon-use').forEach(el=>el.setAttribute('href',isDark?'#icon-sun':'#icon-moon'));
+// ── Theme ────────────────────────────────────────────────────
+const html = document.documentElement;
+const st = localStorage.getItem('sn_theme');
+if (st) html.classList.add('theme-' + st);
+function updateThemeIcons() {
+  const isDark = html.classList.contains('theme-dark') ||
+    (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
+  document.querySelectorAll('.theme-icon-use').forEach(el =>
+    el.setAttribute('href', isDark ? '#icon-sun' : '#icon-moon'));
 }
-function toggleTheme(){
-  const dark=html.classList.contains('theme-dark')||(!html.classList.contains('theme-light')&&matchMedia('(prefers-color-scheme:dark)').matches);
-  html.classList.remove('theme-light','theme-dark');
-  const next=dark?'light':'dark';
-  html.classList.add('theme-'+next); localStorage.setItem('sn_theme',next);
+function toggleTheme() {
+  const dark = html.classList.contains('theme-dark') ||
+    (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
+  html.classList.remove('theme-light', 'theme-dark');
+  const next = dark ? 'light' : 'dark';
+  html.classList.add('theme-' + next);
+  localStorage.setItem('sn_theme', next);
   updateThemeIcons();
 }
-document.getElementById('theme-btn').addEventListener('click',toggleTheme);
-document.getElementById('theme-mob').addEventListener('click',toggleTheme);
+document.getElementById('theme-btn').addEventListener('click', toggleTheme);
+document.getElementById('theme-mob').addEventListener('click', toggleTheme);
 updateThemeIcons();
 
-// ── Nav ────────────────────────────────────────────────────
-function scrollToTop(e){e.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}
-function sbScroll(e,id){
+// ── Nav ──────────────────────────────────────────────────────
+function scrollToTop(e) { e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
+function sbScroll(e, id) {
   e.preventDefault();
-  document.getElementById(id)?.scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-// ── PWA install ─────────────────────────────────────────────
-let deferredInstall=null;
-window.addEventListener('beforeinstallprompt',e=>{
-  e.preventDefault(); deferredInstall=e;
-  document.getElementById('install-sb').style.display='flex';
-  document.getElementById('install-mob').style.display='inline-flex';
+// ── PWA Install ──────────────────────────────────────────────
+let deferredInstall = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); deferredInstall = e;
+  document.getElementById('install-sb').style.display = 'flex';
+  document.getElementById('install-mob').style.display = 'inline-flex';
 });
-async function handleInstall(){
-  if(!deferredInstall) return;
+async function handleInstall() {
+  if (!deferredInstall) return;
   deferredInstall.prompt();
-  const{outcome}=await deferredInstall.userChoice;
-  if(outcome==='accepted'){
-    document.getElementById('install-sb').style.display='none';
-    document.getElementById('install-mob').style.display='none';
+  const { outcome } = await deferredInstall.userChoice;
+  if (outcome === 'accepted') {
+    document.getElementById('install-sb').style.display = 'none';
+    document.getElementById('install-mob').style.display = 'none';
   }
-  deferredInstall=null;
+  deferredInstall = null;
 }
-document.getElementById('install-sb').addEventListener('click',handleInstall);
-document.getElementById('install-mob').addEventListener('click',handleInstall);
-window.addEventListener('appinstalled',()=>{
-  document.getElementById('install-sb').style.display='none';
-  document.getElementById('install-mob').style.display='none';
+document.getElementById('install-sb').addEventListener('click', handleInstall);
+document.getElementById('install-mob').addEventListener('click', handleInstall);
+window.addEventListener('appinstalled', () => {
+  document.getElementById('install-sb').style.display = 'none';
+  document.getElementById('install-mob').style.display = 'none';
 });
 
-// ── Greeting ───────────────────────────────────────────────
-const hr=new Date().getHours();
-document.getElementById('greeting').textContent=hr<12?'Good morning.':(hr<17?'Good afternoon.':'Good evening.');
+// ── Greeting ─────────────────────────────────────────────────
+const hr = new Date().getHours();
+document.getElementById('greeting').textContent =
+  hr < 12 ? 'Good morning.' : hr < 17 ? 'Good afternoon.' : 'Good evening.';
 
-// ── Normalisation ─────────────────────────────────────────
-function norm(s){return s.toLowerCase().replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();}
+// ── Progress counters ────────────────────────────────────────
 
-// ── Irish progress ─────────────────────────────────────────
-const irishData={
-  reamhfhocail:[['air'],['di'],['leo'],['agat'],['orainn'],['dom'],['aici'],['leis'],['daoibh'],['orm'],['linn'],['agaibh'],['dóibh','doibh'],['ort'],['leat'],['agam'],['dó','do'],['orthu'],['libh'],['aige']],
-  irregulars:[['Beireann'],['Tugann'],['Téann','Teann'],['Bíonn','Biann','Tá','Ta'],['Tagann'],['Deir'],['Cloiseann'],['Feiceann'],['Déanann','Deanann'],['Faigheann'],['Itheann']],
-  laithreach1:[['Ceapaim'],['Creideann sé'],['gcaitheann siad'],['thógann muid','thogann muid','thógaimid'],['litríonn sí','litrionn si'],['Baineann siad'],['Sroichim'],['mhothaím','mhothaoim','mhothaim'],['éisteann sí','eisteann si'],['úsáideann sé','usaideann se']],
-  laithreach2:[['Aistrím','Aistrim'],['Éiríonn muid','Eiriann muid','Éirímid'],['Críochnaíonn muid','Criochnaionn muid','Críochnaímid'],['ndúisíonn tú','nduisiann tu'],['litríonn tú','litrionn tu'],['mhothaíonn sé','mhothaionn se'],['gceannaíonn sibh','gceannaionn sibh'],['bhreathnaím','bhreathnaim'],['aontaíonn siad','aontaionn siad'],['éiríonn sí','eiriann si']],
-  chaite:[['Thosaigh muid','Thosaíomar'],["D'éirigh mé","D'eirigh me"],['Mhothaigh muid','Mhothaíomar'],['dheisigh tú','dheisigh tu'],['aistrigh tú','aistrigh tu'],['shínigh sí','shinigh si'],['cheannaigh siad','cheannaigh'],['smaoinigh tú','smaoinigh tu'],['réitigh siad','reitigh siad'],['chealaigh sí','chealaigh si']],
+function normIr(s) {
+  return s.toLowerCase()
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i')
+    .replace(/ó/g,'o').replace(/ú/g,'u')
+    .replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
+}
+const irishData = {
+  reamhfhocail: [['air'],['di'],['leo'],['agat'],['orainn'],['dom'],['aici'],['leis'],['daoibh'],['orm'],['linn'],['agaibh'],['dóibh','doibh'],['ort'],['leat'],['agam'],['dó','do'],['orthu'],['libh'],['aige']],
+  irregulars:   [['Beireann'],['Tugann'],['Téann','Teann'],['Bíonn','Biann','Tá','Ta'],['Tagann'],['Deir'],['Cloiseann'],['Feiceann'],['Déanann','Deanann'],['Faigheann'],['Itheann']],
+  laithreach1:  [['Ceapaim'],['Creideann sé'],['gcaitheann siad'],['thógann muid','thogann muid','thógaimid'],['litríonn sí','litrionn si'],['Baineann siad'],['Sroichim'],['mhothaím','mhothaoim','mhothaim'],['éisteann sí','eisteann si'],['úsáideann sé','usaideann se']],
+  laithreach2:  [['Aistrím','Aistrim'],['Éiríonn muid','Eiriann muid','Éirímid'],['Críochnaíonn muid','Criochnaionn muid','Críochnaímid'],['ndúisíonn tú','nduisiann tu'],['litríonn tú','litrionn tu'],['mhothaíonn sé','mhothaionn se'],['gceannaíonn sibh','gceannaionn sibh'],['bhreathnaím','bhreathnaim'],['aontaíonn siad','aontaionn siad'],['éiríonn sí','eiriann si']],
+  chaite:       [['Thosaigh muid','Thosaíomar'],["D'éirigh mé","D'eirigh me"],['Mhothaigh muid','Mhothaíomar'],['dheisigh tú','dheisigh tu'],['aistrigh tú','aistrigh tu'],['shínigh sí','shinigh si'],['cheannaigh siad','cheannaigh'],['smaoinigh tú','smaoinigh tu'],['réitigh siad','reitigh siad'],['chealaigh sí','chealaigh si']],
 };
-const aidiachtTeach=[['mo theach'],['do theach'],['a theach'],['a teach'],['ár dteach','ar dteach'],['bhur dteach'],['a dteach']];
-const aidiachtAintin=[["m'aintín",'mo aintín'],["d'aintín",'do aintín'],['a aintín'],['a haintín'],['ár n-aintín','ár naintín','ar naintin'],['bhur n-aintín','bhur naintín'],['a n-aintín','a naintín']];
-function countIrish(){
-  const s=JSON.parse(localStorage.getItem('sn_irish_v1')||'{}');
-  if(!s.inputs) return 0;
-  let c=0;
-  Object.entries(irishData).forEach(([ex,qs])=>qs.forEach((ans,i)=>{const v=s.inputs[`${ex}_${i}`];if(v&&ans.some(a=>norm(a)===norm(v)))c++;}));
-  [aidiachtTeach,aidiachtAintin].forEach((tbl,ti)=>{const noun=ti===0?'teach':'aintin';tbl.forEach((ans,i)=>{const v=s.inputs[`aidiacht_${noun}_${i}`];if(v&&ans.some(a=>norm(a)===norm(v)))c++;});});
+const aidiachtTeach  = [['mo theach'],['do theach'],['a theach'],['a teach'],['ár dteach','ar dteach'],['bhur dteach'],['a dteach']];
+const aidiachtAintin = [["m'aintín",'mo aintín'],["d'aintín",'do aintín'],['a aintín'],['a haintín'],['ár n-aintín','ár naintín','ar naintin'],['bhur n-aintín','bhur naintín'],['a n-aintín','a naintín']];
+function countIrish() {
+  const s = JSON.parse(localStorage.getItem('sn_irish_v1') || '{}');
+  if (!s.inputs) return 0;
+  let c = 0;
+  Object.entries(irishData).forEach(([ex, qs]) =>
+    qs.forEach((ans, i) => { const v = s.inputs[`${ex}_${i}`]; if (v && ans.some(a => normIr(a) === normIr(v))) c++; })
+  );
+  [aidiachtTeach, aidiachtAintin].forEach((tbl, ti) => {
+    const noun = ti === 0 ? 'teach' : 'aintin';
+    tbl.forEach((ans, i) => { const v = s.inputs[`aidiacht_${noun}_${i}`]; if (v && ans.some(a => normIr(a) === normIr(v))) c++; });
+  });
   return c;
 }
 
-// ── French progress ────────────────────────────────────────
-function normFr(s){return s.toLowerCase().replace(/[àâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i').replace(/[ôœ]/g,'o').replace(/[ùû]/g,'u').replace(/ç/g,'c').replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();}
-const frData={
-  etre:{rows:[['suis'],['es'],['est'],['est'],['est'],['sommes'],['êtes','etes'],['sont'],['sont']]},
-  avoir:{rows:[['ai'],['as'],['a'],['a'],['a'],['avons'],['avez'],['ont'],['ont']]},
-  aimer:{rows:[['aime'],['aimes'],['aime'],['aimons'],['aimez'],['aiment']]},
-  possessifs:{cells:[[['mon'],['ma'],['mes']],[['ton'],['ta'],['tes']],[['son'],['sa'],['ses']],[['notre'],['notre'],['nos']],[['votre'],['votre'],['vos']],[['leur'],['leur'],['leurs']]]},
-  verbEndings:{er:[['e'],['es'],['e'],['ons'],['ez'],['ent']],ir:[['is'],['is'],['it'],['issons'],['issez'],['issent']],re:[['s'],['s'],[''],['ons'],['ez'],['ent']]},
-};
-function countFrench(){
-  const s=JSON.parse(localStorage.getItem('sn_french_v1')||'{}');
-  if(!s.inputs) return 0;
-  let c=0;
-  ['etre','avoir','aimer'].forEach(k=>frData[k].rows.forEach((ans,i)=>{const v=s.inputs[`${k}_${i}`];if(v&&ans.some(a=>normFr(a)===normFr(v)))c++;}));
-  frData.possessifs.cells.forEach((row,ri)=>row.forEach((cell,ci)=>{const v=s.inputs[`possessifs_${ri}_${ci}`];if(v&&cell.some(a=>normFr(a)===normFr(v)))c++;}));
-  ['er','ir','re'].forEach(t=>frData.verbEndings[t].forEach((row,ri)=>{const v=s.inputs[`verbEndings_${t}_${ri}`];if(v!==undefined&&row.some(a=>normFr(a)===normFr(v)))c++;}));
+function normFr(s) {
+  return s.toLowerCase()
+    .replace(/[àâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i')
+    .replace(/[ôœ]/g,'o').replace(/[ùû]/g,'u').replace(/ç/g,'c')
+    .replace(/[''']/g,"'").replace(/[^a-z0-9\s'\/-]/g,'').replace(/\s+/g,' ').trim();
+}
+function chkFr(v, ans) { return ans.some(a => normFr(a) === normFr(v)); }
+function countFrench() {
+  const s = JSON.parse(localStorage.getItem('sn_french_v1') || '{}');
+  if (!s.inputs) return 0;
+  let c = 0;
+  const conjAns = {
+    etre:  [['suis'],['es'],['est'],['sommes'],['êtes','etes'],['sont']],
+    avoir: [['ai'],['as'],['a'],['avons'],['avez'],['ont']],
+    aimer: [['aime'],['aimes'],['aime'],['aimons'],['aimez'],['aiment']],
+  };
+  Object.entries(conjAns).forEach(([k, rows]) =>
+    rows.forEach((ans, i) => { const v = s.inputs[`${k}_${i}`]; if (v && chkFr(v, ans)) c++; })
+  );
+  const possAns = [
+    [['mon'],['ma'],['mes']],[['ton'],['ta'],['tes']],[['son'],['sa'],['ses']],
+    [['notre'],['notre'],['nos']],[['votre'],['votre'],['vos']],[['leur'],['leur'],['leurs']],
+  ];
+  possAns.forEach((row, ri) =>
+    row.forEach((ans, ci) => {
+      const col = ['m','f','p'][ci];
+      const v = s.inputs[`possessif_${ri}_${col}`]; if (v && chkFr(v, ans)) c++;
+    })
+  );
+  const endAns = {
+    er: [['e'],['es'],['e'],['ons'],['ez'],['ent']],
+    ir: [['is'],['is'],['it'],['issons'],['issez'],['issent']],
+    re: [['s'],['s'],['-'],['ons'],['ez'],['ent']],
+  };
+  ['er','ir','re'].forEach(t =>
+    endAns[t].forEach((ans, i) => {
+      if (ans[0] === '-') { c++; return; }
+      const v = s.inputs[`endings_${i}_${t}`]; if (v && chkFr(v, ans)) c++;
+    })
+  );
   return c;
 }
 
-// ── History progress ───────────────────────────────────────
-const histData={
-  sources:{items:[['primary'],['secondary'],['archaeology'],['artefact','artifact'],['radiocarbon','carbon'],['dendrochronology'],['bias'],['excavation']]},
-  middleAges:{items:[['feudal'],['serf'],['tithe'],['chivalry'],['Crusades','crusades'],['Black','black'],['trebuchet'],['guild']]},
-  rome:{items:[['Republic','republic'],['Augustus'],['Senate','senate'],['aqueducts','aqueduct'],['legion'],['Colosseum','colosseum'],['44'],['Patricians','patricians','patrician']]},
-  exploration:{items:[['Vasco da Gama'],['1492'],['caravel'],['Tordesillas'],['conquistadors','conquistadores','conquistador'],['Aztec','aztec'],['Middle','middle'],['Inca','inca']]},
-  earlyChristian:{items:[['Celts','celts'],['Druids','druids'],['ringfort'],['St Patrick','Saint Patrick','Patrick'],['Kells'],['vellum'],['round','Round'],['scribes','scribe']]},
-  renaissance:{items:[['rebirth','re-birth'],['Leonardo da Vinci','Leonardo','da Vinci'],['Michelangelo'],['Gutenberg'],['perspective'],['sfumato'],['heliocentric','Heliocentric'],['Vesalius']]},
-};
-const histKeys=['sources','middleAges','rome','exploration','earlyChristian','renaissance'];
-function normHist(s){return s.toLowerCase().replace(/[áàâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[íî]/g,'i').replace(/[óòô]/g,'o').replace(/[úù]/g,'u').replace(/ñ/g,'n').replace(/'/g,"'").replace(/[^a-z0-9\s'\-]/g,'').replace(/\s+/g,' ').trim();}
-function countHistory(){
-  const s=JSON.parse(localStorage.getItem('sn_history_v1')||'{}');
-  if(!s.inputs) return 0;
-  let c=0;
-  histKeys.forEach(k=>histData[k].items.forEach((ans,i)=>{const v=s.inputs[`${k}_${i}`];if(v&&ans.some(a=>normHist(a)===normHist(v)))c++;}));
-  return c;
-}
-
-function updateStats(){
-  const ic=countIrish(),it=65;
-  const fc=countFrench(),ft=36;
-  const hc=countHistory(),ht=48;
-  document.getElementById('sc-irish-count').textContent=`${ic} / ${it} correct`;
-  document.getElementById('sc-irish-bar').style.width=Math.round(ic/it*100)+'%';
-  document.getElementById('pp-irish').textContent=`${ic} / ${it}`;
-  document.getElementById('pf-irish').style.width=Math.round(ic/it*100)+'%';
-  document.getElementById('lc-fr-count').textContent=`${fc} / ${ft} practice`;
-  document.getElementById('lc-fr-bar').style.width=Math.round(fc/ft*100)+'%';
-  document.getElementById('pp-french').textContent=`${fc} / ${ft}`;
-  document.getElementById('pf-french').style.width=Math.round(fc/ft*100)+'%';
-  document.getElementById('sc-history-count').textContent=`${hc} / ${ht} correct`;
-  document.getElementById('sc-history-bar').style.width=Math.round(hc/ht*100)+'%';
-  document.getElementById('pp-history').textContent=`${hc} / ${ht}`;
-  document.getElementById('pf-history').style.width=Math.round(hc/ht*100)+'%';
-  document.getElementById('stat-correct').textContent=ic+fc+hc;
+function updateStats() {
+  const ic = countIrish(),  it = 65;
+  const fc = countFrench(), ft = 54;
+  document.getElementById('sc-irish-count').textContent   = `${ic} / ${it} correct`;
+  document.getElementById('sc-irish-bar').style.width     = Math.round(ic/it*100) + '%';
+  document.getElementById('pp-irish').textContent         = `${ic} / ${it}`;
+  document.getElementById('pf-irish').style.width         = Math.round(ic/it*100) + '%';
+  document.getElementById('lc-fr-count').textContent      = `${fc} / ${ft} practice`;
+  document.getElementById('lc-fr-bar').style.width        = Math.round(fc/ft*100) + '%';
+  document.getElementById('pp-french').textContent        = `${fc} / ${ft}`;
+  document.getElementById('pf-french').style.width        = Math.round(fc/ft*100) + '%';
+  document.getElementById('stat-correct').textContent     = ic + fc;
 }
 updateStats();
 
-// ── Streak ─────────────────────────────────────────────────
-(function(){
-  const today=new Date().toDateString();
-  let s=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
-  const yesterday=new Date(Date.now()-86400000).toDateString();
-  if(s.last===today){}
-  else if(s.last===yesterday){s.count++;s.last=today;localStorage.setItem('sn_streak',JSON.stringify(s));}
-  else{s.count=1;s.last=today;localStorage.setItem('sn_streak',JSON.stringify(s));}
-  document.getElementById('stat-streak').textContent=`${s.count} star${s.count!==1?'s':''}`;
+// ── Streak ───────────────────────────────────────────────────
+(function() {
+  const today = new Date().toDateString();
+  let s; try { s = JSON.parse(localStorage.getItem('sn_streak') || 'null'); } catch(e) {}
+  if (!s) s = {count:0, last:'', totalDays:0, stars:0};
+  if (!('totalDays' in s)) s.totalDays = s.count || 0;
+  if (!('stars' in s)) s.stars = Math.floor(s.totalDays / 10);
+  const yesterday = new Date(Date.now() - 86400000).toDateString();
+  if (s.last !== today) {
+    s.totalDays++;
+    s.count = (s.last === yesterday) ? s.count + 1 : 1;
+    s.last = today;
+    s.stars = Math.floor(s.totalDays / 10);
+    localStorage.setItem('sn_streak', JSON.stringify(s));
+  }
+  document.getElementById('stat-streak').textContent = `${s.stars} star${s.stars !== 1 ? 's' : ''}`;
 })();
 
-// ── Quick Quiz ────────────────────────────────────────────
-const qqPool=[
-  // Gaeilge
-  {q:'ag + mé = ?',          opts:['orm','agam','dom','liom'],                                        ans:1, subj:'Gaeilge'},
-  {q:'ar + tú = ?',          opts:['agat','duit','leat','ort'],                                       ans:3, subj:'Gaeilge'},
-  {q:'do + sí = ?',          opts:['léi','di','aici','uirthi'],                                       ans:1, subj:'Gaeilge'},
-  {q:'le + siad = ?',        opts:['acu','dóibh','orthu','leo'],                                      ans:3, subj:'Gaeilge'},
-  {q:'ag + sibh = ?',        opts:['libh','daoibh','agaibh','oraibh'],                                ans:2, subj:'Gaeilge'},
-  {q:'"beir" (sé) present?', opts:['beirann sé','tugann sé','beireann sé','téann sé'],                ans:2, subj:'Gaeilge'},
-  {q:'Past of "éirigh" (mé)?',opts:["éiríodh","éirigh mé","d'éirigh mé","éirithe"],                  ans:2, subj:'Gaeilge'},
-  {q:'Ní + "tóg" + muid?',   opts:['tógann muid','dtógann muid','thógann muid','htógann muid'],       ans:2, subj:'Gaeilge'},
-  // Français
-  {q:'Je ___ étudiant. (I am)',         opts:['es','est','suis','sommes'],                            ans:2, subj:'Français'},
-  {q:'Ils ___ une maison. (They have)', opts:['sont','êtes','avons','ont'],                           ans:3, subj:'Français'},
-  {q:'Monday in French?',               opts:['Mercredi','Lundi','Vendredi','Samedi'],                ans:1, subj:'Français'},
-  {q:'"I like" in French?',             opts:["J'adore","Je déteste","J'aime","Je n'aime pas"],       ans:2, subj:'Français'},
-  {q:'"Un chat" means?',                opts:['a dog','a horse','a rabbit','a cat'],                  ans:3, subj:'Français'},
-  {q:'"Il fait beau" means?',           opts:["It's raining","The weather is nice","It's cold","It's foggy"], ans:1, subj:'Français'},
-  // History
-  {q:'Evidence from the time studied is a ___ source.', opts:['Oral','Digital','Secondary','Primary'],            ans:3, subj:'History'},
-  {q:'Study of the past through physical remains?',     opts:['Geography','Archaeology','Philosophy','Geology'],  ans:1, subj:'History'},
-  {q:'Dating method using Carbon-14 decay?',            opts:['Stratigraphy','Dendrochronology','Radiocarbon dating','Carbon mapping'], ans:2, subj:'History'},
-  {q:'Unfree peasant bound to the lord\'s land?',       opts:['Knight','Patrician','Serf','Crusader'],            ans:2, subj:'History'},
-  {q:'First Roman Emperor (27 BC)?',                    opts:['Julius Caesar','Mark Antony','Nero','Augustus'],   ans:3, subj:'History'},
-  {q:'Vasco da Gama sailed around Africa to reach?',    opts:['Americas','China','India','Australia'],            ans:2, subj:'History'},
+// ── Quick Quiz ───────────────────────────────────────────────
+const qqPool = [
+  {q:'ag + mé = ?',           opts:['orm','agam','dom','liom'],                                        ans:1, subj:'Gaeilge'},
+  {q:'ar + tú = ?',           opts:['agat','duit','leat','ort'],                                       ans:3, subj:'Gaeilge'},
+  {q:'do + sí = ?',           opts:['léi','di','aici','uirthi'],                                       ans:1, subj:'Gaeilge'},
+  {q:'le + siad = ?',         opts:['acu','dóibh','orthu','leo'],                                      ans:3, subj:'Gaeilge'},
+  {q:'ag + sibh = ?',         opts:['libh','daoibh','agaibh','oraibh'],                                ans:2, subj:'Gaeilge'},
+  {q:'"beir" (sé) present?',  opts:['beirann sé','tugann sé','beireann sé','téann sé'],                ans:2, subj:'Gaeilge'},
+  {q:'Past of "éirigh" (mé)?',opts:["éiríodh","éirigh mé","d'éirigh mé","éirithe"],                   ans:2, subj:'Gaeilge'},
+  {q:'Ní + "tóg" + muid?',    opts:['tógann muid','dtógann muid','thógann muid','htógann muid'],       ans:2, subj:'Gaeilge'},
+  {q:'Je ___ étudiant. (I am)',         opts:['es','est','suis','sommes'],                             ans:2, subj:'Français'},
+  {q:'Ils ___ une maison. (They have)', opts:['sont','êtes','avons','ont'],                            ans:3, subj:'Français'},
+  {q:'Monday in French?',              opts:['Mercredi','Lundi','Vendredi','Samedi'],                  ans:1, subj:'Français'},
+  {q:'"I like" in French?',            opts:["J'adore","Je déteste","J'aime","Je n'aime pas"],         ans:2, subj:'Français'},
+  {q:'"Un chat" means?',               opts:['a dog','a horse','a rabbit','a cat'],                    ans:3, subj:'Français'},
+  {q:'"Il fait beau" means?',          opts:["It's raining","The weather is nice","It's cold","It's foggy"], ans:1, subj:'Français'},
 ];
-function qqShuffle(a){a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-const qqFiltered=qqPool.filter(q=>q.subj!=='Français'||(profile.lang||'fr')==='fr');
-const qqQs=qqShuffle(qqFiltered).slice(0,8);
-const qqSubjLinks={Gaeilge:'irish.html',Français:'french.html',History:'history.html'};
-let qqIdx=0,qqScore=0,qqAnswered=false;
-const qqQ=document.getElementById('qq-question'),qqOpts=document.getElementById('qq-opts');
-const qqFeedback=document.getElementById('qq-feedback'),qqNext=document.getElementById('qq-next');
-const qqProgFill=document.getElementById('qq-prog-fill'),qqProgText=document.getElementById('qq-prog-text');
-const qqBody=document.getElementById('qq-body'),qqMoreLink=document.getElementById('qq-more-link');
-function qqRender(){
-  const q=qqQs[qqIdx]; qqAnswered=false;
-  qqFeedback.textContent=''; qqNext.style.display='none';
+function qqShuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
+const qqFiltered = qqPool.filter(q => q.subj !== 'Français' || (profile.lang || 'fr') === 'fr');
+const qqQs = qqShuffle(qqFiltered).slice(0, 8);
+const qqSubjLinks = { Gaeilge:'irish.html', Français:'french.html' };
+let qqIdx = 0, qqScore = 0, qqAnswered = false;
+const qqQ    = document.getElementById('qq-question');
+const qqOpts = document.getElementById('qq-opts');
+const qqFb   = document.getElementById('qq-feedback');
+const qqNext = document.getElementById('qq-next');
+const qqPF   = document.getElementById('qq-prog-fill');
+const qqPT   = document.getElementById('qq-prog-text');
+const qqBody = document.getElementById('qq-body');
+const qqMore = document.getElementById('qq-more-link');
+
+function qqRender() {
+  const q = qqQs[qqIdx]; qqAnswered = false;
+  qqFb.textContent = ''; qqNext.style.display = 'none';
   qqBody.classList.remove('qq-slide'); void qqBody.offsetWidth; qqBody.classList.add('qq-slide');
-  qqQ.textContent=q.q; qqOpts.innerHTML='';
-  document.getElementById('qq-subject').textContent=q.subj;
-  if(qqMoreLink) qqMoreLink.href=qqSubjLinks[q.subj]||'#';
-  qqProgText.textContent=`${qqIdx+1} / ${qqQs.length}`;
-  qqProgFill.style.width=`${((qqIdx+1)/qqQs.length)*100}%`;
-  q.opts.forEach((opt,i)=>{
-    const btn=document.createElement('button'); btn.className='opt-btn'; btn.textContent=opt;
-    btn.addEventListener('click',()=>{
-      if(qqAnswered) return; qqAnswered=true;
-      const btns=qqOpts.querySelectorAll('.opt-btn'); btns.forEach(b=>b.disabled=true);
-      if(i===q.ans){btn.classList.add('correct');qqFeedback.textContent='Correct! ✓';qqScore++;}
-      else{btn.classList.add('wrong');btns[q.ans].classList.add('correct');qqFeedback.textContent=`Answer: ${q.opts[q.ans]}`;}
-      qqNext.style.display='inline-flex';
+  qqQ.textContent = q.q; qqOpts.innerHTML = '';
+  document.getElementById('qq-subject').textContent = q.subj;
+  if (qqMore) qqMore.href = qqSubjLinks[q.subj] || '#';
+  qqPT.textContent = `${qqIdx + 1} / ${qqQs.length}`;
+  qqPF.style.width = `${((qqIdx + 1) / qqQs.length) * 100}%`;
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'mcq-opt'; btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (qqAnswered) return; qqAnswered = true;
+      const btns = qqOpts.querySelectorAll('.mcq-opt'); btns.forEach(b => b.disabled = true);
+      if (i === q.ans) { btn.classList.add('correct'); qqFb.textContent = 'Correct!'; qqScore++; }
+      else { btn.classList.add('wrong'); btns[q.ans].classList.add('correct'); qqFb.textContent = 'Answer: ' + q.opts[q.ans]; }
+      qqNext.style.display = 'inline-flex';
     });
     qqOpts.appendChild(btn);
   });
 }
-qqNext.addEventListener('click',()=>{
+qqNext.addEventListener('click', () => {
   qqIdx++;
-  if(qqIdx<qqQs.length){qqRender();return;}
-  qqBody.innerHTML=`<div class="quiz-result"><h3>${qqScore} / ${qqQs.length}</h3><p>${qqScore>=7?'Excellent!':qqScore>=4?'Good effort — keep practising.':'Review the material and try again.'}</p><button class="btn-restart" onclick="location.reload()">Try again</button></div>`;
-  qqNext.style.display='none'; qqFeedback.textContent='';
+  if (qqIdx < qqQs.length) { qqRender(); return; }
+  qqBody.innerHTML = `<div class="mcq-result"><h2>${qqScore} / ${qqQs.length}</h2>
+    <p>${qqScore >= 7 ? 'Excellent!' : qqScore >= 4 ? 'Good effort — keep practising.' : 'Review the material and try again.'}</p>
+    <button class="btn" onclick="location.reload()">Try again</button></div>`;
+  qqNext.style.display = 'none'; qqFb.textContent = '';
 });
 qqRender();
 
 // ── Profile / Onboarding / Settings ─────────────────────────
-function applyProfile(){
-  // Personalise greeting
-  if(profile.name){
-    const hr=new Date().getHours();
-    const t=hr<12?'morning':hr<17?'afternoon':'evening';
-    document.getElementById('greeting').textContent=`Good ${t}, ${profile.name}.`;
+function applyProfile() {
+  if (profile.name) {
+    const t = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
+    document.getElementById('greeting').textContent = `Good ${t}, ${profile.name}.`;
   }
-  // Show only the user's chosen language card
-  const lang=profile.lang||null;
-  document.querySelectorAll('[data-lang-card]').forEach(c=>{
-    c.style.display=(!lang||c.dataset.langCard===lang)?'':'none';
-    c.classList.toggle('your-lang', c.dataset.langCard===lang);
+  const lang = profile.lang || null;
+  document.querySelectorAll('[data-lang-card]').forEach(c => {
+    c.style.display = (!lang || c.dataset.langCard === lang) ? '' : 'none';
+    c.classList.toggle('your-lang', c.dataset.langCard === lang);
   });
-  // Update progress panel language label + hide row if not French (no data yet)
-  const langNames={fr:'Français',es:'Español',de:'Deutsch'};
-  const langLabel=document.getElementById('prog-lang-label');
-  const langRow=document.getElementById('prog-lang-row');
-  if(langLabel) langLabel.textContent=langNames[lang]||'Language';
-  if(langRow) langRow.style.display=lang==='fr'?'':'none';
+  const langNames = {fr:'Français',es:'Español',de:'Deutsch'};
+  const ll = document.getElementById('prog-lang-label');
+  const lr = document.getElementById('prog-lang-row');
+  if (ll) ll.textContent = langNames[lang] || 'Language';
+  if (lr) lr.style.display = lang === 'fr' ? '' : 'none';
 }
 
-// ── Onboarding ──────────────────────────────────────────────
-let _obLang=profile.lang||null;
-function checkOnboard(){
-  if(profile.setupVer!==SETUP_VER){
+// ── Onboarding ───────────────────────────────────────────────
+let _obLang = profile.lang || null;
+function checkOnboard() {
+  if (profile.setupVer !== SETUP_VER) {
     document.getElementById('onboard-overlay').classList.remove('hidden');
-    document.body.style.overflow='hidden';
-    if(profile.name) document.getElementById('ob-name').value=profile.name;
-    if(profile.year) document.getElementById('ob-year').value=profile.year;
-    if(_obLang){
+    document.body.style.overflow = 'hidden';
+    if (profile.name) document.getElementById('ob-name').value = profile.name;
+    if (profile.year) document.getElementById('ob-year').value = profile.year;
+    if (_obLang) {
       document.querySelector(`.ob-lang-opt[data-lang="${_obLang}"]`)?.classList.add('sel');
-      document.getElementById('ob-submit').disabled=false;
+      document.getElementById('ob-submit').disabled = false;
     }
   }
 }
-function obSelectLang(btn){
-  _obLang=btn.dataset.lang;
-  document.querySelectorAll('.ob-lang-opt').forEach(b=>b.classList.toggle('sel',b===btn));
-  document.getElementById('ob-submit').disabled=false;
+function obSelectLang(btn) {
+  _obLang = btn.dataset.lang;
+  document.querySelectorAll('.ob-lang-opt').forEach(b => b.classList.toggle('sel', b === btn));
+  document.getElementById('ob-submit').disabled = false;
 }
-function obSubmit(){
-  profile.name=document.getElementById('ob-name').value.trim()||profile.name||'';
-  profile.year=document.getElementById('ob-year').value.trim()||profile.year||'';
-  profile.lang=_obLang||'fr';
-  profile.setupVer=SETUP_VER;
-  localStorage.setItem('sn_profile',JSON.stringify(profile));
+function obSubmit() {
+  profile.name     = document.getElementById('ob-name').value.trim() || profile.name || '';
+  profile.year     = document.getElementById('ob-year').value.trim() || profile.year || '';
+  profile.lang     = _obLang || 'fr';
+  profile.setupVer = SETUP_VER;
+  localStorage.setItem('sn_profile', JSON.stringify(profile));
   document.getElementById('onboard-overlay').classList.add('hidden');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
   applyProfile();
   checkChangelog();
 }
 
-// ── Settings drawer ─────────────────────────────────────────
-let _snLang=null, _snPhoto=null;
-function openSettings(){
-  _snLang=profile.lang||'fr';
-  _snPhoto=profile.photo||null;
-  document.getElementById('sn-name').value=profile.name||'';
-  document.getElementById('sn-year').value=profile.year||'';
-  document.querySelectorAll('.sn-lang-opt').forEach(b=>b.classList.toggle('sel',b.dataset.lang===_snLang));
-  refreshAvatar(profile.name||'',_snPhoto);
-  document.getElementById('sn-remove-photo').style.display=_snPhoto?'':'none';
-  // Stars from streak
-  const sk=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
-  const today=new Date().toDateString();
-  const yesterday=new Date(Date.now()-86400000).toDateString();
-  const starCount=(sk.last===today||sk.last===yesterday)?sk.count:0;
-  const fill=Math.min(starCount,7);
-  const sv='<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
-  document.getElementById('sn-star-row').innerHTML=Array.from({length:7},(_,i)=>
-    `<span class="sn-star-icon${i<fill?' lit':''}">${sv}</span>`
-  ).join('');
-  document.getElementById('sn-star-lbl').textContent=`${starCount} star${starCount!==1?'s':''} earned · miss a day to reset`;
+// ── Settings ─────────────────────────────────────────────────
+let _snLang = null, _snPhoto = null;
+function openSettings() {
+  _snLang  = profile.lang || 'fr';
+  _snPhoto = profile.photo || null;
+  document.getElementById('sn-name').value = profile.name || '';
+  document.getElementById('sn-year').value = profile.year || '';
+  document.querySelectorAll('.sn-lang-opt').forEach(b => b.classList.toggle('sel', b.dataset.lang === _snLang));
+  refreshAvatar(profile.name || '', _snPhoto);
+  document.getElementById('sn-remove-photo').style.display = _snPhoto ? '' : 'none';
+  let sk; try { sk = JSON.parse(localStorage.getItem('sn_streak') || 'null'); } catch(e) {}
+  if (!sk) sk = {count:0,last:'',totalDays:0,stars:0};
+  if (!('totalDays' in sk)) sk.totalDays = sk.count || 0;
+  if (!('stars' in sk)) sk.stars = Math.floor(sk.totalDays / 10);
+  const progress = sk.totalDays % 10;
+  document.getElementById('sn-streak-count').textContent = `${sk.stars} star${sk.stars !== 1 ? 's' : ''} earned`;
+  document.getElementById('sn-streak-days').textContent  = `${sk.count} day streak active`;
+  document.getElementById('sn-bar-fill').style.width     = (progress / 10 * 100) + '%';
+  document.getElementById('sn-bar-label').textContent    = `${progress} / 10 days to next star`;
   document.getElementById('settings-overlay').classList.remove('hidden');
-  document.body.style.overflow='hidden';
+  document.body.style.overflow = 'hidden';
 }
-function closeSettings(){
+function closeSettings() {
   document.getElementById('settings-overlay').classList.add('hidden');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
-function snSelectLang(btn){
-  _snLang=btn.dataset.lang;
-  document.querySelectorAll('.sn-lang-opt').forEach(b=>b.classList.toggle('sel',b===btn));
+function snSelectLang(btn) {
+  _snLang = btn.dataset.lang;
+  document.querySelectorAll('.sn-lang-opt').forEach(b => b.classList.toggle('sel', b === btn));
 }
 
-// ── Avatar rendering (silhouette / initial / photo) ──────────
-const SILHOUETTE=`<svg viewBox="0 0 40 40" width="26" height="26" style="display:block;opacity:.55" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="15" r="9" fill="currentColor"/><path d="M2 40c0-9.941 8.059-18 18-18s18 8.059 18 18" fill="currentColor"/></svg>`;
-function refreshAvatar(name,photo){
-  const av=document.getElementById('sn-avatar');
-  if(photo){
-    av.style.backgroundImage=`url(${photo})`;
-    av.innerHTML='';
-  } else {
-    av.style.backgroundImage='';
-    if(name) av.innerHTML=`<span style="font-size:1.2rem;font-weight:700">${name.charAt(0).toUpperCase()}</span>`;
-    else av.innerHTML=SILHOUETTE;
+// ── Avatar ────────────────────────────────────────────────────
+const SILHOUETTE = `<svg viewBox="0 0 40 40" width="26" height="26" style="display:block;opacity:.55" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="15" r="9" fill="currentColor"/><path d="M2 40c0-9.941 8.059-18 18-18s18 8.059 18 18" fill="currentColor"/></svg>`;
+function refreshAvatar(name, photo) {
+  const av = document.getElementById('sn-avatar');
+  if (photo) { av.style.backgroundImage = `url(${photo})`; av.innerHTML = ''; }
+  else {
+    av.style.backgroundImage = '';
+    av.innerHTML = name
+      ? `<span style="font-size:1.2rem;font-weight:700">${name.charAt(0).toUpperCase()}</span>`
+      : SILHOUETTE;
   }
 }
-document.getElementById('sn-name').addEventListener('input',e=>{
-  refreshAvatar(e.target.value,_snPhoto);
-});
+document.getElementById('sn-name').addEventListener('input', e => refreshAvatar(e.target.value, _snPhoto));
 
-// ── Photo upload ─────────────────────────────────────────────
-function resizeImage(file,maxPx=240){
-  return new Promise(resolve=>{
-    const img=new Image(), url=URL.createObjectURL(file);
-    img.onload=()=>{
+// ── Photo upload ──────────────────────────────────────────────
+function resizeImage(file, maxPx = 240) {
+  return new Promise(resolve => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
       URL.revokeObjectURL(url);
-      const r=Math.min(maxPx/img.width,maxPx/img.height,1);
-      const c=document.createElement('canvas');
-      c.width=Math.round(img.width*r); c.height=Math.round(img.height*r);
-      c.getContext('2d').drawImage(img,0,0,c.width,c.height);
-      resolve(c.toDataURL('image/jpeg',.82));
+      const r = Math.min(maxPx/img.width, maxPx/img.height, 1);
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width*r); c.height = Math.round(img.height*r);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      resolve(c.toDataURL('image/jpeg', .82));
     };
-    img.src=url;
+    img.src = url;
   });
 }
-document.getElementById('sn-photo-input').addEventListener('change',async e=>{
-  const file=e.target.files[0]; if(!file) return;
-  _snPhoto=await resizeImage(file);
-  refreshAvatar(document.getElementById('sn-name').value.trim(),_snPhoto);
-  document.getElementById('sn-remove-photo').style.display='';
-  e.target.value='';
+document.getElementById('sn-photo-input').addEventListener('change', async e => {
+  const file = e.target.files[0]; if (!file) return;
+  _snPhoto = await resizeImage(file);
+  refreshAvatar(document.getElementById('sn-name').value.trim(), _snPhoto);
+  document.getElementById('sn-remove-photo').style.display = '';
+  e.target.value = '';
 });
-function removePhoto(){
-  _snPhoto=null;
-  refreshAvatar(document.getElementById('sn-name').value.trim(),null);
-  document.getElementById('sn-remove-photo').style.display='none';
+function removePhoto() {
+  _snPhoto = null;
+  refreshAvatar(document.getElementById('sn-name').value.trim(), null);
+  document.getElementById('sn-remove-photo').style.display = 'none';
 }
-
-function saveSettings(){
-  profile.name=document.getElementById('sn-name').value.trim()||profile.name||'';
-  profile.year=document.getElementById('sn-year').value.trim()||profile.year||'';
-  profile.lang=_snLang||profile.lang||'fr';
-  if(_snPhoto) profile.photo=_snPhoto; else delete profile.photo;
-  profile.setupVer=SETUP_VER;
-  localStorage.setItem('sn_profile',JSON.stringify(profile));
+function saveSettings() {
+  profile.name     = document.getElementById('sn-name').value.trim() || profile.name || '';
+  profile.year     = document.getElementById('sn-year').value.trim() || profile.year || '';
+  profile.lang     = _snLang || profile.lang || 'fr';
+  if (_snPhoto) profile.photo = _snPhoto; else delete profile.photo;
+  profile.setupVer = SETUP_VER;
+  localStorage.setItem('sn_profile', JSON.stringify(profile));
   closeSettings();
   applyProfile();
 }
-document.getElementById('settings-btn').addEventListener('click',openSettings);
-document.getElementById('settings-mob').addEventListener('click',openSettings);
+document.getElementById('settings-btn').addEventListener('click', openSettings);
+document.getElementById('settings-mob').addEventListener('click', openSettings);
 
-// ── Changelog ──────────────────────────────────────────────
-const CHANGELOG_VER='2025-05-19-v1';
-function checkChangelog(){
-  // Don't show changelog if onboarding is still visible
-  if(!document.getElementById('onboard-overlay').classList.contains('hidden')) return;
-  if(localStorage.getItem('sn_changelog_seen')!==CHANGELOG_VER){
+// ── Changelog ────────────────────────────────────────────────
+const CHANGELOG_VER = '2026-05-20-v1';
+function checkChangelog() {
+  if (!document.getElementById('onboard-overlay').classList.contains('hidden')) return;
+  if (localStorage.getItem('sn_changelog_seen') !== CHANGELOG_VER) {
     document.getElementById('changelog-overlay').classList.remove('hidden');
-    document.body.style.overflow='hidden';
+    document.body.style.overflow = 'hidden';
   }
 }
-function dismissChangelog(){
-  localStorage.setItem('sn_changelog_seen',CHANGELOG_VER);
+function dismissChangelog() {
+  localStorage.setItem('sn_changelog_seen', CHANGELOG_VER);
   document.getElementById('changelog-overlay').classList.add('hidden');
-  document.body.style.overflow='';
+  document.body.style.overflow = '';
 }
 
-// ── Clear all data ──────────────────────────────────────────
-function confirmClearData(){
-  document.getElementById('confirm-overlay').classList.remove('hidden');
-}
-function closeConfirm(){
-  document.getElementById('confirm-overlay').classList.add('hidden');
-}
-function doClearData(){
-  localStorage.clear();
-  location.reload();
-}
+// ── Clear data ───────────────────────────────────────────────
+function confirmClearData() { document.getElementById('confirm-overlay').classList.remove('hidden'); }
+function closeConfirm()      { document.getElementById('confirm-overlay').classList.add('hidden'); }
+function doClearData()       { localStorage.clear(); location.reload(); }
 
+// ── Init ─────────────────────────────────────────────────────
 checkOnboard();
 applyProfile();
 checkChangelog();
 
-// ── Service Worker ─────────────────────────────────────────
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 </script>
 </body>
 </html>
