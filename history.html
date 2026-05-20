@@ -1,0 +1,1585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>StudyNet — History</title>
+<link rel="manifest" href="manifest.json"/>
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
+<meta name="theme-color" content="#000000"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<style>
+:root{--bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;--hover:#f5f5f5;--radius:8px;--font:"Inter",system-ui,sans-serif;--sb:210px;}
+@media(prefers-color-scheme:dark){:root{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}}
+html.theme-light{--bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;--hover:#f5f5f5;}
+html.theme-dark{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--font);background:var(--bg);color:var(--fg);min-height:100vh;transition:background .2s,color .2s;display:flex;}
+a{color:inherit;text-decoration:none;}
+button{font:inherit;cursor:pointer;}
+.page{padding:2rem 3rem max(5rem,env(safe-area-inset-bottom));}
+.sidebar{width:var(--sb);flex-shrink:0;border-right:1px solid var(--border);position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;padding:1.5rem 1.1rem 1.25rem;}
+.sb-back{display:flex;align-items:center;gap:.4rem;font-size:.8rem;color:var(--muted);padding:.3rem .5rem .9rem;border-bottom:1px solid var(--border);margin-bottom:.6rem;}
+.sb-back:hover{color:var(--fg);}
+.sb-brand{font-size:.95rem;font-weight:700;letter-spacing:-.02em;padding:.5rem .5rem .3rem;}
+.sb-brand span{opacity:.4;font-weight:400;font-size:.82rem;}
+.sb-section{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:.75rem .5rem .25rem;}
+.sb-mode-btn{display:flex;align-items:center;gap:.55rem;padding:.45rem .65rem;border-radius:var(--radius);font-size:.83rem;background:none;border:none;color:var(--muted);text-align:left;width:100%;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+.sb-mode-btn:hover,.sb-mode-btn.active{background:var(--fg);color:var(--bg);}
+.sb-spacer{flex:1;}
+.sb-score{font-size:.75rem;color:var(--muted);padding:.5rem .65rem;}
+.sb-btn{display:flex;align-items:center;gap:.55rem;width:100%;padding:.45rem .65rem;border-radius:var(--radius);font-size:.83rem;background:none;border:none;color:var(--muted);text-align:left;cursor:pointer;transition:background .15s,color .15s;}
+.sb-btn:hover{background:var(--hover);color:var(--fg);}
+.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow-x:hidden;}
+.mob-header{display:none;}
+@media(min-width:701px){.modes{display:none;}}
+header{display:flex;align-items:center;justify-content:space-between;padding:1.4rem 0;border-bottom:1px solid var(--border);}
+.logo{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;}
+.logo span{opacity:.35;font-weight:400;}
+.back-link{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:.3rem;}
+.back-link:hover{color:var(--fg);}
+#theme-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.9rem;color:var(--fg);cursor:pointer;min-height:36px;}
+#theme-btn:hover{background:var(--hover);}
+.hero{padding:2.5rem 0 1.5rem;}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;}
+.hero p{margin-top:.5rem;color:var(--muted);font-size:.9rem;}
+.hero-stats{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;}
+.h-chip{padding:.28rem .75rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;color:var(--muted);}
+.h-chip b{color:var(--fg);}
+/* Streak tracker */
+.streak-section{margin-top:2rem;padding:.9rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius);}
+.streak-row{display:flex;align-items:center;gap:.65rem;}
+.streak-flame{font-size:1.4rem;line-height:1;}
+.streak-info{flex:1;}
+.streak-count{font-size:1.25rem;font-weight:700;line-height:1.2;color:var(--fg);}
+.streak-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
+.streak-dots{display:flex;gap:.3rem;margin-top:.65rem;}
+.streak-star{display:inline-flex;color:var(--border);}
+.streak-star.lit{color:#f97316;}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:2rem;}
+.mode-btn{padding:.9rem .5rem;text-align:center;background:var(--bg);border:none;color:var(--muted);font-size:.78rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s;display:flex;flex-direction:column;align-items:center;gap:.3rem;min-height:60px;}
+.mode-btn:hover{background:var(--hover);color:var(--fg);}
+.mode-btn.active{background:var(--fg);color:var(--bg);}
+.mode-icon{font-size:1.1rem;}
+.panel{display:none;margin-top:2rem;}
+.panel.active{display:block;animation:panelSlideIn .22s ease both;}
+.fc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.fc-counter{font-size:.8rem;color:var(--muted);}
+.fc-set-btns{display:flex;gap:.4rem;flex-wrap:wrap;}
+.fc-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
+.fc-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.fc-scene{perspective:1000px;height:200px;margin-bottom:1rem;cursor:pointer;}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .45s ease;}
+.fc-card.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--border);border-radius:var(--radius);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.5rem;padding:1.5rem;}
+.fc-back{transform:rotateY(180deg);background:var(--hover);}
+.fc-word{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;text-align:center;}
+.fc-sub{font-size:.8rem;color:var(--muted);text-align:center;}
+.fc-hint{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
+.fc-controls{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+.fc-ctrl{padding:.55rem 1.4rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--fg);font-size:.82rem;font-weight:600;min-height:40px;}
+.fc-ctrl:hover{background:var(--hover);}
+.fc-ctrl.primary{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.fc-ctrl.primary:hover{opacity:.8;}
+.fc-prog-bar{height:2px;background:var(--border);border-radius:99px;margin-bottom:1rem;}
+.fc-prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .3s;}
+.mcq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
+.mcq-set-sel{display:flex;gap:.4rem;flex-wrap:wrap;}
+.mcq-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
+.mcq-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.mcq-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.mcq-top{padding:.85rem 1.1rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.mcq-title{font-size:.82rem;font-weight:700;}
+.mcq-prog-txt{font-size:.75rem;color:var(--muted);}
+.mcq-prog-bar{height:2px;background:var(--border);}
+.mcq-prog-fill{height:100%;background:var(--fg);transition:width .3s;}
+.mcq-body{padding:1.3rem 1.1rem;}
+.mcq-q{font-size:.95rem;font-weight:600;margin-bottom:1rem;line-height:1.5;}
+.mcq-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.mcq-opt{padding:.65rem .9rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font-size:.82rem;text-align:left;transition:border-color .2s,background .2s;min-height:44px;}
+.mcq-opt:hover:not(:disabled){background:var(--hover);}
+.mcq-opt.correct{background:var(--fg);color:var(--bg);border-color:var(--fg);animation:pop .25s ease;}
+.mcq-opt.wrong{opacity:.3;text-decoration:line-through;}
+.mcq-opt:disabled{cursor:default;}
+.mcq-footer{padding:.85rem 1.1rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+.mcq-fb{font-size:.8rem;color:var(--muted);}
+.mcq-next{padding:.45rem 1rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.78rem;font-weight:600;display:none;min-height:36px;}
+.mcq-result{padding:2rem 1.1rem;text-align:center;}
+.mcq-result h2{font-size:1.5rem;font-weight:800;}
+.mcq-result p{color:var(--muted);margin:.5rem 0 1.2rem;font-size:.85rem;}
+.match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
+.match-score{font-size:.8rem;color:var(--muted);}
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
+.match-col{display:flex;flex-direction:column;gap:.5rem;}
+.match-col h3{font-size:.72rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.2rem;}
+.match-tile{padding:.65rem .9rem;border:1px solid var(--border);border-radius:var(--radius);font-size:.83rem;cursor:pointer;transition:background .15s,border-color .15s;background:var(--bg);color:var(--fg);text-align:center;min-height:44px;display:flex;align-items:center;justify-content:center;}
+.match-tile:hover:not(.matched):not(.disabled){background:var(--hover);}
+.match-tile.selected{border-color:var(--fg);background:var(--hover);}
+.match-tile.matched{opacity:.25;pointer-events:none;text-decoration:line-through;}
+.match-tile.wrong{animation:shake .3s ease;}
+.match-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);}
+.match-complete h3{font-size:1.1rem;font-weight:700;}
+.match-complete p{color:var(--muted);font-size:.83rem;margin:.4rem 0 1rem;}
+.match-set-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.match-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
+.match-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.prac-sets{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.prac-set-btn{padding:.28rem .7rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;background:none;color:var(--muted);cursor:pointer;min-height:32px;}
+.prac-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.prac-intro{font-size:.8rem;color:var(--muted);margin-bottom:.9rem;}
+.tbl-ex{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto;}
+.tbl-ex table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:320px;}
+.tbl-ex th,.tbl-ex td{padding:.5rem .8rem;border:1px solid var(--border);}
+.tbl-ex th{background:var(--hover);font-size:.77rem;font-weight:600;}
+.q-inp{border:none;border-bottom:1px solid var(--fg);background:transparent;color:var(--fg);font:inherit;font-size:.85rem;width:120px;padding:.05rem .2rem;outline:none;min-height:28px;}
+.q-inp:focus{border-bottom-width:2px;}
+.q-inp.ok{border-bottom-color:var(--fg);opacity:.6;}
+.q-inp.err{animation:shake .3s ease;}
+.q-inp:disabled{opacity:.55;cursor:default;}
+.q-fb{font-size:.7rem;margin-top:.15rem;color:var(--muted);}
+.reset-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;float:right;}
+.reset-btn:hover{background:var(--hover);color:var(--fg);}
+.rule-box{background:var(--hover);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem 1rem;font-size:.82rem;line-height:1.7;margin-bottom:1rem;}
+.rule-box strong{font-weight:700;}
+.prog-list{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.prog-item{padding:.8rem 1.1rem;border-bottom:1px solid var(--border);}
+.prog-item:last-child{border-bottom:none;}
+.prog-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.3rem;}
+.prog-label{font-weight:500;}
+.prog-pct{color:var(--muted);}
+.prog-bar{height:3px;background:var(--border);border-radius:99px;}
+.prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .5s;}
+.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:.85rem;}
+.topic-card{background:var(--bg);color:var(--fg);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem 1rem;text-align:left;cursor:pointer;transition:background .15s,border-color .15s;display:flex;flex-direction:column;gap:.35rem;width:100%;}
+.topic-card:hover{background:var(--hover);border-color:var(--fg);}
+.topic-card.topic-all{border-color:var(--fg);}
+.topic-card.topic-active{background:var(--fg);color:var(--bg);}
+.topic-card.topic-active .tc-desc,.topic-card.topic-active .tc-dot{opacity:.6;color:inherit;border-color:currentColor;}
+.tc-icon{font-size:1.35rem;}
+.tc-label{font-size:.9rem;font-weight:700;}
+.tc-desc{font-size:.73rem;color:var(--muted);}
+.tc-dots{display:flex;flex-wrap:wrap;gap:.25rem;margin-top:.2rem;}
+.tc-dot{font-size:.63rem;padding:.12rem .38rem;border:1px solid var(--border);border-radius:99px;color:var(--muted);}
+.panel-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;}
+.panel-head h2{font-size:.95rem;font-weight:700;}
+.topic-mob-chip{margin:.75rem 0 -.25rem;}
+.topic-mob-pill{display:inline-flex;align-items:center;gap:.3rem;padding:.22rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;cursor:pointer;background:none;color:var(--fg);transition:background .15s;}
+.topic-mob-pill:hover{background:var(--hover);}
+.no-content{padding:1.75rem 1rem;text-align:center;color:var(--muted);font-size:.83rem;border:1px dashed var(--border);border-radius:var(--radius);margin-bottom:1rem;}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:.5rem 1.1rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.8rem;font-weight:600;cursor:pointer;min-height:40px;}
+.btn:hover{opacity:.75;}
+.btn-ghost{background:none;color:var(--fg);}
+.btn-ghost:hover{background:var(--hover);opacity:1;}
+footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@media(max-width:700px){
+  body{display:block;}
+  .sidebar{display:none;}
+  .mob-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
+  .mob-logo{font-size:.95rem;font-weight:700;letter-spacing:-.02em;}
+  .mob-logo span{opacity:.35;font-weight:400;}
+  .mob-btns{display:flex;gap:.3rem;}
+  .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
+  .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
+}
+/* ── Timeline (drag-drop) ── */
+.tl-sets{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.tl-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
+.tl-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.tl-status{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
+.tl-inst{font-size:.8rem;color:var(--muted);}
+.tl-count{font-size:.8rem;color:var(--muted);}
+.tl-visual{position:relative;overflow-x:auto;margin-bottom:2rem;padding-bottom:1rem;}
+.tl-line{position:absolute;top:32px;left:0;right:0;height:2px;background:var(--border);z-index:0;}
+.tl-nodes{display:flex;position:relative;z-index:1;min-width:100%;padding:0 1rem;justify-content:space-between;align-items:flex-start;}
+.tl-node{display:flex;flex-direction:column;align-items:center;gap:.3rem;min-width:90px;flex:1;cursor:default;}
+.tl-node-dot{width:12px;height:12px;border-radius:50%;background:var(--border);border:2px solid var(--fg);flex-shrink:0;transition:background .2s;margin-top:26px;}
+.tl-node-year{font-size:.68rem;font-weight:700;color:var(--muted);white-space:nowrap;margin-top:.2rem;}
+.tl-node-drop{min-height:60px;border:1.5px dashed var(--border);border-radius:var(--radius);padding:.3rem;margin-top:.4rem;width:90px;transition:background .15s,border-color .15s;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);text-align:center;line-height:1.3;}
+.tl-node-drop.drag-over{background:var(--hover);border-color:var(--fg);border-style:solid;}
+.tl-node-drop.filled{border-style:solid;border-color:var(--fg);background:var(--fg);color:var(--bg);font-size:.72rem;font-weight:600;}
+.tl-node-drop.wrong-flash{animation:wrongFlash .4s ease;}
+@keyframes wrongFlash{0%,100%{background:var(--bg);border-color:var(--border);}50%{background:var(--hover);border-color:var(--fg);}}
+.tl-node.filled .tl-node-dot{background:var(--fg);}
+.tl-tray-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.5rem;}
+.tl-tray{display:flex;flex-wrap:wrap;gap:.5rem;min-height:60px;border:1px dashed var(--border);border-radius:var(--radius);padding:.75rem;}
+.tl-card{padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font-size:.78rem;line-height:1.3;cursor:grab;user-select:none;max-width:200px;transition:opacity .2s,box-shadow .15s;}
+.tl-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.tl-card.dragging{opacity:.4;cursor:grabbing;}
+.tl-card.placed{display:none;}
+.tl-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);margin-top:1rem;}
+.tl-complete h3{font-size:1.1rem;font-weight:700;}
+.tl-complete p{color:var(--muted);font-size:.83rem;margin:.4rem 0 1rem;}
+
+@media(max-width:540px){
+  .modes{grid-template-columns:repeat(3,1fr);}
+  .mcq-opts{grid-template-columns:1fr;}
+  .match-grid{grid-template-columns:1fr 1fr;}
+  .fc-word{font-size:1.2rem;}
+  .tbl-ex table{font-size:.76rem;}
+  .tbl-ex th,.tbl-ex td{padding:.4rem .5rem;}
+}
+@media(max-width:380px){
+  .match-grid{grid-template-columns:1fr;}
+}
+.icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
+
+/* ── Topic card: selected state (step 1, before confirm) ── */
+.topic-card.selected{border:2px solid var(--fg);background:var(--hover);box-shadow:0 0 0 2px var(--fg);}
+
+/* ── Sidebar step-state visibility ── */
+[data-step="step-1"] .sb-modes,[data-step="step-2"] .sb-modes{display:none!important;}
+[data-step="step-3"] .sb-modes{display:flex!important;flex-direction:column;gap:3px;}
+[data-step="step-1"] .sb-active-ctx,[data-step="step-1"] .sb-topic-list{display:none!important;}
+[data-step="step-2"] .sb-active-ctx,[data-step="step-3"] .sb-active-ctx{display:block!important;}
+[data-step="step-2"] .sb-topic-list{display:none!important;}
+[data-step="step-3"] .sb-topic-list{display:block!important;}
+/* ── Sidebar: active context (steps 2 & 3) ── */
+.sb-active-ctx{margin-bottom:.25rem;}
+.sb-back-link{display:flex;align-items:center;gap:.35em;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer;border-radius:var(--radius);text-align:left;transition:background .15s;}
+.sb-back-link:hover{background:var(--hover);color:var(--fg);}
+.sb-active-topic{font-size:.88rem;font-weight:600;padding:.15rem .5rem .35rem;}
+
+/* ── Sidebar: topic quick-list (step 3) ── */
+.sb-topic-list{border-top:1px solid var(--border);padding-top:.5rem;margin-top:.25rem;}
+.sb-tlist-btn{display:block;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--fg);font:inherit;font-size:.8rem;border-radius:var(--radius);cursor:pointer;text-align:left;transition:background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.sb-tlist-btn:hover{background:var(--hover);}
+.sb-tlist-btn.active{font-weight:600;}
+
+/* ── Activity picker panel (step 2) ── */
+.act-head{display:flex;align-items:flex-start;gap:1rem;padding:.5rem 0 1.5rem;border-bottom:1px solid var(--border);margin-bottom:1.5rem;}
+.act-back-btn{display:flex;align-items:center;gap:.35em;flex-shrink:0;padding:.4rem .75rem;border:1px solid var(--border);background:none;color:var(--fg);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:pointer;white-space:nowrap;transition:background .15s;}
+.act-back-btn:hover{background:var(--hover);}
+.act-head-info h2{font-size:1.3rem;font-weight:700;margin-bottom:.2rem;}
+.act-head-info p{color:var(--muted);font-size:.88rem;}
+.act-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(175px,1fr));gap:1rem;}
+.act-tile{display:flex;flex-direction:column;align-items:center;gap:.7rem;padding:1.75rem 1rem 1.5rem;border-radius:var(--radius);border:1.5px solid var(--border);background:var(--bg);cursor:pointer;transition:background .15s,border-color .15s;font:inherit;color:var(--fg);text-align:center;width:100%;}
+.act-tile:hover:not(.act-tile--off){background:var(--hover);border-color:var(--fg);}
+.act-tile--off{opacity:.38;cursor:default;}
+.at-icon{display:flex;align-items:center;justify-content:center;}
+.sb-btn.active{background:var(--fg);color:var(--bg);}
+.at-name{font-weight:600;font-size:.95rem;}
+.at-count{font-size:.78rem;color:var(--muted);}
+
+@media(max-width:700px){
+  [data-step="step-3"] .modes{display:none!important;}
+}
+@keyframes panelSlideIn{
+  from{opacity:0;transform:translateX(var(--slide-dir,40px));}
+  to{opacity:1;transform:translateX(0);}
+}
+
+/* ── Mobile pill strip (step 3, mobile only) ── */
+.mob-pill-strip{display:none;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
+.mob-pill{display:flex;align-items:center;gap:.3em;padding:.35rem .75rem;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:.8rem;border-radius:20px;cursor:pointer;transition:background .15s;}
+.mob-pill:hover{background:var(--hover);}
+@media(max-width:700px){
+  [data-step="step-3"] .mob-pill-strip{display:flex;}
+}
+</style>
+</head>
+<body data-step="step-1">
+<svg id="svg-sprite" aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-books" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
+  <symbol id="icon-globe" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></symbol>
+  <symbol id="icon-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></symbol>
+  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+  <symbol id="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
+  <symbol id="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="icon-cards" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="icon-quiz" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="icon-match" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></symbol>
+  <symbol id="icon-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="icon-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="icon-clock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="icon-rewind" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></symbol>
+  <symbol id="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
+  <symbol id="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="icon-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
+  <symbol id="icon-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
+  <symbol id="icon-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></symbol>
+  <symbol id="icon-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L5 20h14L14 9V3"/></symbol>
+</svg>
+
+<!-- ═══ Sidebar (desktop) ═══ -->
+<aside class="sidebar">
+  <a href="index.html" class="sb-back"><svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>&nbsp;StudyNet</a>
+  <div class="sb-brand">History <span>/ Junior Cert</span></div>
+
+  <!-- Steps 2 & 3: back link + active topic name -->
+  <div class="sb-active-ctx" id="sb-active-ctx">
+    <button class="sb-back-link" onclick="setMode('topic')">← Topics</button>
+    <div class="sb-active-topic" id="sb-topic-name"></div>
+  </div>
+
+  <!-- Step 3: mode buttons (populated by buildSidebarModes) -->
+  <div class="sb-modes" id="sb-modes"></div>
+
+  <!-- Step 3: quick topic list (populated by buildSidebarTopicList) -->
+  <div class="sb-topic-list" id="sb-topic-list">
+    <div class="sb-label">Switch topic</div>
+    <div id="sb-tlist"></div>
+  </div>
+
+  <div class="sb-spacer"></div>
+  <div class="sb-score" id="sb-score">Score: 0 / —</div>
+  <button class="sb-btn" id="theme-btn" onclick="toggleTheme()">
+    <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>&nbsp;Toggle theme
+  </button>
+</aside>
+
+<!-- ═══ Main ═══ -->
+<div class="main">
+
+  <header class="mob-header">
+    <div class="mob-logo">History <span>/ Junior Cert</span></div>
+    <div class="mob-btns">
+      <button class="mob-btn" id="theme-mob" aria-label="Toggle theme"><svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg></button>
+    </div>
+  </header>
+
+  <!-- Mobile pill strip (Step 3 only) -->
+  <div class="mob-pill-strip" id="mob-pill-strip">
+    <button class="mob-pill" id="mob-topic-pill" onclick="setMode('topic')">
+      <span id="mob-topic-pill-text">Topics</span> ▾
+    </button>
+    <button class="mob-pill" id="mob-mode-pill" onclick="setMode('activities')">
+      <span id="mob-mode-pill-text">Activities</span> ▾
+    </button>
+  </div>
+
+  <div class="page">
+
+<section class="hero">
+  <h1>History</h1>
+  <p>Junior Certificate History — six-topic revision resource</p>
+  <div class="hero-stats">
+    <div class="h-chip">Practice score: <b id="hs-score">0 / 0</b></div>
+    <div class="h-chip">Exercises: <b>6</b></div>
+  </div>
+  <div class="topic-mob-chip">
+    <button class="topic-mob-pill" onclick="setMode('topic')"><svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg> &nbsp;<span id="topic-mob-label">All Topics</span> &nbsp;▾</button>
+  </div>
+</section>
+
+<div class="modes">
+  <button class="mode-btn active" data-mode="topic" onclick="setMode('topic')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg></span>Chapters
+  </button>
+  <button class="mode-btn" data-mode="flashcards" onclick="setMode('flashcards')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-cards"/></svg></span>Flashcards
+  </button>
+  <button class="mode-btn" data-mode="quiz" onclick="setMode('quiz')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-quiz"/></svg></span>Quiz
+  </button>
+  <button class="mode-btn" data-mode="match" onclick="setMode('match')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-match"/></svg></span>Match
+  </button>
+  <button class="mode-btn" data-mode="practice" onclick="setMode('practice')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-pencil"/></svg></span>Practice
+  </button>
+  <button class="mode-btn" data-mode="timeline" onclick="setMode('timeline')">
+    <span class="mode-icon"><svg class="icon" aria-hidden="true"><use href="#icon-clock"/></svg></span>Timeline
+  </button>
+</div>
+
+
+<!-- TOPIC SELECT -->
+<div class="panel active" id="panel-topic">
+  <div class="panel-head"><h2>Choose a Topic</h2></div>
+  <div class="topic-grid" id="topic-grid"></div>
+  <div class="streak-section">
+    <div class="streak-row">
+      <span class="streak-flame"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <div class="streak-info">
+        <div class="streak-count" id="streak-count">—</div>
+        <div class="streak-sub">study streak · resets if you miss a day</div>
+      </div>
+    </div>
+    <div class="streak-dots" id="streak-dots"></div>
+  </div>
+</div>
+
+<!-- ===== PANEL: ACTIVITIES ===== -->
+<div id="panel-activities" class="panel">
+  <div class="act-head">
+    <button class="act-back-btn" onclick="setMode('topic')">← Topics</button>
+    <div class="act-head-info">
+      <h2 id="act-title"></h2>
+      <p id="act-desc"></p>
+    </div>
+  </div>
+  <div class="act-grid" id="act-grid"></div>
+</div>
+
+<!-- FLASHCARDS -->
+<div class="panel" id="panel-flashcards">
+  <div class="fc-header">
+    <div class="fc-set-btns" id="fc-sets"></div>
+    <span class="fc-counter" id="fc-counter">1 / 12</span>
+  </div>
+  <div class="fc-prog-bar"><div class="fc-prog-fill" id="fc-prog-fill"></div></div>
+  <div class="fc-scene" id="fc-scene" onclick="flipCard()">
+    <div class="fc-card" id="fc-card">
+      <div class="fc-face fc-front">
+        <div class="fc-word" id="fc-front-word"></div>
+        <div class="fc-sub" id="fc-front-sub"></div>
+        <div class="fc-hint">Tap to reveal</div>
+      </div>
+      <div class="fc-face fc-back">
+        <div class="fc-word" id="fc-back-word"></div>
+        <div class="fc-sub" id="fc-back-sub"></div>
+      </div>
+    </div>
+  </div>
+  <div class="fc-controls">
+    <button class="fc-ctrl" onclick="fcMove(-1)">← Prev</button>
+    <button class="fc-ctrl" onclick="flipCard()">Flip</button>
+    <button class="fc-ctrl primary" onclick="fcMove(1)">Next →</button>
+  </div>
+</div>
+
+<!-- QUIZ -->
+<div class="panel" id="panel-quiz">
+  <div class="mcq-header">
+    <div class="mcq-set-sel" id="mcq-sets"></div>
+  </div>
+  <div class="mcq-card">
+    <div class="mcq-top">
+      <span class="mcq-title" id="mcq-title">How Historians Work</span>
+      <span class="mcq-prog-txt" id="mcq-prog-txt">1 / 8</span>
+    </div>
+    <div class="mcq-prog-bar"><div class="mcq-prog-fill" id="mcq-prog-fill" style="width:12%"></div></div>
+    <div class="mcq-body" id="mcq-body">
+      <div class="mcq-q" id="mcq-q"></div>
+      <div class="mcq-opts" id="mcq-opts"></div>
+    </div>
+    <div class="mcq-footer">
+      <span class="mcq-fb" id="mcq-fb"></span>
+      <button class="mcq-next" id="mcq-next">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MATCH -->
+<div class="panel" id="panel-match">
+  <div class="match-set-btns" id="match-sets"></div>
+  <div class="match-header">
+    <span style="font-size:.82rem;color:var(--muted)">Click one from each column to pair them.</span>
+    <span class="match-score" id="match-score">0 / 0 matched</span>
+  </div>
+  <div id="match-area"></div>
+</div>
+
+<!-- PRACTICE -->
+<div class="panel" id="panel-practice">
+  <div class="prac-sets" id="prac-sets"></div>
+  <div id="prac-content"></div>
+</div>
+
+<!-- TIMELINE -->
+<div class="panel" id="panel-timeline">
+  <div class="tl-sets" id="tl-sets"></div>
+  <div class="tl-status">
+    <span class="tl-inst">Drag each event card onto the correct year on the timeline.</span>
+    <span class="tl-count" id="tl-count">0 / 0 placed</span>
+  </div>
+  <div class="tl-visual" id="tl-visual">
+    <div class="tl-line"></div>
+    <div class="tl-nodes" id="tl-nodes"></div>
+  </div>
+  <div class="tl-tray-label">Events to place:</div>
+  <div class="tl-tray" id="tl-tray"></div>
+</div>
+
+<!-- PROGRESS -->
+<div style="margin-top:2.5rem;">
+  <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
+    <h2 style="font-size:.95rem;font-weight:700;">Progress</h2>
+  </div>
+  <div class="prog-list" id="prog-list"></div>
+</div>
+
+<footer>
+  <a href="index.html" style="color:var(--muted);">← Back to StudyNet</a>
+  <span>Progress saved in your browser.</span>
+</footer>
+  </div><!-- /.page -->
+</div><!-- /.main -->
+
+<script>
+// ── Theme ────────────────────────────────────────────────────
+const html=document.documentElement;
+const st=localStorage.getItem('sn_theme');
+if(st) html.classList.add('theme-'+st);
+function updateThemeIcons(){
+  const isDark=html.classList.contains('theme-dark')||(!html.classList.contains('theme-light')&&matchMedia('(prefers-color-scheme:dark)').matches);
+  document.querySelectorAll('.theme-icon-use').forEach(el=>el.setAttribute('href',isDark?'#icon-sun':'#icon-moon'));
+}
+function toggleTheme(){
+  const dark=html.classList.contains('theme-dark')||(!html.classList.contains('theme-light')&&matchMedia('(prefers-color-scheme:dark)').matches);
+  html.classList.remove('theme-light','theme-dark');
+  const next=dark?'light':'dark';
+  html.classList.add('theme-'+next); localStorage.setItem('sn_theme',next);
+  updateThemeIcons();
+}
+document.getElementById('theme-mob').addEventListener('click',toggleTheme);
+updateThemeIcons();
+
+// ── Mode switching ──────────────────────────────────────────
+let currentMode='topic';
+function setMode(id){
+  currentMode=id;
+  const stepNum={'step-1':1,'step-2':2,'step-3':3};
+  const step=id==='topic'?'step-1':id==='activities'?'step-2':'step-3';
+  const fwd=stepNum[step]>=stepNum[document.body.dataset.step||'step-1'];
+  document.body.style.setProperty('--slide-dir',fwd?'40px':'-40px');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('[data-mode]').forEach(b=>b.classList.toggle('active',b.dataset.mode===id));
+  document.getElementById('panel-'+id).classList.add('active');
+  // Set step state
+  document.body.dataset.step=step;
+  // Rebuild topic grid when returning
+  if(id==='topic'){
+    buildTopicPanel();
+  }
+  // Update mobile pill labels
+  if(id!=='topic'&&id!=='activities'&&currentTopic){
+    const tp=document.getElementById('mob-topic-pill-text');
+    const mp=document.getElementById('mob-mode-pill-text');
+    if(tp)tp.textContent=currentTopic.label;
+    if(mp)mp.textContent=id.charAt(0).toUpperCase()+id.slice(1);
+  }
+}
+
+// ── Storage & normalisation ────────────────────────────────
+const STORE='sn_history_v1';
+function loadS(){try{return JSON.parse(localStorage.getItem(STORE))||{};}catch(e){return{};}}
+function saveS(s){localStorage.setItem(STORE,JSON.stringify(s));}
+let S=loadS(); if(!S.inputs)S.inputs={};
+
+function norm(s){
+  return s.toLowerCase()
+    .replace(/[áàâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[íî]/g,'i')
+    .replace(/[óòô]/g,'o').replace(/[úù]/g,'u').replace(/ñ/g,'n')
+    .replace(/'/g,"'").replace(/[^a-z0-9\s'\-]/g,'').replace(/\s+/g,' ').trim();
+}
+function chk(inp,ans){return ans.some(a=>norm(a)===norm(inp));}
+
+// ═══════════════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════════════
+
+// ── Flashcard decks ──
+const fcDecks={
+  'Sources & Evidence':[
+    {front:'Primary source',back:'Evidence from the time being studied (e.g. diary, newspaper, photograph)'},
+    {front:'Secondary source',back:'Written after the event by someone who was not there (e.g. textbook)'},
+    {front:'Artefact',back:'An object made or used by people in the past'},
+    {front:'Archaeology',back:'The study of the past using physical remains left behind by people'},
+    {front:'Bias',back:'When a source unfairly favours one side of an argument'},
+    {front:'Document',back:'A written primary source (e.g. letters, charters, laws)'},
+    {front:'Oral history',back:'History passed on by word of mouth — stories, songs, traditions'},
+    {front:'Historian',back:'A person who studies and writes about the past using evidence'},
+    {front:'Century',back:'A period of 100 years'},
+    {front:'Decade',back:'A period of 10 years'},
+    {front:'BC / BCE',back:'Before Christ / Before Common Era — counting backwards from year 1'},
+    {front:'AD / CE',back:'Anno Domini / Common Era — counting forwards from year 1'},
+  ],
+  'Archaeology':[
+    {front:'Excavation',back:'Careful, systematic digging to uncover buried artefacts and structures'},
+    {front:'Radiocarbon dating',back:'Uses the decay of Carbon-14 to date organic materials (up to ~50,000 years)'},
+    {front:'Dendrochronology',back:'Dating method using tree rings — each ring represents one year of growth'},
+    {front:'Stratigraphy',back:'Dating by soil layers — deeper layers are generally older'},
+    {front:'DNA testing',back:'Analysis of genetic material from bones or teeth to learn about ancient people'},
+    {front:'In-situ',back:'Latin for "in its original position" — an artefact found exactly where it was left'},
+    {front:'Grid reference',back:'System for recording the exact location of finds during an excavation'},
+    {front:'Carbon-14',back:'Radioactive isotope that decays at a known rate — the basis of radiocarbon dating'},
+    {front:'Archaeologist',back:'A scientist who studies the past through excavation and physical evidence'},
+    {front:'Trowel',back:'Small hand tool used to carefully scrape away soil at an excavation site'},
+  ],
+  'Middle Ages':[
+    {front:'Feudal system',back:'Social order where land was exchanged for loyalty and military service'},
+    {front:'Serf',back:'An unfree peasant who was bound to the lord\'s land and could not leave'},
+    {front:'Knight',back:'Mounted warrior who served a lord in return for land (a fief)'},
+    {front:'Tithe',back:'10% of income that peasants were required to pay to the Church'},
+    {front:'Guild',back:'Organisation of craftsmen or merchants in a medieval town'},
+    {front:'Chivalry',back:'Code of conduct for knights — loyalty, bravery, courtesy, and honour'},
+    {front:'Crusades',back:'Holy wars fought by Christian knights to recapture Jerusalem from Muslims'},
+    {front:'Black Death',back:'Bubonic plague that killed about one-third of Europe\'s population (1347–1351)'},
+    {front:'Trebuchet',back:'A large catapult used in siege warfare to hurl heavy stones at castle walls'},
+    {front:'Portcullis',back:'Heavy iron gate at the entrance to a castle, raised and lowered by chains'},
+    {front:'Keep',back:'The strongest, tallest tower in a castle — the last line of defence'},
+    {front:'Manor',back:'A lord\'s estate, including the castle, farmland, and the village'},
+  ],
+  'Ancient Rome':[
+    {front:'Roman Republic',back:'System of elected government in Rome from 509 BC to 27 BC'},
+    {front:'Roman Empire',back:'Period of rule by emperors, beginning with Augustus in 27 BC'},
+    {front:'Senate',back:'Council of ~300 wealthy noble Romans who advised the emperor'},
+    {front:'Patrician',back:'Wealthy upper-class Roman citizen — member of the ruling families'},
+    {front:'Plebeian',back:'Ordinary Roman citizen — the common people'},
+    {front:'Julius Caesar',back:'Roman general and dictator, assassinated on the Ides of March, 44 BC'},
+    {front:'Augustus',back:'First Roman Emperor (27 BC) — adopted son of Julius Caesar'},
+    {front:'Gladiator',back:'Trained fighter who battled in the Colosseum for public entertainment'},
+    {front:'Colosseum',back:'Great amphitheatre in Rome that held ~50,000 spectators'},
+    {front:'Aqueduct',back:'Stone channel built to carry fresh water from mountains into Roman cities'},
+    {front:'Legion',back:'Main unit of the Roman army, consisting of about 5,000 soldiers'},
+    {front:'Forum',back:'Public open space in a Roman city — centre of business, politics, and law'},
+  ],
+  'Age of Exploration':[
+    {front:'Caravel',back:'New lightweight ship developed by the Portuguese, ideal for ocean exploration'},
+    {front:'Compass',back:'Navigation instrument with a magnetic needle pointing north'},
+    {front:'Astrolabe',back:'Instrument used to measure the altitude of stars for navigation at sea'},
+    {front:'Vasco da Gama',back:'First European to sail around Africa to reach India (1498)'},
+    {front:'Christopher Columbus',back:'Italian explorer who reached the Americas in 1492, sailing for Spain'},
+    {front:'Ferdinand Magellan',back:'Led the first circumnavigation of the globe (1519–1522)'},
+    {front:'Treaty of Tordesillas',back:'1494 agreement dividing the New World between Spain and Portugal'},
+    {front:'Conquistador',back:'Spanish soldier-explorer who conquered territories in the Americas'},
+    {front:'Hernán Cortés',back:'Spanish conquistador who conquered the Aztec Empire of Mexico (1519–21)'},
+    {front:'Francisco Pizarro',back:'Spanish conquistador who conquered the Inca Empire of Peru (1532)'},
+    {front:'Middle Passage',back:'Sea route for transporting enslaved Africans to the Americas'},
+    {front:'Colony',back:'A territory taken over and settled by people from a foreign country'},
+  ],
+  'Early Christian Ireland':[
+    {front:'Celts',back:'Iron Age people who settled in Ireland around 500 BC, bringing their own language and culture'},
+    {front:'Druids',back:'Celtic priests who performed religious ceremonies, kept laws and memorised history'},
+    {front:'Ringfort (ráth)',back:'Circular earthen enclosure used as a Celtic farm and home — also called lios'},
+    {front:'St Patrick',back:'Patron saint of Ireland who brought Christianity to Ireland around 432 AD'},
+    {front:'Monastery',back:'A community of monks who lived, prayed and worked together under strict rules'},
+    {front:'Monk',back:'A religious man who lived in a monastery, devoted to prayer, learning and labour'},
+    {front:'Illuminated manuscript',back:'A beautifully hand-decorated religious book — monks added gold, colours and intricate designs'},
+    {front:'Book of Kells',back:'Famous illuminated gospel, likely created on Iona by monks around 800 AD'},
+    {front:'Vellum',back:'Writing material made from specially prepared and stretched calf skin'},
+    {front:'High cross',back:'Large decorated stone cross found in Irish monasteries, with biblical carvings'},
+    {front:'Round tower',back:'Tall narrow stone tower attached to a monastery — used as a bell tower and place of refuge'},
+    {front:'Scribe',back:'A monk whose work was to copy books and manuscripts by hand'},
+  ],
+  'Renaissance':[
+    {front:'Renaissance',back:'French for "rebirth" — a cultural revival in Europe from the 14th to 17th centuries'},
+    {front:'Humanism',back:'Renaissance philosophy that placed humans — not just God — at the centre of thought'},
+    {front:'Leonardo da Vinci',back:'Italian genius — painter, sculptor, scientist and engineer; painted the Mona Lisa'},
+    {front:'Michelangelo',back:'Italian artist who painted the Sistine Chapel ceiling and sculpted David'},
+    {front:'Raphael',back:'Italian Renaissance painter known for The School of Athens and his Madonnas'},
+    {front:'Perspective',back:'Artistic technique that creates the illusion of three dimensions on a flat surface'},
+    {front:'Sfumato',back:'Leonardo\'s technique — soft blurring of outlines to create a hazy, smoky effect'},
+    {front:'Chiaroscuro',back:'Artistic use of strong contrast between areas of light and dark'},
+    {front:'Vernacular',back:'The everyday spoken language of ordinary people (replacing Latin in literature)'},
+    {front:'Gutenberg',back:'Invented the printing press with moveable type around 1450, spreading knowledge rapidly'},
+    {front:'Vesalius',back:'Flemish scientist who made 270 accurate drawings of the human body'},
+    {front:'Copernicus',back:'Proposed the heliocentric theory — that the Earth orbits the Sun, not the other way round'},
+  ],
+};
+
+// ── Quiz data ──
+const quizData={
+  historians:{
+    label:'How Historians Work',
+    questions:[
+      {q:'Evidence from the time being studied is called a ___ source.',ans:['Primary']},
+      {q:'A source written after the event by someone not present is a ___ source.',ans:['Secondary']},
+      {q:'The study of the past using physical remains is called ___.',ans:['Archaeology']},
+      {q:'Dating method that uses Carbon-14 decay.',ans:['Radiocarbon dating']},
+      {q:'Dating method that counts tree rings.',ans:['Dendrochronology']},
+      {q:'Dating by the position of soil layers — deeper is older.',ans:['Stratigraphy']},
+      {q:'An object made or used by people in the past.',ans:['Artefact']},
+      {q:'When a source unfairly favours one side of an argument.',ans:['Bias']},
+    ]
+  },
+  middleAges:{
+    label:'The Middle Ages',
+    questions:[
+      {q:'The social system where land was exchanged for loyalty and military service.',ans:['Feudal system']},
+      {q:'An unfree peasant who was bound to the lord\'s land.',ans:['Serf']},
+      {q:'10% of income paid to the Church by peasants.',ans:['Tithe']},
+      {q:'An organisation of craftsmen or merchants in a medieval town.',ans:['Guild']},
+      {q:'The code of conduct for medieval knights.',ans:['Chivalry']},
+      {q:'Holy wars fought to recapture Jerusalem from Muslims.',ans:['Crusades']},
+      {q:'The plague that killed about one-third of Europe (1347–1351).',ans:['Black Death']},
+      {q:'A large siege catapult used to hurl stones at castle walls.',ans:['Trebuchet']},
+    ]
+  },
+  rome:{
+    label:'Ancient Rome',
+    questions:[
+      {q:'The period of elected government in Rome (509–27 BC).',ans:['Republic']},
+      {q:'The first Roman Emperor, who came to power in 27 BC.',ans:['Augustus']},
+      {q:'Roman general and dictator assassinated in 44 BC.',ans:['Julius Caesar']},
+      {q:'Council of ~300 wealthy nobles who advised the emperor.',ans:['Senate']},
+      {q:'Wealthy upper-class Roman citizen.',ans:['Patrician']},
+      {q:'Stone channel built to carry fresh water into Roman cities.',ans:['Aqueduct']},
+      {q:'Main unit of the Roman army (~5,000 soldiers).',ans:['Legion']},
+      {q:'Great amphitheatre in Rome that could hold ~50,000 spectators.',ans:['Colosseum']},
+    ]
+  },
+  exploration:{
+    label:'Age of Exploration',
+    questions:[
+      {q:'First European to sail around Africa to reach India (1498).',ans:['Vasco da Gama']},
+      {q:'Explorer who reached the Americas in 1492, sailing for Spain.',ans:['Christopher Columbus']},
+      {q:'Led the first circumnavigation of the globe (1519–1522).',ans:['Ferdinand Magellan']},
+      {q:'Lightweight Portuguese ship ideal for ocean exploration.',ans:['Caravel']},
+      {q:'1494 treaty dividing the New World between Spain and Portugal.',ans:['Treaty of Tordesillas']},
+      {q:'Spanish conquistador who conquered the Aztec Empire of Mexico.',ans:['Hernán Cortés']},
+      {q:'Sea route used to transport enslaved Africans to the Americas.',ans:['Middle Passage']},
+      {q:'Spanish conquistador who conquered the Inca Empire of Peru.',ans:['Francisco Pizarro']},
+    ]
+  },
+  earlyChristian:{
+    label:'Early Christian Ireland',
+    questions:[
+      {q:'Iron Age people who settled in Ireland around 500 BC.',ans:['Celts']},
+      {q:'Celtic priests who performed religious ceremonies and kept laws.',ans:['Druids']},
+      {q:'Circular earthen enclosure used as a Celtic farm and home.',ans:['Ringfort']},
+      {q:'Patron saint of Ireland who brought Christianity (~432 AD).',ans:['St Patrick']},
+      {q:'Famous illuminated gospel created by monks around 800 AD.',ans:['Book of Kells']},
+      {q:'Writing material made from specially prepared calf skin.',ans:['Vellum']},
+      {q:'A beautifully hand-decorated religious book made by monks.',ans:['Illuminated manuscript']},
+      {q:'Tall narrow stone tower at a monastery — used as bell tower and refuge.',ans:['Round tower']},
+    ]
+  },
+  renaissance:{
+    label:'Renaissance',
+    questions:[
+      {q:'French word meaning "rebirth" — a period of cultural revival in Europe.',ans:['Renaissance']},
+      {q:'Italian genius who painted the Mona Lisa.',ans:['Leonardo da Vinci']},
+      {q:'Italian artist who painted the Sistine Chapel ceiling.',ans:['Michelangelo']},
+      {q:'Invented the printing press with moveable type around 1450.',ans:['Gutenberg']},
+      {q:'Artistic technique that creates a 3D appearance on a flat surface.',ans:['Perspective']},
+      {q:'Leonardo\'s technique — soft blurring of outlines to create a hazy effect.',ans:['Sfumato']},
+      {q:'Proposed the heliocentric theory — Earth orbits the Sun.',ans:['Copernicus']},
+      {q:'Flemish scientist who made 270 accurate drawings of the human body.',ans:['Vesalius']},
+    ]
+  },
+};
+
+// ── Match sets ──
+const matchSetsData=[
+  {label:'Dating Methods',colL:'Method',colR:'What it uses',pairs:[
+    {left:'Radiocarbon dating',right:'Carbon-14 decay'},
+    {left:'Dendrochronology',right:'Tree rings'},
+    {left:'Stratigraphy',right:'Soil layers'},
+    {left:'DNA testing',right:'Bones & teeth'},
+    {left:'Excavation',right:'Careful digging'},
+  ]},
+  {label:'Middle Ages',colL:'Term',colR:'Meaning',pairs:[
+    {left:'Trebuchet',right:'Siege catapult'},
+    {left:'Portcullis',right:'Iron castle gate'},
+    {left:'Tithe',right:'10% Church tax'},
+    {left:'Serf',right:'Unfree peasant'},
+    {left:'Guild',right:'Trade organisation'},
+    {left:'Chivalry',right:"Knights' code"},
+  ]},
+  {label:'Age of Exploration',colL:'Person / Term',colR:'Famous for',pairs:[
+    {left:'Vasco da Gama',right:'First to India'},
+    {left:'Caravel',right:'New ocean ship'},
+    {left:'Treaty of Tordesillas',right:'Divided new lands'},
+    {left:'Middle Passage',right:'Africa to Americas'},
+    {left:'Hernán Cortés',right:'Conquered Aztecs'},
+    {left:'Francisco Pizarro',right:'Conquered Incas'},
+  ]},
+  {label:'Renaissance',colL:'Term',colR:'Meaning',pairs:[
+    {left:'Sfumato',right:'Soft blending'},
+    {left:'Chiaroscuro',right:'Light and shadow'},
+    {left:'Perspective',right:'Depth technique'},
+    {left:'Vernacular',right:'Everyday language'},
+    {left:'Vesalius',right:'Human anatomy'},
+    {left:'Gutenberg',right:'Printing press'},
+  ]},
+];
+
+// ── Practice data (fill-in-the-blank) ──
+const pracData={
+  sources:{
+    label:'Sources & Evidence',
+    intro:'Fill in the missing word to complete each definition.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'Evidence from the time being studied is a ___ source.',hint:'p…',ans:['primary']},
+      {q:'A source written after the event by someone not there is a ___ source.',hint:'s…',ans:['secondary']},
+      {q:'The study of the past through physical remains is called ___.',hint:'arch…',ans:['archaeology']},
+      {q:'An object made or used by people in the past is an ___.',hint:'arte…',ans:['artefact','artifact']},
+      {q:'Dating using Carbon-14 is called ___ dating.',hint:'radio…',ans:['radiocarbon','carbon']},
+      {q:'Dating by counting tree rings is called ___.',hint:'dendro…',ans:['dendrochronology']},
+      {q:'When a source unfairly favours one side this is called ___.',hint:'b…',ans:['bias']},
+      {q:'Careful digging to uncover buried remains is called ___.',hint:'excav…',ans:['excavation']},
+    ]
+  },
+  middleAges:{
+    label:'The Middle Ages',
+    intro:'Fill in the missing word to complete each statement.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'The social system where land was exchanged for loyalty was the ___ system.',hint:'feud…',ans:['feudal']},
+      {q:'An unfree peasant bound to the land was called a ___.',hint:'s…',ans:['serf']},
+      {q:'10% of income paid to the Church was called a ___.',hint:'ti…',ans:['tithe']},
+      {q:'The code of conduct for knights was called ___.',hint:'chiv…',ans:['chivalry']},
+      {q:'Holy wars to recapture Jerusalem were called the ___.',hint:'Cru…',ans:['Crusades','crusades']},
+      {q:'The plague that killed 1/3 of Europe was called the ___ Death.',hint:'Bl…',ans:['Black','black']},
+      {q:'A large siege catapult was called a ___.',hint:'treb…',ans:['trebuchet']},
+      {q:'An organisation of craftsmen in a medieval town was called a ___.',hint:'g…',ans:['guild']},
+    ]
+  },
+  rome:{
+    label:'Ancient Rome',
+    intro:'Fill in the missing word to complete each statement.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'The period of elected government in Rome was called the ___.',hint:'Rep…',ans:['Republic','republic']},
+      {q:'The first Roman Emperor was ___.',hint:'Aug…',ans:['Augustus']},
+      {q:'The Roman council of wealthy nobles was called the ___.',hint:'Sen…',ans:['Senate','senate']},
+      {q:'Stone channels carrying water to Roman cities were called ___.',hint:'aq…',ans:['aqueducts','aqueduct']},
+      {q:'The main unit of the Roman army was called a ___.',hint:'leg…',ans:['legion']},
+      {q:'The great amphitheatre in Rome is called the ___.',hint:'Col…',ans:['Colosseum','colosseum']},
+      {q:'Julius Caesar was assassinated in ___ BC.',hint:'4…',ans:['44']},
+      {q:'Wealthy upper-class Romans were called ___.',hint:'Pat…',ans:['Patricians','patricians','patrician']},
+    ]
+  },
+  exploration:{
+    label:'Age of Exploration',
+    intro:'Fill in the missing word to complete each statement.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'The first European to sail to India was ___.',hint:'Vasco…',ans:['Vasco da Gama']},
+      {q:'Columbus reached the Americas in ___.',hint:'14…',ans:['1492']},
+      {q:'The lightweight Portuguese exploration ship was called a ___.',hint:'car…',ans:['caravel']},
+      {q:'The 1494 treaty dividing the New World was the Treaty of ___.',hint:'Tor…',ans:['Tordesillas']},
+      {q:'Spanish soldier-explorers in the Americas were called ___.',hint:'con…',ans:['conquistadors','conquistadores','conquistador']},
+      {q:'Cortés conquered the ___ Empire of Mexico.',hint:'Az…',ans:['Aztec','aztec']},
+      {q:'The sea route for transporting enslaved Africans was the ___ Passage.',hint:'Mid…',ans:['Middle','middle']},
+      {q:'Pizarro conquered the ___ Empire of Peru.',hint:'Inc…',ans:['Inca','inca']},
+    ]
+  },
+  earlyChristian:{
+    label:'Early Christian Ireland',
+    intro:'Fill in the missing word to complete each statement.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'Iron Age people who settled in Ireland around 500 BC were called the ___.',hint:'Cel…',ans:['Celts','celts']},
+      {q:'Celtic priests were called ___.',hint:'Dr…',ans:['Druids','druids']},
+      {q:'A circular Celtic farm enclosure was called a ___.',hint:'ring…',ans:['ringfort']},
+      {q:'Ireland\'s patron saint is ___.',hint:'St P…',ans:['St Patrick','Saint Patrick','Patrick']},
+      {q:'The famous illuminated gospel is called the Book of ___.',hint:'K…',ans:['Kells']},
+      {q:'Writing material made from calf skin was called ___.',hint:'vel…',ans:['vellum']},
+      {q:'Tall narrow stone towers at monasteries were called ___ towers.',hint:'round…',ans:['round','Round']},
+      {q:'Monks who copied books by hand were called ___.',hint:'scr…',ans:['scribes','scribe']},
+    ]
+  },
+  renaissance:{
+    label:'Renaissance',
+    intro:'Fill in the missing word to complete each statement.',
+    type:'blanks',
+    total:8,
+    items:[
+      {q:'"Renaissance" is a French word meaning ___.',hint:'reb…',ans:['rebirth','re-birth']},
+      {q:'The Italian genius who painted the Mona Lisa was ___.',hint:'Leo…',ans:['Leonardo da Vinci','Leonardo','da Vinci']},
+      {q:'The artist who painted the Sistine Chapel ceiling was ___.',hint:'Mich…',ans:['Michelangelo']},
+      {q:'The printing press was invented by ___.',hint:'Gut…',ans:['Gutenberg']},
+      {q:'The technique of creating a 3D effect on a flat surface is ___.',hint:'persp…',ans:['perspective']},
+      {q:'Leonardo\'s technique of softening outlines is called ___.',hint:'sfum…',ans:['sfumato']},
+      {q:'The proposal that Earth orbits the Sun is the ___ theory.',hint:'helio…',ans:['heliocentric','Heliocentric']},
+      {q:'The Flemish scientist who drew 270 human anatomy diagrams was ___.',hint:'Ves…',ans:['Vesalius']},
+    ]
+  },
+};
+
+// ── Timeline data ──
+const timelineSetsData=[
+  {label:'Ancient & Medieval',events:[
+    {text:'Celts settle in Ireland',year:-500},
+    {text:'Julius Caesar assassinated',year:-44},
+    {text:'Augustus becomes first Roman Emperor',year:-27},
+    {text:'St Patrick brings Christianity to Ireland',year:432},
+    {text:'Fall of the Western Roman Empire',year:476},
+    {text:'Book of Kells created',year:800},
+    {text:'Black Death strikes Europe',year:1347},
+  ]},
+  {label:'Exploration & Renaissance',events:[
+    {text:'Gutenberg invents the printing press',year:1450},
+    {text:'Columbus reaches the Americas',year:1492},
+    {text:'Treaty of Tordesillas',year:1494},
+    {text:'Vasco da Gama reaches India',year:1498},
+    {text:'Cortés conquers the Aztec Empire',year:1521},
+    {text:'Magellan completes circumnavigation of the globe',year:1522},
+    {text:'Vesalius publishes his anatomy work',year:1543},
+  ]},
+];
+
+// ═══════════════════════════════════════════════════════════
+// FLASHCARDS
+// ═══════════════════════════════════════════════════════════
+let fcDeck=[], fcIdx=0;
+const fcCard=document.getElementById('fc-card');
+const fcSetsEl=document.getElementById('fc-sets');
+
+Object.keys(fcDecks).forEach((key,i)=>{
+  const btn=document.createElement('button');
+  btn.className='fc-set-btn'+(i===0?' active':'');
+  btn.textContent=key;
+  btn.dataset.fcKey=key;
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.fc-set-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); loadFcDeck(key);
+  });
+  fcSetsEl.appendChild(btn);
+});
+
+function loadFcDeck(key){
+  fcDeck=[...fcDecks[key]]; fcIdx=0;
+  fcCard.classList.remove('flipped');
+  renderFc();
+}
+
+function renderFc(){
+  const c=fcDeck[fcIdx];
+  document.getElementById('fc-front-word').textContent=c.front;
+  document.getElementById('fc-front-sub').textContent=c.frontSub||'';
+  document.getElementById('fc-back-word').textContent=c.back;
+  document.getElementById('fc-back-sub').textContent=c.backSub||'';
+  document.getElementById('fc-counter').textContent=`${fcIdx+1} / ${fcDeck.length}`;
+  document.getElementById('fc-prog-fill').style.width=`${((fcIdx+1)/fcDeck.length)*100}%`;
+  fcCard.classList.remove('flipped');
+}
+
+function flipCard(){fcCard.classList.toggle('flipped');}
+function fcMove(dir){fcIdx=(fcIdx+dir+fcDeck.length)%fcDeck.length; renderFc();}
+
+loadFcDeck('Sources & Evidence');
+
+// ═══════════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════════
+const mcqSetsEl=document.getElementById('mcq-sets');
+const mcqSetKeys=['historians','middleAges','rome','exploration','earlyChristian','renaissance'];
+let mcqCurrent='historians', mcqIdx=0, mcqScore=0, mcqAnswered=false, mcqPool=[];
+
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+
+mcqSetKeys.forEach((key,i)=>{
+  const btn=document.createElement('button');
+  btn.className='mcq-set-btn'+(i===0?' active':'');
+  btn.textContent=quizData[key].label;
+  btn.dataset.quizKey=key;
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.mcq-set-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); loadMcq(key);
+  });
+  mcqSetsEl.appendChild(btn);
+});
+
+function buildMcqOpts(correctAns,allAns){
+  const seen=new Set([norm(correctAns[0])]);
+  const wrong=[];
+  allAns.filter(a=>!seen.has(norm(a[0]))).forEach(a=>{
+    if(!seen.has(norm(a[0]))){seen.add(norm(a[0]));wrong.push(a[0]);}
+  });
+  const picked=wrong.sort(()=>Math.random()-.5).slice(0,3);
+  const opts=[correctAns[0],...picked].sort(()=>Math.random()-.5);
+  const ansIdx=opts.findIndex(o=>norm(o)===norm(correctAns[0]));
+  return {opts,ansIdx};
+}
+
+function loadMcq(key){
+  mcqCurrent=key; mcqIdx=0; mcqScore=0; mcqAnswered=false;
+  mcqPool=shuffle(quizData[key].questions.slice());
+  document.getElementById('mcq-title').textContent=quizData[key].label;
+  renderMcq();
+}
+
+function renderMcq(){
+  const q=mcqPool[mcqIdx];
+  const total=mcqPool.length;
+  mcqAnswered=false;
+  document.getElementById('mcq-fb').textContent='';
+  document.getElementById('mcq-next').style.display='none';
+  document.getElementById('mcq-prog-txt').textContent=`${mcqIdx+1} / ${total}`;
+  document.getElementById('mcq-prog-fill').style.width=`${((mcqIdx+1)/total)*100}%`;
+  document.getElementById('mcq-q').textContent=q.q;
+  const allAns=quizData[mcqCurrent].questions.map(qq=>qq.ans);
+  const {opts,ansIdx}=buildMcqOpts(q.ans,allAns);
+  const optsEl=document.getElementById('mcq-opts');
+  optsEl.innerHTML='';
+  opts.forEach((opt,i)=>{
+    const btn=document.createElement('button');
+    btn.className='mcq-opt'; btn.textContent=opt;
+    btn.addEventListener('click',()=>answerMcq(i,ansIdx,opts[ansIdx]));
+    optsEl.appendChild(btn);
+  });
+}
+
+function answerMcq(chosen,correct,correctText){
+  if(mcqAnswered) return;
+  mcqAnswered=true;
+  const btns=document.getElementById('mcq-opts').querySelectorAll('.mcq-opt');
+  btns.forEach(b=>b.disabled=true);
+  if(chosen===correct){
+    btns[chosen].classList.add('correct'); mcqScore++;
+    document.getElementById('mcq-fb').textContent='Correct! ✓';
+  } else {
+    btns[chosen].classList.add('wrong');
+    btns[correct].classList.add('correct');
+    document.getElementById('mcq-fb').textContent='Answer: '+correctText;
+  }
+  const nxt=document.getElementById('mcq-next');
+  nxt.style.display='inline-flex';
+  nxt.textContent=mcqIdx<mcqPool.length-1?'Next →':'See results';
+}
+
+document.getElementById('mcq-next').addEventListener('click',()=>{
+  mcqIdx++;
+  if(mcqIdx<mcqPool.length){renderMcq();return;}
+  const pct=Math.round(mcqScore/mcqPool.length*100);
+  document.getElementById('mcq-body').innerHTML=`<div class="mcq-result">
+    <h2>${mcqScore} / ${mcqPool.length}</h2>
+    <p>${pct===100?'🎉 Perfect score!':pct>=70?'Well done — almost there!':'Keep studying — you\'ll get there!'}</p>
+    <div style="display:flex;gap:.5rem;justify-content:center;">
+      <button class="btn btn-ghost" onclick="loadMcq('${mcqCurrent}')">Retry</button>
+    </div>
+  </div>`;
+  document.getElementById('mcq-next').style.display='none';
+  document.getElementById('mcq-fb').textContent='';
+});
+
+loadMcq('historians');
+
+// ═══════════════════════════════════════════════════════════
+// MATCHING GAME
+// ═══════════════════════════════════════════════════════════
+const matchSetsEl=document.getElementById('match-sets');
+let matchPairs=[], matchSelected=null, matchMatched=0;
+
+matchSetsData.forEach((s,i)=>{
+  const btn=document.createElement('button');
+  btn.className='match-set-btn'+(i===0?' active':'');
+  btn.textContent=s.label;
+  btn.dataset.matchIdx=String(i);
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.match-set-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); loadMatch(s);
+  });
+  matchSetsEl.appendChild(btn);
+});
+
+function loadMatch(setDef){
+  matchSelected=null; matchMatched=0;
+  matchPairs=setDef.pairs.map(p=>({...p,matched:false}));
+  const shuffledRight=[...matchPairs].sort(()=>Math.random()-.5);
+  document.getElementById('match-score').textContent=`0 / ${matchPairs.length} matched`;
+  const area=document.getElementById('match-area');
+  area.innerHTML='';
+  const grid=document.createElement('div'); grid.className='match-grid';
+  const leftCol=document.createElement('div'); leftCol.className='match-col';
+  const rightCol=document.createElement('div'); rightCol.className='match-col';
+  const lH=document.createElement('h3'); lH.textContent=setDef.colL||'Term';
+  const rH=document.createElement('h3'); rH.textContent=setDef.colR||'Meaning';
+  leftCol.appendChild(lH); rightCol.appendChild(rH);
+  matchPairs.forEach((p,i)=>{
+    const lt=document.createElement('div');
+    lt.className='match-tile'; lt.dataset.side='left'; lt.dataset.idx=i;
+    lt.textContent=p.left;
+    lt.addEventListener('click',()=>matchClick(lt));
+    leftCol.appendChild(lt);
+  });
+  shuffledRight.forEach(p=>{
+    const idx=matchPairs.findIndex(mp=>mp.right===p.right);
+    const rt=document.createElement('div');
+    rt.className='match-tile'; rt.dataset.side='right'; rt.dataset.idx=idx;
+    rt.textContent=p.right;
+    rt.addEventListener('click',()=>matchClick(rt));
+    rightCol.appendChild(rt);
+  });
+  grid.appendChild(leftCol); grid.appendChild(rightCol);
+  area.appendChild(grid);
+}
+
+function matchClick(tile){
+  if(tile.classList.contains('matched')) return;
+  if(!matchSelected){tile.classList.add('selected');matchSelected=tile;return;}
+  if(tile===matchSelected){tile.classList.remove('selected');matchSelected=null;return;}
+  if(tile.dataset.side===matchSelected.dataset.side){
+    matchSelected.classList.remove('selected');
+    tile.classList.add('selected'); matchSelected=tile; return;
+  }
+  const idxA=parseInt(matchSelected.dataset.idx);
+  const idxB=parseInt(tile.dataset.idx);
+  if(idxA===idxB){
+    matchSelected.classList.remove('selected'); matchSelected.classList.add('matched');
+    tile.classList.add('matched'); matchMatched++;
+    document.getElementById('match-score').textContent=`${matchMatched} / ${matchPairs.length} matched`;
+    matchSelected=null;
+    if(matchMatched===matchPairs.length){
+      setTimeout(()=>{
+        document.getElementById('match-area').innerHTML=`<div class="match-complete">
+          <h3>All matched! 🎉</h3>
+          <p>You matched all ${matchPairs.length} pairs correctly.</p>
+          <button class="btn" onclick="document.querySelector('.match-set-btn.active').click()">Play again</button>
+        </div>`;
+      },400);
+    }
+  } else {
+    const a=matchSelected,b=tile;
+    a.classList.add('wrong'); b.classList.add('wrong');
+    setTimeout(()=>{a.classList.remove('wrong','selected');b.classList.remove('wrong');matchSelected=null;},500);
+  }
+}
+
+loadMatch(matchSetsData[0]);
+
+// ═══════════════════════════════════════════════════════════
+// PRACTICE
+// ═══════════════════════════════════════════════════════════
+const pracSetKeys=['sources','middleAges','rome','exploration','earlyChristian','renaissance'];
+const pracSetsEl=document.getElementById('prac-sets');
+let currentPrac='sources';
+
+pracSetKeys.forEach((key,i)=>{
+  const btn=document.createElement('button');
+  btn.className='prac-set-btn'+(i===0?' active':'');
+  btn.textContent=pracData[key].label;
+  btn.dataset.pracKey=key;
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.prac-set-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); currentPrac=key; renderPrac(key);
+  });
+  pracSetsEl.appendChild(btn);
+});
+
+function countPrac(key){
+  const ex=pracData[key];
+  if(ex.type==='blanks'){
+    return ex.items.filter((_,i)=>{const v=S.inputs[`${key}_${i}`];return v&&chk(v,ex.items[i].ans);}).length;
+  }
+  return 0;
+}
+
+function renderPrac(key){
+  const cont=document.getElementById('prac-content');
+  cont.innerHTML='';
+  const ex=pracData[key];
+  const score=countPrac(key);
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;flex-wrap:wrap;gap:.5rem;';
+  hdr.innerHTML=`<span class="prac-intro">${ex.intro}</span>
+    <div style="display:flex;gap:.5rem;align-items:center;">
+      <span id="prac-score-${key}" style="font-size:.75rem;color:var(--muted)">${score} / ${ex.total}</span>
+      <button class="reset-btn" onclick="resetPrac('${key}')">Reset</button>
+    </div>`;
+  cont.appendChild(hdr);
+  renderBlanksTable(key,ex,cont);
+}
+
+function renderBlanksTable(key,ex,cont){
+  const wrap=document.createElement('div'); wrap.className='tbl-ex';
+  const tbl=document.createElement('table');
+  tbl.innerHTML=`<tr><th>#</th><th>Question</th><th>Answer</th></tr>`;
+  ex.items.forEach((row,i)=>{
+    const storeKey=`${key}_${i}`;
+    const saved=S.inputs[storeKey]; const wasOk=saved&&chk(saved,row.ans);
+    const tr=document.createElement('tr');
+    const numTd=document.createElement('td');
+    numTd.style.cssText='color:var(--muted);font-size:.75rem;text-align:center;width:2rem;';
+    numTd.textContent=i+1;
+    tr.appendChild(numTd);
+    const qTd=document.createElement('td');
+    qTd.style.cssText='font-size:.83rem;line-height:1.5;';
+    qTd.innerHTML=`${row.q}<br><span style="font-size:.7rem;color:var(--muted)">Hint: ${row.hint}</span>`;
+    tr.appendChild(qTd);
+    const td=document.createElement('td');
+    td.style.cssText='white-space:nowrap;';
+    const inp=document.createElement('input'); inp.type='text';
+    inp.className='q-inp'+(wasOk?' ok':saved?' err':'');
+    inp.value=saved||''; inp.autocomplete='off'; inp.spellcheck=false;
+    if(wasOk) inp.disabled=true;
+    td.appendChild(inp);
+    if(saved&&!wasOk){
+      const fb=document.createElement('div');fb.className='q-fb';fb.textContent=row.ans[0];td.appendChild(fb);
+    }
+    tr.appendChild(td); tbl.appendChild(tr);
+    function attempt(){
+      const v=inp.value.trim(); if(!v)return;
+      S.inputs[storeKey]=v; const ok=chk(v,row.ans);
+      inp.className='q-inp '+(ok?'ok':'err');
+      let fb=td.querySelector('.q-fb');
+      if(ok){if(fb)fb.remove();inp.disabled=true;}
+      else{if(!fb){fb=document.createElement('div');fb.className='q-fb';td.appendChild(fb);}fb.textContent=row.ans[0];}
+      const sc=document.getElementById(`prac-score-${key}`);
+      if(sc)sc.textContent=`${countPrac(key)} / ${ex.total}`;
+      saveS(S); updateProgress();
+    }
+    inp.addEventListener('blur',attempt);
+    inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();attempt();}});
+  });
+  wrap.appendChild(tbl); cont.appendChild(wrap);
+}
+
+function resetPrac(key){
+  if(!confirm('Reset this exercise?')) return;
+  const ex=pracData[key];
+  ex.items.forEach((_,i)=>delete S.inputs[`${key}_${i}`]);
+  saveS(S); renderPrac(key); updateProgress();
+}
+
+renderPrac('sources');
+
+// ═══════════════════════════════════════════════════════════
+// TIMELINE (drag-drop)
+// ═══════════════════════════════════════════════════════════
+const tlSetsEl=document.getElementById('tl-sets');
+let tlSetDef=null, tlPlaced=0;
+
+timelineSetsData.forEach((s,i)=>{
+  const btn=document.createElement('button');
+  btn.className='tl-set-btn'+(i===0?' active':'');
+  btn.textContent=s.label;
+  btn.dataset.tlIdx=String(i);
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tl-set-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); loadTimeline(s);
+  });
+  tlSetsEl.appendChild(btn);
+});
+
+function fmtYear(y){ return y<0?Math.abs(y)+' BC':y+' AD'; }
+
+function loadTimeline(setDef){
+  tlSetDef=setDef; tlPlaced=0;
+  const total=setDef.events.length;
+  document.getElementById('tl-count').textContent=`0 / ${total} placed`;
+
+  // ── Build timeline nodes (sorted) ──
+  const sorted=[...setDef.events].sort((a,b)=>a.year-b.year);
+  const nodesEl=document.getElementById('tl-nodes');
+  nodesEl.innerHTML='';
+  // Remove any previous complete message
+  const prev=document.getElementById('tl-visual').nextElementSibling;
+  if(prev&&prev.querySelector('.tl-complete')) prev.remove();
+
+  sorted.forEach(ev=>{
+    const node=document.createElement('div');
+    node.className='tl-node';
+    node.innerHTML=
+      `<div class="tl-node-dot"></div>`+
+      `<div class="tl-node-year">${fmtYear(ev.year)}</div>`+
+      `<div class="tl-node-drop" data-year="${ev.year}">Drop here</div>`;
+    const drop=node.querySelector('.tl-node-drop');
+
+    drop.addEventListener('dragover', e=>{ e.preventDefault(); drop.classList.add('drag-over'); });
+    drop.addEventListener('dragleave', ()=>drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e=>{
+      e.preventDefault();
+      drop.classList.remove('drag-over');
+      if(drop.classList.contains('filled')) return;
+      const cardYear=parseInt(e.dataTransfer.getData('text/plain'));
+      const nodeYear=parseInt(drop.dataset.year);
+      const card=document.querySelector(`.tl-card[data-year="${cardYear}"]`);
+      if(!card) return;
+      if(cardYear===nodeYear){
+        drop.textContent=card.textContent;
+        drop.classList.add('filled');
+        card.classList.add('placed');
+        node.classList.add('filled');
+        tlPlaced++;
+        document.getElementById('tl-count').textContent=`${tlPlaced} / ${total} placed`;
+        if(tlPlaced===total) setTimeout(showTlComplete,400);
+      } else {
+        drop.classList.add('wrong-flash');
+        setTimeout(()=>drop.classList.remove('wrong-flash'),450);
+      }
+    });
+    nodesEl.appendChild(node);
+  });
+
+  // ── Build tray (shuffled) ──
+  const trayEl=document.getElementById('tl-tray');
+  trayEl.innerHTML='';
+  [...setDef.events].sort(()=>Math.random()-.5).forEach(ev=>{
+    const card=document.createElement('div');
+    card.className='tl-card';
+    card.draggable=true;
+    card.dataset.year=ev.year;
+    card.textContent=ev.text;
+    card.addEventListener('dragstart', e=>{
+      e.dataTransfer.setData('text/plain',String(ev.year));
+      card.classList.add('dragging');
+    });
+    card.addEventListener('dragend', ()=>card.classList.remove('dragging'));
+    trayEl.appendChild(card);
+  });
+}
+
+function showTlComplete(){
+  const total=tlSetDef.events.length;
+  document.getElementById('tl-tray').innerHTML='';
+  const vis=document.getElementById('tl-visual');
+  const comp=document.createElement('div'); comp.className='tl-complete';
+  comp.innerHTML=`<h3>Perfect timeline!</h3>`+
+    `<p>You placed all ${total} events on the correct year.</p>`+
+    `<button class="btn" onclick="document.querySelector('.tl-set-btn.active').click()">Try again</button>`;
+  vis.insertAdjacentElement('afterend',comp);
+}
+
+loadTimeline(timelineSetsData[0]);
+
+// ═══════════════════════════════════════════════════════════
+// PROGRESS
+// ═══════════════════════════════════════════════════════════
+const progMeta=pracSetKeys.map(k=>({key:k,label:pracData[k].label,total:pracData[k].total}));
+
+function updateProgress(){
+  const prog=document.getElementById('prog-list');
+  prog.innerHTML='';
+  let tot=0, cor=0;
+  progMeta.forEach(m=>{
+    const c=countPrac(m.key); cor+=c; tot+=m.total;
+    const pct=Math.round(c/m.total*100);
+    const item=document.createElement('div'); item.className='prog-item';
+    item.innerHTML=`<div class="prog-row"><span class="prog-label">${m.label}</span><span class="prog-pct">${c} / ${m.total}</span></div>
+      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>`;
+    prog.appendChild(item);
+  });
+  document.getElementById('hs-score').textContent=`${cor} / ${tot}`;
+  document.getElementById('sb-score').textContent=`Score: ${cor} / ${tot}`;
+  renderStreak();
+}
+updateProgress();
+
+// ═══════════════════════════════════════════════════════════
+// TOPIC SYSTEM
+// ═══════════════════════════════════════════════════════════
+const topicDefs=[
+  {id:'all',label:'All Topics',iconId:'books',desc:'Study all six topics',
+    fc:['Sources & Evidence','Archaeology','Middle Ages','Ancient Rome','Age of Exploration','Early Christian Ireland','Renaissance'],
+    quiz:['historians','middleAges','rome','exploration','earlyChristian','renaissance'],
+    matchIdx:[0,1,2,3],
+    prac:['sources','middleAges','rome','exploration','earlyChristian','renaissance']},
+  {id:'historians',label:'How Historians Work',iconId:'chart',desc:'Sources, evidence & dating',
+    fc:['Sources & Evidence','Archaeology'],
+    quiz:['historians'],matchIdx:[0],prac:['sources']},
+  {id:'middleAges',label:'The Middle Ages',iconId:'rewind',desc:'Feudal system & castle life',
+    fc:['Middle Ages'],
+    quiz:['middleAges'],matchIdx:[1],prac:['middleAges']},
+  {id:'rome',label:'Ancient Rome',iconId:'globe',desc:'Republic, Empire & legacy',
+    fc:['Ancient Rome'],
+    quiz:['rome'],matchIdx:[],prac:['rome']},
+  {id:'exploration',label:'Age of Exploration',iconId:'compass',desc:'Explorers, ships & new worlds',
+    fc:['Age of Exploration'],
+    quiz:['exploration'],matchIdx:[2],prac:['exploration']},
+  {id:'earlyChristian',label:'Early Christian Ireland',iconId:'users',desc:'Celts, monks & manuscripts',
+    fc:['Early Christian Ireland'],
+    quiz:['earlyChristian'],matchIdx:[],prac:['earlyChristian']},
+  {id:'renaissance',label:'Renaissance',iconId:'pencil',desc:'Art, science & new thinking',
+    fc:['Renaissance'],
+    quiz:['renaissance'],matchIdx:[3],prac:['renaissance']},
+];
+let currentTopic=topicDefs[0];
+
+function buildTopicPanel(){
+  const grid=document.getElementById('topic-grid');
+  grid.innerHTML='';
+  topicDefs.forEach(t=>{
+    const card=document.createElement('button');
+    card.className='topic-card'+(t.id==='all'?' topic-all':'');
+    const dots=[
+      t.fc.length      ?'<span class="tc-dot">FC</span>':'',
+      t.quiz.length    ?'<span class="tc-dot">Quiz</span>':'',
+      t.matchIdx.length?'<span class="tc-dot">Match</span>':'',
+      t.prac.length    ?'<span class="tc-dot">Prac</span>':'',
+    ].filter(Boolean).join('');
+    card.innerHTML=`<div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-${t.iconId}"/></svg></div><div class="tc-label">${t.label}</div><div class="tc-desc">${t.desc}</div>${dots?`<div class="tc-dots">${dots}</div>`:''}`;
+    card.addEventListener('click',()=>selectTopic(t));
+    grid.appendChild(card);
+  });
+}
+
+function updateTopicLabel(t){
+  const sbl=document.getElementById('sb-topic-label');
+  if(sbl)sbl.textContent=t.label;
+  const tml=document.getElementById('topic-mob-label');
+  if(tml)tml.textContent=t.label;
+  document.querySelectorAll('.topic-card').forEach((c,i)=>c.classList.toggle('topic-active',topicDefs[i]===t));
+}
+
+function filterSetBtns(sel,allowed,keyAttr,onActivate){
+  const btns=[...document.querySelectorAll(sel)];
+  const active=btns.find(b=>b.classList.contains('active'));
+  btns.forEach(b=>{b.style.display=allowed.includes(b.dataset[keyAttr])?'':'none';});
+  const vis=btns.filter(b=>b.style.display!=='none');
+  if(active&&vis.includes(active)) return;
+  btns.forEach(b=>b.classList.remove('active'));
+  if(vis.length){vis[0].classList.add('active');onActivate(vis[0]);}
+}
+
+function filterMatchBtns(allowedIdx,onActivate){
+  const btns=[...document.querySelectorAll('.match-set-btn')];
+  const active=btns.find(b=>b.classList.contains('active'));
+  btns.forEach((b,i)=>{b.style.display=allowedIdx.includes(i)?'':'none';});
+  const vis=btns.filter(b=>b.style.display!=='none');
+  if(active&&vis.includes(active)) return;
+  btns.forEach(b=>b.classList.remove('active'));
+  if(vis.length){vis[0].classList.add('active');onActivate(vis[0],btns.indexOf(vis[0]));}
+}
+
+function updateNoContent(mode,hasContent){
+  let msg=document.getElementById('empty-'+mode);
+  if(!msg){
+    msg=document.createElement('p'); msg.id='empty-'+mode; msg.className='no-content';
+    msg.textContent='No activities for this topic in this mode — pick a different topic or switch modes.';
+    document.getElementById('panel-'+mode).prepend(msg);
+  }
+  msg.style.display=hasContent?'none':'';
+}
+
+function applyTopic(t){
+  currentTopic=t;
+  updateTopicLabel(t);
+  filterSetBtns('.fc-set-btn',t.fc,'fcKey',btn=>loadFcDeck(btn.dataset.fcKey));
+  filterSetBtns('.mcq-set-btn',t.quiz,'quizKey',btn=>loadMcq(btn.dataset.quizKey));
+  filterMatchBtns(t.matchIdx,(btn,i)=>loadMatch(matchSetsData[i]));
+  filterSetBtns('.prac-set-btn',t.prac,'pracKey',btn=>{currentPrac=btn.dataset.pracKey;renderPrac(btn.dataset.pracKey);});
+  updateNoContent('flashcards',t.fc.length>0);
+  updateNoContent('quiz',t.quiz.length>0);
+  updateNoContent('match',t.matchIdx.length>0);
+  updateNoContent('practice',t.prac.length>0);
+}
+
+function selectTopic(t){
+  applyTopic(t);
+  const tn=document.getElementById('sb-topic-name');
+  if(tn)tn.textContent=t.label;
+  buildActivityGrid(t);
+  buildSidebarModes(t);
+  buildSidebarTopicList();
+  setMode('activities');
+}
+
+function buildActivityGrid(t){
+  const el=document.getElementById('act-title');
+  if(el)el.textContent=t.label;
+  const de=document.getElementById('act-desc');
+  if(de)de.textContent=t.desc||'';
+
+  // Timeline is global (not per-topic) — always available
+  const hasTl=typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0;
+
+  const MODES=[
+    {id:'flashcards',label:'Flashcards',icon:'cards',avail:t.fc.length>0,
+     count:t.fc.length?`${t.fc.length} deck${t.fc.length!==1?'s':''}`:'No content for this topic'},
+    {id:'quiz',label:'Quiz',icon:'quiz',avail:t.quiz.length>0,
+     count:t.quiz.length?`${t.quiz.length} set${t.quiz.length!==1?'s':''}`:'No content for this topic'},
+    {id:'match',label:'Match',icon:'match',avail:t.matchIdx.length>0,
+     count:t.matchIdx.length?'Pair matching':'No content for this topic'},
+    {id:'practice',label:'Practice',icon:'pencil',avail:t.prac.length>0,
+     count:t.prac.length?'Fill-in exercises':'No content for this topic'},
+    {id:'timeline',label:'Timeline',icon:'clock',avail:hasTl,
+     count:hasTl?'Drag chronological order':'No content for this topic'},
+  ];
+
+  const grid=document.getElementById('act-grid');
+  grid.innerHTML='';
+  MODES.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.className='act-tile'+(m.avail?'':' act-tile--off');
+    btn.innerHTML=`<span class="at-icon"><svg class="icon" style="width:28px;height:28px" aria-hidden="true"><use href="#icon-${m.icon}"/></svg></span><span class="at-name">${m.label}</span><span class="at-count">${m.count}</span>`;
+    if(m.avail) btn.onclick=()=>setMode(m.id);
+    else btn.disabled=true;
+    grid.appendChild(btn);
+  });
+}
+
+function buildSidebarModes(t){
+  const hasTl=typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0;
+  const modesDef=[
+    {id:'flashcards',label:'Flashcards',icon:'cards',  avail:t.fc.length>0},
+    {id:'quiz',      label:'Quiz',      icon:'quiz',   avail:t.quiz.length>0},
+    {id:'match',     label:'Match',     icon:'match',  avail:t.matchIdx.length>0},
+    {id:'practice',  label:'Practice',  icon:'pencil', avail:t.prac.length>0},
+    {id:'timeline',  label:'Timeline',  icon:'clock',  avail:hasTl},
+  ];
+  const container=document.getElementById('sb-modes');
+  container.innerHTML='<div class="sb-label">Activities</div>';
+  modesDef.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.className='sb-btn';
+    btn.dataset.mode=m.id;
+    btn.style.opacity=m.avail?'':'0.38';
+    btn.disabled=!m.avail;
+    btn.innerHTML=`<svg class="icon" aria-hidden="true"><use href="#icon-${m.icon}"/></svg>&nbsp;${m.label}`;
+    if(m.avail) btn.onclick=()=>{
+      container.querySelectorAll('.sb-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      setMode(m.id);
+    };
+    container.appendChild(btn);
+  });
+}
+
+function buildSidebarTopicList(){
+  const container=document.getElementById('sb-tlist');
+  container.innerHTML='';
+  topicDefs.forEach(t=>{
+    const btn=document.createElement('button');
+    btn.className='sb-tlist-btn'+(currentTopic&&t.id===currentTopic.id?' active':'');
+    btn.textContent=t.label;
+    btn.onclick=()=>{
+      applyTopic(t);
+      const tn=document.getElementById('sb-topic-name');
+      if(tn)tn.textContent=t.label;
+      buildActivityGrid(t);
+      buildSidebarModes(t);
+      buildSidebarTopicList();
+      // Stay on current mode if available, else show activity picker
+      const modeAvail=(currentMode==='flashcards'&&t.fc.length)||
+                      (currentMode==='quiz'&&t.quiz.length)||
+                      (currentMode==='match'&&t.matchIdx.length)||
+                      (currentMode==='practice'&&t.prac.length)||
+                      (currentMode==='timeline'&&typeof timelineSetsData!=='undefined'&&timelineSetsData.length>0);
+      setMode(modeAvail?currentMode:'activities');
+    };
+    container.appendChild(btn);
+  });
+}
+
+function renderStreak(){
+  const today=new Date().toDateString();
+  let s=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
+  const yesterday=new Date(Date.now()-86400000).toDateString();
+  if(s.last!==today){
+    if(s.last===yesterday){s.count++;s.last=today;}
+    else{s.count=1;s.last=today;}
+    localStorage.setItem('sn_streak',JSON.stringify(s));
+  }
+  const el=document.getElementById('streak-count');
+  if(el) el.textContent=s.count+' star'+(s.count!==1?'s':'');
+  const dotsEl=document.getElementById('streak-dots');
+  if(dotsEl){
+    const fill=Math.min(s.count,7);
+    const sv='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+    dotsEl.innerHTML=Array.from({length:7},(_,i)=>
+      `<span class="streak-star${i<fill?' lit':''}">${sv}</span>`
+    ).join('');
+  }
+}
+
+document.body.dataset.step='step-1';
+buildTopicPanel();
+renderStreak();
+
+// ── Service Worker ──────────────────────────────────────────
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').catch(()=>{});
+}
+</script>
+</body>
+</html>
