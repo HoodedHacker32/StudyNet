@@ -167,14 +167,14 @@ input{font-family:inherit;}
 
 /* ── Streak tracker ──────────────────────────────────────────── */
 .streak-section{margin-top:2rem;padding:.9rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius);}
-.streak-row{display:flex;align-items:center;gap:.65rem;}
-.streak-flame{font-size:1.4rem;line-height:1;}
+.streak-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;}
+.streak-icon{line-height:1;}
 .streak-info{flex:1;}
 .streak-count{font-size:1.25rem;font-weight:700;line-height:1.2;color:var(--fg);}
 .streak-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
-.streak-dots{display:flex;gap:.3rem;margin-top:.65rem;}
-.streak-star{display:inline-flex;color:var(--border);}
-.streak-star.lit{color:#f97316;}
+.streak-bar-wrap{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:.4rem;}
+.streak-bar-fill{height:100%;background:#f97316;border-radius:99px;transition:width .4s ease;}
+.streak-bar-label{font-size:.72rem;color:var(--muted);}
 
 /* ── Set pill buttons ────────────────────────────────────────── */
 .set-pills{display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:1.25rem;}
@@ -567,13 +567,14 @@ footer{
       <hr class="divider">
       <div class="streak-section">
         <div class="streak-row">
-          <span class="streak-flame"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+          <span class="streak-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
           <div class="streak-info">
             <div class="streak-count" id="streak-count">—</div>
-            <div class="streak-sub">study streak · resets if you miss a day</div>
+            <div class="streak-sub" id="streak-sub">study streak · resets if you miss a day</div>
           </div>
         </div>
-        <div class="streak-dots" id="streak-dots"></div>
+        <div class="streak-bar-wrap"><div class="streak-bar-fill" id="streak-bar-fill" style="width:0%"></div></div>
+        <div class="streak-bar-label" id="streak-bar-label">0 / 10 days to next star</div>
       </div>
     </div>
 
@@ -1103,23 +1104,27 @@ function countPrac(key){
 }
 function renderStreak(){
   var today=new Date().toDateString();
-  var s=JSON.parse(localStorage.getItem('sn_streak')||'{"count":0,"last":""}');
+  var s; try{s=JSON.parse(localStorage.getItem('sn_streak')||'null');}catch(e){}
+  if(!s) s={count:0,last:'',totalDays:0,stars:0};
+  if(!('totalDays' in s)) s.totalDays=s.count||0;
+  if(!('stars' in s)) s.stars=Math.floor(s.totalDays/10);
   var yesterday=new Date(Date.now()-86400000).toDateString();
   if(s.last!==today){
-    if(s.last===yesterday){s.count++;s.last=today;}
-    else{s.count=1;s.last=today;}
+    s.totalDays++;
+    s.count=(s.last===yesterday)?s.count+1:1;
+    s.last=today;
+    s.stars=Math.floor(s.totalDays/10);
     localStorage.setItem('sn_streak',JSON.stringify(s));
   }
-  var el=document.getElementById('streak-count');
-  if(el) el.textContent=s.count+' star'+(s.count!==1?'s':'');
-  var dotsEl=document.getElementById('streak-dots');
-  if(dotsEl){
-    var fill=Math.min(s.count,7);
-    var sv='<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
-    dotsEl.innerHTML=Array.from({length:7},function(_,i){
-      return '<span class="streak-star'+(i<fill?' lit':'')+'">'+sv+'</span>';
-    }).join('');
-  }
+  var countEl=document.getElementById('streak-count');
+  if(countEl) countEl.textContent=s.count+' day'+(s.count!==1?'s':'')+' streak';
+  var subEl=document.getElementById('streak-sub');
+  if(subEl) subEl.textContent=s.stars+' star'+(s.stars!==1?'s':'')+' earned · resets streak if you miss a day';
+  var progress=s.totalDays%10;
+  var fillEl=document.getElementById('streak-bar-fill');
+  if(fillEl) fillEl.style.width=(progress/10*100)+'%';
+  var lblEl=document.getElementById('streak-bar-label');
+  if(lblEl) lblEl.textContent=progress+' / 10 days to next star';
 }
 
 function updateProgress(){
