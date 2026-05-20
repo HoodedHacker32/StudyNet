@@ -168,9 +168,9 @@ main{flex:1;overflow-y:auto;}
 .streak-info{flex:1;}
 .streak-count{font-size:1.25rem;font-weight:700;line-height:1.2;color:var(--fg);}
 .streak-sub{font-size:.72rem;color:var(--muted);margin-top:.1rem;}
-.streak-dots{display:flex;gap:.35rem;margin-top:.65rem;}
-.streak-dot{width:9px;height:9px;border-radius:50%;background:var(--border);}
-.streak-dot.lit{background:#f97316;}
+.streak-dots{display:flex;gap:.3rem;margin-top:.65rem;}
+.streak-star{display:inline-flex;color:var(--border);}
+.streak-star.lit{color:#f97316;}
 
 /* Footer */
 .footer{margin-top:2rem;padding:1.25rem 0 .5rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem;font-size:.8rem;color:var(--muted);}
@@ -368,10 +368,10 @@ main{flex:1;overflow-y:auto;}
 
   <div class="streak-section">
     <div class="streak-row">
-      <span class="streak-flame">🔥</span>
+      <span class="streak-flame"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
       <div class="streak-info">
         <div class="streak-count" id="streak-count">—</div>
-        <div class="streak-sub">study streak</div>
+        <div class="streak-sub">study streak · resets if you miss a day</div>
       </div>
     </div>
     <div class="streak-dots" id="streak-dots"></div>
@@ -905,12 +905,13 @@ function renderStreak() {
     localStorage.setItem('sn_streak', JSON.stringify(s));
   }
   const el = document.getElementById('streak-count');
-  if (el) el.textContent = `${s.count} day${s.count !== 1 ? 's' : ''}`;
+  if (el) el.textContent = `${s.count} star${s.count !== 1 ? 's' : ''}`;
   const dotsEl = document.getElementById('streak-dots');
   if (dotsEl) {
     const fill = Math.min(s.count, 7);
+    const sv = '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
     dotsEl.innerHTML = Array.from({ length: 7 }, (_, i) =>
-      `<span class="streak-dot${i >= 7 - fill ? ' lit' : ''}"></span>`
+      `<span class="streak-star${i < fill ? ' lit' : ''}">${sv}</span>`
     ).join('');
   }
 }
