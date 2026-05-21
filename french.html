@@ -222,14 +222,6 @@ button{font:inherit;cursor:pointer;}
 .rule-box code{font-family:monospace;background:var(--border);padding:.1rem .3rem;border-radius:3px;font-size:.8rem;}
 .reset-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;}
 .reset-btn:hover{background:var(--hover);color:var(--fg);}
-.prog-list{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.prog-item{padding:.8rem 1.1rem;border-bottom:1px solid var(--border);}
-.prog-item:last-child{border-bottom:none;}
-.prog-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.3rem;}
-.prog-label{font-weight:500;}
-.prog-pct{color:var(--muted);}
-.prog-bar{height:3px;background:var(--border);border-radius:99px;}
-.prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .5s;}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:.5rem 1.1rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.8rem;font-weight:600;cursor:pointer;min-height:40px;}
 .btn:hover{opacity:.75;}
 .btn-ghost{background:none;color:var(--fg);}
@@ -313,6 +305,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   <symbol id="icon-pin"      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
   <symbol id="icon-chat"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
   <symbol id="icon-school"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-user"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
   <symbol id="icon-users"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
   <symbol id="icon-cloud"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></symbol>
   <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
@@ -347,6 +340,10 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
     <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>
     &nbsp;Theme
   </button>
+  <a href="index.html" class="sb-btn">
+    <svg class="icon" aria-hidden="true"><use href="#icon-user"/></svg>
+    &nbsp;Profile
+  </a>
 </aside>
 
 <div class="main">
@@ -485,14 +482,6 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
     <div class="panel" id="panel-practice">
       <div class="prac-sets" id="prac-sets"></div>
       <div id="prac-content"></div>
-    </div>
-
-    <!-- PROGRESS -->
-    <div style="margin-top:2.5rem;">
-      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:1rem;">
-        <h2 style="font-size:.95rem;font-weight:700;">Progress</h2>
-      </div>
-      <div class="prog-list" id="prog-list"></div>
     </div>
 
     <footer>
@@ -1154,7 +1143,7 @@ function wireInp(inp, td, storeKey, ans, key) {
     else { if (!fb) { fb = document.createElement('div'); fb.className = 'q-fb'; td.appendChild(fb); } fb.textContent = ans[0]; }
     const sc = document.getElementById(`prac-score-${key}`);
     if (sc) sc.textContent = `${countPrac(key)} / ${pracData[key].total}`;
-    saveS(S); updateProgress();
+    saveS(S); updateScore();
   }
   inp.addEventListener('blur', attempt);
   inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attempt(); } });
@@ -1258,25 +1247,18 @@ function resetPrac(key) {
 if (pracSetKeys.length) renderPrac(pracSetKeys[0]);
 
 // ═══════════════════════════════════════
-// PROGRESS
+// SCORE
 // ═══════════════════════════════════════
-function updateProgress() {
-  const prog = document.getElementById('prog-list');
-  prog.innerHTML = '';
+function updateScore() {
   let tot = 0, cor = 0;
   pracSetKeys.forEach(key => {
     const ex = pracData[key];
-    const c = countPrac(key); cor += c; tot += ex.total;
-    const pct = Math.round(c / ex.total * 100);
-    const item = document.createElement('div'); item.className = 'prog-item';
-    item.innerHTML = `<div class="prog-row"><span class="prog-label">${ex.label}</span><span class="prog-pct">${c} / ${ex.total}</span></div>
-      <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>`;
-    prog.appendChild(item);
+    cor += countPrac(key); tot += ex.total;
   });
   document.getElementById('hs-score').textContent = `${cor} / ${tot}`;
   document.getElementById('sb-score').textContent = `Score: ${cor} / ${tot}`;
 }
-updateProgress();
+updateScore();
 
 // ═══════════════════════════════════════
 // TOPIC SYSTEM

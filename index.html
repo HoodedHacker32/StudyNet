@@ -54,23 +54,16 @@ input{font-family:inherit;}
   letter-spacing:.1em;color:var(--muted);
   padding:.75rem .5rem .25rem;
 }
-.sb-mode-btn{
-  display:flex;align-items:center;gap:.55rem;
-  padding:.45rem .65rem;border-radius:var(--radius);
-  font-size:.83rem;background:none;border:none;
-  color:var(--muted);text-align:left;width:100%;
-  cursor:pointer;transition:background .15s,color .15s;
-  white-space:nowrap;
-}
-.sb-mode-btn:hover,.sb-mode-btn.active{background:var(--fg);color:var(--bg);}
 .sb-spacer{flex:1;}
 .sb-btn{
   display:flex;align-items:center;gap:.55rem;
   width:100%;padding:.45rem .65rem;border-radius:var(--radius);
   font-size:.83rem;background:none;border:none;color:var(--muted);
   text-align:left;cursor:pointer;transition:background .15s,color .15s;
+  white-space:nowrap;
 }
 .sb-btn:hover{background:var(--hover);color:var(--fg);}
+.sb-btn.active{background:var(--fg);color:var(--bg);}
 #install-sb{display:none;}
 
 /* ─── Main area ─────────────────────────────────────────────── */
@@ -89,8 +82,6 @@ input{font-family:inherit;}
 }
 .h-chip b{color:var(--fg);}
 
-/* ─── Dashboard grid ────────────────────────────────────────── */
-.dash-grid{display:grid;grid-template-columns:1fr 260px;gap:2rem;align-items:start;margin-top:2.5rem;}
 
 /* ─── Section headings ──────────────────────────────────────── */
 .section{margin-top:2.25rem;}
@@ -98,6 +89,9 @@ input{font-family:inherit;}
 .sec-head h2{font-size:.95rem;font-weight:700;}
 .sec-head a{font-size:.78rem;color:var(--muted);}
 .sec-head a:hover{color:var(--fg);}
+
+/* ─── Dashboard grid ────────────────────────────────────────── */
+.dash-grid{margin-top:2.5rem;}
 
 /* ─── Topic/subject/language cards ──────────────────────────── */
 .topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:.85rem;}
@@ -110,6 +104,8 @@ input{font-family:inherit;}
 }
 a.topic-card:hover{background:var(--hover);border-color:var(--fg);}
 .topic-card.locked{opacity:.4;pointer-events:none;}
+.topic-card.exempt{opacity:.5;pointer-events:none;}
+.tc-exempt{font-size:.73rem;font-weight:600;color:#8b0000;margin-top:.15rem;}
 .tc-icon{min-height:1.6rem;display:flex;align-items:center;}
 .tc-icon .icon{width:1.35em;height:1.35em;}
 .tc-label{font-size:.9rem;font-weight:700;}
@@ -166,15 +162,6 @@ a.topic-card:hover{background:var(--hover);border-color:var(--fg);}
 }
 .btn:hover{opacity:.75;}
 
-/* ─── Progress panel ────────────────────────────────────────── */
-.prog-panel{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;position:sticky;top:1.5rem;}
-.prog-item{padding:.8rem 1.1rem;border-bottom:1px solid var(--border);}
-.prog-item:last-child{border-bottom:none;}
-.prog-row{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.3rem;}
-.prog-label{font-weight:500;}
-.prog-pct{color:var(--muted);}
-.prog-bar{height:3px;background:var(--border);border-radius:99px;}
-.prog-fill{height:100%;background:var(--fg);border-radius:99px;transition:width .5s;}
 
 /* ─── Icon helper ───────────────────────────────────────────── */
 .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
@@ -296,9 +283,6 @@ footer{
   .mob-btns{display:flex;gap:.3rem;}
   .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
   .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
-  .dash-grid{display:block;}
-  .dash-right{margin-top:2rem;}
-  .prog-panel{position:static;}
   .mcq-opts{grid-template-columns:1fr;}
   footer{padding-top:1.4rem;margin-top:2rem;}
 }
@@ -331,17 +315,14 @@ footer{
   <div class="sb-brand">StudyNet <span>/ Year 1</span></div>
 
   <div class="sb-section">Navigate</div>
-  <button class="sb-mode-btn active" id="sb-home" onclick="scrollToTop(event)">
+  <button class="sb-btn active" id="sb-home" onclick="scrollToTop(event)">
     <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>&nbsp;Home
   </button>
-  <button class="sb-mode-btn" onclick="sbScroll(event,'subjects')">
+  <button class="sb-btn" onclick="sbScroll(event,'subjects')">
     <svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg>&nbsp;Subjects
   </button>
-  <button class="sb-mode-btn" onclick="sbScroll(event,'languages')">
+  <button class="sb-btn" onclick="sbScroll(event,'languages')">
     <svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg>&nbsp;Languages
-  </button>
-  <button class="sb-mode-btn" onclick="sbScroll(event,'progress')">
-    <svg class="icon" aria-hidden="true"><use href="#icon-chart"/></svg>&nbsp;Progress
   </button>
 
   <div class="sb-spacer"></div>
@@ -389,18 +370,15 @@ footer{
       </div>
     </section>
 
-    <!-- Dashboard grid -->
+    <!-- Dashboard -->
     <div class="dash-grid">
-
-      <!-- Left column -->
-      <div class="dash-left">
 
         <!-- Subjects -->
         <section class="section" id="subjects">
           <div class="sec-head"><h2>Subjects</h2></div>
           <div class="topic-grid">
 
-            <a href="irish.html" class="topic-card">
+            <a href="irish.html" class="topic-card" id="irish-card">
               <div class="tc-icon">
                 <svg viewBox="0 0 3 2" width="28" height="19" aria-label="Irish flag" style="display:block;border-radius:2px">
                   <rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/>
@@ -409,6 +387,7 @@ footer{
               <div class="tc-label">Gaeilge</div>
               <div class="tc-desc" id="sc-irish-count">0 / 65 correct</div>
               <div class="tc-bar"><div class="tc-fill" id="sc-irish-bar" style="width:0%"></div></div>
+              <div class="tc-exempt" id="irish-exempt-badge" style="display:none">Exempt</div>
             </a>
 
             <div class="topic-card locked">
@@ -425,12 +404,12 @@ footer{
               <div class="tc-bar"></div>
             </div>
 
-            <div class="topic-card locked">
+            <a href="history.html" class="topic-card">
               <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></div>
               <div class="tc-label">History</div>
-              <div class="tc-desc">Coming soon</div>
+              <div class="tc-desc">4 topics · JC Year 1</div>
               <div class="tc-bar"></div>
-            </div>
+            </a>
 
             <div class="topic-card locked">
               <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg></div>
@@ -518,37 +497,6 @@ footer{
           </div>
         </section>
 
-      </div><!-- /dash-left -->
-
-      <!-- Right column: Progress -->
-      <div class="dash-right" id="progress">
-        <section class="section" style="margin-top:0">
-          <div class="sec-head"><h2>Progress</h2></div>
-          <div class="prog-panel">
-            <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">Gaeilge</span><span class="prog-pct" id="pp-irish">0 / 65</span></div>
-              <div class="prog-bar"><div class="prog-fill" id="pf-irish" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item" id="prog-lang-row">
-              <div class="prog-row"><span class="prog-label" id="prog-lang-label">Fran&#231;ais</span><span class="prog-pct" id="pp-french">0 / 54</span></div>
-              <div class="prog-bar"><div class="prog-fill" id="pf-french" style="width:0%"></div></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">Mathematics</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
-              <div class="prog-bar"></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">English</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
-              <div class="prog-bar"></div>
-            </div>
-            <div class="prog-item">
-              <div class="prog-row"><span class="prog-label">Geography</span><span class="prog-pct" style="color:var(--muted)">&#8212;</span></div>
-              <div class="prog-bar"></div>
-            </div>
-          </div>
-        </section>
-      </div>
-
     </div><!-- /dash-grid -->
 
     <footer>
@@ -587,6 +535,10 @@ footer{
         <svg class="ob-lang-flag" viewBox="0 0 5 3" width="36" height="22" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
         <span class="ob-lang-name">Deutsch</span><span class="ob-lang-sub">German</span>
       </button>
+    </div>
+    <div class="ob-field" style="flex-direction:row;align-items:center;gap:.6rem;margin-top:.25rem;margin-bottom:.25rem;">
+      <input type="checkbox" id="ob-exempt" style="width:1rem;height:1rem;cursor:pointer;flex-shrink:0;accent-color:var(--fg);"/>
+      <label for="ob-exempt" style="font-size:.82rem;cursor:pointer;margin:0;">I have an Irish exemption</label>
     </div>
     <button id="ob-submit" class="ob-btn" disabled onclick="obSubmit()">Get started &#8594;</button>
   </div>
@@ -679,23 +631,35 @@ footer{
     <div class="cl-head">
       <div>
         <div class="cl-title">What&#39;s new</div>
-        <div class="cl-ver">May 2026 update</div>
+        <div class="cl-ver">21 May 2026</div>
       </div>
     </div>
     <div class="cl-content">
-      <h3>French</h3>
+      <h3>History is back</h3>
       <ul>
-        <li><b>Fran&#231;ais rebuilt from scratch</b> &#8212; all Allons-y 1 Modules 1&#8211;6 content now live: 4 flashcard decks, 5 quizzes, 4 match sets, 5 conjugation &amp; grammar exercises.</li>
+        <li><b>History page live</b> &#8212; after a brief outage, History has returned — completely rebuilt and packed with content for all four Junior Cycle Year 1 units.</li>
+        <li><b>Historian &amp; Archaeologist</b> &#8212; sources, bias, cross-checking, radiocarbon dating, conservation and more.</li>
+        <li><b>The Middle Ages</b> &#8212; the full Knight (Page &#8594; Squire &#8594; Dubbing), Craftsman (Apprentice &#8594; Journeyman &#8594; Master) and Monk (Novice &#8594; vows) journeys, castle life, guilds, Black Death.</li>
+        <li><b>The Renaissance</b> &#8212; da Vinci, Michelangelo, Copernicus, Galileo, Gutenberg, Vesalius, Harvey and more.</li>
+        <li><b>Age of Exploration</b> &#8212; the 3 G&#39;s, da Gama, Columbus, Cortés, Pizarro, the Columbian Exchange and the slave trade.</li>
+        <li><b>Timeline activity</b> &#8212; drag and drop historical events onto the correct year. History-exclusive.</li>
       </ul>
-      <h3>Streak tracker</h3>
+      <h3>Profile access everywhere</h3>
       <ul>
-        <li><b>Stars are now permanent</b> &#8212; you earn 1 star every 10 days studied. Stars never reset, even if you miss a day.</li>
-        <li>Dashboard and subject pages now show a progress bar toward your next star.</li>
+        <li>French and Irish subject pages now have a <b>Profile</b> link at the bottom of the sidebar &#8212; tap it to jump straight back to your dashboard.</li>
       </ul>
-      <h3>Design</h3>
+      <h3>Irish exemption</h3>
       <ul>
-        <li><b>Dashboard redesigned</b> &#8212; consistent styling with all subject pages.</li>
-        <li>All icons now render correctly in both light and dark mode.</li>
+        <li>Added an <b>&#8220;I have an Irish exemption&#8221;</b> checkbox to the setup screen. If checked, the Gaeilge card is greyed out and marked <i>Exempt</i> in dark red so it&#39;s clearly skipped.</li>
+      </ul>
+      <h3>Quick quiz</h3>
+      <ul>
+        <li>The home-screen quiz now draws from a pool of <b>79 questions</b> (was 14) &#8212; Irish prep pronouns, irregular verbs, possessives, French &#234;tre/avoir, days, months, family and opinions. 8 are picked at random each time.</li>
+      </ul>
+      <h3>Also</h3>
+      <ul>
+        <li>Progress section removed from French &#8212; replaced by the score chip in the hero area.</li>
+        <li>Dashboard and subject pages share consistent sidebar styling.</li>
       </ul>
     </div>
     <button class="cl-dismiss" onclick="dismissChangelog()">Got it</button>
@@ -855,15 +819,11 @@ function countFrench() {
 function updateStats() {
   const ic = countIrish(),  it = 65;
   const fc = countFrench(), ft = 54;
-  document.getElementById('sc-irish-count').textContent   = `${ic} / ${it} correct`;
-  document.getElementById('sc-irish-bar').style.width     = Math.round(ic/it*100) + '%';
-  document.getElementById('pp-irish').textContent         = `${ic} / ${it}`;
-  document.getElementById('pf-irish').style.width         = Math.round(ic/it*100) + '%';
-  document.getElementById('lc-fr-count').textContent      = `${fc} / ${ft} practice`;
-  document.getElementById('lc-fr-bar').style.width        = Math.round(fc/ft*100) + '%';
-  document.getElementById('pp-french').textContent        = `${fc} / ${ft}`;
-  document.getElementById('pf-french').style.width        = Math.round(fc/ft*100) + '%';
-  document.getElementById('stat-correct').textContent     = ic + fc;
+  document.getElementById('sc-irish-count').textContent = `${ic} / ${it} correct`;
+  document.getElementById('sc-irish-bar').style.width   = Math.round(ic/it*100) + '%';
+  document.getElementById('lc-fr-count').textContent    = `${fc} / ${ft} practice`;
+  document.getElementById('lc-fr-bar').style.width      = Math.round(fc/ft*100) + '%';
+  document.getElementById('stat-correct').textContent   = ic + fc;
 }
 updateStats();
 
@@ -887,20 +847,98 @@ updateStats();
 
 // ── Quick Quiz ───────────────────────────────────────────────
 const qqPool = [
-  {q:'ag + mé = ?',           opts:['orm','agam','dom','liom'],                                        ans:1, subj:'Gaeilge'},
-  {q:'ar + tú = ?',           opts:['agat','duit','leat','ort'],                                       ans:3, subj:'Gaeilge'},
-  {q:'do + sí = ?',           opts:['léi','di','aici','uirthi'],                                       ans:1, subj:'Gaeilge'},
-  {q:'le + siad = ?',         opts:['acu','dóibh','orthu','leo'],                                      ans:3, subj:'Gaeilge'},
-  {q:'ag + sibh = ?',         opts:['libh','daoibh','agaibh','oraibh'],                                ans:2, subj:'Gaeilge'},
-  {q:'"beir" (sé) present?',  opts:['beirann sé','tugann sé','beireann sé','téann sé'],                ans:2, subj:'Gaeilge'},
-  {q:'Past of "éirigh" (mé)?',opts:["éiríodh","éirigh mé","d'éirigh mé","éirithe"],                   ans:2, subj:'Gaeilge'},
-  {q:'Ní + "tóg" + muid?',    opts:['tógann muid','dtógann muid','thógann muid','htógann muid'],       ans:2, subj:'Gaeilge'},
-  {q:'Je ___ étudiant. (I am)',         opts:['es','est','suis','sommes'],                             ans:2, subj:'Français'},
-  {q:'Ils ___ une maison. (They have)', opts:['sont','êtes','avons','ont'],                            ans:3, subj:'Français'},
-  {q:'Monday in French?',              opts:['Mercredi','Lundi','Vendredi','Samedi'],                  ans:1, subj:'Français'},
-  {q:'"I like" in French?',            opts:["J'adore","Je déteste","J'aime","Je n'aime pas"],         ans:2, subj:'Français'},
-  {q:'"Un chat" means?',               opts:['a dog','a horse','a rabbit','a cat'],                    ans:3, subj:'Français'},
-  {q:'"Il fait beau" means?',          opts:["It's raining","The weather is nice","It's cold","It's foggy"], ans:1, subj:'Français'},
+  // ── Gaeilge: Réamhfhocail ────────────────────────────────────
+  {q:'ag + mé = ?',    opts:['orm','agam','dom','liom'],              ans:1, subj:'Gaeilge'},
+  {q:'ar + tú = ?',    opts:['agat','duit','leat','ort'],              ans:3, subj:'Gaeilge'},
+  {q:'do + sí = ?',    opts:['léi','di','aici','uirthi'],              ans:1, subj:'Gaeilge'},
+  {q:'le + siad = ?',  opts:['acu','dóibh','orthu','leo'],             ans:3, subj:'Gaeilge'},
+  {q:'ag + sibh = ?',  opts:['libh','daoibh','agaibh','oraibh'],      ans:2, subj:'Gaeilge'},
+  {q:'ar + mé = ?',    opts:['dom','agam','orm','liom'],               ans:2, subj:'Gaeilge'},
+  {q:'le + tú = ?',    opts:['agat','leat','duit','ort'],              ans:1, subj:'Gaeilge'},
+  {q:'ag + sé = ?',    opts:['air','leis','aige','dó'],                ans:2, subj:'Gaeilge'},
+  {q:'ar + sé = ?',    opts:['leis','air','aige','dó'],                ans:1, subj:'Gaeilge'},
+  {q:'do + muid = ?',  opts:['linn','dúinn','againn','orainn'],        ans:1, subj:'Gaeilge'},
+  {q:'le + muid = ?',  opts:['againn','orainn','dúinn','linn'],        ans:3, subj:'Gaeilge'},
+  {q:'ag + siad = ?',  opts:['leo','orthu','acu','dóibh'],             ans:2, subj:'Gaeilge'},
+  {q:'do + tú = ?',    opts:['leat','agat','duit','ort'],              ans:2, subj:'Gaeilge'},
+  {q:'le + sé = ?',    opts:['leis','air','dó','aige'],                ans:0, subj:'Gaeilge'},
+  {q:'ar + siad = ?',  opts:['orthu','leo','acu','dóibh'],             ans:0, subj:'Gaeilge'},
+  {q:'do + sé = ?',    opts:['leis','air','dó','aige'],                ans:2, subj:'Gaeilge'},
+  {q:'ag + muid = ?',  opts:['linn','orainn','againn','dúinn'],        ans:2, subj:'Gaeilge'},
+  // ── Gaeilge: Irregular verbs ─────────────────────────────────
+  {q:'"beir" (sé) present?',    opts:['beirann sé','tugann sé','beireann sé','téann sé'],         ans:2, subj:'Gaeilge'},
+  {q:'Past of "éirigh" (mé)?',  opts:["éiríodh","éirigh mé","d'éirigh mé","éirithe"],             ans:2, subj:'Gaeilge'},
+  {q:'Ní + "tóg" + muid?',      opts:['tógann muid','dtógann muid','thógann muid','htógann muid'],ans:2, subj:'Gaeilge'},
+  {q:'Present of "téigh" (sí)?',opts:['tagann sí','téann sí','tá sí','tógann sí'],               ans:1, subj:'Gaeilge'},
+  {q:'Present of "tar" (siad)?',opts:['téann siad','tagann siad','tá siad','tugann siad'],        ans:1, subj:'Gaeilge'},
+  {q:'Present of "bí" (tú)?',   opts:['tá tú','téann tú','bíonn tú','tagann tú'],                ans:2, subj:'Gaeilge'},
+  {q:'Present of "faigh" (sé)?',opts:['feiceann sé','déanann sé','faigheann sé','tugann sé'],    ans:2, subj:'Gaeilge'},
+  {q:'Past of "tosaigh" (muid)?',opts:['tosaíonn muid','thosaigh siad','thosaigh muid','tosaíodh'],ans:2,subj:'Gaeilge'},
+  {q:'Present of "clois" (sí)?', opts:['feiceann sí','cloiseann sí','deireann sí','déanann sí'],  ans:1, subj:'Gaeilge'},
+  {q:'Present of "abair" (sé)?', opts:['déanann sé','itheann sé','deir sé','cloiseann sé'],       ans:2, subj:'Gaeilge'},
+  // ── Gaeilge: Aidiachtaí sealbhacha ───────────────────────────
+  {q:'"my house" in Irish?',        opts:['do theach','a theach','mo theach','ár dteach'],        ans:2, subj:'Gaeilge'},
+  {q:'"his house" in Irish?',       opts:['mo theach','a teach','a theach','do theach'],          ans:2, subj:'Gaeilge'},
+  {q:'"her house" in Irish?',       opts:['a theach','ár dteach','a dteach','a teach'],           ans:3, subj:'Gaeilge'},
+  {q:'"our house" in Irish?',       opts:['bhur dteach','a dteach','ár dteach','do theach'],      ans:2, subj:'Gaeilge'},
+  {q:'"their house" in Irish?',     opts:['ár dteach','bhur dteach','do theach','a dteach'],      ans:3, subj:'Gaeilge'},
+  {q:'"my aunt" in Irish?',         opts:["d'aintín","a haintín","m'aintín","a aintín"],          ans:2, subj:'Gaeilge'},
+  {q:'"her aunt" in Irish?',        opts:["m'aintín","a aintín","a haintín","d'aintín"],          ans:2, subj:'Gaeilge'},
+  {q:'"your (sg) aunt" in Irish?',  opts:["m'aintín","d'aintín","a aintín","a haintín"],          ans:1, subj:'Gaeilge'},
+  {q:'"his aunt" in Irish?',        opts:["a haintín","m'aintín","a aintín","d'aintín"],          ans:2, subj:'Gaeilge'},
+  // ── Français: Être ───────────────────────────────────────────
+  {q:'Je ___ étudiant. (I am)',         opts:['es','est','suis','sommes'],     ans:2, subj:'Français'},
+  {q:'Nous ___ en France. (We are)',    opts:['sont','êtes','est','sommes'],   ans:3, subj:'Français'},
+  {q:'Vous ___ professeur. (You are)',  opts:['suis','est','êtes','sont'],     ans:2, subj:'Français'},
+  {q:'Elle ___ irlandaise. (She is)',   opts:['suis','est','es','sont'],       ans:1, subj:'Français'},
+  {q:'Ils ___ contents. (They are)',    opts:['sommes','êtes','est','sont'],   ans:3, subj:'Français'},
+  // ── Français: Avoir ──────────────────────────────────────────
+  {q:'Ils ___ une maison. (They have)', opts:['sont','êtes','avons','ont'],    ans:3, subj:'Français'},
+  {q:"J'___ un chien. (I have)",        opts:['as','ai','a','avons'],          ans:1, subj:'Français'},
+  {q:'Tu ___ un stylo. (You have)',     opts:['ai','avez','as','a'],           ans:2, subj:'Français'},
+  {q:'Nous ___ un chat. (We have)',     opts:['avez','ont','avons','a'],       ans:2, subj:'Français'},
+  // ── Français: Jours ──────────────────────────────────────────
+  {q:'Monday in French?',    opts:['Mercredi','Lundi','Vendredi','Samedi'],  ans:1, subj:'Français'},
+  {q:'Wednesday in French?', opts:['Mardi','Lundi','Mercredi','Jeudi'],      ans:2, subj:'Français'},
+  {q:'Friday in French?',    opts:['Jeudi','Dimanche','Samedi','Vendredi'],  ans:3, subj:'Français'},
+  {q:'Sunday in French?',    opts:['Samedi','Dimanche','Vendredi','Lundi'],  ans:1, subj:'Français'},
+  {q:'Thursday in French?',  opts:['Mercredi','Vendredi','Mardi','Jeudi'],   ans:3, subj:'Français'},
+  {q:'Tuesday in French?',   opts:['Lundi','Mardi','Mercredi','Jeudi'],      ans:1, subj:'Français'},
+  {q:'Saturday in French?',  opts:['Dimanche','Vendredi','Samedi','Lundi'],  ans:2, subj:'Français'},
+  // ── Français: Mois ───────────────────────────────────────────
+  {q:'January in French?',   opts:['Février','Mars','Janvier','Avril'],       ans:2, subj:'Français'},
+  {q:'March in French?',     opts:['Mai','Mars','Avril','Février'],           ans:1, subj:'Français'},
+  {q:'July in French?',      opts:['Juin','Août','Septembre','Juillet'],      ans:3, subj:'Français'},
+  {q:'December in French?',  opts:['Novembre','Octobre','Décembre','Janvier'],ans:2, subj:'Français'},
+  {q:'June in French?',      opts:['Juillet','Avril','Juin','Mai'],           ans:2, subj:'Français'},
+  {q:'September in French?', opts:['Août','Octobre','Novembre','Septembre'],  ans:3, subj:'Français'},
+  // ── Français: Vocabulaire & météo ────────────────────────────
+  {q:'"Un chat" means?',       opts:['a dog','a horse','a rabbit','a cat'],                               ans:3, subj:'Français'},
+  {q:'"Un chien" means?',      opts:['a cat','a dog','a rabbit','a horse'],                               ans:1, subj:'Français'},
+  {q:'"Un lapin" means?',      opts:['a dog','a cat','a rabbit','a horse'],                               ans:2, subj:'Français'},
+  {q:'"Il fait beau" means?',  opts:["It's raining","The weather is nice","It's cold","It's windy"],      ans:1, subj:'Français'},
+  {q:'"Il pleut" means?',      opts:["It's cold","It's snowing","It's raining","It's sunny"],             ans:2, subj:'Français'},
+  {q:'"Il fait froid" means?', opts:["It's hot","It's cloudy","It's windy","It's cold"],                  ans:3, subj:'Français'},
+  {q:'"Il fait chaud" means?', opts:["It's cold","It's raining","It's hot","It's windy"],                 ans:2, subj:'Français'},
+  {q:'"Il neige" means?',      opts:["It's freezing","It's raining","It's windy","It's snowing"],         ans:3, subj:'Français'},
+  // ── Français: La famille ─────────────────────────────────────
+  {q:'"Le père" means?',       opts:['Brother','Son','Uncle','Father'],                                   ans:3, subj:'Français'},
+  {q:'"La mère" means?',       opts:['Daughter','Sister','Mother','Aunt'],                                ans:2, subj:'Français'},
+  {q:'"Le frère" means?',      opts:['Father','Son','Brother','Uncle'],                                   ans:2, subj:'Français'},
+  {q:'"La sœur" means?',       opts:['Mother','Daughter','Aunt','Sister'],                                ans:3, subj:'Français'},
+  {q:'"Le fils" means?',       opts:['Brother','Son','Father','Uncle'],                                   ans:1, subj:'Français'},
+  {q:'"La fille" means?',      opts:['Sister','Aunt','Mother','Daughter'],                                ans:3, subj:'Français'},
+  // ── Français: Opinions & salutations ─────────────────────────
+  {q:'"I like" in French?',    opts:["J'adore","Je déteste","J'aime","Je n'aime pas"],                    ans:2, subj:'Français'},
+  {q:'"I love" in French?',    opts:["J'aime","Je n'aime pas","J'adore","Je déteste"],                    ans:2, subj:'Français'},
+  {q:'"I hate" in French?',    opts:["J'adore","J'aime","Je n'aime pas","Je déteste"],                    ans:3, subj:'Français'},
+  {q:'"Hello" in French?',     opts:['Au revoir','Bonsoir','Bonjour','Merci'],                            ans:2, subj:'Français'},
+  {q:'"Goodbye" in French?',   opts:['Bonjour','Merci','Bonsoir','Au revoir'],                            ans:3, subj:'Français'},
+  {q:'"Thank you" in French?', opts:['De rien','Bonjour','Merci','Au revoir'],                            ans:2, subj:'Français'},
+  {q:'"You\'re welcome" in French?', opts:['Merci','Bonjour','Au revoir','De rien'],                      ans:3, subj:'Français'},
+  {q:'"Easy" in French?',      opts:['difficile','barbant','utile','facile'],                             ans:3, subj:'Français'},
+  {q:'"Boring" in French?',    opts:['facile','drôle','barbant','intéressant'],                           ans:2, subj:'Français'},
+  {q:'"Good evening" in French?', opts:['Bonjour','Bonne nuit','Bonsoir','Au revoir'],                    ans:2, subj:'Français'},
 ];
 function qqShuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
 const qqFiltered = qqPool.filter(q => q.subj !== 'Français' || (profile.lang || 'fr') === 'fr');
@@ -959,11 +997,20 @@ function applyProfile() {
     c.style.display = (!lang || c.dataset.langCard === lang) ? '' : 'none';
     c.classList.toggle('your-lang', c.dataset.langCard === lang);
   });
-  const langNames = {fr:'Français',es:'Español',de:'Deutsch'};
-  const ll = document.getElementById('prog-lang-label');
-  const lr = document.getElementById('prog-lang-row');
-  if (ll) ll.textContent = langNames[lang] || 'Language';
-  if (lr) lr.style.display = lang === 'fr' ? '' : 'none';
+  // Irish exemption
+  const irishCard  = document.getElementById('irish-card');
+  const irishBadge = document.getElementById('irish-exempt-badge');
+  if (irishCard) {
+    if (profile.irishExempt) {
+      irishCard.classList.add('exempt');
+      irishCard.removeAttribute('href');
+      if (irishBadge) irishBadge.style.display = '';
+    } else {
+      irishCard.classList.remove('exempt');
+      irishCard.setAttribute('href', 'irish.html');
+      if (irishBadge) irishBadge.style.display = 'none';
+    }
+  }
 }
 
 // ── Onboarding ───────────────────────────────────────────────
@@ -978,6 +1025,10 @@ function checkOnboard() {
       document.querySelector(`.ob-lang-opt[data-lang="${_obLang}"]`)?.classList.add('sel');
       document.getElementById('ob-submit').disabled = false;
     }
+    if (profile.irishExempt) {
+      const cb = document.getElementById('ob-exempt');
+      if (cb) cb.checked = true;
+    }
   }
 }
 function obSelectLang(btn) {
@@ -986,10 +1037,11 @@ function obSelectLang(btn) {
   document.getElementById('ob-submit').disabled = false;
 }
 function obSubmit() {
-  profile.name     = document.getElementById('ob-name').value.trim() || profile.name || '';
-  profile.year     = document.getElementById('ob-year').value.trim() || profile.year || '';
-  profile.lang     = _obLang || 'fr';
-  profile.setupVer = SETUP_VER;
+  profile.name        = document.getElementById('ob-name').value.trim() || profile.name || '';
+  profile.year        = document.getElementById('ob-year').value.trim() || profile.year || '';
+  profile.lang        = _obLang || 'fr';
+  profile.irishExempt = document.getElementById('ob-exempt').checked;
+  profile.setupVer    = SETUP_VER;
   localStorage.setItem('sn_profile', JSON.stringify(profile));
   document.getElementById('onboard-overlay').classList.add('hidden');
   document.body.style.overflow = '';
@@ -1083,7 +1135,7 @@ document.getElementById('settings-btn').addEventListener('click', openSettings);
 document.getElementById('settings-mob').addEventListener('click', openSettings);
 
 // ── Changelog ────────────────────────────────────────────────
-const CHANGELOG_VER = '2026-05-20-v1';
+const CHANGELOG_VER = '2026-05-21-v1';
 function checkChangelog() {
   if (!document.getElementById('onboard-overlay').classList.contains('hidden')) return;
   if (localStorage.getItem('sn_changelog_seen') !== CHANGELOG_VER) {
