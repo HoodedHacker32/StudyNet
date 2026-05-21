@@ -1,9 +1,10 @@
-const CACHE = 'studynet-v8';
+const CACHE = 'studynet-v9';
 const SHELL = [
   './',
   './index.html',
   './irish.html',
   './french.html',
+  './history.html',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',

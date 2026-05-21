@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>StudyNet — French</title>
+<title>StudyNet — History</title>
 <link rel="manifest" href="manifest.json"/>
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
@@ -50,7 +50,6 @@ button{font:inherit;cursor:pointer;}
 .sb-brand{
   font-size:.95rem;font-weight:700;letter-spacing:-.02em;
   padding:.5rem .5rem .3rem;
-  display:flex;align-items:center;gap:.5rem;
 }
 .sb-brand span{opacity:.4;font-weight:400;font-size:.82rem;}
 .sb-section{
@@ -84,7 +83,7 @@ button{font:inherit;cursor:pointer;}
 .mob-header{display:none;}
 .modes{display:none!important;}
 .hero{padding:2.5rem 0 1.5rem;}
-.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;display:flex;align-items:center;gap:.65rem;}
+.hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;letter-spacing:-.03em;}
 .hero p{margin-top:.5rem;color:var(--muted);font-size:.9rem;}
 .hero-stats{display:flex;gap:.5rem;margin-top:1rem;flex-wrap:wrap;}
 .h-chip{padding:.28rem .75rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;color:var(--muted);}
@@ -124,6 +123,7 @@ button{font:inherit;cursor:pointer;}
   border:1px dashed var(--border);border-radius:var(--radius);
   margin-bottom:1rem;
 }
+/* Flashcards */
 .fc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
 .fc-counter{font-size:.8rem;color:var(--muted);}
 .fc-set-btns{display:flex;gap:.4rem;flex-wrap:wrap;}
@@ -137,10 +137,11 @@ button{font:inherit;cursor:pointer;}
   backface-visibility:hidden;-webkit-backface-visibility:hidden;
   border:1px solid var(--border);border-radius:var(--radius);
   display:flex;align-items:center;justify-content:center;
-  flex-direction:column;gap:.5rem;padding:1.5rem;text-align:center;
+  flex-direction:column;gap:.5rem;padding:1.5rem;
+  text-align:center;
 }
 .fc-back{transform:rotateY(180deg);background:var(--hover);}
-.fc-word{font-size:1.5rem;font-weight:700;letter-spacing:-.02em;}
+.fc-word{font-size:1.4rem;font-weight:700;letter-spacing:-.02em;}
 .fc-sub{font-size:.8rem;color:var(--muted);}
 .fc-hint{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
 .fc-prog-bar{height:2px;background:var(--border);border-radius:99px;margin-bottom:1rem;}
@@ -150,6 +151,7 @@ button{font:inherit;cursor:pointer;}
 .fc-ctrl:hover{background:var(--hover);}
 .fc-ctrl.primary{background:var(--fg);color:var(--bg);border-color:var(--fg);}
 .fc-ctrl.primary:hover{opacity:.8;}
+/* Quiz */
 .mcq-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem;}
 .mcq-set-sel{display:flex;gap:.4rem;flex-wrap:wrap;}
 .mcq-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
@@ -174,6 +176,7 @@ button{font:inherit;cursor:pointer;}
 .mcq-result{padding:2rem 1.1rem;text-align:center;}
 .mcq-result h2{font-size:1.5rem;font-weight:800;}
 .mcq-result p{color:var(--muted);margin:.5rem 0 1.2rem;font-size:.85rem;}
+/* Match */
 .match-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
 .match-score{font-size:.8rem;color:var(--muted);}
 .match-set-btns{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
@@ -190,6 +193,7 @@ button{font:inherit;cursor:pointer;}
 .match-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);}
 .match-complete h3{font-size:1.1rem;font-weight:700;}
 .match-complete p{color:var(--muted);font-size:.83rem;margin:.4rem 0 1rem;}
+/* Practice */
 .prac-sets{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
 .prac-set-btn{padding:.28rem .7rem;border:1px solid var(--border);border-radius:99px;font-size:.75rem;background:none;color:var(--muted);cursor:pointer;min-height:32px;}
 .prac-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
@@ -200,42 +204,67 @@ button{font:inherit;cursor:pointer;}
 .q-num{flex-shrink:0;font-size:.72rem;color:var(--muted);padding-top:.18rem;min-width:1.3rem;}
 .q-body{flex:1;}
 .q-sent{font-size:.86rem;line-height:1.9;display:flex;align-items:center;flex-wrap:wrap;gap:.2rem;}
-.q-hint-txt{font-size:.76rem;color:var(--muted);font-style:italic;}
 .tbl-ex{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;overflow-x:auto;}
 .tbl-ex table{width:100%;border-collapse:collapse;font-size:.83rem;min-width:320px;}
 .tbl-ex th,.tbl-ex td{padding:.5rem .8rem;border:1px solid var(--border);}
 .tbl-ex th{background:var(--hover);font-size:.77rem;font-weight:600;}
-.q-inp{border:none;border-bottom:1px solid var(--fg);background:transparent;color:var(--fg);font:inherit;font-size:.85rem;width:100px;padding:.05rem .2rem;outline:none;min-height:28px;}
+.q-inp{border:none;border-bottom:1px solid var(--fg);background:transparent;color:var(--fg);font:inherit;font-size:.85rem;width:120px;padding:.05rem .2rem;outline:none;min-height:28px;}
 .q-inp:focus{border-bottom-width:2px;}
 .q-inp.ok{border-bottom-color:var(--fg);opacity:.6;}
 .q-inp.err{animation:shake .3s ease;}
 .q-inp:disabled{opacity:.55;cursor:default;}
 .q-fb{font-size:.7rem;margin-top:.15rem;color:var(--muted);}
-.ref-toggle{font-size:.75rem;color:var(--muted);background:none;border:none;cursor:pointer;text-decoration:underline;text-decoration-style:dotted;padding:0 0 .5rem;}
-.ref-toggle:hover{color:var(--fg);}
-.ref-box{margin:.6rem 0 .9rem;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.ref-box table{width:100%;border-collapse:collapse;font-size:.78rem;}
-.ref-box th,.ref-box td{padding:.4rem .65rem;border:1px solid var(--border);}
-.ref-box th{font-weight:600;background:var(--hover);}
-.rule-box{background:var(--hover);border:1px solid var(--border);border-radius:var(--radius);padding:.85rem 1rem;font-size:.82rem;line-height:1.7;margin-bottom:1rem;}
-.rule-box strong{font-weight:700;}
-.rule-box code{font-family:monospace;background:var(--border);padding:.1rem .3rem;border-radius:3px;font-size:.8rem;}
 .reset-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;}
 .reset-btn:hover{background:var(--hover);color:var(--fg);}
+/* Timeline */
+.tl-sets{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.tl-set-btn{padding:.25rem .65rem;border:1px solid var(--border);border-radius:99px;font-size:.72rem;background:none;color:var(--muted);cursor:pointer;min-height:30px;}
+.tl-set-btn.active{background:var(--fg);color:var(--bg);border-color:var(--fg);}
+.tl-status{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;flex-wrap:wrap;gap:.4rem;}
+.tl-inst{font-size:.8rem;color:var(--muted);}
+.tl-count{font-size:.8rem;color:var(--muted);}
+.tl-visual{position:relative;overflow-x:auto;margin-bottom:2rem;padding-bottom:1rem;}
+.tl-line{position:absolute;top:32px;left:0;right:0;height:2px;background:var(--border);z-index:0;}
+.tl-nodes{display:flex;position:relative;z-index:1;min-width:100%;padding:0 1rem;justify-content:space-between;align-items:flex-start;}
+.tl-node{display:flex;flex-direction:column;align-items:center;gap:.3rem;min-width:90px;flex:1;cursor:default;}
+.tl-node-drop{min-height:60px;border:1.5px dashed var(--border);border-radius:var(--radius);padding:.3rem;margin-top:.4rem;width:90px;transition:background .15s,border-color .15s;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:var(--muted);text-align:center;line-height:1.3;}
+.tl-node-drop.drag-over{background:var(--hover);border-color:var(--fg);border-style:solid;}
+.tl-node-drop.filled{border-style:solid;border-color:var(--fg);background:var(--fg);color:var(--bg);font-size:.72rem;font-weight:600;cursor:default;}
+.tl-node-drop.wrong-flash{animation:wrongFlash .4s ease;}
+@keyframes wrongFlash{0%,100%{background:transparent}50%{background:#fdd;border-color:#c00;}}
+.tl-node-dot{width:12px;height:12px;border-radius:50%;background:var(--border);border:2px solid var(--fg);flex-shrink:0;transition:background .2s;margin-top:26px;}
+.tl-node-year{font-size:.68rem;font-weight:700;color:var(--muted);white-space:nowrap;margin-top:.2rem;}
+.tl-node.filled .tl-node-dot{background:var(--fg);}
+.tl-tray-label{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);margin-bottom:.5rem;}
+.tl-tray{display:flex;flex-wrap:wrap;gap:.5rem;min-height:60px;border:1px dashed var(--border);border-radius:var(--radius);padding:.75rem;}
+.tl-card{padding:.5rem .75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font-size:.78rem;line-height:1.3;cursor:grab;user-select:none;max-width:200px;transition:opacity .2s,box-shadow .15s;}
+.tl-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.tl-card.dragging{opacity:.4;cursor:grabbing;}
+.tl-card.placed{display:none;}
+.tl-complete{text-align:center;padding:1.5rem;border:1px solid var(--border);border-radius:var(--radius);margin-top:1rem;}
+.tl-complete h3{font-size:1.1rem;font-weight:700;}
+.tl-complete p{color:var(--muted);font-size:.83rem;margin:.4rem 0 1rem;}
+/* Buttons & footer */
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:.5rem 1.1rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font-size:.8rem;font-weight:600;cursor:pointer;min-height:40px;}
 .btn:hover{opacity:.75;}
 .btn-ghost{background:none;color:var(--fg);}
 .btn-ghost:hover{background:var(--hover);opacity:1;}
 footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);font-size:.75rem;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+/* Animations */
 @keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
 @keyframes panelSlideIn{from{opacity:0;transform:translateX(var(--slide-dir,40px));}to{opacity:1;transform:translateX(0);}}
+/* Icon helper */
 .icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-[data-step="step-1"] .sb-active-ctx,[data-step="step-1"] .sb-topic-list{display:none!important;}
-[data-step="step-2"] .sb-active-ctx,[data-step="step-3"] .sb-active-ctx{display:block!important;}
+/* 3-step progressive disclosure */
+[data-step="step-1"] .sb-active-ctx,
+[data-step="step-1"] .sb-topic-list{display:none!important;}
+[data-step="step-2"] .sb-active-ctx,
+[data-step="step-3"] .sb-active-ctx{display:block!important;}
 [data-step="step-2"] .sb-topic-list{display:none!important;}
 [data-step="step-3"] .sb-topic-list{display:block!important;}
-[data-step="step-1"] .sb-modes,[data-step="step-2"] .sb-modes{display:none!important;}
+[data-step="step-1"] .sb-modes,
+[data-step="step-2"] .sb-modes{display:none!important;}
 [data-step="step-3"] .sb-modes{display:flex!important;flex-direction:column;gap:3px;}
 .sb-active-ctx{margin-bottom:.25rem;}
 .sb-back-link{display:flex;align-items:center;gap:.35em;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--muted);font:inherit;font-size:.8rem;cursor:pointer;border-radius:var(--radius);text-align:left;transition:background .15s;}
@@ -245,6 +274,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 .sb-tlist-btn{display:block;width:100%;padding:.3rem .5rem;border:none;background:none;color:var(--fg);font:inherit;font-size:.8rem;border-radius:var(--radius);cursor:pointer;text-align:left;transition:background .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .sb-tlist-btn:hover{background:var(--hover);}
 .sb-tlist-btn.active{font-weight:600;}
+/* Activity picker */
 .act-head{display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap;}
 .act-back-btn{display:flex;align-items:center;gap:.35em;flex-shrink:0;padding:.4rem .75rem;border:1px solid var(--border);background:none;color:var(--fg);font:inherit;font-size:.82rem;border-radius:var(--radius);cursor:pointer;white-space:nowrap;transition:background .15s;}
 .act-back-btn:hover{background:var(--hover);}
@@ -255,9 +285,11 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 .at-icon{display:flex;align-items:center;justify-content:center;}
 .at-name{font-weight:600;font-size:.98rem;}
 .at-count{font-size:.8rem;color:var(--muted);}
+/* Mobile pill strip */
 .mob-pill-strip{display:none;gap:.5rem;padding:.5rem 1rem;border-bottom:1px solid var(--border);}
 .mob-pill{display:flex;align-items:center;gap:.3em;padding:.35rem .75rem;border:1px solid var(--border);background:var(--bg);color:var(--fg);font:inherit;font-size:.8rem;border-radius:20px;cursor:pointer;transition:background .15s;}
 .mob-pill:hover{background:var(--hover);}
+/* Streak */
 .streak-section{margin-top:2rem;padding:.9rem 1.1rem;border:1px solid var(--border);border-radius:var(--radius);}
 .streak-row{display:flex;align-items:center;gap:.65rem;margin-bottom:.75rem;}
 .streak-icon{line-height:1;}
@@ -267,6 +299,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 .streak-bar-wrap{height:6px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:.4rem;}
 .streak-bar-fill{height:100%;background:#f97316;border-radius:99px;transition:width .4s ease;}
 .streak-bar-label{font-size:.72rem;color:var(--muted);}
+/* Mobile overrides */
 @media(max-width:700px){
   body{display:block;}
   .sidebar{display:none;}
@@ -277,14 +310,14 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
   .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
   .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
   [data-step="step-3"] .mob-pill-strip{display:flex;}
-  [data-step="step-3"] .modes{display:none!important;}
 }
 @media(max-width:540px){
   .mcq-opts{grid-template-columns:1fr;}
   .match-grid{grid-template-columns:1fr 1fr;}
-  .fc-word{font-size:1.2rem;}
+  .fc-word{font-size:1.15rem;}
   .tbl-ex table{font-size:.76rem;}
   .tbl-ex th,.tbl-ex td{padding:.4rem .5rem;}
+  .tl-nodes{min-width:600px;}
 }
 @media(max-width:380px){
   .match-grid{grid-template-columns:1fr;}
@@ -294,22 +327,22 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 <body data-step="step-1">
 
 <svg id="svg-sprite" aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="icon-home"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-books"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
-  <symbol id="icon-cards"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
-  <symbol id="icon-quiz"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
-  <symbol id="icon-match"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></symbol>
-  <symbol id="icon-pencil"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
-  <symbol id="icon-moon"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
-  <symbol id="icon-sun"      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
-  <symbol id="icon-pin"      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
-  <symbol id="icon-chat"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
-  <symbol id="icon-school"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-user"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
-  <symbol id="icon-users"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
-  <symbol id="icon-cloud"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10h-1.26A8 8 0 109 20h9a5 5 0 000-10z"/></symbol>
-  <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
-  <symbol id="icon-text"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+  <symbol id="icon-home"     viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-books"    viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
+  <symbol id="icon-cards"    viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+  <symbol id="icon-quiz"     viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></symbol>
+  <symbol id="icon-match"    viewBox="0 0 24 24"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></symbol>
+  <symbol id="icon-pencil"   viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="icon-clock"    viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></symbol>
+  <symbol id="icon-moon"     viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
+  <symbol id="icon-sun"      viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
+  <symbol id="icon-pin"      viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+  <symbol id="icon-user"     viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></symbol>
+  <symbol id="icon-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></symbol>
+  <symbol id="icon-text"     viewBox="0 0 24 24"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
+  <symbol id="icon-school"   viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="icon-flask"    viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L5 20h14L14 9V3"/></symbol>
+  <symbol id="icon-compass"  viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></symbol>
 </svg>
 
 <aside class="sidebar">
@@ -317,10 +350,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
     <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>
     &nbsp;StudyNet
   </a>
-  <div class="sb-brand">
-    <svg viewBox="0 0 3 2" width="21" height="14" aria-hidden="true" style="border-radius:2px;flex-shrink:0"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-    Français <span>/ French</span>
-  </div>
+  <div class="sb-brand">History <span>/ JC Year 1</span></div>
 
   <div class="sb-active-ctx" id="sb-active-ctx">
     <button class="sb-back-link" onclick="setMode('topic')">← Topics</button>
@@ -347,48 +377,43 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 </aside>
 
 <div class="main">
-
   <header class="mob-header">
-    <div class="mob-logo">
-      <svg viewBox="0 0 3 2" width="18" height="12" aria-hidden="true" style="border-radius:2px;vertical-align:middle;margin-right:.35rem"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>Français <span>/ French</span>
-    </div>
+    <div class="mob-logo">History <span>/ JC Year 1</span></div>
     <div class="mob-btns">
       <button class="mob-btn" id="theme-mob" aria-label="Toggle theme">
         <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>
       </button>
+      <a href="index.html" class="mob-btn" aria-label="Back to StudyNet">
+        <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>
+      </a>
     </div>
   </header>
 
   <div class="mob-pill-strip" id="mob-pill-strip">
     <button class="mob-pill" id="mob-topic-pill" onclick="setMode('topic')">
-      <span id="mob-topic-pill-text">Topics</span> &#9662;
+      <span id="mob-topic-pill-text">Topics</span> ▾
     </button>
     <button class="mob-pill" id="mob-mode-pill" onclick="setMode('activities')">
-      <span id="mob-mode-pill-text">Activities</span> &#9662;
+      <span id="mob-mode-pill-text">Activities</span> ▾
     </button>
   </div>
 
   <div class="page">
 
     <section class="hero">
-      <h1>
-        <svg viewBox="0 0 3 2" width="36" height="24" aria-hidden="true" style="border-radius:3px;flex-shrink:0"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-        Français
-      </h1>
-      <p>Allons-y 1 &middot; Modules 1&ndash;6 &middot; revision activities</p>
+      <h1>History</h1>
+      <p>First Year · Junior Cycle — four unit revision activities</p>
       <div class="hero-stats">
         <div class="h-chip">Score: <b id="hs-score">0 / 0</b></div>
-        <div class="h-chip">Practice: <b>54 items</b></div>
+        <div class="h-chip">Topics: <b>4</b></div>
       </div>
       <div class="topic-mob-chip">
         <button class="topic-mob-pill" onclick="setMode('topic')">
           <svg class="icon" aria-hidden="true"><use href="#icon-pin"/></svg>
-          &nbsp;<span id="topic-mob-label">All Topics</span> &nbsp;&#9662;
+          &nbsp;<span id="topic-mob-label">All Topics</span> &nbsp;▾
         </button>
       </div>
     </section>
-
-    <div class="modes"></div>
 
     <!-- TOPIC SELECT -->
     <div class="panel active" id="panel-topic">
@@ -398,8 +423,8 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
         <div class="streak-row">
           <span class="streak-icon"><svg viewBox="0 0 24 24" width="22" height="22" fill="#f97316" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
           <div class="streak-info">
-            <div class="streak-count" id="streak-count">&#8212;</div>
-            <div class="streak-sub" id="streak-sub">study streak &middot; resets if you miss a day</div>
+            <div class="streak-count" id="streak-count">—</div>
+            <div class="streak-sub" id="streak-sub">study streak · resets if you miss a day</div>
           </div>
         </div>
         <div class="streak-bar-wrap"><div class="streak-bar-fill" id="streak-bar-fill" style="width:0%"></div></div>
@@ -410,7 +435,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
     <!-- ACTIVITY PICKER -->
     <div class="panel" id="panel-activities">
       <div class="act-head">
-        <button class="act-back-btn" onclick="setMode('topic')">&#8592; Topics</button>
+        <button class="act-back-btn" onclick="setMode('topic')">← Topics</button>
         <div>
           <h2 id="act-title" style="font-size:1.1rem;font-weight:700;"></h2>
           <p id="act-desc" style="font-size:.85rem;color:var(--muted);margin-top:.25rem;"></p>
@@ -434,15 +459,15 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
             <div class="fc-hint">Tap to reveal</div>
           </div>
           <div class="fc-face fc-back">
-            <div class="fc-word" id="fc-back-word"></div>
+            <div class="fc-word" id="fc-back-word" style="font-size:1rem;font-weight:600;"></div>
             <div class="fc-sub"  id="fc-back-sub"></div>
           </div>
         </div>
       </div>
       <div class="fc-controls">
-        <button class="fc-ctrl"         onclick="fcMove(-1)">&#8592; Prev</button>
+        <button class="fc-ctrl"         onclick="fcMove(-1)">← Prev</button>
         <button class="fc-ctrl"         onclick="flipCard()">Flip</button>
-        <button class="fc-ctrl primary" onclick="fcMove(1)">Next &#8594;</button>
+        <button class="fc-ctrl primary" onclick="fcMove(1)">Next →</button>
       </div>
     </div>
 
@@ -463,7 +488,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
         </div>
         <div class="mcq-footer">
           <span class="mcq-fb" id="mcq-fb"></span>
-          <button class="mcq-next" id="mcq-next">Next &#8594;</button>
+          <button class="mcq-next" id="mcq-next">Next →</button>
         </div>
       </div>
     </div>
@@ -478,6 +503,21 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
       <div id="match-area"></div>
     </div>
 
+    <!-- TIMELINE -->
+    <div class="panel" id="panel-timeline">
+      <div class="tl-sets" id="tl-sets"></div>
+      <div class="tl-status">
+        <span class="tl-inst">Drag each event card onto the correct year on the timeline.</span>
+        <span class="tl-count" id="tl-count">0 / 0 placed</span>
+      </div>
+      <div class="tl-visual" id="tl-visual">
+        <div class="tl-line"></div>
+        <div class="tl-nodes" id="tl-nodes"></div>
+      </div>
+      <div class="tl-tray-label">Events to place:</div>
+      <div class="tl-tray" id="tl-tray"></div>
+    </div>
+
     <!-- PRACTICE -->
     <div class="panel" id="panel-practice">
       <div class="prac-sets" id="prac-sets"></div>
@@ -485,7 +525,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
     </div>
 
     <footer>
-      <a href="index.html" style="color:var(--muted);">&#8592; Back to StudyNet</a>
+      <a href="index.html" style="color:var(--muted);">← Back to StudyNet</a>
       <span>Progress saved in your browser.</span>
     </footer>
 
@@ -493,7 +533,7 @@ footer{margin-top:4rem;padding-top:1.4rem;border-top:1px solid var(--border);fon
 </div>
 
 <script>
-// THEME
+// ═══════ THEME ═══════
 const html = document.documentElement;
 const savedTheme = localStorage.getItem('sn_theme');
 if (savedTheme) html.classList.add('theme-' + savedTheme);
@@ -501,12 +541,13 @@ function updateThemeIcons() {
   const isDark = html.classList.contains('theme-dark') ||
     (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
   document.querySelectorAll('.theme-icon-use').forEach(el =>
-    el.setAttribute('href', isDark ? '#icon-sun' : '#icon-moon'));
+    el.setAttribute('href', isDark ? '#icon-sun' : '#icon-moon')
+  );
 }
 function toggleTheme() {
   const dark = html.classList.contains('theme-dark') ||
     (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
-  html.classList.remove('theme-light','theme-dark');
+  html.classList.remove('theme-light', 'theme-dark');
   const next = dark ? 'light' : 'dark';
   html.classList.add('theme-' + next);
   localStorage.setItem('sn_theme', next);
@@ -516,20 +557,20 @@ document.getElementById('theme-btn').addEventListener('click', toggleTheme);
 document.getElementById('theme-mob').addEventListener('click', toggleTheme);
 updateThemeIcons();
 
-// MODE SWITCHING
+// ═══════ MODE SWITCHING ═══════
 let currentMode = 'topic';
 function setMode(id) {
   currentMode = id;
-  const stepNum = {'step-1':1,'step-2':2,'step-3':3};
-  const step = id === 'topic' ? 'step-1' : id === 'activities' ? 'step-2' : 'step-3';
+  const stepMap = { 'topic': 'step-1', 'activities': 'step-2' };
+  const step = stepMap[id] || 'step-3';
+  const stepNum = { 'step-1': 1, 'step-2': 2, 'step-3': 3 };
   const fwd = stepNum[step] >= stepNum[document.body.dataset.step || 'step-1'];
   document.body.style.setProperty('--slide-dir', fwd ? '40px' : '-40px');
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === id));
   document.getElementById('panel-' + id).classList.add('active');
   document.body.dataset.step = step;
   if (id === 'topic') buildTopicPanel();
-  if (id !== 'topic' && id !== 'activities' && currentTopic) {
+  if (step === 'step-3' && currentTopic) {
     const tp = document.getElementById('mob-topic-pill-text');
     const mp = document.getElementById('mob-mode-pill-text');
     if (tp) tp.textContent = currentTopic.label;
@@ -537,318 +578,337 @@ function setMode(id) {
   }
 }
 
-// STORAGE
-const STORE = 'sn_french_v1';
+// ═══════ STORAGE ═══════
+const STORE = 'sn_history_v1';
 function loadS() { try { return JSON.parse(localStorage.getItem(STORE)) || {}; } catch(e) { return {}; } }
 function saveS(s) { localStorage.setItem(STORE, JSON.stringify(s)); }
 let S = loadS();
 if (!S.inputs) S.inputs = {};
 
-// NORMALISATION — handles French accents
 function norm(s) {
   return s.toLowerCase()
-    .replace(/[àâ]/g,'a')
-    .replace(/[éèêë]/g,'e')
-    .replace(/[îï]/g,'i')
-    .replace(/[ôœ]/g,'o')
-    .replace(/[ùû]/g,'u')
-    .replace(/ç/g,'c')
-    .replace(/['‘’]/g,"'")
-    .replace(/[^a-z0-9\s'\/-]/g,'')
-    .replace(/\s+/g,' ')
-    .trim();
+    .replace(/[àáâã]/g, 'a').replace(/[éèêë]/g, 'e').replace(/[íìîï]/g, 'i')
+    .replace(/[óòôõ]/g, 'o').replace(/[úùû]/g, 'u').replace(/[ñ]/g, 'n')
+    .replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
 }
 function chk(inp, ans) { return ans.some(a => norm(a) === norm(inp)); }
 
-// ═══════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════
+// ═══════ DATA ═══════
 
+// Flashcard decks
 const fcDecks = {
-  'Salutations': [
-    {front:'Bonjour',            back:'Hello'},
-    {front:'Bonsoir',            back:'Good evening'},
-    {front:'Bonne nuit',         back:'Good night'},
-    {front:'Au revoir',          back:'Goodbye'},
-    {front:'Ça va ?',            back:'How are you? (informal)'},
-    {front:'Je vais bien',       back:'I am fine'},
-    {front:'Ça va bien',         back:'I am well'},
-    {front:'Ça va mal',          back:'Things are not going well'},
-    {front:'Merci',              back:'Thank you'},
-    {front:'De rien',            back:"You're welcome"},
-    {front:'À demain',           back:'See you tomorrow'},
-    {front:'Comment allez-vous ?', back:'How are you? (formal)'},
+  'Historian': [
+    { front: 'History', back: 'The study of the past using written and other sources' },
+    { front: 'Prehistory', back: 'The period before writing was invented' },
+    { front: 'Primary source', back: 'Firsthand evidence from the time of an event (e.g. a diary or artefact)' },
+    { front: 'Secondary source', back: 'An account by someone not present at the event (e.g. a textbook)' },
+    { front: 'Repository', back: 'A place where sources are stored, e.g. an archive or museum' },
+    { front: 'Bias', back: 'A prejudice that influences how a source presents information' },
+    { front: 'Propaganda', back: 'Information spread to promote a political viewpoint or cause' },
+    { front: 'Fact', back: 'Something that can be proven to be true' },
+    { front: 'Opinion', back: 'A personal view that cannot be proven true or false' },
+    { front: 'Cross-checking', back: 'Using multiple sources to verify information' },
+    { front: 'Chronology', back: 'The arrangement of events in order of time' },
+    { front: 'Archaeology', back: 'The study of the past through physical remains and artefacts' },
+    { front: 'Aerial photography', back: 'Used by archaeologists to spot sites from above (e.g. crop marks)' },
+    { front: 'Radiocarbon dating', back: 'Uses carbon-14 to estimate the age of organic materials' },
+    { front: 'Conservation', back: 'Protecting artefacts from decay or damage' },
+    { front: 'Reinterpretation', back: 'Reassessing the meaning of sources in light of new evidence' },
   ],
-  'Les Matières': [
-    {front:'Le français',          back:'French'},
-    {front:'Les maths',            back:'Maths'},
-    {front:"L'anglais",            back:'English'},
-    {front:"L'histoire",           back:'History'},
-    {front:'La géographie',        back:'Geography'},
-    {front:'La biologie',          back:'Biology'},
-    {front:'La musique',           back:'Music'},
-    {front:'La physique',          back:'Physics'},
-    {front:'La chimie',            back:'Chemistry'},
-    {front:"L'éducation physique", back:'PE / Sports'},
-    {front:'Le dessin',            back:'Art'},
-    {front:'La religion',          back:'Religion'},
+  'Middle Ages': [
+    { front: 'Middle Ages', back: 'Period from c.500 AD to c.1500 AD in European history' },
+    { front: 'Feudal System', back: 'Social hierarchy: King → Lords → Knights → Peasants, based on land ownership' },
+    { front: 'Fief', back: 'Land granted by a lord to a knight in exchange for military service' },
+    { front: 'Keep', back: 'The strongest tower of a castle — the last line of defence' },
+    { front: 'Trebuchet', back: 'Siege weapon used to hurl boulders at castle walls' },
+    { front: 'Moat', back: 'Deep ditch filled with water surrounding a castle for defence' },
+    { front: 'Dowry', back: 'Money or property brought by a bride to her husband on marriage' },
+    { front: 'Chivalry', back: 'Code of conduct for knights — brave, loyal, and courteous' },
+    { front: 'Page', back: 'First stage of becoming a knight (age 7–14, served a lord)' },
+    { front: 'Squire', back: 'Second stage of knighthood (age 14–21, trained in weapons)' },
+    { front: 'Dubbing', back: 'Ceremony in which a squire was made a knight' },
+    { front: 'Apprentice', back: 'First stage of becoming a craftsman — worked under a master' },
+    { front: 'Journeyman', back: 'Second stage — qualified craftsman, not yet a master' },
+    { front: 'Guild', back: 'An association of craftsmen that controlled training and quality standards' },
+    { front: 'Novice', back: 'A monk in training who has not yet taken permanent vows' },
+    { front: 'Monastery', back: 'A religious community where monks lived, prayed and worked' },
+    { front: 'Refectory', back: 'The dining hall in a monastery' },
+    { front: 'Cloister', back: 'Covered walkway in a monastery used for prayer and study' },
+    { front: 'Black Death', back: 'Bubonic plague that killed 30–60% of Europe\'s population (1347–1353)' },
   ],
-  'La Famille': [
-    {front:'Le père',       back:'Father'},
-    {front:'La mère',       back:'Mother'},
-    {front:'Le frère',      back:'Brother'},
-    {front:'La sœur',       back:'Sister'},
-    {front:'Le grand-père', back:'Grandfather'},
-    {front:'La grand-mère', back:'Grandmother'},
-    {front:"L'oncle",       back:'Uncle'},
-    {front:'La tante',      back:'Aunt'},
-    {front:'Le fils',       back:'Son'},
-    {front:'La fille',      back:'Daughter'},
-    {front:'Le mari',       back:'Husband'},
-    {front:'La femme',      back:'Wife'},
+  'Renaissance': [
+    { front: 'Renaissance', back: '"Rebirth" — period of cultural and intellectual renewal (c.1300–1600, began in Italy)' },
+    { front: 'Patronage', back: 'Financial support given to artists by wealthy individuals or families' },
+    { front: 'Medici family', back: 'Wealthy Florentine banking family who patronised Renaissance artists' },
+    { front: 'Perspective', back: 'Artistic technique creating the illusion of depth and distance' },
+    { front: 'Realism', back: 'Painting humans and nature accurately as they appear' },
+    { front: 'Leonardo da Vinci', back: 'Painted the Mona Lisa and The Last Supper; also a scientist and inventor' },
+    { front: 'Michelangelo', back: 'Sculpted the statue of David; painted the Sistine Chapel ceiling' },
+    { front: 'St Peter\'s Basilica', back: 'Example of Renaissance architecture in Rome — famous for its great dome' },
+    { front: 'Andreas Vesalius', back: 'Produced On the Fabric of the Human Body — first accurate anatomy from dissection' },
+    { front: 'William Harvey', back: 'Discovered that the heart pumps blood around the body' },
+    { front: 'Ambroise Paré', back: 'Used ligatures instead of hot oil to treat wounds — improved surgery' },
+    { front: 'Galileo Galilei', back: 'Used the scientific method; discovered law of falling bodies; improved the telescope' },
+    { front: 'Printing press', back: 'Invented by Johannes Gutenberg c.1440; spread ideas quickly across Europe' },
+    { front: 'Nicolaus Copernicus', back: 'Proposed heliocentric model — the sun at the centre of the solar system' },
+    { front: 'Johannes Kepler', back: 'Discovered that planets move in elliptical (oval-shaped) orbits' },
   ],
-  'Le Temps': [
-    {front:'Il fait beau',        back:'The weather is nice'},
-    {front:'Il fait mauvais',     back:'The weather is bad'},
-    {front:'Il fait chaud',       back:'It is hot'},
-    {front:'Il fait froid',       back:'It is cold'},
-    {front:'Il pleut',            back:'It is raining'},
-    {front:'Il neige',            back:'It is snowing'},
-    {front:'Il gèle',             back:'It freezes / It is freezing'},
-    {front:'Il y a du vent',      back:"It's windy"},
-    {front:'Il y a du soleil',    back:'There is sunshine'},
-    {front:'Il y a des nuages',   back:'There are clouds'},
-    {front:'Il y a du brouillard',back:'There is fog'},
+  'Age of Exploration': [
+    { front: 'Age of Exploration', back: '1400s–1500s — European nations explored sea routes to Asia and the Americas' },
+    { front: 'The 3 G\'s', back: 'Gold, Glory, God — the three main motivations for exploration' },
+    { front: 'Log and line', back: 'Device used to measure a ship\'s speed at sea' },
+    { front: 'Astrolabe', back: 'Navigation instrument used to measure the angle of stars' },
+    { front: 'Portolan charts', back: 'Detailed sea maps used by sailors for navigation' },
+    { front: 'Vasco da Gama', back: 'Portuguese explorer — first European to reach India by sea (1498)' },
+    { front: 'Christopher Columbus', back: 'Reached the Caribbean on 12 October 1492, sailing west for Spain' },
+    { front: 'Treaty of Tordesillas', back: 'Signed 1494 — divided the world between Spain (west) and Portugal (east)' },
+    { front: 'Hernán Cortés', back: 'Spanish conquistador who conquered the Aztecs and destroyed Tenochtitlán (1521)' },
+    { front: 'Tenochtitlán', back: 'Capital city of the Aztec Empire — destroyed by Cortés' },
+    { front: 'Francisco Pizarro', back: 'Spanish conquistador who conquered the Incas of Peru and executed Atahualpa' },
+    { front: 'Atlantic Slave Trade', back: 'Around 12.5 million Africans were enslaved and shipped to the Americas' },
+    { front: 'Columbian Exchange', back: 'Transfer of goods, plants, animals and diseases between continents' },
+    { front: 'Impact on indigenous peoples', back: '90% died — population fell from 25 million (1519) to 3 million (1605)' },
+    { front: 'Controversial commemoration', back: 'Columbus Day vs Indigenous Peoples\' Day — different views of the same events' },
   ],
 };
 
+// Quiz data
 const quizData = {
-  etre: {
-    label: 'Être (To Be)',
+  historian: {
+    label: 'Historian & Archaeologist',
     questions: [
-      {q:'Je ___ (I am)',                   ans:['suis']},
-      {q:'Tu ___ (you are, informal)',      ans:['es']},
-      {q:'Il ___ (he is)',                  ans:['est']},
-      {q:'Elle ___ (she is)',               ans:['est']},
-      {q:'On ___ (one is)',                 ans:['est']},
-      {q:'Nous ___ (we are)',               ans:['sommes']},
-      {q:'Vous ___ (you are, formal/pl)',   ans:['êtes','etes']},
-      {q:'Ils ___ (they are, masc.)',       ans:['sont']},
-      {q:'Elles ___ (they are, fem.)',      ans:['sont']},
+      { q: 'What is the study of the past using sources called?',
+        ans: ['History'] },
+      { q: 'What is the period before writing was invented called?',
+        ans: ['Prehistory'] },
+      { q: 'A diary written at the time of an event is what type of source?',
+        ans: ['Primary source', 'Primary'] },
+      { q: 'A textbook written about a past event is what type of source?',
+        ans: ['Secondary source', 'Secondary'] },
+      { q: 'What is a museum or archive — a place where sources are stored — called?',
+        ans: ['Repository', 'A repository'] },
+      { q: 'Using multiple sources to verify information is called what?',
+        ans: ['Cross-checking', 'Cross checking'] },
+      { q: 'What dating method uses carbon-14 to estimate the age of organic objects?',
+        ans: ['Radiocarbon dating'] },
+      { q: 'What is the arrangement of events in order of time called?',
+        ans: ['Chronology'] },
     ]
   },
-  avoir: {
-    label: 'Avoir (To Have)',
+  middleAges: {
+    label: 'The Middle Ages',
     questions: [
-      {q:"J'___ (I have)",                  ans:['ai']},
-      {q:'Tu ___ (you have)',               ans:['as']},
-      {q:'Il ___ (he has)',                 ans:['a']},
-      {q:'Elle ___ (she has)',              ans:['a']},
-      {q:'On ___ (one has)',                ans:['a']},
-      {q:'Nous ___ (we have)',              ans:['avons']},
-      {q:'Vous ___ (you have)',             ans:['avez']},
-      {q:'Ils ___ (they have, masc.)',      ans:['ont']},
-      {q:'Elles ___ (they have, fem.)',     ans:['ont']},
+      { q: 'What was the social hierarchy of the Middle Ages called?',
+        ans: ['The Feudal System', 'Feudal System', 'The feudal system'] },
+      { q: 'What were the three stages of becoming a knight, in order?',
+        ans: ['Page Squire Knight', 'Page, Squire, Knight'] },
+      { q: "What was the knight's code of conduct called?",
+        ans: ['Chivalry'] },
+      { q: 'What siege weapon was used to hurl boulders at castle walls?',
+        ans: ['Trebuchet'] },
+      { q: 'What was the first stage of becoming a craftsman?',
+        ans: ['Apprentice'] },
+      { q: 'What was the highest rank a craftsman could achieve?',
+        ans: ['Master'] },
+      { q: 'What disease killed 30–60% of Europe\'s population between 1347 and 1353?',
+        ans: ['The Black Death', 'Black Death', 'Bubonic plague', 'The bubonic plague'] },
+      { q: 'What was the dining hall of a monastery called?',
+        ans: ['Refectory'] },
+      { q: 'What three vows did a monk take when entering a monastery?',
+        ans: ['Poverty chastity obedience', 'Poverty, chastity and obedience', 'Poverty, chastity, obedience'] },
     ]
   },
-  jours: {
-    label: 'Jours & Mois',
+  renaissance: {
+    label: 'The Renaissance',
     questions: [
-      {q:'Monday in French?',    ans:['Lundi','lundi']},
-      {q:'Tuesday in French?',   ans:['Mardi','mardi']},
-      {q:'Wednesday in French?', ans:['Mercredi','mercredi']},
-      {q:'Thursday in French?',  ans:['Jeudi','jeudi']},
-      {q:'Friday in French?',    ans:['Vendredi','vendredi']},
-      {q:'Saturday in French?',  ans:['Samedi','samedi']},
-      {q:'Sunday in French?',    ans:['Dimanche','dimanche']},
-      {q:'January in French?',   ans:['Janvier','janvier']},
-      {q:'February in French?',  ans:['Février','fevrier','Fevrier']},
-      {q:'March in French?',     ans:['Mars','mars']},
-      {q:'April in French?',     ans:['Avril','avril']},
-      {q:'June in French?',      ans:['Juin','juin']},
-      {q:'September in French?', ans:['Septembre','septembre']},
-      {q:'December in French?',  ans:['Décembre','decembre','Decembre']},
+      { q: 'What does the word "Renaissance" mean?',
+        ans: ['Rebirth'] },
+      { q: 'In which country did the Renaissance begin?',
+        ans: ['Italy'] },
+      { q: 'Which family were famous patrons of the arts in Florence?',
+        ans: ['The Medici family', 'Medici', 'Medici family', 'The Medicis'] },
+      { q: 'Who painted the Mona Lisa?',
+        ans: ['Leonardo da Vinci', 'Leonardo'] },
+      { q: 'Who sculpted the famous statue of David?',
+        ans: ['Michelangelo'] },
+      { q: 'Who first proposed that the sun was at the centre of the solar system?',
+        ans: ['Copernicus', 'Nicolaus Copernicus'] },
+      { q: 'Who invented the printing press around 1440?',
+        ans: ['Gutenberg', 'Johannes Gutenberg'] },
+      { q: 'Who discovered that the heart pumps blood around the body?',
+        ans: ['William Harvey', 'Harvey'] },
+      { q: 'What artistic technique creates the illusion of depth and distance in a painting?',
+        ans: ['Perspective'] },
     ]
   },
-  vocab: {
-    label: 'Vocabulaire',
+  exploration: {
+    label: 'Age of Exploration',
     questions: [
-      {q:'Un chat = ?',           ans:['a cat','cat']},
-      {q:'Un chien = ?',          ans:['a dog','dog']},
-      {q:'Un lapin = ?',          ans:['a rabbit','rabbit']},
-      {q:'Un cheval = ?',         ans:['a horse','horse']},
-      {q:'Un poisson rouge = ?',  ans:['a goldfish','goldfish']},
-      {q:'Le salon = ?',          ans:['living room','the living room']},
-      {q:'La cuisine = ?',        ans:['kitchen','the kitchen']},
-      {q:'La chambre = ?',        ans:['bedroom','the bedroom']},
-      {q:'La salle de bains = ?', ans:['bathroom','the bathroom']},
-      {q:'Le jardin = ?',         ans:['garden','the garden']},
-      {q:'Il fait beau = ?',      ans:['the weather is nice','it is nice']},
-      {q:'Il pleut = ?',          ans:['it is raining','it rains']},
-    ]
-  },
-  opinions: {
-    label: 'Opinions',
-    questions: [
-      {q:'"I like" in French?',         ans:["j'aime","j'aime"]},
-      {q:'"I love" in French?',         ans:["j'adore","j'adore"]},
-      {q:'"I hate" in French?',         ans:['je déteste','je deteste']},
-      {q:'"I don\'t like" in French?',  ans:["je n'aime pas","je n'aime pas"]},
-      {q:'"Easy" in French?',           ans:['facile']},
-      {q:'"Hard / Difficult" in French?', ans:['difficile']},
-      {q:'"Interesting" in French?',    ans:['intéressant','interessant']},
-      {q:'"Boring" in French?',         ans:['barbant']},
-      {q:'"Friendly" in French?',       ans:['sympa']},
-      {q:'"Funny" in French?',          ans:['drôle','drole']},
-      {q:'"Because" in French?',        ans:['parce que']},
-      {q:'"Useful" in French?',         ans:['utile']},
+      { q: "What were the three main motivations for exploration (the '3 G's')?",
+        ans: ['Gold Glory God', 'Gold, Glory, God', 'Gold Glory and God'] },
+      { q: 'Who was the first European to reach India by sea?',
+        ans: ['Vasco da Gama'] },
+      { q: 'On what date did Columbus reach the Caribbean?',
+        ans: ['12 October 1492', '12th October 1492', 'October 12 1492'] },
+      { q: 'What did the Treaty of Tordesillas (1494) do?',
+        ans: ['Divided the world between Spain and Portugal', 'Divided the world', 'Split the world between Spain and Portugal'] },
+      { q: 'Which Spanish conquistador conquered the Aztec Empire?',
+        ans: ['Hernan Cortes', 'Hernán Cortés', 'Cortes', 'Cortés'] },
+      { q: 'Which Spanish conquistador conquered the Incas of Peru?',
+        ans: ['Francisco Pizarro', 'Pizarro'] },
+      { q: 'Approximately how many Africans were enslaved in the Atlantic Slave Trade?',
+        ans: ['12.5 million', 'twelve point five million'] },
+      { q: 'What is the Columbian Exchange?',
+        ans: ['The transfer of goods plants animals and diseases between continents',
+              'Transfer of goods and diseases between continents',
+              'Transfer of goods between continents'] },
     ]
   },
 };
 
+// Match sets
 const matchSetsData = [
-  { label: 'Les Jours', colL: 'Français', colR: 'English', pairs: [
-    {left:'Lundi',    right:'Monday'},
-    {left:'Mardi',    right:'Tuesday'},
-    {left:'Mercredi', right:'Wednesday'},
-    {left:'Jeudi',    right:'Thursday'},
-    {left:'Vendredi', right:'Friday'},
-    {left:'Samedi',   right:'Saturday'},
-    {left:'Dimanche', right:'Sunday'},
+  { label: 'History Terms', colL: 'Term', colR: 'Definition', pairs: [
+    { left: 'History',         right: 'Study of the past' },
+    { left: 'Prehistory',      right: 'Before writing was invented' },
+    { left: 'Primary source',  right: 'Firsthand evidence' },
+    { left: 'Repository',      right: 'Archive or museum' },
+    { left: 'Cross-checking',  right: 'Using multiple sources' },
+    { left: 'Chronology',      right: 'Events in time order' },
   ]},
-  { label: 'Mois 1–6', colL: 'Français', colR: 'English', pairs: [
-    {left:'Janvier', right:'January'},
-    {left:'Février', right:'February'},
-    {left:'Mars',    right:'March'},
-    {left:'Avril',   right:'April'},
-    {left:'Mai',     right:'May'},
-    {left:'Juin',    right:'June'},
+  { label: 'Medieval Roles', colL: 'Stage / Role', colR: 'Description', pairs: [
+    { left: 'Page',          right: 'Age 7–14, served a lord' },
+    { left: 'Squire',        right: 'Age 14–21, weapons training' },
+    { left: 'Dubbing',       right: 'Ceremony to become a knight' },
+    { left: 'Apprentice',    right: 'Learning a craft' },
+    { left: 'Journeyman',    right: 'Qualified, not yet master' },
+    { left: 'Novice',        right: 'New monk in training' },
   ]},
-  { label: 'Mois 7–12', colL: 'Français', colR: 'English', pairs: [
-    {left:'Juillet',  right:'July'},
-    {left:'Août',     right:'August'},
-    {left:'Septembre',right:'September'},
-    {left:'Octobre',  right:'October'},
-    {left:'Novembre', right:'November'},
-    {left:'Décembre', right:'December'},
+  { label: 'Renaissance Figures', colL: 'Person', colR: 'Achievement', pairs: [
+    { left: 'Leonardo da Vinci', right: 'Mona Lisa' },
+    { left: 'Michelangelo',      right: 'Statue of David' },
+    { left: 'Gutenberg',         right: 'Printing press' },
+    { left: 'Copernicus',        right: 'Heliocentric model' },
+    { left: 'Galileo',           right: 'Scientific method' },
+    { left: 'William Harvey',    right: 'Circulation of blood' },
   ]},
-  { label: 'Les Animaux', colL: 'Français', colR: 'English', pairs: [
-    {left:'Un chat',          right:'cat'},
-    {left:'Un chien',         right:'dog'},
-    {left:'Un lapin',         right:'rabbit'},
-    {left:'Un cheval',        right:'horse'},
-    {left:'Un hamster',       right:'hamster'},
-    {left:'Un poisson rouge', right:'goldfish'},
-    {left:'Une tortue',       right:'turtle'},
-    {left:'Une souris',       right:'mouse'},
+  { label: 'Explorers & Events', colL: 'Explorer / Event', colR: 'Achievement / Result', pairs: [
+    { left: 'Vasco da Gama',         right: 'First to reach India by sea' },
+    { left: 'Columbus',              right: 'Caribbean — 12 Oct 1492' },
+    { left: 'Cortés',                right: 'Conquered the Aztecs' },
+    { left: 'Pizarro',               right: 'Conquered the Incas' },
+    { left: 'Treaty of Tordesillas', right: 'Divided world: Spain west, Portugal east' },
+    { left: 'Columbian Exchange',    right: 'Goods and diseases transferred between continents' },
   ]},
 ];
 
+// Timeline sets
+const tlSetsData = [
+  { label: 'Medieval & Renaissance Dates', nodes: [
+    { year: 1066, event: 'Norman Conquest — Battle of Hastings' },
+    { year: 1215, event: 'Magna Carta signed' },
+    { year: 1347, event: 'Black Death arrives in Europe' },
+    { year: 1440, event: "Gutenberg's printing press invented" },
+    { year: 1492, event: 'Columbus reaches the Caribbean' },
+  ]},
+  { label: 'Age of Exploration Voyages', nodes: [
+    { year: 1488, event: 'Dias rounds Cape of Good Hope' },
+    { year: 1492, event: 'Columbus reaches Caribbean' },
+    { year: 1494, event: 'Treaty of Tordesillas signed' },
+    { year: 1498, event: 'Vasco da Gama reaches India' },
+    { year: 1519, event: 'Cortés begins Aztec conquest' },
+    { year: 1532, event: 'Pizarro begins Inca conquest' },
+  ]},
+];
+
+// Practice data
 const pracData = {
-  etre: {
-    label: 'Être – conjugation',
-    type: 'conj',
-    intro: 'Type the correct form of être (to be).',
-    verb: 'être',
-    total: 6,
+  historian: {
+    label: 'Historian & Archaeologist',
+    intro: 'Fill in the blanks to complete each definition.',
+    type: 'blanks',
+    total: 8,
     items: [
-      {pronoun:'je',             hint:'I am',              ans:['suis']},
-      {pronoun:'tu',             hint:'you are (informal)',ans:['es']},
-      {pronoun:'il / elle / on', hint:'he/she/one is',     ans:['est']},
-      {pronoun:'nous',           hint:'we are',            ans:['sommes']},
-      {pronoun:'vous',           hint:'you are (formal)',  ans:['êtes','etes']},
-      {pronoun:'ils / elles',    hint:'they are',          ans:['sont']},
+      { q: 'The study of the past using sources is called ___.', ans: ['History', 'history'] },
+      { q: 'The period before writing was invented is called ___.', ans: ['Prehistory', 'prehistory'] },
+      { q: 'A diary written at the time of an event is a ___ source.', hint: 'Firsthand evidence', ans: ['primary', 'Primary source', 'primary source'] },
+      { q: 'A place like an archive or museum where sources are kept is called a ___.', ans: ['repository', 'Repository'] },
+      { q: 'Checking information against multiple sources is called ___.', ans: ['cross-checking', 'Cross-checking', 'cross checking'] },
+      { q: 'The arrangement of events in order of time is called ___.', ans: ['chronology', 'Chronology'] },
+      { q: 'Using carbon-14 to estimate the age of organic materials is called ___ dating.', ans: ['radiocarbon', 'Radiocarbon'] },
+      { q: 'Protecting artefacts from decay or damage is called ___.', ans: ['conservation', 'Conservation'] },
     ]
   },
-  avoir: {
-    label: 'Avoir – conjugation',
-    type: 'conj',
-    intro: 'Type the correct form of avoir (to have).',
-    verb: 'avoir',
-    total: 6,
+  middleAges: {
+    label: 'The Middle Ages',
+    intro: 'Fill in the blanks to complete each statement.',
+    type: 'blanks',
+    total: 8,
     items: [
-      {pronoun:"j'",             hint:'I have',            ans:['ai']},
-      {pronoun:'tu',             hint:'you have',          ans:['as']},
-      {pronoun:'il / elle / on', hint:'he/she/one has',    ans:['a']},
-      {pronoun:'nous',           hint:'we have',           ans:['avons']},
-      {pronoun:'vous',           hint:'you have (formal)', ans:['avez']},
-      {pronoun:'ils / elles',    hint:'they have',         ans:['ont']},
+      { q: 'The social hierarchy of the Middle Ages was called the ___ System.', ans: ['Feudal', 'feudal'] },
+      { q: 'Land granted by a lord to a knight was called a ___.', ans: ['fief', 'Fief'] },
+      { q: 'The code of conduct for knights was called ___.', ans: ['chivalry', 'Chivalry'] },
+      { q: 'The three stages of becoming a knight were Page, ___, and Knight.', ans: ['Squire', 'squire'] },
+      { q: 'The ceremony where a squire was made a knight was called ___.', ans: ['dubbing', 'Dubbing'] },
+      { q: 'The first stage of becoming a craftsman is called an ___.', ans: ['apprentice', 'Apprentice'] },
+      { q: 'The dining hall in a monastery is called the ___.', ans: ['refectory', 'Refectory'] },
+      { q: 'The Black Death killed approximately 30 to ___% of Europe\'s population.', hint: 'Range ending at 60', ans: ['60', '60%'] },
     ]
   },
-  aimer: {
-    label: 'Aimer – conjugation',
-    type: 'conj',
-    intro: 'Type the correct form of aimer (to like).',
-    verb: 'aimer',
-    total: 6,
+  renaissance: {
+    label: 'The Renaissance',
+    intro: 'Fill in the blanks to complete each statement.',
+    type: 'blanks',
+    total: 8,
     items: [
-      {pronoun:"j'",             hint:'I like',            ans:['aime']},
-      {pronoun:'tu',             hint:'you like',          ans:['aimes']},
-      {pronoun:'il / elle / on', hint:'he/she likes',      ans:['aime']},
-      {pronoun:'nous',           hint:'we like',           ans:['aimons']},
-      {pronoun:'vous',           hint:'you like (pl)',     ans:['aimez']},
-      {pronoun:'ils / elles',    hint:'they like',         ans:['aiment']},
+      { q: 'Renaissance means ___.', ans: ['rebirth', 'Rebirth'] },
+      { q: 'The ___ family were famous patrons of the arts in Florence.', ans: ['Medici', 'medici'] },
+      { q: '___ painted the Mona Lisa.', ans: ['Leonardo da Vinci', 'Leonardo'] },
+      { q: '___ sculpted the famous statue of David.', ans: ['Michelangelo', 'michelangelo'] },
+      { q: '___ proposed that the sun was at the centre of the solar system.', ans: ['Copernicus', 'Nicolaus Copernicus'] },
+      { q: 'The printing press was invented by ___ around 1440.', ans: ['Gutenberg', 'Johannes Gutenberg'] },
+      { q: '___ discovered that the heart pumps blood around the body.', ans: ['William Harvey', 'Harvey'] },
+      { q: '___ used ligatures to treat wounds, instead of hot oil.', hint: 'French surgeon', ans: ['Pare', 'Paré', 'Ambroise Pare', 'Ambroise Paré'] },
     ]
   },
-  possessif: {
-    label: 'Adjectifs possessifs',
-    type: 'possessif',
-    intro: 'Fill in the possessive adjectives.',
-    total: 18,
+  exploration: {
+    label: 'Age of Exploration',
+    intro: 'Fill in the blanks to complete each statement.',
+    type: 'blanks',
+    total: 8,
     items: [
-      {pronoun:'my',              masc:['mon'],   fem:['ma'],    plur:['mes']},
-      {pronoun:'your (informal)', masc:['ton'],   fem:['ta'],    plur:['tes']},
-      {pronoun:'his / her',       masc:['son'],   fem:['sa'],    plur:['ses']},
-      {pronoun:'our',             masc:['notre'], fem:['notre'], plur:['nos']},
-      {pronoun:'your (formal/pl)',masc:['votre'], fem:['votre'], plur:['vos']},
-      {pronoun:'their',           masc:['leur'],  fem:['leur'],  plur:['leurs']},
-    ]
-  },
-  endings: {
-    label: 'Terminaisons des verbes',
-    type: 'endings',
-    intro: 'Fill in the regular verb endings.',
-    total: 18,
-    items: [
-      {pronoun:"je / j'",        er:['e'],    ir:['is'],     re:['s']},
-      {pronoun:'tu',             er:['es'],   ir:['is'],     re:['s']},
-      {pronoun:'il / elle / on', er:['e'],    ir:['it'],     re:['-']},
-      {pronoun:'nous',           er:['ons'],  ir:['issons'], re:['ons']},
-      {pronoun:'vous',           er:['ez'],   ir:['issez'],  re:['ez']},
-      {pronoun:'ils / elles',    er:['ent'],  ir:['issent'], re:['ent']},
+      { q: "The three motivations for exploration (the '3 G's') were Gold, ___, and God.", ans: ['Glory', 'glory'] },
+      { q: '___ was the first European to reach India by sea, in 1498.', ans: ['Vasco da Gama'] },
+      { q: 'Columbus reached the Caribbean on 12 October ___.', ans: ['1492'] },
+      { q: 'The ___ divided the world between Spain (west) and Portugal (east).', hint: 'Signed in 1494', ans: ['Treaty of Tordesillas', 'treaty of tordesillas'] },
+      { q: '___ conquered the Aztec Empire and destroyed Tenochtitlán.', ans: ['Hernan Cortes', 'Hernán Cortés', 'Cortes', 'Cortés'] },
+      { q: '___ conquered the Incas of Peru and executed Atahualpa.', ans: ['Francisco Pizarro', 'Pizarro'] },
+      { q: 'The ___ Exchange was the transfer of goods and diseases between continents.', ans: ['Columbian', 'columbian'] },
+      { q: 'Approximately ___ million Africans were enslaved in the Atlantic Slave Trade.', ans: ['12.5', 'twelve point five'] },
     ]
   },
 };
 
+// Topic definitions
 const topicDefs = [
-  { id:'all',        label:'All Topics',    iconId:'books',    desc:'Practise everything',
-    fc:['Salutations','Les Matières','La Famille','Le Temps'],
-    quiz:['etre','avoir','jours','vocab','opinions'], matchIdx:[0,1,2,3],
-    prac:['etre','avoir','aimer','possessif','endings'] },
-  { id:'salutations',label:'Salutations',   iconId:'chat',     desc:'Greetings & common phrases',
-    fc:['Salutations'], quiz:[], matchIdx:[], prac:[] },
-  { id:'matieres',   label:'Les Matières',  iconId:'school',   desc:'School subjects',
-    fc:['Les Matières'], quiz:[], matchIdx:[], prac:[] },
-  { id:'famille',    label:'La Famille',    iconId:'users',    desc:'Family members',
-    fc:['La Famille'], quiz:[], matchIdx:[], prac:[] },
-  { id:'temps',      label:'Le Temps',      iconId:'cloud',    desc:'Weather expressions',
-    fc:['Le Temps'], quiz:[], matchIdx:[], prac:[] },
-  { id:'verbes',     label:'Les Verbes',    iconId:'pencil',   desc:'Verb conjugation',
-    fc:[], quiz:['etre','avoir'], matchIdx:[],
-    prac:['etre','avoir','aimer','possessif','endings'] },
-  { id:'calendrier', label:'Calendrier',    iconId:'calendar', desc:'Days & months',
-    fc:[], quiz:['jours'], matchIdx:[0,1,2], prac:[] },
-  { id:'vocabulaire',label:'Vocabulaire',   iconId:'text',     desc:'Animals & possessives',
-    fc:[], quiz:['vocab','opinions'], matchIdx:[3], prac:[] },
+  { id: 'all',         label: 'All Topics',                iconId: 'books',    desc: 'Practise everything',
+    fc: ['Historian','Middle Ages','Renaissance','Age of Exploration'],
+    quiz: ['historian','middleAges','renaissance','exploration'],
+    matchIdx: [0,1,2,3], prac: ['historian','middleAges','renaissance','exploration'], tl: [0,1] },
+  { id: 'historian',   label: 'Historian & Archaeologist', iconId: 'text',     desc: 'Sources, bias, excavation',
+    fc: ['Historian'],     quiz: ['historian'],  matchIdx: [0], prac: ['historian'],  tl: [] },
+  { id: 'middle-ages', label: 'The Middle Ages',           iconId: 'school',   desc: 'Knights, monks, craftsmen',
+    fc: ['Middle Ages'],   quiz: ['middleAges'], matchIdx: [1], prac: ['middleAges'], tl: [0] },
+  { id: 'renaissance', label: 'The Renaissance',           iconId: 'flask',    desc: 'Art, science & technology',
+    fc: ['Renaissance'],   quiz: ['renaissance'],matchIdx: [2], prac: ['renaissance'],tl: [] },
+  { id: 'exploration', label: 'Age of Exploration',        iconId: 'compass',  desc: 'Explorers, conquests & impact',
+    fc: ['Age of Exploration'], quiz: ['exploration'], matchIdx: [3], prac: ['exploration'], tl: [1] },
 ];
 let currentTopic = topicDefs[0];
 
-// ═══════════════════════════════════════
-// FLASHCARDS
-// ═══════════════════════════════════════
+// ═══════ FLASHCARDS ═══════
 let fcDeck = [], fcIdx = 0;
 const fcCard = document.getElementById('fc-card');
-
 Object.keys(fcDecks).forEach((key, i) => {
   const btn = document.createElement('button');
   btn.className = 'fc-set-btn' + (i === 0 ? ' active' : '');
@@ -861,18 +921,16 @@ Object.keys(fcDecks).forEach((key, i) => {
   });
   document.getElementById('fc-sets').appendChild(btn);
 });
-
 function loadFcDeck(key) {
   fcDeck = [...fcDecks[key]]; fcIdx = 0;
-  fcCard.classList.remove('flipped');
-  renderFc();
+  fcCard.classList.remove('flipped'); renderFc();
 }
 function renderFc() {
   const c = fcDeck[fcIdx];
   document.getElementById('fc-front-word').textContent = c.front;
   document.getElementById('fc-front-sub').textContent  = c.frontSub || '';
   document.getElementById('fc-back-word').textContent  = c.back;
-  document.getElementById('fc-back-sub').textContent   = c.sub || c.backSub || '';
+  document.getElementById('fc-back-sub').textContent   = c.backSub || '';
   document.getElementById('fc-counter').textContent    = `${fcIdx + 1} / ${fcDeck.length}`;
   document.getElementById('fc-prog-fill').style.width  = `${((fcIdx + 1) / fcDeck.length) * 100}%`;
   fcCard.classList.remove('flipped');
@@ -881,12 +939,9 @@ function flipCard() { fcCard.classList.toggle('flipped'); }
 function fcMove(dir) { fcIdx = (fcIdx + dir + fcDeck.length) % fcDeck.length; renderFc(); }
 if (Object.keys(fcDecks).length) loadFcDeck(Object.keys(fcDecks)[0]);
 
-// ═══════════════════════════════════════
-// QUIZ
-// ═══════════════════════════════════════
+// ═══════ QUIZ ═══════
 const mcqSetKeys = Object.keys(quizData);
 let mcqCurrent = mcqSetKeys[0], mcqIdx = 0, mcqScore = 0, mcqAnswered = false;
-
 mcqSetKeys.forEach((key, i) => {
   const btn = document.createElement('button');
   btn.className = 'mcq-set-btn' + (i === 0 ? ' active' : '');
@@ -894,17 +949,16 @@ mcqSetKeys.forEach((key, i) => {
   btn.dataset.quizKey = key;
   btn.addEventListener('click', () => {
     document.querySelectorAll('.mcq-set-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadMcq(key);
+    btn.classList.add('active'); loadMcq(key);
   });
   document.getElementById('mcq-sets').appendChild(btn);
 });
-
 function buildMcqOpts(correctAns, allAns) {
   const seen = new Set([norm(correctAns[0])]);
   const wrong = [];
   allAns.forEach(a => {
-    if (!seen.has(norm(a[0]))) { seen.add(norm(a[0])); wrong.push(a[0]); }
+    const n = norm(a[0]);
+    if (!seen.has(n)) { seen.add(n); wrong.push(a[0]); }
   });
   const picked = wrong.sort(() => Math.random() - .5).slice(0, 3);
   const opts = [correctAns[0], ...picked].sort(() => Math.random() - .5);
@@ -960,7 +1014,7 @@ document.getElementById('mcq-next').addEventListener('click', () => {
   const pct = Math.round(mcqScore / ex.questions.length * 100);
   document.getElementById('mcq-body').innerHTML = `<div class="mcq-result">
     <h2>${mcqScore} / ${ex.questions.length}</h2>
-    <p>${pct === 100 ? 'Parfait !' : pct >= 70 ? 'Bien fait !' : 'Continue à pratiquer !'}</p>
+    <p>${pct === 100 ? 'Perfect score!' : pct >= 70 ? 'Well done — keep going!' : 'Keep practising!'}</p>
     <div style="display:flex;gap:.5rem;justify-content:center;">
       <button class="btn btn-ghost" onclick="loadMcq('${mcqCurrent}')">Retry</button>
     </div>
@@ -970,11 +1024,8 @@ document.getElementById('mcq-next').addEventListener('click', () => {
 });
 if (mcqSetKeys.length) loadMcq(mcqSetKeys[0]);
 
-// ═══════════════════════════════════════
-// MATCHING GAME
-// ═══════════════════════════════════════
+// ═══════ MATCH ═══════
 let matchPairs = [], matchSelected = null, matchMatched = 0;
-
 matchSetsData.forEach((s, i) => {
   const btn = document.createElement('button');
   btn.className = 'match-set-btn' + (i === 0 ? ' active' : '');
@@ -982,12 +1033,10 @@ matchSetsData.forEach((s, i) => {
   btn.dataset.matchIdx = String(i);
   btn.addEventListener('click', () => {
     document.querySelectorAll('.match-set-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    loadMatch(s);
+    btn.classList.add('active'); loadMatch(s);
   });
   document.getElementById('match-sets').appendChild(btn);
 });
-
 function loadMatch(setDef) {
   matchSelected = null; matchMatched = 0;
   matchPairs = setDef.pairs.map(p => ({ ...p, matched: false }));
@@ -996,7 +1045,7 @@ function loadMatch(setDef) {
   const area = document.getElementById('match-area');
   area.innerHTML = '';
   const grid = document.createElement('div'); grid.className = 'match-grid';
-  const leftCol  = document.createElement('div'); leftCol.className  = 'match-col';
+  const leftCol = document.createElement('div'); leftCol.className = 'match-col';
   const rightCol = document.createElement('div'); rightCol.className = 'match-col';
   const lH = document.createElement('h3'); lH.textContent = setDef.colL || 'Prompt';
   const rH = document.createElement('h3'); rH.textContent = setDef.colR || 'Answer';
@@ -1049,12 +1098,96 @@ function matchClick(tile) {
 }
 if (matchSetsData.length) loadMatch(matchSetsData[0]);
 
-// ═══════════════════════════════════════
-// PRACTICE
-// ═══════════════════════════════════════
+// ═══════ TIMELINE ═══════
+let tlPlaced = 0, tlCurrentDef = null;
+tlSetsData.forEach((s, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'tl-set-btn' + (i === 0 ? ' active' : '');
+  btn.textContent = s.label;
+  btn.dataset.tlIdx = String(i);
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tl-set-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active'); loadTimeline(s);
+  });
+  document.getElementById('tl-sets').appendChild(btn);
+});
+function loadTimeline(setDef) {
+  tlCurrentDef = setDef;
+  tlPlaced = 0;
+  document.getElementById('tl-count').textContent = `0 / ${setDef.nodes.length} placed`;
+  const oldComplete = document.querySelector('#panel-timeline .tl-complete');
+  if (oldComplete) oldComplete.remove();
+  const nodesEl = document.getElementById('tl-nodes');
+  nodesEl.innerHTML = '';
+  setDef.nodes.forEach(n => {
+    const node = document.createElement('div');
+    node.className = 'tl-node';
+    node.dataset.year = n.year;
+    const drop = document.createElement('div');
+    drop.className = 'tl-node-drop';
+    drop.dataset.year = n.year;
+    drop.textContent = 'Drop here';
+    drop.addEventListener('dragover', e => {
+      e.preventDefault();
+      if (!drop.classList.contains('filled')) drop.classList.add('drag-over');
+    });
+    drop.addEventListener('dragleave', () => drop.classList.remove('drag-over'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault();
+      drop.classList.remove('drag-over');
+      if (drop.classList.contains('filled')) return;
+      const cardYear = e.dataTransfer.getData('text/plain');
+      if (parseInt(cardYear) === n.year) {
+        const card = document.querySelector(`.tl-card[data-year="${cardYear}"]`);
+        if (card) {
+          drop.textContent = card.textContent;
+          drop.classList.add('filled');
+          card.classList.add('placed');
+          node.classList.add('filled');
+          tlPlaced++;
+          document.getElementById('tl-count').textContent = `${tlPlaced} / ${setDef.nodes.length} placed`;
+          if (tlPlaced === setDef.nodes.length) {
+            setTimeout(() => {
+              const comp = document.createElement('div');
+              comp.className = 'tl-complete';
+              comp.innerHTML = `<h3>Timeline complete!</h3><p>You placed all ${setDef.nodes.length} events correctly.</p><button class="btn" onclick="loadTimeline(tlCurrentDef)">Try again</button>`;
+              document.getElementById('tl-tray').insertAdjacentElement('beforebegin', comp);
+            }, 400);
+          }
+        }
+      } else {
+        drop.classList.add('wrong-flash');
+        setTimeout(() => drop.classList.remove('wrong-flash'), 400);
+      }
+    });
+    const dot = document.createElement('div'); dot.className = 'tl-node-dot';
+    const yearLbl = document.createElement('div'); yearLbl.className = 'tl-node-year';
+    yearLbl.textContent = n.year;
+    node.appendChild(drop); node.appendChild(dot); node.appendChild(yearLbl);
+    nodesEl.appendChild(node);
+  });
+  const tray = document.getElementById('tl-tray');
+  tray.innerHTML = '';
+  const shuffled = [...setDef.nodes].sort(() => Math.random() - .5);
+  shuffled.forEach(n => {
+    const card = document.createElement('div');
+    card.className = 'tl-card';
+    card.draggable = true;
+    card.dataset.year = n.year;
+    card.textContent = n.event;
+    card.addEventListener('dragstart', e => {
+      e.dataTransfer.setData('text/plain', String(n.year));
+      setTimeout(() => card.classList.add('dragging'), 0);
+    });
+    card.addEventListener('dragend', () => card.classList.remove('dragging'));
+    tray.appendChild(card);
+  });
+}
+if (tlSetsData.length) loadTimeline(tlSetsData[0]);
+
+// ═══════ PRACTICE ═══════
 const pracSetKeys = Object.keys(pracData);
 let currentPrac = pracSetKeys[0];
-
 pracSetKeys.forEach((key, i) => {
   const btn = document.createElement('button');
   btn.className = 'prac-set-btn' + (i === 0 ? ' active' : '');
@@ -1066,37 +1199,13 @@ pracSetKeys.forEach((key, i) => {
   });
   document.getElementById('prac-sets').appendChild(btn);
 });
-
 function countPrac(key) {
   const ex = pracData[key];
-  if (ex.type === 'conj') {
-    return ex.items.filter((item, i) => {
-      const v = S.inputs[`${key}_${i}`];
-      return v && chk(v, item.ans);
-    }).length;
-  }
-  if (ex.type === 'possessif') {
-    let c = 0;
-    ex.items.forEach((item, i) => {
-      if (S.inputs[`${key}_${i}_m`] && chk(S.inputs[`${key}_${i}_m`], item.masc)) c++;
-      if (S.inputs[`${key}_${i}_f`] && chk(S.inputs[`${key}_${i}_f`], item.fem))  c++;
-      if (S.inputs[`${key}_${i}_p`] && chk(S.inputs[`${key}_${i}_p`], item.plur)) c++;
-    });
-    return c;
-  }
-  if (ex.type === 'endings') {
-    let c = 0;
-    ex.items.forEach((item, i) => {
-      if (S.inputs[`${key}_${i}_er`] && chk(S.inputs[`${key}_${i}_er`], item.er)) c++;
-      if (S.inputs[`${key}_${i}_ir`] && chk(S.inputs[`${key}_${i}_ir`], item.ir)) c++;
-      if (item.re[0] === '-') { c++; }
-      else if (S.inputs[`${key}_${i}_re`] && chk(S.inputs[`${key}_${i}_re`], item.re)) c++;
-    });
-    return c;
-  }
-  return 0;
+  return ex.items.filter((item, i) => {
+    const v = S.inputs[`${key}_${i}`];
+    return v && chk(v, item.ans);
+  }).length;
 }
-
 function renderPrac(key) {
   const cont = document.getElementById('prac-content');
   cont.innerHTML = '';
@@ -1110,159 +1219,76 @@ function renderPrac(key) {
       <button class="reset-btn" onclick="resetPrac('${key}')">Reset</button>
     </div>`;
   cont.appendChild(hdr);
-  if (ex.type === 'conj')       renderConjTable(key, ex, cont);
-  else if (ex.type === 'possessif') renderPossessifTable(key, ex, cont);
-  else if (ex.type === 'endings')   renderEndingsTable(key, ex, cont);
+  renderBlanksTable(key, ex, cont);
 }
-
-function makeInp(storeKey, ans, width) {
-  const saved = S.inputs[storeKey];
-  const wasOk  = saved && chk(saved, ans);
-  const inp = document.createElement('input');
-  inp.type = 'text';
-  inp.className = 'q-inp' + (wasOk ? ' ok' : saved ? ' err' : '');
-  inp.value = saved || '';
-  inp.autocomplete = 'off'; inp.spellcheck = false;
-  if (width) inp.style.width = width;
-  if (wasOk) inp.disabled = true;
-  return inp;
-}
-
-function wireInp(inp, td, storeKey, ans, key) {
-  const saved = S.inputs[storeKey];
-  if (saved && !chk(saved, ans)) {
-    const fb = document.createElement('div'); fb.className = 'q-fb'; fb.textContent = ans[0]; td.appendChild(fb);
-  }
-  function attempt() {
-    const v = inp.value.trim(); if (!v) return;
-    S.inputs[storeKey] = v;
-    const ok = chk(v, ans);
-    inp.className = 'q-inp ' + (ok ? 'ok' : 'err');
-    let fb = td.querySelector('.q-fb');
-    if (ok) { if (fb) fb.remove(); inp.disabled = true; }
-    else { if (!fb) { fb = document.createElement('div'); fb.className = 'q-fb'; td.appendChild(fb); } fb.textContent = ans[0]; }
-    const sc = document.getElementById(`prac-score-${key}`);
-    if (sc) sc.textContent = `${countPrac(key)} / ${pracData[key].total}`;
-    saveS(S); updateScore();
-  }
-  inp.addEventListener('blur', attempt);
-  inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attempt(); } });
-}
-
-function renderConjTable(key, ex, cont) {
+function renderBlanksTable(key, ex, cont) {
   const wrap = document.createElement('div'); wrap.className = 'tbl-ex';
   const tbl = document.createElement('table');
-  tbl.innerHTML = `<tr><th>Pronoun</th><th>English</th><th>${ex.verb}</th></tr>`;
-  ex.items.forEach((item, i) => {
+  tbl.innerHTML = '<tr><th>#</th><th>Question</th><th>Your answer</th></tr>';
+  ex.items.forEach((row, i) => {
+    const storeKey = `${key}_${i}`;
+    const saved = S.inputs[storeKey];
+    const wasOk = saved && chk(saved, row.ans);
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td style="font-weight:600">${item.pronoun}</td><td style="color:var(--muted);font-size:.78rem">${item.hint}</td>`;
+    const numTd = document.createElement('td');
+    numTd.style.cssText = 'color:var(--muted);font-size:.75rem;text-align:center;width:2rem;';
+    numTd.textContent = i + 1;
+    tr.appendChild(numTd);
+    const qTd = document.createElement('td');
+    qTd.style.cssText = 'font-size:.83rem;line-height:1.5;';
+    qTd.innerHTML = `${row.q}${row.hint ? `<br><span style="font-size:.7rem;color:var(--muted)">Hint: ${row.hint}</span>` : ''}`;
+    tr.appendChild(qTd);
     const td = document.createElement('td');
-    const inp = makeInp(`${key}_${i}`, item.ans, '100px');
+    const inp = document.createElement('input'); inp.type = 'text';
+    inp.className = 'q-inp' + (wasOk ? ' ok' : saved ? ' err' : '');
+    inp.value = saved || ''; inp.autocomplete = 'off'; inp.spellcheck = false;
+    if (wasOk) inp.disabled = true;
     td.appendChild(inp);
+    if (saved && !wasOk) {
+      const fb = document.createElement('div'); fb.className = 'q-fb';
+      fb.textContent = row.ans[0]; td.appendChild(fb);
+    }
     tr.appendChild(td); tbl.appendChild(tr);
-    wireInp(inp, td, `${key}_${i}`, item.ans, key);
+    function attempt() {
+      const v = inp.value.trim(); if (!v) return;
+      S.inputs[storeKey] = v;
+      const ok = chk(v, row.ans);
+      inp.className = 'q-inp ' + (ok ? 'ok' : 'err');
+      let fb = td.querySelector('.q-fb');
+      if (ok) { if (fb) fb.remove(); inp.disabled = true; }
+      else { if (!fb) { fb = document.createElement('div'); fb.className = 'q-fb'; td.appendChild(fb); } fb.textContent = row.ans[0]; }
+      const sc = document.getElementById(`prac-score-${key}`);
+      if (sc) sc.textContent = `${countPrac(key)} / ${ex.total}`;
+      saveS(S); updateScore();
+    }
+    inp.addEventListener('blur', attempt);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); attempt(); } });
   });
   wrap.appendChild(tbl); cont.appendChild(wrap);
 }
-
-function renderPossessifTable(key, ex, cont) {
-  const wrap = document.createElement('div'); wrap.className = 'tbl-ex';
-  const tbl = document.createElement('table');
-  tbl.innerHTML = '<tr><th>Pronoun</th><th>Masculine</th><th>Feminine</th><th>Plural</th></tr>';
-  const cols = [{col:'m',field:'masc'},{col:'f',field:'fem'},{col:'p',field:'plur'}];
-  ex.items.forEach((item, i) => {
-    const tr = document.createElement('tr');
-    const th = document.createElement('td');
-    th.style.cssText = 'font-weight:600;font-size:.83rem;';
-    th.textContent = item.pronoun;
-    tr.appendChild(th);
-    cols.forEach(({col, field}) => {
-      const sk = `${key}_${i}_${col}`;
-      const td = document.createElement('td');
-      const inp = makeInp(sk, item[field], '80px');
-      td.appendChild(inp);
-      tr.appendChild(td);
-      wireInp(inp, td, sk, item[field], key);
-    });
-    tbl.appendChild(tr);
-  });
-  wrap.appendChild(tbl); cont.appendChild(wrap);
-}
-
-function renderEndingsTable(key, ex, cont) {
-  const rule = document.createElement('div');
-  rule.className = 'rule-box';
-  rule.innerHTML = 'Remove the infinitive suffix (<code>-er</code>, <code>-ir</code>, <code>-re</code>), then add the correct ending.';
-  cont.appendChild(rule);
-  const wrap = document.createElement('div'); wrap.className = 'tbl-ex';
-  const tbl = document.createElement('table');
-  tbl.innerHTML = '<tr><th>Pronoun</th><th>-ER (jouer)</th><th>-IR (finir)</th><th>-RE (vendre)</th></tr>';
-  const cols = [{col:'er',field:'er'},{col:'ir',field:'ir'},{col:'re',field:'re'}];
-  ex.items.forEach((item, i) => {
-    const tr = document.createElement('tr');
-    const th = document.createElement('td');
-    th.style.cssText = 'font-weight:600;font-size:.83rem;';
-    th.textContent = item.pronoun;
-    tr.appendChild(th);
-    cols.forEach(({col, field}) => {
-      const ans = item[field];
-      const td = document.createElement('td');
-      if (ans[0] === '-') {
-        const inp = document.createElement('input');
-        inp.type = 'text'; inp.className = 'q-inp ok'; inp.value = '—';
-        inp.disabled = true; inp.style.cssText = 'width:70px;opacity:.4;';
-        td.appendChild(inp);
-      } else {
-        const sk = `${key}_${i}_${col}`;
-        const inp = makeInp(sk, ans, '70px');
-        td.appendChild(inp);
-        wireInp(inp, td, sk, ans, key);
-      }
-      tr.appendChild(td);
-    });
-    tbl.appendChild(tr);
-  });
-  wrap.appendChild(tbl); cont.appendChild(wrap);
-}
-
 function resetPrac(key) {
   if (!confirm('Reset this exercise?')) return;
   const ex = pracData[key];
-  ex.items.forEach((item, i) => {
-    if (ex.type === 'conj') {
-      delete S.inputs[`${key}_${i}`];
-    } else if (ex.type === 'possessif') {
-      delete S.inputs[`${key}_${i}_m`];
-      delete S.inputs[`${key}_${i}_f`];
-      delete S.inputs[`${key}_${i}_p`];
-    } else if (ex.type === 'endings') {
-      delete S.inputs[`${key}_${i}_er`];
-      delete S.inputs[`${key}_${i}_ir`];
-      if (item.re[0] !== '-') delete S.inputs[`${key}_${i}_re`];
-    }
-  });
-  saveS(S); renderPrac(key); updateProgress();
+  ex.items.forEach((_, i) => delete S.inputs[`${key}_${i}`]);
+  saveS(S); renderPrac(key); updateScore();
 }
-
 if (pracSetKeys.length) renderPrac(pracSetKeys[0]);
 
-// ═══════════════════════════════════════
-// SCORE
-// ═══════════════════════════════════════
+// ═══════ SCORE ═══════
 function updateScore() {
   let tot = 0, cor = 0;
   pracSetKeys.forEach(key => {
     const ex = pracData[key];
     cor += countPrac(key); tot += ex.total;
   });
-  document.getElementById('hs-score').textContent = `${cor} / ${tot}`;
-  document.getElementById('sb-score').textContent = `Score: ${cor} / ${tot}`;
+  const hs = document.getElementById('hs-score');
+  if (hs) hs.textContent = `${cor} / ${tot}`;
+  const sb = document.getElementById('sb-score');
+  if (sb) sb.textContent = `Score: ${cor} / ${tot}`;
 }
 updateScore();
 
-// ═══════════════════════════════════════
-// TOPIC SYSTEM
-// ═══════════════════════════════════════
+// ═══════ TOPIC SYSTEM ═══════
 function buildTopicPanel() {
   const grid = document.getElementById('topic-grid');
   grid.innerHTML = '';
@@ -1270,10 +1296,11 @@ function buildTopicPanel() {
     const card = document.createElement('button');
     card.className = 'topic-card' + (t.id === 'all' ? ' topic-all' : '');
     const dots = [
-      t.fc.length       ? '<span class="tc-dot">FC</span>'    : '',
-      t.quiz.length     ? '<span class="tc-dot">Quiz</span>'  : '',
-      t.matchIdx.length ? '<span class="tc-dot">Match</span>' : '',
-      t.prac.length     ? '<span class="tc-dot">Prac</span>'  : '',
+      t.fc.length       ? '<span class="tc-dot">FC</span>'       : '',
+      t.quiz.length     ? '<span class="tc-dot">Quiz</span>'     : '',
+      t.matchIdx.length ? '<span class="tc-dot">Match</span>'    : '',
+      t.tl.length       ? '<span class="tc-dot">Timeline</span>' : '',
+      t.prac.length     ? '<span class="tc-dot">Prac</span>'     : '',
     ].filter(Boolean).join('');
     card.innerHTML = `<div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-${t.iconId}"/></svg></div>
       <div class="tc-label">${t.label}</div>
@@ -1283,7 +1310,6 @@ function buildTopicPanel() {
     grid.appendChild(card);
   });
 }
-
 function filterSetBtns(sel, allowed, keyAttr, onActivate) {
   const btns = [...document.querySelectorAll(sel)];
   const active = btns.find(b => b.classList.contains('active'));
@@ -1302,6 +1328,15 @@ function filterMatchBtns(allowedIdx, onActivate) {
   btns.forEach(b => b.classList.remove('active'));
   if (vis.length) { vis[0].classList.add('active'); onActivate(vis[0], btns.indexOf(vis[0])); }
 }
+function filterTlBtns(allowedIdx, onActivate) {
+  const btns = [...document.querySelectorAll('.tl-set-btn')];
+  const active = btns.find(b => b.classList.contains('active'));
+  btns.forEach((b, i) => { b.style.display = allowedIdx.includes(i) ? '' : 'none'; });
+  const vis = btns.filter(b => b.style.display !== 'none');
+  if (active && vis.includes(active)) return;
+  btns.forEach(b => b.classList.remove('active'));
+  if (vis.length) { vis[0].classList.add('active'); onActivate(vis[0], btns.indexOf(vis[0])); }
+}
 function updateNoContent(mode, hasContent) {
   let msg = document.getElementById('empty-' + mode);
   if (!msg) {
@@ -1313,34 +1348,39 @@ function updateNoContent(mode, hasContent) {
 }
 function applyTopic(t) {
   currentTopic = t;
-  document.getElementById('topic-mob-label').textContent = t.label;
+  const lbl = document.getElementById('topic-mob-label');
+  if (lbl) lbl.textContent = t.label;
   document.querySelectorAll('.topic-card').forEach((c, i) => c.classList.toggle('topic-active', topicDefs[i] === t));
-  filterSetBtns('.fc-set-btn',   t.fc,    'fcKey',   btn => loadFcDeck(btn.dataset.fcKey));
-  filterSetBtns('.mcq-set-btn',  t.quiz,  'quizKey', btn => loadMcq(btn.dataset.quizKey));
+  filterSetBtns('.fc-set-btn',   t.fc,   'fcKey',   btn => loadFcDeck(btn.dataset.fcKey));
+  filterSetBtns('.mcq-set-btn',  t.quiz, 'quizKey', btn => loadMcq(btn.dataset.quizKey));
   filterMatchBtns(t.matchIdx, (btn, i) => loadMatch(matchSetsData[i]));
-  filterSetBtns('.prac-set-btn', t.prac,  'pracKey', btn => { currentPrac = btn.dataset.pracKey; renderPrac(btn.dataset.pracKey); });
+  filterTlBtns(t.tl, (btn, i) => loadTimeline(tlSetsData[i]));
+  filterSetBtns('.prac-set-btn', t.prac, 'pracKey', btn => { currentPrac = btn.dataset.pracKey; renderPrac(btn.dataset.pracKey); });
   updateNoContent('flashcards', t.fc.length > 0);
   updateNoContent('quiz',       t.quiz.length > 0);
   updateNoContent('match',      t.matchIdx.length > 0);
+  updateNoContent('timeline',   t.tl.length > 0);
   updateNoContent('practice',   t.prac.length > 0);
 }
-
 function buildActivityGrid(t) {
   const el = document.getElementById('act-title');
   if (el) el.textContent = t.label;
   const de = document.getElementById('act-desc');
   if (de) de.textContent = t.desc || '';
   const MODES = [
-    { id:'flashcards', label:'Flashcards', icon:'cards',
+    { id: 'flashcards', label: 'Flashcards', icon: 'cards',
       avail: t.fc.length > 0,
       count: t.fc.length ? `${t.fc.length} deck${t.fc.length !== 1 ? 's' : ''}` : 'No content for this topic' },
-    { id:'quiz',       label:'Quiz',       icon:'quiz',
+    { id: 'quiz',       label: 'Quiz',       icon: 'quiz',
       avail: t.quiz.length > 0,
       count: t.quiz.length ? `${t.quiz.length} set${t.quiz.length !== 1 ? 's' : ''}` : 'No content for this topic' },
-    { id:'match',      label:'Match',      icon:'match',
+    { id: 'match',      label: 'Match',      icon: 'match',
       avail: t.matchIdx.length > 0,
       count: t.matchIdx.length ? 'Pair matching' : 'No content for this topic' },
-    { id:'practice',   label:'Practice',   icon:'pencil',
+    { id: 'timeline',   label: 'Timeline',   icon: 'clock',
+      avail: t.tl.length > 0,
+      count: t.tl.length ? 'Drag events onto dates' : 'No content for this topic' },
+    { id: 'practice',   label: 'Practice',   icon: 'pencil',
       avail: t.prac.length > 0,
       count: t.prac.length ? 'Fill-in exercises' : 'No content for this topic' },
   ];
@@ -1355,13 +1395,13 @@ function buildActivityGrid(t) {
     grid.appendChild(btn);
   });
 }
-
 function buildSidebarModes(t) {
   const MODES = [
-    { id:'flashcards', label:'Flashcards', icon:'cards',  avail: t.fc.length > 0 },
-    { id:'quiz',       label:'Quiz',       icon:'quiz',   avail: t.quiz.length > 0 },
-    { id:'match',      label:'Match',      icon:'match',  avail: t.matchIdx.length > 0 },
-    { id:'practice',   label:'Practice',   icon:'pencil', avail: t.prac.length > 0 },
+    { id: 'flashcards', label: 'Flashcards', icon: 'cards',  avail: t.fc.length > 0 },
+    { id: 'quiz',       label: 'Quiz',       icon: 'quiz',   avail: t.quiz.length > 0 },
+    { id: 'match',      label: 'Match',      icon: 'match',  avail: t.matchIdx.length > 0 },
+    { id: 'timeline',   label: 'Timeline',   icon: 'clock',  avail: t.tl.length > 0 },
+    { id: 'practice',   label: 'Practice',   icon: 'pencil', avail: t.prac.length > 0 },
   ];
   const container = document.getElementById('sb-modes');
   container.innerHTML = '<div class="sb-section">Activities</div>';
@@ -1380,7 +1420,6 @@ function buildSidebarModes(t) {
     container.appendChild(btn);
   });
 }
-
 function buildSidebarTopicList() {
   const container = document.getElementById('sb-tlist');
   container.innerHTML = '';
@@ -1398,13 +1437,13 @@ function buildSidebarTopicList() {
       const modeAvail = (currentMode === 'flashcards' && t.fc.length) ||
                         (currentMode === 'quiz'       && t.quiz.length) ||
                         (currentMode === 'match'      && t.matchIdx.length) ||
+                        (currentMode === 'timeline'   && t.tl.length) ||
                         (currentMode === 'practice'   && t.prac.length);
       setMode(modeAvail ? currentMode : 'activities');
     };
     container.appendChild(btn);
   });
 }
-
 function selectTopic(t) {
   applyTopic(t);
   const tn = document.getElementById('sb-topic-name');
@@ -1415,13 +1454,11 @@ function selectTopic(t) {
   setMode('activities');
 }
 
-// ═══════════════════════════════════════
-// STREAK TRACKER
-// ═══════════════════════════════════════
+// ═══════ STREAK ═══════
 function renderStreak() {
   const today = new Date().toDateString();
   let s; try { s = JSON.parse(localStorage.getItem('sn_streak') || 'null'); } catch(e) {}
-  if (!s) s = { count:0, last:'', totalDays:0, stars:0 };
+  if (!s) s = { count: 0, last: '', totalDays: 0, stars: 0 };
   if (!('totalDays' in s)) s.totalDays = s.count || 0;
   if (!('stars' in s)) s.stars = Math.floor(s.totalDays / 10);
   const yesterday = new Date(Date.now() - 86400000).toDateString();
