@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "about.html"
+        ],
+        "createdAt": "2026-11-07T15:49:41.107Z",
+        "reason": "Claude: static scan pairs dark-theme tokens (#9a9a9a muted, #f5f5f5 fg, used on #000) with the light background #fff. Real pairs: light #5f5f5f/#0a0a0a on #fff (6.4:1+), dark #9a9a9a/#f5f5f5 on #000 (7.4:1+). Contrast verified by the Sonnet design audit."
+      }
+    ]
+  }
+}

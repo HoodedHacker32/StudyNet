@@ -1,0 +1,23 @@
+# StudyNet marking server. Deploy from this folder with:  npx wrangler deploy
+name = "studynet-ai"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# Workers AI (free daily allowance; fallback and photo marking).
+[ai]
+binding = "AI"
+
+[vars]
+# The site's address(es), comma-separated. Requests from anywhere else are refused.
+ALLOWED_ORIGINS = "https://hoodedhacker32.github.io,http://localhost:5417,http://127.0.0.1:5417"
+GROQ_MODEL = "openai/gpt-oss-120b"
+CF_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+CF_VISION_MODEL = "@cf/meta/llama-4-scout-17b-16e-instruct"
+
+# 20 marking requests per minute per IP address.
+[[ratelimits]]
+name = "RL"
+namespace_id = "1001"
+simple = { limit = 20, period = 60 }
+
+# The Groq key is a secret, never put in this file:  npx wrangler secret put GROQ_API_KEY

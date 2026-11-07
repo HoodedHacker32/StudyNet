@@ -1,1165 +1,293 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<title>StudyNet — Year 1</title>
-<link rel="manifest" href="manifest.json"/>
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png"/>
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png"/>
-<meta name="theme-color" content="#000000"/>
-<meta name="apple-mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>StudyNet</title>
+<meta name="description" content="Junior Cycle revision: notes, flashcards, quizzes and practice for each assessment.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-/* ─── Design tokens ─────────────────────────────────────────── */
-:root{
-  --bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;
-  --hover:#f5f5f5;--radius:8px;
-  --font:"Inter",system-ui,sans-serif;
-  --sb:210px;
-}
-@media(prefers-color-scheme:dark){
-  :root{--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
-}
-html.theme-light{--bg:#fff;--fg:#000;--muted:#666;--border:#e0e0e0;--hover:#f5f5f5;}
-html.theme-dark {--bg:#000;--fg:#fff;--muted:#888;--border:#222;--hover:#111;}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--font);background:var(--bg);color:var(--fg);min-height:100vh;transition:background .2s,color .2s;display:flex;}
-a{color:inherit;text-decoration:none;}
-button{font:inherit;cursor:pointer;}
-input{font-family:inherit;}
-
-/* ─── Page padding ──────────────────────────────────────────── */
-.page{padding:2rem 3rem max(5rem,env(safe-area-inset-bottom));}
-
-/* ─── Sidebar ───────────────────────────────────────────────── */
-.sidebar{
-  width:var(--sb);flex-shrink:0;
-  border-right:1px solid var(--border);
-  position:sticky;top:0;height:100vh;overflow-y:auto;
-  display:flex;flex-direction:column;
-  padding:1.5rem 1.1rem 1.25rem;
-}
-.sb-brand{
-  font-size:.95rem;font-weight:700;letter-spacing:-.02em;
-  padding:.5rem .5rem .9rem;
-  border-bottom:1px solid var(--border);margin-bottom:.6rem;
-}
-.sb-brand span{opacity:.35;font-weight:400;font-size:.82rem;}
-.sb-section{
-  font-size:.62rem;font-weight:700;text-transform:uppercase;
-  letter-spacing:.1em;color:var(--muted);
-  padding:.75rem .5rem .25rem;
-}
-.sb-spacer{flex:1;}
-.sb-btn{
-  display:flex;align-items:center;gap:.55rem;
-  width:100%;padding:.45rem .65rem;border-radius:var(--radius);
-  font-size:.83rem;background:none;border:none;color:var(--muted);
-  text-align:left;cursor:pointer;transition:background .15s,color .15s;
-  white-space:nowrap;
-}
-.sb-btn:hover{background:var(--hover);color:var(--fg);}
-.sb-btn.active{background:var(--fg);color:var(--bg);}
-#install-sb{display:none;}
-
-/* ─── Main area ─────────────────────────────────────────────── */
-.main{flex:1;min-width:0;display:flex;flex-direction:column;overflow-x:hidden;}
-.mob-header{display:none;}
-
-/* ─── Hero ──────────────────────────────────────────────────── */
-.hero{padding:3rem 0 1.5rem;}
-.hero h1{font-size:clamp(1.7rem,3vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;}
-.hero p{margin-top:.6rem;color:var(--muted);font-size:.9rem;}
-.hero-stats{display:flex;gap:.5rem;margin-top:1.2rem;flex-wrap:wrap;}
-.h-chip{
-  display:inline-flex;align-items:center;gap:.35rem;
-  padding:.28rem .75rem;border:1px solid var(--border);
-  border-radius:99px;font-size:.75rem;color:var(--muted);
-}
-.h-chip b{color:var(--fg);}
-
-
-/* ─── Section headings ──────────────────────────────────────── */
-.section{margin-top:2.25rem;}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:.85rem;flex-wrap:wrap;gap:.4rem;}
-.sec-head h2{font-size:.95rem;font-weight:700;}
-.sec-head a{font-size:.78rem;color:var(--muted);}
-.sec-head a:hover{color:var(--fg);}
-
-/* ─── Dashboard grid ────────────────────────────────────────── */
-.dash-grid{margin-top:2.5rem;}
-
-/* ─── Topic/subject/language cards ──────────────────────────── */
-.topic-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(162px,1fr));gap:.85rem;}
-.topic-card{
-  background:var(--bg);color:var(--fg);
-  border:1px solid var(--border);border-radius:var(--radius);
-  padding:1.1rem 1rem;text-align:left;
-  display:flex;flex-direction:column;gap:.35rem;
-  transition:background .15s,border-color .15s;
-}
-a.topic-card:hover{background:var(--hover);border-color:var(--fg);}
-.topic-card.locked{opacity:.4;pointer-events:none;}
-.topic-card.exempt{opacity:.5;pointer-events:none;}
-.tc-exempt{font-size:.73rem;font-weight:600;color:#8b0000;margin-top:.15rem;}
-.tc-icon{min-height:1.6rem;display:flex;align-items:center;}
-.tc-icon .icon{width:1.35em;height:1.35em;}
-.tc-label{font-size:.9rem;font-weight:700;}
-.tc-desc{font-size:.73rem;color:var(--muted);}
-.tc-yours{display:none;font-size:.65rem;font-weight:600;letter-spacing:.02em;color:var(--fg);opacity:.5;}
-.topic-card.your-lang .tc-yours{display:block;}
-.tc-bar{height:2px;background:var(--border);border-radius:99px;margin-top:auto;}
-.tc-fill{height:100%;background:var(--fg);border-radius:99px;}
-
-/* ─── Quick Quiz (mcq) ───────────────────────────────────────── */
-.mcq-card{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
-.mcq-top{
-  padding:.85rem 1.1rem;border-bottom:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.mcq-title{font-size:.82rem;font-weight:700;}
-.mcq-prog-txt{font-size:.75rem;color:var(--muted);}
-.mcq-prog-bar{height:2px;background:var(--border);}
-.mcq-prog-fill{height:100%;background:var(--fg);transition:width .3s;}
-.mcq-body{padding:1.3rem 1.1rem;}
-.mcq-q{font-size:.95rem;font-weight:600;margin-bottom:1rem;line-height:1.5;}
-.mcq-opts{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;}
-.mcq-opt{
-  padding:.65rem .9rem;border:1px solid var(--border);
-  border-radius:var(--radius);background:var(--bg);color:var(--fg);
-  font-size:.82rem;text-align:left;
-  transition:border-color .2s,background .2s;min-height:44px;
-}
-.mcq-opt:hover:not(:disabled){background:var(--hover);}
-.mcq-opt.correct{background:var(--fg);color:var(--bg);border-color:var(--fg);animation:pop .25s ease;}
-.mcq-opt.wrong{opacity:.3;text-decoration:line-through;}
-.mcq-opt:disabled{cursor:default;}
-.mcq-footer{
-  padding:.85rem 1.1rem;border-top:1px solid var(--border);
-  display:flex;justify-content:space-between;align-items:center;
-}
-.mcq-fb{font-size:.8rem;color:var(--muted);}
-.mcq-next{
-  padding:.45rem 1rem;border:1px solid var(--fg);
-  border-radius:var(--radius);background:var(--fg);color:var(--bg);
-  font-size:.78rem;font-weight:600;display:none;min-height:36px;
-}
-.mcq-next:hover{opacity:.75;}
-.mcq-result{padding:2rem 1.1rem;text-align:center;}
-.mcq-result h2{font-size:1.5rem;font-weight:800;letter-spacing:-.02em;}
-.mcq-result p{color:var(--muted);margin:.5rem 0 1.2rem;font-size:.88rem;}
-
-/* ─── Shared button ─────────────────────────────────────────── */
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:.5rem 1.1rem;border:1px solid var(--fg);
-  border-radius:var(--radius);background:var(--fg);color:var(--bg);
-  font-size:.8rem;font-weight:600;cursor:pointer;min-height:40px;
-}
-.btn:hover{opacity:.75;}
-
-
-/* ─── Icon helper ───────────────────────────────────────────── */
-.icon{width:1em;height:1em;display:inline-block;vertical-align:-.125em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-
-/* ─── Footer ────────────────────────────────────────────────── */
-footer{
-  margin-top:4rem;padding-top:1.4rem;
-  border-top:1px solid var(--border);
-  font-size:.75rem;color:var(--muted);
-  display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;
-}
-
-/* ─── Utilities ─────────────────────────────────────────────── */
-.hidden{display:none!important;}
-.icon-btn{background:none;border:none;color:var(--muted);padding:.3rem;border-radius:6px;display:flex;cursor:pointer;line-height:1;}
-.icon-btn:hover{background:var(--hover);color:var(--fg);}
-
-/* ─── Animations ────────────────────────────────────────────── */
-@keyframes pop{0%{transform:scale(.97)}60%{transform:scale(1.04)}100%{transform:scale(1)}}
-@keyframes slideIn{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:translateX(0)}}
-.qq-slide{animation:slideIn .18s ease both;}
-
-/* ─── Onboarding overlay ────────────────────────────────────── */
-.onboard-overlay{position:fixed;inset:0;z-index:400;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
-.ob-box{width:100%;max-width:380px;}
-.ob-brand{font-size:.9rem;font-weight:700;letter-spacing:-.02em;color:var(--muted);margin-bottom:2.5rem;}
-.ob-brand b{color:var(--fg);}
-.ob-h{font-size:1.65rem;font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:.4rem;}
-.ob-sub{color:var(--muted);font-size:.875rem;margin-bottom:1.5rem;}
-.ob-field{margin-bottom:.85rem;}
-.ob-field label{display:block;font-size:.75rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;}
-.ob-input{width:100%;padding:.6rem .8rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font:inherit;font-size:.95rem;}
-.ob-input:focus{outline:none;border-color:var(--fg);}
-.ob-lang-label{font-size:.75rem;font-weight:500;color:var(--muted);margin:1.25rem 0 .6rem;}
-.ob-lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-bottom:1.5rem;}
-.ob-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.85rem .3rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1.2;}
-.ob-lang-opt:hover{background:var(--hover);}
-.ob-lang-opt.sel{border-color:var(--fg);background:var(--fg);color:var(--bg);}
-.ob-lang-flag{display:block;margin:0 auto .4rem;}
-.ob-lang-name{font-size:.8rem;font-weight:700;display:block;}
-.ob-lang-sub{font-size:.67rem;display:block;margin-top:.15rem;opacity:.55;}
-.ob-btn{width:100%;padding:.7rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.9rem;font-weight:700;cursor:pointer;}
-.ob-btn:hover:not(:disabled){opacity:.8;}
-.ob-btn:disabled{opacity:.3;cursor:default;}
-
-/* ─── Settings drawer ───────────────────────────────────────── */
-.sn-overlay{position:fixed;inset:0;z-index:300;display:flex;}
-.sn-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.4);}
-.sn-drawer{position:relative;margin-left:auto;width:300px;max-width:100vw;background:var(--bg);border-left:1px solid var(--border);height:100%;overflow-y:auto;display:flex;flex-direction:column;}
-.sn-drawer-head{padding:1.15rem 1.2rem .9rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
-.sn-drawer-head h2{font-size:.95rem;font-weight:700;}
-.sn-body{padding:1.2rem;flex:1;overflow-y:auto;}
-.sn-sec{margin-bottom:1.75rem;}
-.sn-sec-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:.75rem;}
-.sn-av-wrap{position:relative;width:56px;height:56px;cursor:pointer;margin-bottom:.75rem;flex-shrink:0;}
-.sn-avatar{width:56px;height:56px;border-radius:50%;background:var(--fg);color:var(--bg);display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;overflow:hidden;background-size:cover;background-position:center;}
-.sn-av-overlay{position:absolute;inset:0;border-radius:50%;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;pointer-events:none;}
-.sn-av-wrap:hover .sn-av-overlay{opacity:1;}
-.sn-av-cam{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;}
-.sn-av-actions{display:flex;gap:.45rem;margin-bottom:.9rem;}
-.sn-av-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .6rem;font:inherit;font-size:.73rem;color:var(--muted);cursor:pointer;}
-.sn-av-btn:hover{background:var(--hover);color:var(--fg);}
-.sn-field{margin-bottom:.8rem;}
-.sn-field label{display:block;font-size:.75rem;font-weight:500;color:var(--muted);margin-bottom:.3rem;}
-.sn-input{width:100%;padding:.55rem .75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);font:inherit;font-size:.875rem;}
-.sn-input:focus{outline:none;border-color:var(--fg);}
-.sn-lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.45rem;}
-.sn-lang-opt{border:1px solid var(--border);border-radius:var(--radius);padding:.6rem .25rem;text-align:center;cursor:pointer;background:var(--bg);color:var(--fg);transition:border-color .15s,background .15s;line-height:1.2;}
-.sn-lang-opt:hover{background:var(--hover);}
-.sn-lang-opt.sel{border-color:var(--fg);background:var(--fg);color:var(--bg);}
-.sn-lang-flag{display:block;margin:0 auto .3rem;}
-.sn-lang-name{font-size:.7rem;font-weight:600;display:block;}
-.sn-save{width:100%;padding:.6rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;margin-top:.25rem;}
-.sn-save:hover{opacity:.8;}
-.sn-divider{border:none;border-top:1px solid var(--border);margin:.25rem 0 1.5rem;}
-.sn-danger-btn{width:100%;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--muted);font:inherit;font-size:.85rem;font-weight:500;cursor:pointer;transition:background .15s,color .15s,border-color .15s;text-align:center;}
-.sn-danger-btn:hover{background:var(--hover);color:var(--fg);border-color:var(--fg);}
-.sn-streak-wrap{margin-bottom:.9rem;padding:.75rem .9rem;border:1px solid var(--border);border-radius:var(--radius);}
-.sn-streak-top{display:flex;align-items:center;gap:.5rem;margin-bottom:.6rem;}
-.sn-streak-count{font-size:1rem;font-weight:700;color:var(--fg);}
-.sn-streak-days{font-size:.7rem;color:var(--muted);margin-top:.05rem;}
-.sn-bar-wrap{height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:.35rem;}
-.sn-bar-fill{height:100%;background:#f97316;border-radius:99px;transition:width .4s;}
-.sn-bar-label{font-size:.7rem;color:var(--muted);}
-
-/* ─── Changelog overlay ─────────────────────────────────────── */
-.changelog-overlay{position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
-.cl-box{width:100%;max-width:440px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.75rem 1.5rem;max-height:80vh;overflow-y:auto;}
-.cl-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.25rem;gap:1rem;}
-.cl-title{font-size:1.15rem;font-weight:800;letter-spacing:-.03em;}
-.cl-ver{font-size:.72rem;color:var(--muted);margin-top:.25rem;}
-.cl-content{font-size:.875rem;line-height:1.65;}
-.cl-content h3{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);margin:1.1rem 0 .4rem;}
-.cl-content h3:first-child{margin-top:0;}
-.cl-content ul{padding-left:1.2rem;}
-.cl-content li{margin-bottom:.25rem;color:var(--muted);}
-.cl-content li b{color:var(--fg);}
-.cl-dismiss{width:100%;margin-top:1.5rem;padding:.65rem;background:var(--fg);color:var(--bg);border:none;border-radius:var(--radius);font:inherit;font-size:.88rem;font-weight:600;cursor:pointer;}
-.cl-dismiss:hover{opacity:.8;}
-
-/* ─── Confirm dialog ────────────────────────────────────────── */
-.confirm-overlay{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:1.5rem;}
-.confirm-box{width:100%;max-width:340px;background:var(--bg);border:1px solid var(--border);border-radius:calc(var(--radius)*2);padding:1.5rem;}
-.confirm-box h3{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
-.confirm-box p{font-size:.85rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.5;}
-.confirm-actions{display:flex;gap:.6rem;}
-.confirm-cancel{flex:1;padding:.55rem;border:1px solid var(--border);border-radius:var(--radius);background:none;color:var(--fg);font:inherit;font-size:.85rem;cursor:pointer;}
-.confirm-cancel:hover{background:var(--hover);}
-.confirm-ok{flex:1;padding:.55rem;border:1px solid var(--fg);border-radius:var(--radius);background:var(--fg);color:var(--bg);font:inherit;font-size:.85rem;font-weight:600;cursor:pointer;}
-.confirm-ok:hover{opacity:.8;}
-
-/* ─── Mobile overrides ──────────────────────────────────────── */
-@media(max-width:700px){
-  body{display:block;}
-  .sidebar{display:none;}
-  .mob-header{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.25rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:10;}
-  .mob-logo{font-size:.95rem;font-weight:700;letter-spacing:-.02em;}
-  .mob-logo span{opacity:.35;font-weight:400;}
-  .mob-btns{display:flex;gap:.3rem;}
-  .mob-btn{background:none;border:1px solid var(--border);border-radius:var(--radius);padding:.28rem .5rem;font-size:.88rem;color:var(--fg);cursor:pointer;}
-  .page{padding:1.25rem 1.25rem max(5rem,env(safe-area-inset-bottom));}
-  .mcq-opts{grid-template-columns:1fr;}
-  footer{padding-top:1.4rem;margin-top:2rem;}
-}
-@media(max-width:480px){
-  .topic-grid{grid-template-columns:repeat(2,1fr);}
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=20">
+<script src="shared.js?v=20"></script>
+<script src="subject.js?v=20"></script>
+<script src="maths.js?v=20"></script>
 </head>
 <body>
+<noscript><p style="padding:2rem">StudyNet needs JavaScript to run.</p></noscript>
 
-<!-- SVG Sprite -->
-<svg id="svg-sprite" aria-hidden="true" style="display:none" xmlns="http://www.w3.org/2000/svg">
-  <symbol id="icon-home"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
-  <symbol id="icon-books"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></symbol>
-  <symbol id="icon-globe"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></symbol>
-  <symbol id="icon-chart"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="3" y1="20" x2="21" y2="20"/></symbol>
-  <symbol id="icon-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
-  <symbol id="icon-moon"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></symbol>
-  <symbol id="icon-sun"      viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></symbol>
-  <symbol id="icon-bolt"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></symbol>
-  <symbol id="icon-text"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></symbol>
-  <symbol id="icon-rewind"   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></symbol>
-  <symbol id="icon-flask"    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3h6"/><path d="M10 3v6L5 20h14L14 9V3"/></symbol>
-  <symbol id="icon-gear"     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></symbol>
-  <symbol id="icon-x"        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></symbol>
-</svg>
-
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="sb-brand">StudyNet <span>/ Year 1</span></div>
-
-  <div class="sb-section">Navigate</div>
-  <button class="sb-btn active" id="sb-home" onclick="scrollToTop(event)">
-    <svg class="icon" aria-hidden="true"><use href="#icon-home"/></svg>&nbsp;Home
-  </button>
-  <button class="sb-btn" onclick="sbScroll(event,'subjects')">
-    <svg class="icon" aria-hidden="true"><use href="#icon-books"/></svg>&nbsp;Subjects
-  </button>
-  <button class="sb-btn" onclick="sbScroll(event,'languages')">
-    <svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg>&nbsp;Languages
-  </button>
-
-  <div class="sb-spacer"></div>
-
-  <button id="install-sb" class="sb-btn">
-    <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>&nbsp;Install app
-  </button>
-  <button class="sb-btn" id="settings-btn">
-    <svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg>&nbsp;Settings
-  </button>
-  <button class="sb-btn" id="theme-btn">
-    <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>&nbsp;Theme
-  </button>
-</aside>
-
-<!-- Main -->
-<div class="main">
-
-  <!-- Mobile header -->
-  <header class="mob-header">
-    <div class="mob-logo">StudyNet <span>/ Year 1</span></div>
-    <div class="mob-btns">
-      <button class="mob-btn" id="install-mob" style="display:none" aria-label="Install app">
-        <svg class="icon" aria-hidden="true"><use href="#icon-download"/></svg>
-      </button>
-      <button class="mob-btn" id="settings-mob" aria-label="Settings">
-        <svg class="icon" aria-hidden="true"><use href="#icon-gear"/></svg>
-      </button>
-      <button class="mob-btn" id="theme-mob" aria-label="Toggle theme">
-        <svg class="icon" aria-hidden="true"><use class="theme-icon-use" href="#icon-moon"/></svg>
-      </button>
-    </div>
-  </header>
-
+<main class="main" id="main">
   <div class="page">
+    <header class="ph">
+      <h1 id="greet">Hello.</h1>
+      <p id="greet-sub"></p>
+    </header>
 
-    <!-- Hero -->
-    <section class="hero">
-      <h1 id="greeting">Good morning.</h1>
-      <p>Pick up where you left off or start something new.</p>
-      <div class="hero-stats">
-        <div class="h-chip">Stars: <b id="stat-streak">0 stars</b></div>
-        <div class="h-chip">Correct: <b id="stat-correct">0</b></div>
-        <div class="h-chip">Active: <b>2 subjects</b></div>
+    <section id="continue" class="hidden" style="margin-bottom:2.75rem"></section>
+
+    <section class="section">
+      <h2 class="h2">Your subjects <small id="subjects-note"></small></h2>
+      <div class="rows" id="subjects"></div>
+      <p class="muted-line" id="subjects-extra"></p>
+    </section>
+
+    <section class="section" id="qq-section">
+      <h2 class="h2">Quick quiz <small>8 mixed questions from your subjects</small></h2>
+      <div class="quiz">
+        <div id="qq-live">
+          <div class="quiz-head"><b id="qq-subject"></b><span class="num" id="qq-count"></span></div>
+          <div class="progress"><i id="qq-prog" style="width:0%"></i></div>
+          <div class="quiz-body"><div class="quiz-q" id="qq-q"></div><div class="opts" id="qq-opts"></div></div>
+          <div class="quiz-foot"><span class="quiz-fb" id="qq-fb" role="status"></span><button type="button" class="btn primary hidden" id="qq-next"></button></div>
+        </div>
+        <div class="result hidden" id="qq-result" role="status"><h3 class="num" id="qq-score"></h3><p id="qq-msg"></p><button type="button" class="btn" id="qq-again"></button></div>
       </div>
     </section>
 
-    <!-- Dashboard -->
-    <div class="dash-grid">
+    <footer class="foot"><span>StudyNet · free Junior Cycle revision · <a class="link" href="about.html">About and AI use</a></span><span>Your progress is saved in this browser only.</span></footer>
+  </div>
+</main>
 
-        <!-- Subjects -->
-        <section class="section" id="subjects">
-          <div class="sec-head"><h2>Subjects</h2></div>
-          <div class="topic-grid">
-
-            <a href="irish.html" class="topic-card" id="irish-card">
-              <div class="tc-icon">
-                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="Irish flag" style="display:block;border-radius:2px">
-                  <rect width="1" height="2" fill="#169B62"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#FF883E"/>
-                </svg>
-              </div>
-              <div class="tc-label">Gaeilge</div>
-              <div class="tc-desc" id="sc-irish-count">0 / 65 correct</div>
-              <div class="tc-bar"><div class="tc-fill" id="sc-irish-bar" style="width:0%"></div></div>
-              <div class="tc-exempt" id="irish-exempt-badge" style="display:none">Exempt</div>
-            </a>
-
-            <div class="topic-card locked">
-              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-bolt"/></svg></div>
-              <div class="tc-label">Mathematics</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-bar"></div>
-            </div>
-
-            <div class="topic-card locked">
-              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-text"/></svg></div>
-              <div class="tc-label">English</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-bar"></div>
-            </div>
-
-            <a href="history.html" class="topic-card">
-              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-rewind"/></svg></div>
-              <div class="tc-label">History</div>
-              <div class="tc-desc">4 topics · JC Year 1</div>
-              <div class="tc-bar"></div>
-            </a>
-
-            <div class="topic-card locked">
-              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-globe"/></svg></div>
-              <div class="tc-label">Geography</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-bar"></div>
-            </div>
-
-            <div class="topic-card locked">
-              <div class="tc-icon"><svg class="icon" aria-hidden="true"><use href="#icon-flask"/></svg></div>
-              <div class="tc-label">Science</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-bar"></div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Languages -->
-        <section class="section" id="languages">
-          <div class="sec-head"><h2>Languages</h2></div>
-          <div class="topic-grid">
-
-            <a href="french.html" class="topic-card" data-lang-card="fr">
-              <div class="tc-icon">
-                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="French flag" style="display:block;border-radius:2px">
-                  <rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/>
-                </svg>
-              </div>
-              <div class="tc-label">Fran&#231;ais</div>
-              <div class="tc-desc" id="lc-fr-count">0 / 54 practice</div>
-              <div class="tc-yours">Your language</div>
-              <div class="tc-bar"><div class="tc-fill" id="lc-fr-bar" style="width:0%"></div></div>
-            </a>
-
-            <div class="topic-card locked" data-lang-card="de">
-              <div class="tc-icon">
-                <svg viewBox="0 0 5 3" width="28" height="17" aria-label="German flag" style="display:block;border-radius:2px">
-                  <rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/>
-                </svg>
-              </div>
-              <div class="tc-label">Deutsch</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-yours">Your language</div>
-              <div class="tc-bar"></div>
-            </div>
-
-            <div class="topic-card locked" data-lang-card="es">
-              <div class="tc-icon">
-                <svg viewBox="0 0 3 2" width="28" height="19" aria-label="Spanish flag" style="display:block;border-radius:2px">
-                  <rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/>
-                </svg>
-              </div>
-              <div class="tc-label">Espa&#241;ol</div>
-              <div class="tc-desc">Coming soon</div>
-              <div class="tc-yours">Your language</div>
-              <div class="tc-bar"></div>
-            </div>
-
-          </div>
-        </section>
-
-        <!-- Quick Quiz -->
-        <section class="section">
-          <div class="sec-head">
-            <h2>Quick Quiz</h2>
-            <a href="irish.html" id="qq-more-link">Study more &#8594;</a>
-          </div>
-          <div class="mcq-card">
-            <div class="mcq-top">
-              <span class="mcq-title" id="qq-subject">Loading&hellip;</span>
-              <span class="mcq-prog-txt" id="qq-prog-text">1 / 8</span>
-            </div>
-            <div class="mcq-prog-bar">
-              <div class="mcq-prog-fill" id="qq-prog-fill" style="width:12.5%"></div>
-            </div>
-            <div class="mcq-body" id="qq-body">
-              <div class="mcq-q"    id="qq-question"></div>
-              <div class="mcq-opts" id="qq-opts"></div>
-            </div>
-            <div class="mcq-footer">
-              <span class="mcq-fb" id="qq-feedback"></span>
-              <button class="mcq-next" id="qq-next">Next &#8594;</button>
-            </div>
-          </div>
-        </section>
-
-    </div><!-- /dash-grid -->
-
-    <footer>
-      <span>StudyNet &middot; Year 1</span>
-      <span>All progress saved locally in your browser.</span>
-    </footer>
-
-  </div><!-- /page -->
-</div><!-- /main -->
-
-<!-- Onboarding overlay -->
-<div id="onboard-overlay" class="onboard-overlay hidden">
-  <div class="ob-box">
-    <div class="ob-brand"><b>Study</b>Net <span style="opacity:.4;font-weight:400">/ Year 1</span></div>
-    <h1 class="ob-h">Welcome.</h1>
-    <p class="ob-sub">Set up your profile to get started. You can change everything later in Settings.</p>
-    <div class="ob-field">
-      <label for="ob-name">Your first name <span style="opacity:.45">(optional)</span></label>
-      <input id="ob-name" class="ob-input" type="text" placeholder="e.g. Elliot" maxlength="32" autocomplete="given-name"/>
-    </div>
-    <div class="ob-field">
-      <label for="ob-year">School year <span style="opacity:.45">(optional)</span></label>
-      <input id="ob-year" class="ob-input" type="text" placeholder="e.g. 1st Year" maxlength="24"/>
-    </div>
-    <p class="ob-lang-label">Which modern language are you studying?</p>
-    <div class="ob-lang-grid">
-      <button class="ob-lang-opt" data-lang="fr" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-        <span class="ob-lang-name">Fran&#231;ais</span><span class="ob-lang-sub">French</span>
-      </button>
-      <button class="ob-lang-opt" data-lang="es" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 3 2" width="36" height="24" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
-        <span class="ob-lang-name">Espa&#241;ol</span><span class="ob-lang-sub">Spanish</span>
-      </button>
-      <button class="ob-lang-opt" data-lang="de" onclick="obSelectLang(this)">
-        <svg class="ob-lang-flag" viewBox="0 0 5 3" width="36" height="22" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
-        <span class="ob-lang-name">Deutsch</span><span class="ob-lang-sub">German</span>
-      </button>
-    </div>
-    <div class="ob-field" style="flex-direction:row;align-items:center;gap:.6rem;margin-top:.25rem;margin-bottom:.25rem;">
-      <input type="checkbox" id="ob-exempt" style="width:1rem;height:1rem;cursor:pointer;flex-shrink:0;accent-color:var(--fg);"/>
-      <label for="ob-exempt" style="font-size:.82rem;cursor:pointer;margin:0;">I have an Irish exemption</label>
-    </div>
-    <button id="ob-submit" class="ob-btn" disabled onclick="obSubmit()">Get started &#8594;</button>
+<!-- First-run setup -->
+<div id="welcome" class="overlay full hidden">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="welcome-h">
+    <div class="welcome-brand">StudyNet</div>
+    <h1 class="welcome-h" id="welcome-h">Welcome.</h1>
+    <p class="lead">Tell us your year and subjects so we only show what you study. You can change this any time in Settings.</p>
+    <div id="welcome-fields"></div>
+    <button type="button" class="btn primary block" id="welcome-go" disabled>Start revising</button>
+    <p class="muted-line" id="welcome-hint" style="text-align:center">Choose your modern language, or pick the language exemption.</p>
   </div>
 </div>
 
-<!-- Settings drawer -->
-<div id="settings-overlay" class="sn-overlay hidden">
-  <div class="sn-backdrop" onclick="closeSettings()"></div>
-  <div class="sn-drawer">
-    <div class="sn-drawer-head">
-      <h2>Settings</h2>
-      <button class="icon-btn" onclick="closeSettings()" aria-label="Close">
-        <svg class="icon" aria-hidden="true"><use href="#icon-x"/></svg>
-      </button>
+<!-- What's new -->
+<div id="changelog" class="overlay hidden">
+  <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="cl-h" style="max-width:460px">
+    <h2 id="cl-h">What’s new</h2>
+    <p class="lead">November 2026</p>
+    <div class="cl">
+      <h3>Just added</h3>
+      <ul>
+        <li><b>Maths</b> is here: practise every algebra skill from class with a new question each time, hints and worked examples, and move up from Learning to Mastered. Type answers any correct way: (x + 2)(x + 3) and (x+3)(x+2) both count.</li>
+        <li><b>Practice exams</b> for every subject, laid out like your class tests. Pick your topics and length, sit the paper with or without a timer, then get it back marked like a real test, with your Junior Cycle descriptor.</li>
+        <li>Maths papers give <b>method marks</b> for correct working, even if your final answer is wrong.</li>
+        <li>Written answers and maths working can be marked by AI against the marking scheme. Otherwise, you tick off the scheme yourself.</li>
+        <li>Science: a <b>periodic table</b> with Bohr diagrams for the first 20 elements, and much more on the structure of the atom.</li>
+        <li>A <b>calculator</b> on every page: it's in the menu.</li>
+        <li>A new <a class="link" href="about.html">About</a> page explains exactly how StudyNet was made and how AI is used.</li>
+        <li>Each subject has its own logo and colour, and a new, easier-to-read font.</li>
+      </ul>
+      <h3>2nd Year</h3>
+      <ul>
+        <li>2nd Year content for <b>Gaeilge, Français, History, Geography and Science</b>, built around this term’s November assessments.</li>
+        <li>In 2nd Year mode you can still switch back to your 1st Year topics on each subject.</li>
+        <li>New <b>Notes</b> pages for each topic, plus timelines in History.</li>
+      </ul>
+      <h3>Easier to use</h3>
+      <ul>
+        <li>Jump straight to any of your subjects from the side menu (or the menu button on your phone).</li>
+        <li>The home page takes you back to exactly where you left off.</li>
+        <li>Open Settings from any page.</li>
+        <li>Practice has a <b>Check answers</b> button and shows the right answer if you get one wrong.</li>
+      </ul>
     </div>
-    <div class="sn-body">
-
-      <div class="sn-sec">
-        <div class="sn-sec-label">Account</div>
-        <div class="sn-av-wrap" onclick="document.getElementById('sn-photo-input').click()">
-          <div id="sn-avatar" class="sn-avatar"></div>
-          <div class="sn-av-overlay">
-            <svg class="sn-av-cam" viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-          </div>
-        </div>
-        <div class="sn-av-actions">
-          <button class="sn-av-btn" onclick="document.getElementById('sn-photo-input').click()">Change photo</button>
-          <button class="sn-av-btn" id="sn-remove-photo" onclick="removePhoto()" style="display:none">Remove</button>
-        </div>
-        <input type="file" id="sn-photo-input" accept="image/*" style="display:none"/>
-
-        <div class="sn-streak-wrap">
-          <div class="sn-streak-top">
-            <svg viewBox="0 0 24 24" width="18" height="18" fill="#f97316" aria-hidden="true" style="flex-shrink:0"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            <div>
-              <div class="sn-streak-count" id="sn-streak-count">0 stars earned</div>
-              <div class="sn-streak-days" id="sn-streak-days">1 star per 10 days studied</div>
-            </div>
-          </div>
-          <div class="sn-bar-wrap"><div class="sn-bar-fill" id="sn-bar-fill" style="width:0%"></div></div>
-          <div class="sn-bar-label" id="sn-bar-label">0 / 10 days to next star</div>
-        </div>
-
-        <div class="sn-field">
-          <label for="sn-name">Name</label>
-          <input id="sn-name" class="sn-input" type="text" placeholder="Your first name" maxlength="32" autocomplete="given-name"/>
-        </div>
-        <div class="sn-field">
-          <label for="sn-year">School year</label>
-          <input id="sn-year" class="sn-input" type="text" placeholder="e.g. 1st Year" maxlength="24"/>
-        </div>
-      </div>
-
-      <hr class="sn-divider"/>
-
-      <div class="sn-sec">
-        <div class="sn-sec-label">Modern Language</div>
-        <div class="sn-lang-grid">
-          <button class="sn-lang-opt" data-lang="fr" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" aria-label="French flag" style="border-radius:2px"><rect width="1" height="2" fill="#002395"/><rect x="1" width="1" height="2" fill="#fff"/><rect x="2" width="1" height="2" fill="#ED2939"/></svg>
-            <span class="sn-lang-name">Fran&#231;ais</span>
-          </button>
-          <button class="sn-lang-opt" data-lang="es" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 3 2" width="30" height="20" aria-label="Spanish flag" style="border-radius:2px"><rect width="3" height="0.5" fill="#c60b1e"/><rect y="0.5" width="3" height="1" fill="#ffc400"/><rect y="1.5" width="3" height="0.5" fill="#c60b1e"/></svg>
-            <span class="sn-lang-name">Espa&#241;ol</span>
-          </button>
-          <button class="sn-lang-opt" data-lang="de" onclick="snSelectLang(this)">
-            <svg class="sn-lang-flag" viewBox="0 0 5 3" width="30" height="18" aria-label="German flag" style="border-radius:2px"><rect width="5" height="1" fill="#000"/><rect y="1" width="5" height="1" fill="#DD0000"/><rect y="2" width="5" height="1" fill="#FFCE00"/></svg>
-            <span class="sn-lang-name">Deutsch</span>
-          </button>
-        </div>
-      </div>
-
-      <button class="sn-save" onclick="saveSettings()">Save changes</button>
-
-      <hr class="sn-divider"/>
-
-      <div class="sn-sec">
-        <div class="sn-sec-label">Data</div>
-        <button class="sn-danger-btn" onclick="confirmClearData()">Clear all data&hellip;</button>
-      </div>
-
-    </div>
+    <div class="dialog-actions"><button type="button" class="btn primary" id="cl-ok">Got it</button></div>
   </div>
 </div>
 
-<!-- Changelog overlay -->
-<div id="changelog-overlay" class="changelog-overlay hidden">
-  <div class="cl-box">
-    <div class="cl-head">
-      <div>
-        <div class="cl-title">What&#39;s new</div>
-        <div class="cl-ver">21 May 2026</div>
-      </div>
-    </div>
-    <div class="cl-content">
-      <h3>History is back</h3>
-      <ul>
-        <li><b>History page live</b> &#8212; after a brief outage, History has returned — completely rebuilt and packed with content for all four Junior Cycle Year 1 units.</li>
-        <li><b>Historian &amp; Archaeologist</b> &#8212; sources, bias, cross-checking, radiocarbon dating, conservation and more.</li>
-        <li><b>The Middle Ages</b> &#8212; the full Knight (Page &#8594; Squire &#8594; Dubbing), Craftsman (Apprentice &#8594; Journeyman &#8594; Master) and Monk (Novice &#8594; vows) journeys, castle life, guilds, Black Death.</li>
-        <li><b>The Renaissance</b> &#8212; da Vinci, Michelangelo, Copernicus, Galileo, Gutenberg, Vesalius, Harvey and more.</li>
-        <li><b>Age of Exploration</b> &#8212; the 3 G&#39;s, da Gama, Columbus, Cortés, Pizarro, the Columbian Exchange and the slave trade.</li>
-        <li><b>Timeline activity</b> &#8212; drag and drop historical events onto the correct year. History-exclusive.</li>
-      </ul>
-      <h3>Profile access everywhere</h3>
-      <ul>
-        <li>French and Irish subject pages now have a <b>Profile</b> link at the bottom of the sidebar &#8212; tap it to jump straight back to your dashboard.</li>
-      </ul>
-      <h3>Irish exemption</h3>
-      <ul>
-        <li>Added an <b>&#8220;I have an Irish exemption&#8221;</b> checkbox to the setup screen. If checked, the Gaeilge card is greyed out and marked <i>Exempt</i> in dark red so it&#39;s clearly skipped.</li>
-      </ul>
-      <h3>Quick quiz</h3>
-      <ul>
-        <li>The home-screen quiz now draws from a pool of <b>79 questions</b> (was 14) &#8212; Irish prep pronouns, irregular verbs, possessives, French &#234;tre/avoir, days, months, family and opinions. 8 are picked at random each time.</li>
-      </ul>
-      <h3>Also</h3>
-      <ul>
-        <li>Progress section removed from French &#8212; replaced by the score chip in the hero area.</li>
-        <li>Dashboard and subject pages share consistent sidebar styling.</li>
-      </ul>
-    </div>
-    <button class="cl-dismiss" onclick="dismissChangelog()">Got it</button>
-  </div>
-</div>
-
-<!-- Confirm dialog -->
-<div id="confirm-overlay" class="confirm-overlay hidden">
-  <div class="confirm-box">
-    <h3>Clear all data?</h3>
-    <p>This will permanently delete your profile, all study progress, and settings. This cannot be undone.</p>
-    <div class="confirm-actions">
-      <button class="confirm-cancel" onclick="closeConfirm()">Cancel</button>
-      <button class="confirm-ok" onclick="doClearData()">Clear data</button>
-    </div>
-  </div>
-</div>
-
+<script src="data/irish.js?v=20"></script>
+<script src="data/french.js?v=20"></script>
+<script src="data/history.js?v=20"></script>
+<script src="data/geography.js?v=20"></script>
+<script src="data/science.js?v=20"></script>
+<script src="data/maths.js?v=20"></script>
 <script>
-// ── Profile ──────────────────────────────────────────────────
-const SETUP_VER = '1';
-let profile = JSON.parse(localStorage.getItem('sn_profile') || '{}');
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var esc = SN.escHtml, ic = SN.ic;
+  var profile = SN.getProfile();
+  var SETUP_VER = '1';
+  var CHANGELOG_VER = '2026-11-07-v3';
 
-// ── Theme ────────────────────────────────────────────────────
-const html = document.documentElement;
-const st = localStorage.getItem('sn_theme');
-if (st) html.classList.add('theme-' + st);
-function updateThemeIcons() {
-  const isDark = html.classList.contains('theme-dark') ||
-    (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
-  document.querySelectorAll('.theme-icon-use').forEach(el =>
-    el.setAttribute('href', isDark ? '#icon-sun' : '#icon-moon'));
-}
-function toggleTheme() {
-  const dark = html.classList.contains('theme-dark') ||
-    (!html.classList.contains('theme-light') && matchMedia('(prefers-color-scheme:dark)').matches);
-  html.classList.remove('theme-light', 'theme-dark');
-  const next = dark ? 'light' : 'dark';
-  html.classList.add('theme-' + next);
-  localStorage.setItem('sn_theme', next);
-  updateThemeIcons();
-}
-document.getElementById('theme-btn').addEventListener('click', toggleTheme);
-document.getElementById('theme-mob').addEventListener('click', toggleTheme);
-updateThemeIcons();
+  SN.mountShell('home');
 
-// ── Nav ──────────────────────────────────────────────────────
-function scrollToTop(e) { e.preventDefault(); window.scrollTo({top:0, behavior:'smooth'}); }
-function sbScroll(e, id) {
-  e.preventDefault();
-  document.getElementById(id)?.scrollIntoView({behavior:'smooth', block:'start'});
-}
-
-// ── PWA Install ──────────────────────────────────────────────
-let deferredInstall = null;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault(); deferredInstall = e;
-  document.getElementById('install-sb').style.display = 'flex';
-  document.getElementById('install-mob').style.display = 'inline-flex';
-});
-async function handleInstall() {
-  if (!deferredInstall) return;
-  deferredInstall.prompt();
-  const { outcome } = await deferredInstall.userChoice;
-  if (outcome === 'accepted') {
-    document.getElementById('install-sb').style.display = 'none';
-    document.getElementById('install-mob').style.display = 'none';
+  /* ── Greeting ───────────────────────────────────────────── */
+  function greet() {
+    var h = new Date().getHours(), part = h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'evening';
+    $('greet').textContent = 'Good ' + part + (profile.name ? ', ' + profile.name : '') + '.';
+    var bits = [SN.YEAR_NAMES[profile.yearMode]];
+    if (profile.exempt !== 'language') bits.push(SN.LANG_NAMES[profile.lang || 'fr']);
+    var s = SN.getStreak();
+    bits.push(s.count ? s.count + '-day streak' : (s.studiedToday ? 'Studied today' : 'Answer a question to start a streak'));
+    $('greet-sub').textContent = bits.join(' · ');
   }
-  deferredInstall = null;
-}
-document.getElementById('install-sb').addEventListener('click', handleInstall);
-document.getElementById('install-mob').addEventListener('click', handleInstall);
-window.addEventListener('appinstalled', () => {
-  document.getElementById('install-sb').style.display = 'none';
-  document.getElementById('install-mob').style.display = 'none';
-});
 
-// ── Greeting ─────────────────────────────────────────────────
-const hr = new Date().getHours();
-document.getElementById('greeting').textContent =
-  hr < 12 ? 'Good morning.' : hr < 17 ? 'Good afternoon.' : 'Good evening.';
-
-// ── Progress counters ────────────────────────────────────────
-
-function normIr(s) {
-  return s.toLowerCase()
-    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i')
-    .replace(/ó/g,'o').replace(/ú/g,'u')
-    .replace(/[^a-z0-9\s]/g,'').replace(/\s+/g,' ').trim();
-}
-const irishData = {
-  reamhfhocail: [['air'],['di'],['leo'],['agat'],['orainn'],['dom'],['aici'],['leis'],['daoibh'],['orm'],['linn'],['agaibh'],['dóibh','doibh'],['ort'],['leat'],['agam'],['dó','do'],['orthu'],['libh'],['aige']],
-  irregulars:   [['Beireann'],['Tugann'],['Téann','Teann'],['Bíonn','Biann','Tá','Ta'],['Tagann'],['Deir'],['Cloiseann'],['Feiceann'],['Déanann','Deanann'],['Faigheann'],['Itheann']],
-  laithreach1:  [['Ceapaim'],['Creideann sé'],['gcaitheann siad'],['thógann muid','thogann muid','thógaimid'],['litríonn sí','litrionn si'],['Baineann siad'],['Sroichim'],['mhothaím','mhothaoim','mhothaim'],['éisteann sí','eisteann si'],['úsáideann sé','usaideann se']],
-  laithreach2:  [['Aistrím','Aistrim'],['Éiríonn muid','Eiriann muid','Éirímid'],['Críochnaíonn muid','Criochnaionn muid','Críochnaímid'],['ndúisíonn tú','nduisiann tu'],['litríonn tú','litrionn tu'],['mhothaíonn sé','mhothaionn se'],['gceannaíonn sibh','gceannaionn sibh'],['bhreathnaím','bhreathnaim'],['aontaíonn siad','aontaionn siad'],['éiríonn sí','eiriann si']],
-  chaite:       [['Thosaigh muid','Thosaíomar'],["D'éirigh mé","D'eirigh me"],['Mhothaigh muid','Mhothaíomar'],['dheisigh tú','dheisigh tu'],['aistrigh tú','aistrigh tu'],['shínigh sí','shinigh si'],['cheannaigh siad','cheannaigh'],['smaoinigh tú','smaoinigh tu'],['réitigh siad','reitigh siad'],['chealaigh sí','chealaigh si']],
-};
-const aidiachtTeach  = [['mo theach'],['do theach'],['a theach'],['a teach'],['ár dteach','ar dteach'],['bhur dteach'],['a dteach']];
-const aidiachtAintin = [["m'aintín",'mo aintín'],["d'aintín",'do aintín'],['a aintín'],['a haintín'],['ár n-aintín','ár naintín','ar naintin'],['bhur n-aintín','bhur naintín'],['a n-aintín','a naintín']];
-function countIrish() {
-  const s = JSON.parse(localStorage.getItem('sn_irish_v1') || '{}');
-  if (!s.inputs) return 0;
-  let c = 0;
-  Object.entries(irishData).forEach(([ex, qs]) =>
-    qs.forEach((ans, i) => { const v = s.inputs[`${ex}_${i}`]; if (v && ans.some(a => normIr(a) === normIr(v))) c++; })
-  );
-  [aidiachtTeach, aidiachtAintin].forEach((tbl, ti) => {
-    const noun = ti === 0 ? 'teach' : 'aintin';
-    tbl.forEach((ans, i) => { const v = s.inputs[`aidiacht_${noun}_${i}`]; if (v && ans.some(a => normIr(a) === normIr(v))) c++; });
-  });
-  return c;
-}
-
-function normFr(s) {
-  return s.toLowerCase()
-    .replace(/[àâ]/g,'a').replace(/[éèêë]/g,'e').replace(/[îï]/g,'i')
-    .replace(/[ôœ]/g,'o').replace(/[ùû]/g,'u').replace(/ç/g,'c')
-    .replace(/[''']/g,"'").replace(/[^a-z0-9\s'\/-]/g,'').replace(/\s+/g,' ').trim();
-}
-function chkFr(v, ans) { return ans.some(a => normFr(a) === normFr(v)); }
-function countFrench() {
-  const s = JSON.parse(localStorage.getItem('sn_french_v1') || '{}');
-  if (!s.inputs) return 0;
-  let c = 0;
-  const conjAns = {
-    etre:  [['suis'],['es'],['est'],['sommes'],['êtes','etes'],['sont']],
-    avoir: [['ai'],['as'],['a'],['avons'],['avez'],['ont']],
-    aimer: [['aime'],['aimes'],['aime'],['aimons'],['aimez'],['aiment']],
-  };
-  Object.entries(conjAns).forEach(([k, rows]) =>
-    rows.forEach((ans, i) => { const v = s.inputs[`${k}_${i}`]; if (v && chkFr(v, ans)) c++; })
-  );
-  const possAns = [
-    [['mon'],['ma'],['mes']],[['ton'],['ta'],['tes']],[['son'],['sa'],['ses']],
-    [['notre'],['notre'],['nos']],[['votre'],['votre'],['vos']],[['leur'],['leur'],['leurs']],
-  ];
-  possAns.forEach((row, ri) =>
-    row.forEach((ans, ci) => {
-      const col = ['m','f','p'][ci];
-      const v = s.inputs[`possessif_${ri}_${col}`]; if (v && chkFr(v, ans)) c++;
-    })
-  );
-  const endAns = {
-    er: [['e'],['es'],['e'],['ons'],['ez'],['ent']],
-    ir: [['is'],['is'],['it'],['issons'],['issez'],['issent']],
-    re: [['s'],['s'],['-'],['ons'],['ez'],['ent']],
-  };
-  ['er','ir','re'].forEach(t =>
-    endAns[t].forEach((ans, i) => {
-      if (ans[0] === '-') { c++; return; }
-      const v = s.inputs[`endings_${i}_${t}`]; if (v && chkFr(v, ans)) c++;
-    })
-  );
-  return c;
-}
-
-function updateStats() {
-  const ic = countIrish(),  it = 65;
-  const fc = countFrench(), ft = 54;
-  document.getElementById('sc-irish-count').textContent = `${ic} / ${it} correct`;
-  document.getElementById('sc-irish-bar').style.width   = Math.round(ic/it*100) + '%';
-  document.getElementById('lc-fr-count').textContent    = `${fc} / ${ft} practice`;
-  document.getElementById('lc-fr-bar').style.width      = Math.round(fc/ft*100) + '%';
-  document.getElementById('stat-correct').textContent   = ic + fc;
-}
-updateStats();
-
-// ── Streak ───────────────────────────────────────────────────
-(function() {
-  const today = new Date().toDateString();
-  let s; try { s = JSON.parse(localStorage.getItem('sn_streak') || 'null'); } catch(e) {}
-  if (!s) s = {count:0, last:'', totalDays:0, stars:0};
-  if (!('totalDays' in s)) s.totalDays = s.count || 0;
-  if (!('stars' in s)) s.stars = Math.floor(s.totalDays / 10);
-  const yesterday = new Date(Date.now() - 86400000).toDateString();
-  if (s.last !== today) {
-    s.totalDays++;
-    s.count = (s.last === yesterday) ? s.count + 1 : 1;
-    s.last = today;
-    s.stars = Math.floor(s.totalDays / 10);
-    localStorage.setItem('sn_streak', JSON.stringify(s));
+  /* ── Continue where you left off ────────────────────────── */
+  var MODE_LABEL = { notes: 'Notes', flashcards: 'Flashcards', quiz: 'Quiz', match: 'Match', timeline: 'Timeline', practice: 'Practice' };
+  function renderContinue(my) {
+    var last = SN.readJSON('sn_last', null), box = $('continue');
+    var s = last && my.open.filter(function (x) { return x.id === last.subject; })[0];
+    if (!s || SN.yearsFor(s, profile).indexOf(last.year) < 0) { box.classList.add('hidden'); return; }
+    var href = s.href + '?y=' + last.year + '#t=' + encodeURIComponent(last.topic) + '&m=' + encodeURIComponent(last.mode);
+    box.innerHTML = '<a class="row featured" href="' + href + '">' +
+      SN.logo(s, 'md') +
+      '<span class="row-body"><span class="row-title">Continue where you left off</span>' +
+      '<span class="row-desc">' + esc(s.name) + ' · ' + esc(last.topicLabel || '') + ' · ' + (MODE_LABEL[last.mode] || '') + '</span></span>' +
+      ic('chevron-right', 'icon row-chev') + '</a>';
+    box.classList.remove('hidden');
   }
-  document.getElementById('stat-streak').textContent = `${s.stars} star${s.stars !== 1 ? 's' : ''}`;
-})();
 
-// ── Quick Quiz ───────────────────────────────────────────────
-const qqPool = [
-  // ── Gaeilge: Réamhfhocail ────────────────────────────────────
-  {q:'ag + mé = ?',    opts:['orm','agam','dom','liom'],              ans:1, subj:'Gaeilge'},
-  {q:'ar + tú = ?',    opts:['agat','duit','leat','ort'],              ans:3, subj:'Gaeilge'},
-  {q:'do + sí = ?',    opts:['léi','di','aici','uirthi'],              ans:1, subj:'Gaeilge'},
-  {q:'le + siad = ?',  opts:['acu','dóibh','orthu','leo'],             ans:3, subj:'Gaeilge'},
-  {q:'ag + sibh = ?',  opts:['libh','daoibh','agaibh','oraibh'],      ans:2, subj:'Gaeilge'},
-  {q:'ar + mé = ?',    opts:['dom','agam','orm','liom'],               ans:2, subj:'Gaeilge'},
-  {q:'le + tú = ?',    opts:['agat','leat','duit','ort'],              ans:1, subj:'Gaeilge'},
-  {q:'ag + sé = ?',    opts:['air','leis','aige','dó'],                ans:2, subj:'Gaeilge'},
-  {q:'ar + sé = ?',    opts:['leis','air','aige','dó'],                ans:1, subj:'Gaeilge'},
-  {q:'do + muid = ?',  opts:['linn','dúinn','againn','orainn'],        ans:1, subj:'Gaeilge'},
-  {q:'le + muid = ?',  opts:['againn','orainn','dúinn','linn'],        ans:3, subj:'Gaeilge'},
-  {q:'ag + siad = ?',  opts:['leo','orthu','acu','dóibh'],             ans:2, subj:'Gaeilge'},
-  {q:'do + tú = ?',    opts:['leat','agat','duit','ort'],              ans:2, subj:'Gaeilge'},
-  {q:'le + sé = ?',    opts:['leis','air','dó','aige'],                ans:0, subj:'Gaeilge'},
-  {q:'ar + siad = ?',  opts:['orthu','leo','acu','dóibh'],             ans:0, subj:'Gaeilge'},
-  {q:'do + sé = ?',    opts:['leis','air','dó','aige'],                ans:2, subj:'Gaeilge'},
-  {q:'ag + muid = ?',  opts:['linn','orainn','againn','dúinn'],        ans:2, subj:'Gaeilge'},
-  // ── Gaeilge: Irregular verbs ─────────────────────────────────
-  {q:'"beir" (sé) present?',    opts:['beirann sé','tugann sé','beireann sé','téann sé'],         ans:2, subj:'Gaeilge'},
-  {q:'Past of "éirigh" (mé)?',  opts:["éiríodh","éirigh mé","d'éirigh mé","éirithe"],             ans:2, subj:'Gaeilge'},
-  {q:'Ní + "tóg" + muid?',      opts:['tógann muid','dtógann muid','thógann muid','htógann muid'],ans:2, subj:'Gaeilge'},
-  {q:'Present of "téigh" (sí)?',opts:['tagann sí','téann sí','tá sí','tógann sí'],               ans:1, subj:'Gaeilge'},
-  {q:'Present of "tar" (siad)?',opts:['téann siad','tagann siad','tá siad','tugann siad'],        ans:1, subj:'Gaeilge'},
-  {q:'Present of "bí" (tú)?',   opts:['tá tú','téann tú','bíonn tú','tagann tú'],                ans:2, subj:'Gaeilge'},
-  {q:'Present of "faigh" (sé)?',opts:['feiceann sé','déanann sé','faigheann sé','tugann sé'],    ans:2, subj:'Gaeilge'},
-  {q:'Past of "tosaigh" (muid)?',opts:['tosaíonn muid','thosaigh siad','thosaigh muid','tosaíodh'],ans:2,subj:'Gaeilge'},
-  {q:'Present of "clois" (sí)?', opts:['feiceann sí','cloiseann sí','deireann sí','déanann sí'],  ans:1, subj:'Gaeilge'},
-  {q:'Present of "abair" (sé)?', opts:['déanann sé','itheann sé','deir sé','cloiseann sé'],       ans:2, subj:'Gaeilge'},
-  // ── Gaeilge: Aidiachtaí sealbhacha ───────────────────────────
-  {q:'"my house" in Irish?',        opts:['do theach','a theach','mo theach','ár dteach'],        ans:2, subj:'Gaeilge'},
-  {q:'"his house" in Irish?',       opts:['mo theach','a teach','a theach','do theach'],          ans:2, subj:'Gaeilge'},
-  {q:'"her house" in Irish?',       opts:['a theach','ár dteach','a dteach','a teach'],           ans:3, subj:'Gaeilge'},
-  {q:'"our house" in Irish?',       opts:['bhur dteach','a dteach','ár dteach','do theach'],      ans:2, subj:'Gaeilge'},
-  {q:'"their house" in Irish?',     opts:['ár dteach','bhur dteach','do theach','a dteach'],      ans:3, subj:'Gaeilge'},
-  {q:'"my aunt" in Irish?',         opts:["d'aintín","a haintín","m'aintín","a aintín"],          ans:2, subj:'Gaeilge'},
-  {q:'"her aunt" in Irish?',        opts:["m'aintín","a aintín","a haintín","d'aintín"],          ans:2, subj:'Gaeilge'},
-  {q:'"your (sg) aunt" in Irish?',  opts:["m'aintín","d'aintín","a aintín","a haintín"],          ans:1, subj:'Gaeilge'},
-  {q:'"his aunt" in Irish?',        opts:["a haintín","m'aintín","a aintín","d'aintín"],          ans:2, subj:'Gaeilge'},
-  // ── Français: Être ───────────────────────────────────────────
-  {q:'Je ___ étudiant. (I am)',         opts:['es','est','suis','sommes'],     ans:2, subj:'Français'},
-  {q:'Nous ___ en France. (We are)',    opts:['sont','êtes','est','sommes'],   ans:3, subj:'Français'},
-  {q:'Vous ___ professeur. (You are)',  opts:['suis','est','êtes','sont'],     ans:2, subj:'Français'},
-  {q:'Elle ___ irlandaise. (She is)',   opts:['suis','est','es','sont'],       ans:1, subj:'Français'},
-  {q:'Ils ___ contents. (They are)',    opts:['sommes','êtes','est','sont'],   ans:3, subj:'Français'},
-  // ── Français: Avoir ──────────────────────────────────────────
-  {q:'Ils ___ une maison. (They have)', opts:['sont','êtes','avons','ont'],    ans:3, subj:'Français'},
-  {q:"J'___ un chien. (I have)",        opts:['as','ai','a','avons'],          ans:1, subj:'Français'},
-  {q:'Tu ___ un stylo. (You have)',     opts:['ai','avez','as','a'],           ans:2, subj:'Français'},
-  {q:'Nous ___ un chat. (We have)',     opts:['avez','ont','avons','a'],       ans:2, subj:'Français'},
-  // ── Français: Jours ──────────────────────────────────────────
-  {q:'Monday in French?',    opts:['Mercredi','Lundi','Vendredi','Samedi'],  ans:1, subj:'Français'},
-  {q:'Wednesday in French?', opts:['Mardi','Lundi','Mercredi','Jeudi'],      ans:2, subj:'Français'},
-  {q:'Friday in French?',    opts:['Jeudi','Dimanche','Samedi','Vendredi'],  ans:3, subj:'Français'},
-  {q:'Sunday in French?',    opts:['Samedi','Dimanche','Vendredi','Lundi'],  ans:1, subj:'Français'},
-  {q:'Thursday in French?',  opts:['Mercredi','Vendredi','Mardi','Jeudi'],   ans:3, subj:'Français'},
-  {q:'Tuesday in French?',   opts:['Lundi','Mardi','Mercredi','Jeudi'],      ans:1, subj:'Français'},
-  {q:'Saturday in French?',  opts:['Dimanche','Vendredi','Samedi','Lundi'],  ans:2, subj:'Français'},
-  // ── Français: Mois ───────────────────────────────────────────
-  {q:'January in French?',   opts:['Février','Mars','Janvier','Avril'],       ans:2, subj:'Français'},
-  {q:'March in French?',     opts:['Mai','Mars','Avril','Février'],           ans:1, subj:'Français'},
-  {q:'July in French?',      opts:['Juin','Août','Septembre','Juillet'],      ans:3, subj:'Français'},
-  {q:'December in French?',  opts:['Novembre','Octobre','Décembre','Janvier'],ans:2, subj:'Français'},
-  {q:'June in French?',      opts:['Juillet','Avril','Juin','Mai'],           ans:2, subj:'Français'},
-  {q:'September in French?', opts:['Août','Octobre','Novembre','Septembre'],  ans:3, subj:'Français'},
-  // ── Français: Vocabulaire & météo ────────────────────────────
-  {q:'"Un chat" means?',       opts:['a dog','a horse','a rabbit','a cat'],                               ans:3, subj:'Français'},
-  {q:'"Un chien" means?',      opts:['a cat','a dog','a rabbit','a horse'],                               ans:1, subj:'Français'},
-  {q:'"Un lapin" means?',      opts:['a dog','a cat','a rabbit','a horse'],                               ans:2, subj:'Français'},
-  {q:'"Il fait beau" means?',  opts:["It's raining","The weather is nice","It's cold","It's windy"],      ans:1, subj:'Français'},
-  {q:'"Il pleut" means?',      opts:["It's cold","It's snowing","It's raining","It's sunny"],             ans:2, subj:'Français'},
-  {q:'"Il fait froid" means?', opts:["It's hot","It's cloudy","It's windy","It's cold"],                  ans:3, subj:'Français'},
-  {q:'"Il fait chaud" means?', opts:["It's cold","It's raining","It's hot","It's windy"],                 ans:2, subj:'Français'},
-  {q:'"Il neige" means?',      opts:["It's freezing","It's raining","It's windy","It's snowing"],         ans:3, subj:'Français'},
-  // ── Français: La famille ─────────────────────────────────────
-  {q:'"Le père" means?',       opts:['Brother','Son','Uncle','Father'],                                   ans:3, subj:'Français'},
-  {q:'"La mère" means?',       opts:['Daughter','Sister','Mother','Aunt'],                                ans:2, subj:'Français'},
-  {q:'"Le frère" means?',      opts:['Father','Son','Brother','Uncle'],                                   ans:2, subj:'Français'},
-  {q:'"La sœur" means?',       opts:['Mother','Daughter','Aunt','Sister'],                                ans:3, subj:'Français'},
-  {q:'"Le fils" means?',       opts:['Brother','Son','Father','Uncle'],                                   ans:1, subj:'Français'},
-  {q:'"La fille" means?',      opts:['Sister','Aunt','Mother','Daughter'],                                ans:3, subj:'Français'},
-  // ── Français: Opinions & salutations ─────────────────────────
-  {q:'"I like" in French?',    opts:["J'adore","Je déteste","J'aime","Je n'aime pas"],                    ans:2, subj:'Français'},
-  {q:'"I love" in French?',    opts:["J'aime","Je n'aime pas","J'adore","Je déteste"],                    ans:2, subj:'Français'},
-  {q:'"I hate" in French?',    opts:["J'adore","J'aime","Je n'aime pas","Je déteste"],                    ans:3, subj:'Français'},
-  {q:'"Hello" in French?',     opts:['Au revoir','Bonsoir','Bonjour','Merci'],                            ans:2, subj:'Français'},
-  {q:'"Goodbye" in French?',   opts:['Bonjour','Merci','Bonsoir','Au revoir'],                            ans:3, subj:'Français'},
-  {q:'"Thank you" in French?', opts:['De rien','Bonjour','Merci','Au revoir'],                            ans:2, subj:'Français'},
-  {q:'"You\'re welcome" in French?', opts:['Merci','Bonjour','Au revoir','De rien'],                      ans:3, subj:'Français'},
-  {q:'"Easy" in French?',      opts:['difficile','barbant','utile','facile'],                             ans:3, subj:'Français'},
-  {q:'"Boring" in French?',    opts:['facile','drôle','barbant','intéressant'],                           ans:2, subj:'Français'},
-  {q:'"Good evening" in French?', opts:['Bonjour','Bonne nuit','Bonsoir','Au revoir'],                    ans:2, subj:'Français'},
-];
-function qqShuffle(a) { a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]; } return a; }
-const qqFiltered = qqPool.filter(q => q.subj !== 'Français' || (profile.lang || 'fr') === 'fr');
-const qqQs = qqShuffle(qqFiltered).slice(0, 8);
-const qqSubjLinks = { Gaeilge:'irish.html', Français:'french.html' };
-let qqIdx = 0, qqScore = 0, qqAnswered = false;
-const qqQ    = document.getElementById('qq-question');
-const qqOpts = document.getElementById('qq-opts');
-const qqFb   = document.getElementById('qq-feedback');
-const qqNext = document.getElementById('qq-next');
-const qqPF   = document.getElementById('qq-prog-fill');
-const qqPT   = document.getElementById('qq-prog-text');
-const qqBody = document.getElementById('qq-body');
-const qqMore = document.getElementById('qq-more-link');
-
-function qqRender() {
-  const q = qqQs[qqIdx]; qqAnswered = false;
-  qqFb.textContent = ''; qqNext.style.display = 'none';
-  qqBody.classList.remove('qq-slide'); void qqBody.offsetWidth; qqBody.classList.add('qq-slide');
-  qqQ.textContent = q.q; qqOpts.innerHTML = '';
-  document.getElementById('qq-subject').textContent = q.subj;
-  if (qqMore) qqMore.href = qqSubjLinks[q.subj] || '#';
-  qqPT.textContent = `${qqIdx + 1} / ${qqQs.length}`;
-  qqPF.style.width = `${((qqIdx + 1) / qqQs.length) * 100}%`;
-  q.opts.forEach((opt, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'mcq-opt'; btn.textContent = opt;
-    btn.addEventListener('click', () => {
-      if (qqAnswered) return; qqAnswered = true;
-      const btns = qqOpts.querySelectorAll('.mcq-opt'); btns.forEach(b => b.disabled = true);
-      if (i === q.ans) { btn.classList.add('correct'); qqFb.textContent = 'Correct!'; qqScore++; }
-      else { btn.classList.add('wrong'); btns[q.ans].classList.add('correct'); qqFb.textContent = 'Answer: ' + q.opts[q.ans]; }
-      qqNext.style.display = 'inline-flex';
+  /* ── Subjects ───────────────────────────────────────────── */
+  function renderSubjects(my) {
+    $('subjects-note').textContent = SN.YEAR_NAMES[profile.yearMode] + (profile.yearMode === '2' ? ' (1st Year topics included)' : '');
+    $('subjects').innerHTML = my.open.map(function (s) {
+      var y = SN.defaultYear(s, profile), data = window.SN_DATA[s.id], Y = data && data.years[y];
+      var sc = SN.subjectScore(s, profile);
+      var desc = Y ? (Y.topics || []).filter(function (t) { return !t.info; }).map(function (t) { return t.label; }).join(' · ') : '';
+      if (sc && !sc.c) sc = null; // opened but nothing correct yet
+      var unit = sc && sc.u ? sc.u : 'correct', unitLong = sc && sc.u ? sc.u : 'practice answers correct';
+      var end = sc && sc.t
+        ? '<span class="row-score"><b class="num">' + sc.c + '</b> / <span class="num">' + sc.t + '</span> ' + esc(unit) + '</span><span class="bar" aria-hidden="true"><i style="width:' + Math.round(sc.c / sc.t * 100) + '%"></i></span>'
+        : '<span class="row-score">No practice yet</span>';
+      return '<a class="row" href="' + s.href + '" data-sc="' + s.id + '">' +
+        SN.logo(s, 'md') +
+        '<span class="row-body"><span class="row-title">' + esc(s.name) + '</span><span class="row-desc">' + esc(desc) + '</span>' +
+        '<span class="row-meta">' + (sc && sc.t ? '<b class="num">' + sc.c + '</b> / <span class="num">' + sc.t + '</span> ' + esc(unitLong) : 'No practice yet') + '</span></span>' +
+        '<span class="row-end" aria-label="' + (sc && sc.t ? sc.c + ' of ' + sc.t + ' ' + unitLong : 'No practice answers yet') + '">' + end + '</span>' +
+        ic('chevron-right', 'icon row-chev') + '</a>';
+    }).join('');
+    var extra = [];
+    if (my.soon.length) extra.push('Coming soon: ' + my.soon.map(function (s) { return '<b>' + esc(s.name) + '</b>'; }).join(', ') + '.');
+    my.hidden.forEach(function (h) {
+      extra.push('<b>' + esc(h.s.name) + '</b> is hidden because of your ' + (h.why === 'irish' ? 'Irish' : 'modern language') + ' exemption. ' +
+        '<a class="link" href="' + h.s.href + '">Open it anyway</a> or <button type="button" class="link" data-sn="settings" style="color:var(--fg)">change Settings</button>.');
     });
-    qqOpts.appendChild(btn);
-  });
-}
-qqNext.addEventListener('click', () => {
-  qqIdx++;
-  if (qqIdx < qqQs.length) { qqRender(); return; }
-  qqBody.innerHTML = `<div class="mcq-result"><h2>${qqScore} / ${qqQs.length}</h2>
-    <p>${qqScore >= 7 ? 'Excellent!' : qqScore >= 4 ? 'Good effort — keep practising.' : 'Review the material and try again.'}</p>
-    <button class="btn" onclick="location.reload()">Try again</button></div>`;
-  qqNext.style.display = 'none'; qqFb.textContent = '';
-});
-qqRender();
-
-// ── Profile / Onboarding / Settings ─────────────────────────
-function applyProfile() {
-  if (profile.name) {
-    const t = hr < 12 ? 'morning' : hr < 17 ? 'afternoon' : 'evening';
-    document.getElementById('greeting').textContent = `Good ${t}, ${profile.name}.`;
+    $('subjects-extra').innerHTML = extra.join(' ');
+    $('subjects-extra').classList.toggle('hidden', !extra.length);
   }
-  const lang = profile.lang || null;
-  document.querySelectorAll('[data-lang-card]').forEach(c => {
-    c.style.display = (!lang || c.dataset.langCard === lang) ? '' : 'none';
-    c.classList.toggle('your-lang', c.dataset.langCard === lang);
-  });
-  // Irish exemption
-  const irishCard  = document.getElementById('irish-card');
-  const irishBadge = document.getElementById('irish-exempt-badge');
-  if (irishCard) {
-    if (profile.irishExempt) {
-      irishCard.classList.add('exempt');
-      irishCard.removeAttribute('href');
-      if (irishBadge) irishBadge.style.display = '';
-    } else {
-      irishCard.classList.remove('exempt');
-      irishCard.setAttribute('href', 'irish.html');
-      if (irishBadge) irishBadge.style.display = 'none';
+
+  /* ── Quick quiz (built from the same data as the subject pages) ── */
+  var qq = [], qi = 0, qs = 0;
+  function qqStart() {
+    var my = SN.mySubjects(profile), pool = [];
+    my.open.forEach(function (s) {
+      var data = window.SN_DATA[s.id], Y = data && data.years[SN.defaultYear(s, profile)];
+      if (!Y || !Y.quizzes) return;
+      Object.keys(Y.quizzes).forEach(function (k) {
+        var set = Y.quizzes[k];
+        set.questions.forEach(function (q) { pool.push({ s: s, set: set, q: q }); });
+      });
+    });
+    // Spread the 8 questions across subjects rather than letting one dominate.
+    var bySubj = {};
+    SN.shuffle(pool).forEach(function (x) { (bySubj[x.s.id] = bySubj[x.s.id] || []).push(x); });
+    var ids = Object.keys(bySubj); qq = [];
+    for (var r = 0; qq.length < 8 && ids.length; r++) {
+      ids = ids.filter(function (id) { return bySubj[id].length; });
+      ids.forEach(function (id) { if (qq.length < 8 && bySubj[id].length) qq.push(bySubj[id].shift()); });
     }
+    qq = SN.shuffle(qq); qi = 0; qs = 0;
+    $('qq-section').classList.toggle('hidden', !qq.length);
+    $('qq-live').classList.remove('hidden'); $('qq-result').classList.add('hidden');
+    if (qq.length) qqRender();
   }
-}
-
-// ── Onboarding ───────────────────────────────────────────────
-let _obLang = profile.lang || null;
-function checkOnboard() {
-  if (profile.setupVer !== SETUP_VER) {
-    document.getElementById('onboard-overlay').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-    if (profile.name) document.getElementById('ob-name').value = profile.name;
-    if (profile.year) document.getElementById('ob-year').value = profile.year;
-    if (_obLang) {
-      document.querySelector(`.ob-lang-opt[data-lang="${_obLang}"]`)?.classList.add('sel');
-      document.getElementById('ob-submit').disabled = false;
-    }
-    if (profile.irishExempt) {
-      const cb = document.getElementById('ob-exempt');
-      if (cb) cb.checked = true;
-    }
+  function qqRender() {
+    var item = qq[qi];
+    $('qq-subject').textContent = item.s.name + ' · ' + item.set.label;
+    $('qq-count').textContent = (qi + 1) + ' / ' + qq.length;
+    $('qq-prog').style.width = Math.round(qi / qq.length * 100) + '%';
+    $('qq-q').innerHTML = SubjectApp.questionHtml(item.q);
+    $('qq-fb').textContent = ''; $('qq-fb').className = 'quiz-fb';
+    $('qq-next').classList.add('hidden');
+    var grid = $('qq-opts'); grid.innerHTML = '';
+    SubjectApp.quizOptions(item.set, item.q).forEach(function (o) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'opt'; b.textContent = o;
+      b.addEventListener('click', function () {
+        SN.markStudied();
+        grid.querySelectorAll('.opt').forEach(function (x) { x.disabled = true; });
+        if (SubjectApp.check(o, item.q.ans)) { b.classList.add('correct'); qs++; $('qq-fb').textContent = 'Correct!'; }
+        else {
+          b.classList.add('wrong');
+          grid.querySelectorAll('.opt').forEach(function (x) { if (SubjectApp.check(x.textContent, item.q.ans)) x.classList.add('correct'); });
+          $('qq-fb').textContent = 'Answer: ' + item.q.ans[0]; $('qq-fb').className = 'quiz-fb bad';
+        }
+        var nx = $('qq-next');
+        nx.innerHTML = qi < qq.length - 1 ? 'Next ' + ic('arrow-right') : 'See results';
+        nx.classList.remove('hidden'); nx.focus();
+      });
+      grid.appendChild(b);
+    });
   }
-}
-function obSelectLang(btn) {
-  _obLang = btn.dataset.lang;
-  document.querySelectorAll('.ob-lang-opt').forEach(b => b.classList.toggle('sel', b === btn));
-  document.getElementById('ob-submit').disabled = false;
-}
-function obSubmit() {
-  profile.name        = document.getElementById('ob-name').value.trim() || profile.name || '';
-  profile.year        = document.getElementById('ob-year').value.trim() || profile.year || '';
-  profile.lang        = _obLang || 'fr';
-  profile.irishExempt = document.getElementById('ob-exempt').checked;
-  profile.setupVer    = SETUP_VER;
-  localStorage.setItem('sn_profile', JSON.stringify(profile));
-  document.getElementById('onboard-overlay').classList.add('hidden');
-  document.body.style.overflow = '';
-  applyProfile();
-  checkChangelog();
-}
-
-// ── Settings ─────────────────────────────────────────────────
-let _snLang = null, _snPhoto = null;
-function openSettings() {
-  _snLang  = profile.lang || 'fr';
-  _snPhoto = profile.photo || null;
-  document.getElementById('sn-name').value = profile.name || '';
-  document.getElementById('sn-year').value = profile.year || '';
-  document.querySelectorAll('.sn-lang-opt').forEach(b => b.classList.toggle('sel', b.dataset.lang === _snLang));
-  refreshAvatar(profile.name || '', _snPhoto);
-  document.getElementById('sn-remove-photo').style.display = _snPhoto ? '' : 'none';
-  let sk; try { sk = JSON.parse(localStorage.getItem('sn_streak') || 'null'); } catch(e) {}
-  if (!sk) sk = {count:0,last:'',totalDays:0,stars:0};
-  if (!('totalDays' in sk)) sk.totalDays = sk.count || 0;
-  if (!('stars' in sk)) sk.stars = Math.floor(sk.totalDays / 10);
-  const progress = sk.totalDays % 10;
-  document.getElementById('sn-streak-count').textContent = `${sk.stars} star${sk.stars !== 1 ? 's' : ''} earned`;
-  document.getElementById('sn-streak-days').textContent  = `${sk.count} day streak active`;
-  document.getElementById('sn-bar-fill').style.width     = (progress / 10 * 100) + '%';
-  document.getElementById('sn-bar-label').textContent    = `${progress} / 10 days to next star`;
-  document.getElementById('settings-overlay').classList.remove('hidden');
-  document.body.style.overflow = 'hidden';
-}
-function closeSettings() {
-  document.getElementById('settings-overlay').classList.add('hidden');
-  document.body.style.overflow = '';
-}
-function snSelectLang(btn) {
-  _snLang = btn.dataset.lang;
-  document.querySelectorAll('.sn-lang-opt').forEach(b => b.classList.toggle('sel', b === btn));
-}
-
-// ── Avatar ────────────────────────────────────────────────────
-const SILHOUETTE = `<svg viewBox="0 0 40 40" width="26" height="26" style="display:block;opacity:.55" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="15" r="9" fill="currentColor"/><path d="M2 40c0-9.941 8.059-18 18-18s18 8.059 18 18" fill="currentColor"/></svg>`;
-function refreshAvatar(name, photo) {
-  const av = document.getElementById('sn-avatar');
-  if (photo) { av.style.backgroundImage = `url(${photo})`; av.innerHTML = ''; }
-  else {
-    av.style.backgroundImage = '';
-    av.innerHTML = name
-      ? `<span style="font-size:1.2rem;font-weight:700">${name.charAt(0).toUpperCase()}</span>`
-      : SILHOUETTE;
-  }
-}
-document.getElementById('sn-name').addEventListener('input', e => refreshAvatar(e.target.value, _snPhoto));
-
-// ── Photo upload ──────────────────────────────────────────────
-function resizeImage(file, maxPx = 240) {
-  return new Promise(resolve => {
-    const img = new Image(), url = URL.createObjectURL(file);
-    img.onload = () => {
-      URL.revokeObjectURL(url);
-      const r = Math.min(maxPx/img.width, maxPx/img.height, 1);
-      const c = document.createElement('canvas');
-      c.width = Math.round(img.width*r); c.height = Math.round(img.height*r);
-      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
-      resolve(c.toDataURL('image/jpeg', .82));
-    };
-    img.src = url;
+  $('qq-next').addEventListener('click', function () {
+    qi++;
+    if (qi < qq.length) { qqRender(); var f = document.querySelector('#qq-opts .opt'); if (f) f.focus(); return; }
+    $('qq-live').classList.add('hidden'); $('qq-result').classList.remove('hidden');
+    $('qq-score').textContent = qs + ' / ' + qq.length;
+    var pct = qs / qq.length;
+    $('qq-msg').textContent = pct === 1 ? 'Perfect!' : pct >= .75 ? 'Great work.' : pct >= .5 ? 'Good effort. Keep practising.' : 'Have a look at the notes for those topics, then try again.';
+    $('qq-again').innerHTML = ic('reset') + ' New questions';
+    $('qq-again').focus();
   });
-}
-document.getElementById('sn-photo-input').addEventListener('change', async e => {
-  const file = e.target.files[0]; if (!file) return;
-  _snPhoto = await resizeImage(file);
-  refreshAvatar(document.getElementById('sn-name').value.trim(), _snPhoto);
-  document.getElementById('sn-remove-photo').style.display = '';
-  e.target.value = '';
-});
-function removePhoto() {
-  _snPhoto = null;
-  refreshAvatar(document.getElementById('sn-name').value.trim(), null);
-  document.getElementById('sn-remove-photo').style.display = 'none';
-}
-function saveSettings() {
-  profile.name     = document.getElementById('sn-name').value.trim() || profile.name || '';
-  profile.year     = document.getElementById('sn-year').value.trim() || profile.year || '';
-  profile.lang     = _snLang || profile.lang || 'fr';
-  if (_snPhoto) profile.photo = _snPhoto; else delete profile.photo;
-  profile.setupVer = SETUP_VER;
-  localStorage.setItem('sn_profile', JSON.stringify(profile));
-  closeSettings();
-  applyProfile();
-}
-document.getElementById('settings-btn').addEventListener('click', openSettings);
-document.getElementById('settings-mob').addEventListener('click', openSettings);
+  $('qq-again').addEventListener('click', function () { qqStart(); var f = document.querySelector('#qq-opts .opt'); if (f) f.focus(); });
 
-// ── Changelog ────────────────────────────────────────────────
-const CHANGELOG_VER = '2026-05-21-v1';
-function checkChangelog() {
-  if (!document.getElementById('onboard-overlay').classList.contains('hidden')) return;
-  if (localStorage.getItem('sn_changelog_seen') !== CHANGELOG_VER) {
-    document.getElementById('changelog-overlay').classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
+  /* ── First run ──────────────────────────────────────────── */
+  var welcome = $('welcome');
+  function welcomeValid() {
+    var lang = welcome.querySelector('[data-group="lang"] [aria-pressed="true"]');
+    var ex = $('ob-exempt').value;
+    var ok = !!lang || ex === 'language';
+    $('welcome-go').disabled = !ok;
+    $('welcome-hint').classList.toggle('hidden', ok);
   }
-}
-function dismissChangelog() {
-  localStorage.setItem('sn_changelog_seen', CHANGELOG_VER);
-  document.getElementById('changelog-overlay').classList.add('hidden');
-  document.body.style.overflow = '';
-}
+  function checkWelcome() {
+    if (profile.setupVer === SETUP_VER) return false;
+    $('welcome-fields').innerHTML = SN.profileFields(profile, 'ob');
+    SN.wireProfileFields(welcome);
+    welcome.addEventListener('change', welcomeValid);
+    welcomeValid();
+    SN.openDialog(welcome, { initialFocus: '#ob-name' });
+    return true;
+  }
+  $('welcome-go').addEventListener('click', function () {
+    SN.readProfileFields(welcome, profile, 'ob');
+    profile.setupVer = SETUP_VER;
+    SN.saveProfile(profile);
+    try { localStorage.setItem('sn_changelog_seen', CHANGELOG_VER); } catch (e) {}
+    location.reload();
+  });
 
-// ── Clear data ───────────────────────────────────────────────
-function confirmClearData() { document.getElementById('confirm-overlay').classList.remove('hidden'); }
-function closeConfirm()      { document.getElementById('confirm-overlay').classList.add('hidden'); }
-function doClearData()       { localStorage.clear(); location.reload(); }
+  /* ── What's new ─────────────────────────────────────────── */
+  function checkChangelog() {
+    var seen = null; try { seen = localStorage.getItem('sn_changelog_seen'); } catch (e) {}
+    if (seen === CHANGELOG_VER) return;
+    var cl = $('changelog');
+    var close = function () { try { localStorage.setItem('sn_changelog_seen', CHANGELOG_VER); } catch (e) {} SN.closeDialog(cl); };
+    $('cl-ok').onclick = close;
+    cl.onclick = function (e) { if (e.target === cl) close(); };
+    SN.openDialog(cl, { onEscape: close, initialFocus: '#cl-ok' });
+  }
 
-// ── Init ─────────────────────────────────────────────────────
-checkOnboard();
-applyProfile();
-checkChangelog();
-
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+  /* ── Render ─────────────────────────────────────────────── */
+  function render() {
+    var my = SN.mySubjects(profile);
+    greet(); renderContinue(my); renderSubjects(my);
+  }
+  render();
+  qqStart();
+  if (!checkWelcome()) checkChangelog();
+  // Refresh progress when coming back from a subject page.
+  window.addEventListener('pageshow', function (e) { if (e.persisted) location.reload(); });
+  document.addEventListener('sn:streak', greet);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {});
+})();
 </script>
 </body>
 </html>

@@ -7,3 +7,7 @@ deploy.py
 
 # Remove template
 template.html
+# Wrangler local state (account details) and design-review artefacts
+worker/.wrangler/
+.impeccable/review/
+.impeccable/hook.cache.json

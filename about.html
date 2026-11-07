@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About and AI use · StudyNet</title>
+<meta name="description" content="Who made StudyNet, where its content comes from, and exactly how AI was and is used.">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:wght@400..700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=20">
+<script src="shared.js?v=20"></script>
+</head>
+<body>
+<noscript><p style="padding:2rem">StudyNet needs JavaScript to run.</p></noscript>
+<main class="main" id="main"><div class="page">
+  <nav class="crumbs" aria-label="Breadcrumb"><a href="index.html">Home</a><svg class="icon sep" aria-hidden="true"><use href="#i-chevron-right"/></svg><span aria-current="page">About and AI use</span></nav>
+  <header class="ph"><h1>About StudyNet, and how AI is used</h1>
+    <p>StudyNet is free revision for Junior Cycle, with no accounts and no ads. We think you should know exactly how it was made and where AI is involved, so here it is.</p></header>
+
+  <div class="notes about">
+    <section class="note"><h2>Who made it</h2>
+      <p>StudyNet was <b>designed by a Junior Cycle student</b>. The first version of the site was built from that design by <b>Claude Sonnet 4.6</b>, an AI model made by Anthropic.</p>
+      <p>This version, with the shared design, 2nd Year content, Maths, practice exams and marking, was built with <b>Claude Opus 5.5</b>, also by Anthropic. The student made the design decisions, tested everything and checked the results.</p>
+    </section>
+
+    <section class="note"><h2>Where the content comes from</h2>
+      <ul>
+        <li><b>Topics and notes</b> come from what teachers set and wrote for each class: the November assessment topics and the class notes. <b>Claude Opus 5.5 turned those notes</b> into the notes pages, flashcards, quizzes, matching games, timelines and fill-in practice you see here.</li>
+        <li><b>Gaeilge</b> words, spelling and grammar were checked against the dictionaries at teanglann.ie and focloir.ie. The story <i>Spás</i> isn’t copied here: StudyNet links to it in the <i>Turas 3</i> textbook online.</li>
+        <li><b>Maths</b> notes follow the methods taught in class. Maths practice questions are made by code, and every answer is checked by code, not AI.</li>
+        <li><b>Practice exam questions</b> are exam-style questions written by Claude Opus 5.5, modelled on class tests and the layout of Junior Cycle papers. They are <b>not real past-paper questions</b>. Real past papers and marking schemes are free on <a href="https://www.examinations.ie/exammaterialarchive/" target="_blank" rel="noopener">examinations.ie</a> (opens in a new tab).</li>
+      </ul>
+      <p class="tip">AI can get things wrong, even when its work has been checked. If something in a note or an answer looks wrong, check with your teacher. Your teacher is always right over StudyNet.</p>
+    </section>
+
+    <section class="note"><h2>How AI is used while you study</h2>
+      <p>Only one thing: <b>marking</b>. When you finish a practice exam, AI marks your written answers and your maths working <b>against that question’s marking scheme</b>, and tell you which points you got.</p>
+      <dl class="kv">
+        <dt>What’s sent</dt><dd>The question, its marking scheme, a sample answer and your answer (plus a photo of your working, if you add one). Never your name, profile or scores.</dd>
+        <dt>Where it goes</dt><dd>StudyNet’s marking server, which uses Groq (or Cloudflare Workers AI as a backup) to run the model. Everyone’s papers are marked the same way.</dd>
+        <dt>Is it kept?</dt><dd>StudyNet doesn’t store your answers. Everything you do is saved in your own browser only.</dd>
+        <dt>What if it isn’t working?</dt><dd>If the marker can’t be reached (for example, you’re offline), you mark your own written answers by ticking the marking-scheme points you got.</dd>
+      </dl>
+    </section>
+
+    <section class="note"><h2>What AI doesn’t do</h2>
+      <ul>
+        <li>It doesn’t write questions while you use StudyNet. Every question comes from the fixed question banks.</li>
+        <li>It doesn’t decide maths answers. Code checks those, and AI can never give full marks for a maths answer the code says is wrong. It can only give method marks for correct working.</li>
+        <li>There’s no AI chat, and nothing tracks you.</li>
+        <li>Short answers and multiple choice are marked by simple code, not AI.</li>
+      </ul>
+    </section>
+
+    <section class="note"><h2>Spelling when marking</h2>
+      <p>In Science, History, Geography and Maths, spelling isn’t what’s being tested, so an answer counts if it’s readable or sounds right when read aloud: “nucleas” counts for “nucleus”. A different real word never counts: “neuron” isn’t “neutron”. In Gaeilge and Français, spelling and accents count where the marking scheme asks for them, because they are part of the language.</p>
+    </section>
+  </div>
+
+  <footer class="foot"><span>StudyNet · Junior Cycle revision</span><a href="index.html">Back to all subjects</a></footer>
+</div></main>
+<script>
+  SN.mountShell('about');
+</script>
+</body>
+</html>

@@ -1,11 +1,11 @@
 {
   "name": "StudyNet",
   "short_name": "StudyNet",
-  "description": "Year 1 interactive study activities",
+  "description": "Junior Cycle revision: notes, flashcards, quizzes and practice",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#ffffff",
   "orientation": "any",
   "icons": [
     { "src": "icons/icon-192.png",          "sizes": "192x192", "type": "image/png", "purpose": "any" },
