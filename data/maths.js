@@ -177,6 +177,35 @@ window.SN_DATA = window.SN_DATA || {};
     /* Exam bank. Questions follow the class test (F2: factorising and quadratic equations, 80 marks)
        and the Junior Cycle paper style. Maths questions are generated fresh each time from the same pattern. */
     examq: [
+      { id: 'm-b-1', topic: 'basics', src: 'Exam style', type: 'group', q: 'Back to basics.', parts: [
+        { type: 'gen', gen: 'negatives', marks: 3 }, { type: 'gen', gen: 'likeTerms', marks: 3 }, { type: 'gen', gen: 'expand1', marks: 4 }] },
+      { id: 'm-b-2', topic: 'basics', src: 'Exam style', type: 'group', q: 'Substitution and simple equations.', parts: [
+        { type: 'gen', gen: 'subst', marks: 4 }, { type: 'gen', gen: 'linear', marks: 5 }, { type: 'gen', gen: 'linear', marks: 5 }] },
+      { id: 'm-b-3', topic: 'basics', src: 'Exam style', type: 'group', q: 'Number skills for factorising.', parts: [
+        { type: 'gen', gen: 'factorPair', marks: 3 }, { type: 'gen', gen: 'factorPair', marks: 3 }, { type: 'gen', gen: 'likeTerms', marks: 3 }] },
+      { id: 'm-b-4', topic: 'basics', src: 'Exam style', type: 'group', q: 'Expand and simplify.', parts: [
+        { type: 'gen', gen: 'expand1', marks: 4 }, { type: 'gen', gen: 'expand1', marks: 4 }, { type: 'gen', gen: 'subst', marks: 4 }] },
+      { id: 'm-f-6', topic: 'factorising', src: 'Exam style', type: 'group', q: 'Factorise fully. (Grouping comes up on most papers.)', parts: [
+        { type: 'gen', gen: 'group', marks: 5 }, { type: 'gen', gen: 'group', marks: 5 }, { type: 'gen', gen: 'quad2', marks: 5 }] },
+      { id: 'm-q-ctx1', topic: 'quadratics', src: 'Exam style', type: 'written', marks: 15, lines: 8,
+        q: 'A rectangular patio is 3 m longer than it is wide. Its area is 40 m². Let the width be <i>x</i> m.<br>(a) Write the length in terms of <i>x</i>.<br>(b) Show that <i>x</i>² + 3<i>x</i> − 40 = 0.<br>(c) Solve the equation to find the width and the length of the patio.',
+        scheme: ['(a) Length = x + 3 (3 marks)', '(b) x(x + 3) = 40, so x² + 3x − 40 = 0 (4 marks)', '(c) (x + 8)(x − 5) = 0, so x = 5 or x = −8 (4 marks)', 'Rejects −8 because a length can’t be negative: width 5 m, length 8 m (4 marks)'],
+        model: '(a) x + 3. (b) Area = x(x + 3) = 40, so x² + 3x = 40, so x² + 3x − 40 = 0. (c) (x + 8)(x − 5) = 0, so x = 5 or x = −8. A width can’t be negative, so the width is 5 m and the length is 8 m.' },
+      { id: 'm-q-ctx2', topic: 'quadratics', src: 'Exam style', type: 'written', marks: 15, lines: 8,
+        q: 'A square photo with sides of 10 cm has a border of width <i>x</i> cm all the way round it. The total area of the photo and border is 196 cm².<br>(a) Write the side length of the photo with its border in terms of <i>x</i>.<br>(b) Show that <i>x</i>² + 10<i>x</i> − 24 = 0.<br>(c) Find the width of the border.',
+        scheme: ['(a) 10 + 2x (3 marks)', '(b) (10 + 2x)² = 196 → 100 + 40x + 4x² = 196 → 4x² + 40x − 96 = 0 → x² + 10x − 24 = 0 (5 marks)', '(c) (x + 12)(x − 2) = 0, so x = 2 or x = −12 (4 marks)', 'Border is 2 cm (rejects −12) (3 marks)'],
+        model: '(a) 10 + 2x. (b) (10 + 2x)² = 196, so 100 + 40x + 4x² = 196, so 4x² + 40x − 96 = 0; dividing by 4 gives x² + 10x − 24 = 0. (c) (x + 12)(x − 2) = 0, so x = 2 (a width can’t be −12). The border is 2 cm wide.' },
+      { id: 'm-sim-4', topic: 'simultaneous', src: 'Exam style', type: 'group', q: 'Solve the simultaneous equations to find <i>x</i> and <i>y</i>.', parts: [
+        { type: 'gen', gen: 'simul', marks: 10 }, { type: 'gen', gen: 'simulWord', marks: 10 }] },
+      { id: 'm-sim-5', topic: 'simultaneous', src: 'Exam style', type: 'gen', gen: 'simulWord', marks: 10 },
+      { id: 'm-ld-2', topic: 'longdiv', src: 'Exam style', type: 'group', q: 'Divide, using long division.', parts: [
+        { type: 'gen', gen: 'longDiv', marks: 10 }, { type: 'gen', gen: 'longDiv', marks: 10 }] },
+      { id: 'm-ld-3', topic: 'longdiv', src: 'Exam style', type: 'gen', gen: 'longDiv', marks: 10 },
+      { id: 'm-ld-4', topic: 'longdiv', src: 'Exam style', type: 'group', q: 'Long division and factors.', parts: [
+        { type: 'gen', gen: 'longDiv', marks: 10 }, { type: 'gen', gen: 'quad1', marks: 5 }] },
+      { id: 'm-fr-3', topic: 'fractions', src: 'Exam style', type: 'group', q: 'Solve each equation.', parts: [
+        { type: 'gen', gen: 'fracEq', marks: 10 }, { type: 'gen', gen: 'fracEq', marks: 10 }] },
+      { id: 'm-fr-4', topic: 'fractions', src: 'Exam style', type: 'gen', gen: 'fracEq', marks: 10 },
       { id: 'f2-1', topic: 'factorising', src: 'Class test style', type: 'group', q: 'Factorise fully the following expressions.', parts: [
         { type: 'gen', gen: 'factHcf', marks: 5 }, { type: 'gen', gen: 'group', marks: 5 }, { type: 'gen', gen: 'group', marks: 5 }, { type: 'gen', gen: 'fully', marks: 5 }] },
       { id: 'f2-2', topic: 'factorising', src: 'Class test style', type: 'group', q: 'Factorise the following.', parts: [

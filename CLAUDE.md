@@ -74,7 +74,8 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
   - Exam questions come from the banks; AI never writes questions. AI only marks, against the question's scheme.
   - Give every written `examq` item a `scheme` (points with "(n marks)") and a `model` answer.
   - Maths `gen` items use a banded scale (0 / low partial ≈30% / high partial ≈70% / full). `MX.method` finds correct steps in the working without AI; AI may raise a mark up to high partial, never to full when the checker says the final answer is wrong.
-  - Keep at least three bank questions per topic so papers read like tests, not quizzes.
+  - Keep at least three bank questions per topic (1st Year topics included) so papers read like tests, not quizzes.
+  - Banks are modelled on the question types that recur in recent SEC Junior Cycle papers (studied on examinations.ie for personal study, as its terms allow). Never copy or lightly reword SEC questions, texts or scenarios: the terms forbid publishing adaptations. Write original questions that test the same knowledge and skills.
   - Never reproduce copyrighted exam papers or textbook questions; write exam-style questions and link examinations.ie.
 - **Irish content:**
   - Check words, spelling and grammar against teanglann.ie and focloir.ie (verb forms: teanglann's grammar database, `/en/gram/<verb>`).

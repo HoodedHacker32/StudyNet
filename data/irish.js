@@ -59,6 +59,76 @@ window.SN_DATA = window.SN_DATA || {};
      1st YEAR (storage keys unchanged from the original page)
   ════════════════════════════════════════════════════════════ */
   var y1 = {
+    /* Exam bank (1st Year): exam-style questions written for StudyNet, modelled on the question types that recur in Junior Cycle papers. */
+    examq: [
+      { id: 'ga1-rf-1', topic: 'reamhfhocail', src: 'Exam style', type: 'group', q: 'Forainmneacha réamhfhoclacha: líon na bearnaí. (Fill in the blanks.)', parts: [
+        { type: 'short', q: 'Tá airgead ___ (ag + mé).', ans: ['agam'], marks: 2 },
+        { type: 'short', q: 'Thug mé bronntanas ___ (do + í).', ans: ['di'], marks: 2 },
+        { type: 'short', q: 'Bhí mé ag caint ___ (le + iad).', ans: ['leo'], marks: 2 },
+        { type: 'short', q: 'Tá fearg ___ (ar + muid).', ans: ['orainn'], marks: 2 }] },
+      { id: 'ga1-rf-2', topic: 'reamhfhocail', src: 'Exam style', type: 'group', q: 'Líon na bearnaí.', parts: [
+        { type: 'short', q: 'Is maith ___ (le + mé) peil.', ans: ['liom'], marks: 2 },
+        { type: 'short', q: 'Tá slaghdán ___ (ar + tú).', ans: ['ort'], marks: 2 },
+        { type: 'short', q: 'Inis an scéal ___ (do + muid).', ans: ['dúinn', 'duinn'], marks: 2 },
+        { type: 'short', q: 'Tá madra ___ (ag + sí).', ans: ['aici'], marks: 2 }] },
+      { id: 'ga1-rf-3', topic: 'reamhfhocail', src: 'Exam style', type: 'group', q: 'Roghnaigh an fhoirm cheart. (Choose the correct form.)', parts: [
+        { type: 'mcq', q: 'Tá ocras ___ (ar + sí).', ans: 'uirthi', opts: ['aici', 'orthu', 'air'], marks: 2 },
+        { type: 'mcq', q: 'Chabhraigh mé ___ (le + sé).', ans: 'leis', opts: ['léi', 'leo', 'liom'], marks: 2 },
+        { type: 'mcq', q: 'Tá teach mór ___ (ag + sibh).', ans: 'agaibh', opts: ['againn', 'acu', 'agat'], marks: 2 }] },
+      { id: 'ga1-al-1', topic: 'laithreach', src: 'Exam style', type: 'group', q: 'An aimsir láithreach: scríobh an briathar san fhoirm cheart.', parts: [
+        { type: 'short', q: '(éist) ___ sí leis an raidió gach maidin.', ans: ['Éisteann', 'eisteann'], marks: 2 },
+        { type: 'short', q: '(ceannaigh) ___ siad bia sa siopa.', ans: ['Ceannaíonn', 'ceannaionn'], marks: 2 },
+        { type: 'short', q: '(tóg) ___ mé an bus ar scoil.', ans: ['Tógaim', 'togaim'], marks: 2 },
+        { type: 'short', q: '(éirigh) ___ muid ar a seacht.', ans: ['Éirímid', 'Éiríonn muid', 'eirimid', 'eirionn muid'], marks: 2 }] },
+      { id: 'ga1-al-2', topic: 'laithreach', src: 'Exam style', type: 'group', q: 'An aimsir láithreach.', parts: [
+        { type: 'mcq', q: 'Which is the present tense of <i>glan</i> with <i>mé</i>?', ans: 'Glanaim', opts: ['Ghlan mé', 'Glanfaidh mé', 'Glanann mé'], marks: 2 },
+        { type: 'short', q: '(ól) ___ tú bainne gach lá.', ans: ['Ólann', 'olann'], marks: 2 },
+        { type: 'short', q: '(mothaigh) ___ sé tuirseach.', ans: ['Mothaíonn', 'mothaionn'], marks: 2 }] },
+      { id: 'ga1-al-3', topic: 'laithreach', src: 'Exam style', type: 'written', marks: 8, lines: 5,
+        q: 'Scríobh trí abairt faoi do ghnáthlá san aimsir láithreach. (Write three sentences about your usual day in the present tense.)',
+        scheme: ['Three sentences, each with a correct present-tense verb, e.g. Éirím, Ithim, Téim (2 marks each)', 'Overall accuracy of Irish (2 marks)'],
+        model: 'Éirím ar a seacht a chlog gach maidin. Ithim mo bhricfeasta sa chistin. Téim ar scoil ar an mbus.' },
+      { id: 'ga1-ac-1', topic: 'chaite', src: 'Exam style', type: 'group', q: 'An aimsir chaite: scríobh an briathar san fhoirm cheart.', parts: [
+        { type: 'short', q: '(glan) ___ mé mo sheomra inné.', ans: ['Ghlan'], marks: 2 },
+        { type: 'short', q: '(ól) ___ sé cupán tae.', ans: ['D’ól', "D'ól", 'Dol', "D'ol"], marks: 2 },
+        { type: 'short', q: '(ceannaigh) ___ siad ríomhaire nua.', ans: ['Cheannaigh'], marks: 2 },
+        { type: 'short', q: '(tosaigh) ___ an cluiche ar a trí.', ans: ['Thosaigh'], marks: 2 }] },
+      { id: 'ga1-ac-2', topic: 'chaite', src: 'Exam style', type: 'group', q: 'Roghnaigh an fhoirm cheart den aimsir chaite.', parts: [
+        { type: 'mcq', q: '___ mé le mo chara sa Ghaillimh. (fan)', ans: 'D’fhan', opts: ['Fhan', 'Fanann', 'Fanfaidh'], marks: 2 },
+        { type: 'mcq', q: '___ sí an doras. (dún)', ans: 'Dhún', opts: ['Dún', 'Dúnann', 'D’dún'], marks: 2 },
+        { type: 'mcq', q: '___ mé go luath inné. (éirigh)', ans: 'D’éirigh', opts: ['Éirigh', 'Éirím', 'Héirigh'], marks: 2 }] },
+      { id: 'ga1-ac-3', topic: 'chaite', src: 'Exam style', type: 'written', marks: 8, lines: 5,
+        q: 'Scríobh trí abairt faoi rud a rinne tú an deireadh seachtaine seo caite. (Write three sentences about something you did last weekend, in the past tense.)',
+        scheme: ['Three sentences, each with a correct past-tense verb, e.g. Chuaigh mé, D’imir mé, Cheannaigh mé (2 marks each)', 'Overall accuracy of Irish (2 marks)'],
+        model: 'Chuaigh mé go dtí an phictiúrlann le mo chairde Dé Sathairn. D’imir mé peil Dé Domhnaigh. Cheannaigh mé geansaí nua sa bhaile mór.' },
+      { id: 'ga1-nr-1', topic: 'irregulars', src: 'Exam style', type: 'group', q: 'Briathra neamhrialta san aimsir láithreach.', parts: [
+        { type: 'short', q: '(téigh) ___ sé ar scoil gach lá.', ans: ['Téann', 'teann'], marks: 2 },
+        { type: 'short', q: '(déan) ___ siad an obair bhaile.', ans: ['Déanann', 'deanann'], marks: 2 },
+        { type: 'short', q: '(tar) ___ sí abhaile ar a ceathair.', ans: ['Tagann'], marks: 2 },
+        { type: 'short', q: '(feic) ___ mé mo chairde ag an deireadh seachtaine.', ans: ['Feicim'], marks: 2 }] },
+      { id: 'ga1-nr-2', topic: 'irregulars', src: 'Exam style', type: 'group', q: 'Briathra neamhrialta san aimsir chaite.', parts: [
+        { type: 'short', q: '(téigh) ___ mé go Corcaigh inné.', ans: ['Chuaigh'], marks: 2 },
+        { type: 'short', q: '(feic) ___ sí scannán aréir.', ans: ['Chonaic'], marks: 2 },
+        { type: 'short', q: '(bí) ___ mé tinn an tseachtain seo caite.', ans: ['Bhí', 'bhi'], marks: 2 },
+        { type: 'short', q: '(faigh) ___ mé bronntanas deas.', ans: ['Fuair'], marks: 2 }] },
+      { id: 'ga1-nr-3', topic: 'irregulars', src: 'Exam style', type: 'group', q: 'Roghnaigh an fhoirm cheart.', parts: [
+        { type: 'mcq', q: '(abair) ___ sí “Dia duit” leis an múinteoir gach maidin.', ans: 'Deir', opts: ['Abair', 'Abraíonn', 'Dúirt'], marks: 2 },
+        { type: 'mcq', q: '(tabhair) ___ siad cabhair dom gach lá.', ans: 'Tugann', opts: ['Tabhair', 'Thug', 'Tabharann'], marks: 2 },
+        { type: 'mcq', q: '(clois) ___ mé an ceol.', ans: 'Cloisim', opts: ['Cloiseann mé', 'Chuala mé', 'Clois mé'], marks: 2 }] },
+      { id: 'ga1-as-1', topic: 'aidiacht', src: 'Exam style', type: 'group', q: 'An aidiacht shealbhach: scríobh i gceart. (Write correctly.)', parts: [
+        { type: 'short', q: 'mo + teach', ans: ['mo theach'], marks: 2 },
+        { type: 'short', q: 'a (her) + athair', ans: ['a hathair'], marks: 2 },
+        { type: 'short', q: 'ár + carr', ans: ['ár gcarr', 'ar gcarr'], marks: 2 },
+        { type: 'short', q: 'do + aintín', ans: ['d’aintín', "d'aintín", 'daintin', "d'aintin"], marks: 2 }] },
+      { id: 'ga1-as-2', topic: 'aidiacht', src: 'Exam style', type: 'group', q: 'Roghnaigh an fhoirm cheart.', parts: [
+        { type: 'mcq', q: 'his car', ans: 'a charr', opts: ['a carr', 'a gcarr'], marks: 2 },
+        { type: 'mcq', q: 'their table (bord)', ans: 'a mbord', opts: ['a bord', 'a bhord'], marks: 2 },
+        { type: 'mcq', q: 'our aunt', ans: 'ár n-aintín', opts: ['ár aintín', 'ár haintín'], marks: 2 }] },
+      { id: 'ga1-as-3', topic: 'aidiacht', src: 'Exam style', type: 'written', marks: 6, lines: 4,
+        q: 'Scríobh abairt amháin le gach ceann díobh seo: <b>mo</b>, <b>a</b> (her), <b>ár</b>. (One sentence with each.)',
+        scheme: ['Correct sentence with mo + séimhiú (or m’ before a vowel) (2 marks)', 'Correct sentence with a (her): no change before a consonant, h before a vowel (2 marks)', 'Correct sentence with ár + urú (n- before a vowel) (2 marks)'],
+        model: 'Tá mo theach in aice na scoile. Is múinteoir é a hathair. Tá ár gcarr dearg.' },
+    ],
     blurb: 'Irish Language — 1st Year revision activities',
     store: 'sn_irish_v1',
     score: 'irish',
@@ -230,6 +300,61 @@ window.SN_DATA = window.SN_DATA || {};
     score: 'irish_y2',
     /* Exam bank: Junior Cycle style questions with marking schemes. Irish answers: spelling, fadas and grammar count. */
     examq: [
+      { id: 'ga-as2-1', topic: 'aidiacht2', src: 'Exam style', type: 'group', q: 'An aidiacht shealbhach roimh ghuta agus roimh chonsan: scríobh i gceart.', parts: [
+        { type: 'short', q: 'ár + athair', ans: ['ár n-athair', 'ar n-athair'], marks: 2 },
+        { type: 'short', q: 'bhur + teach', ans: ['bhur dteach'], marks: 2 },
+        { type: 'short', q: 'a (his) + uncail', ans: ['a uncail'], marks: 2 },
+        { type: 'short', q: 'a (her) + uncail', ans: ['a huncail'], marks: 2 },
+        { type: 'short', q: 'mo + uncail', ans: ['m’uncail', "m'uncail", 'muncail'], marks: 2 }] },
+      { id: 'ga-as2-2', topic: 'aidiacht2', src: 'Exam style', type: 'group', q: 'Roghnaigh an fhoirm cheart.', parts: [
+        { type: 'mcq', q: 'their door (doras)', ans: 'a ndoras', opts: ['a doras', 'a dhoras'], marks: 2 },
+        { type: 'mcq', q: 'our field (páirc)', ans: 'ár bpáirc', opts: ['ár páirc', 'ár pháirc'], marks: 2 },
+        { type: 'mcq', q: 'your (plural) coat (cóta)', ans: 'bhur gcóta', opts: ['bhur cóta', 'bhur chóta'], marks: 2 },
+        { type: 'mcq', q: 'her bag (mála)', ans: 'a mála', opts: ['a mhála', 'a mmála'], marks: 2 }] },
+      { id: 'ga-as2-3', topic: 'aidiacht2', src: 'Exam style', type: 'written', marks: 10, lines: 6,
+        q: 'Scríobh cúig abairt faoi do theaghlach. Úsáid <b>mo</b>, <b>a</b> (his) agus <b>ár</b> ar a laghad uair amháin. (Write five sentences about your family using mo, a (his) and ár at least once.)',
+        scheme: ['Correct mo + séimhiú / m’ (2 marks)', 'Correct a (his) + séimhiú / no change before a vowel (2 marks)', 'Correct ár + urú / n- (2 marks)', 'Five sentences relevant to family (2 marks)', 'Overall accuracy of Irish (2 marks)'],
+        model: 'Áine is ainm do mo mháthair. Is siopadóir é m’athair. Tá deartháir amháin agam agus is é Liam a chara is fearr. Tá ár dteach i lár an bhaile. Tá ár madra an-chairdiúil.' },
+      { id: 'ga-mo-2', topic: 'mothu', src: 'Exam style', type: 'group', q: 'Mothúcháin: líon na bearnaí.', parts: [
+        { type: 'short', q: 'Tá tuirse ___ (ar + iad).', ans: ['orthu'], marks: 2 },
+        { type: 'short', q: 'Tá eagla ___ (ar + sé).', ans: ['air'], marks: 2 },
+        { type: 'short', q: 'Tá áthas ___ (ar + sibh).', ans: ['oraibh'], marks: 2 },
+        { type: 'short', q: 'Tá carr nua ___ (ag + sí).', ans: ['aici'], marks: 2 }] },
+      { id: 'ga-mo-3', topic: 'mothu', src: 'Exam style', type: 'written', marks: 6, lines: 4,
+        q: 'Scríobh trí abairt faoi conas a mhothaíonn tú i rith na seachtaine. Úsáid <b>ar</b> le mothúcháin. (Write three sentences about how you feel during the week, using ar with feelings.)',
+        scheme: ['Three correct sentences using Tá + feeling + orm/air/uirthi… (2 marks each)'],
+        model: 'Tá áthas orm ar an Aoine. Bíonn tuirse orm ar an Luan. Tá ocras orm tar éis na scoile.' },
+      { id: 'ga-te-2', topic: 'teaghlach', src: 'Exam style', type: 'group', q: 'Uimhreacha pearsanta agus aois.', parts: [
+        { type: 'short', q: 'How do you say 2 people (counting people)?', ans: ['beirt'], marks: 2 },
+        { type: 'short', q: 'How do you say 3 people?', ans: ['triúr', 'triur'], marks: 2 },
+        { type: 'short', q: 'How do you say 5 people?', ans: ['cúigear', 'cuigear'], marks: 2 },
+        { type: 'short', q: 'Freagair i nGaeilge: Cén aois thú? (I am 13.)', ans: ['Tá mé trí bliana déag d’aois', "Tá mé trí bliana déag d'aois", 'Táim trí bliana déag d’aois', "Táim trí bliana déag d'aois", 'trí bliana déag d’aois', "trí bliana déag d'aois"], marks: 2 }] },
+      { id: 'ga-te-3', topic: 'teaghlach', src: 'Exam style', type: 'written', marks: 10, lines: 6,
+        q: 'Scríobh alt gairid faoi do theaghlach: cé mhéad duine atá sa teaghlach, a n-aoiseanna agus a bpoist. (A short piece about your family: how many people, their ages and their jobs.)',
+        scheme: ['How many people, using personal numbers, e.g. Tá cúigear i mo theaghlach (2 marks)', 'Ages, e.g. Tá mo dheartháir deich mbliana d’aois (3 marks)', 'Jobs, e.g. Is dochtúir í mo mháthair (3 marks)', 'Overall accuracy of Irish (2 marks)'],
+        model: 'Tá ceathrar i mo theaghlach. Tá mo dheirfiúr naoi mbliana d’aois agus tá mé féin trí bliana déag d’aois. Is múinteoir í mo mháthair agus is feirmeoir é m’athair.' },
+      { id: 'ga-le-1', topic: 'leamh', src: 'Exam style', type: 'group', q: 'Na ceistfhocail: what do they mean in English?', parts: [
+        { type: 'short', q: 'Cathain?', ans: ['when', 'when?'], marks: 2 },
+        { type: 'short', q: 'Cá?', ans: ['where', 'where?'], marks: 2 },
+        { type: 'short', q: 'Cén fáth?', ans: ['why', 'why?'], marks: 2 },
+        { type: 'short', q: 'Cé mhéad?', ans: ['how many', 'how much', 'how many?', 'how much?'], marks: 2 },
+        { type: 'short', q: 'Conas?', ans: ['how', 'how?'], marks: 2 }] },
+      { id: 'ga-le-2', topic: 'leamh', src: 'Exam style', type: 'group',
+        q: 'Léigh an sliocht agus freagair na ceisteanna. <br><i>Is mise Síle. Tá mé trí bliana déag d’aois agus tá cónaí orm i nGaillimh. Tá beirt deartháireacha agam. Is breá liom peil agus imrím le club áitiúil gach Satharn. Inné, chuaigh mé go dtí an trá le mo chairde agus d’itheamar uachtar reoite.</i>', parts: [
+        { type: 'short', q: 'Cén aois í Síle?', ans: ['13', 'trí bliana déag', 'trí bliana déag d’aois', "trí bliana déag d'aois", 'tri bliana deag'], marks: 2 },
+        { type: 'short', q: 'Cá bhfuil cónaí uirthi?', ans: ['i nGaillimh', 'Gaillimh', 'in Galway', 'Galway'], marks: 2 },
+        { type: 'short', q: 'Cé mhéad deartháir atá aici?', ans: ['2', 'beirt', 'dhá', 'beirt deartháireacha', 'two'], marks: 2 },
+        { type: 'short', q: 'Cathain a imríonn sí peil?', ans: ['gach Satharn', 'Dé Sathairn', 'ar an Satharn', 'every Saturday', 'Saturday'], marks: 2 },
+        { type: 'short', q: 'Cá ndeachaigh sí inné?', ans: ['go dtí an trá', 'an trá', 'chuig an trá', 'to the beach', 'the beach'], marks: 2 }] },
+      { id: 'ga-le-3', topic: 'leamh', src: 'Exam style', type: 'group', q: 'Exam instructions: what do they ask you to do?', parts: [
+        { type: 'mcq', q: 'Tabhair dhá phointe eolais.', ans: 'Give two pieces of information', opts: ['Give two reasons', 'Write two sentences', 'Explain two words'], marks: 2 },
+        { type: 'mcq', q: 'Luaigh…', ans: 'Mention / state', opts: ['Explain', 'Describe', 'Translate'], marks: 2 },
+        { type: 'mcq', q: 'Mínigh…', ans: 'Explain', opts: ['List', 'Name', 'Underline'], marks: 2 },
+        { type: 'mcq', q: 'Cuir tic leis an bhfreagra ceart.', ans: 'Tick the correct answer', opts: ['Write the correct answer', 'Circle the wrong answer', 'Fill in the blank'], marks: 2 }] },
+      { id: 'ga-sp-3', topic: 'spas', src: 'Exam style', type: 'written', marks: 10, lines: 6,
+        q: 'Spás: Déan cur síos ar Phádraigín, an príomhcharachtar. Luaigh dhá thréith a bhaineann léi agus tabhair sampla as an scéal do gach ceann. (Describe Pádraigín: two traits, each with an example from the story.)',
+        scheme: ['First trait named (2 marks) with an example from the story (2 marks)', 'Second trait named (2 marks) with an example from the story (2 marks)', 'Quality of Irish (2 marks)'],
+        model: 'Tá Pádraigín míshona. Níl aon phríobháideacht aici ó cuireadh a deirfiúr Aoife ina seomra, agus mothaíonn sí cosúil le príosúnach. Tá sí dóchasach ag deireadh an scéil, áfach: tá plean aici agus ligeann sí osna áthais.' },
       { id: 'ga-sp-1', topic: 'spas', src: 'Exam style', type: 'written', marks: 15, lines: 8,
         q: 'Spás le Mícheál Ó Ruairc: Cad é téama an scéil? Déan plé air. (What is the theme of the story? Discuss it.) Tabhair dhá phointe eolais as an scéal.',
         scheme: ['Names a valid theme, e.g. an t-uaigneas (loneliness), an teaghlach (family), spás pearsanta / príobháideacht (personal space / privacy) (5 marks)', 'First point from the story that supports the theme (4 marks)', 'Second point from the story that supports the theme (4 marks)', 'Quality of Irish (2 marks)'],
