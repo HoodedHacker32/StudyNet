@@ -70,6 +70,7 @@ function mkX(raw) {
   for (i = 0; i < out.length && !big; i++) if (babs(out[i][0]) > LIM || out[i][1] > LIM || out[i][2] > LIM) big = true;
   var fv = xf(out);
   if (Math.abs(fv) >= 1e100) merr();
+  if (fv !== 0 && Math.abs(fv) < 1e-99) return { k: 'x', t: [] };   // below the calculation range: 0, as on the real calculator
   if (big) return F(fv);
   return { k: 'x', t: out };
 }
@@ -1067,7 +1068,8 @@ function calcKey(a) {
       if (!hEng(x, C.eng)) C.eng += a === 'eng' ? 3 : -3;
       C.factV = false; C.dmsV = false; return;
     case 'dms':
-      if (S.st === 'result') { if (C && !C.pair) { C.dmsV = !C.dmsV; C.eng = null; C.factV = false; } return; }
+      // °'" on a result toggles between sexagesimal and decimal (not back to a fraction)
+      if (S.st === 'result') { if (C && !C.pair) { C.dmsV = !C.dmsV; C.eng = null; C.factV = false; if (!C.dmsV && C.views.indexOf('dec') >= 0) C.vi = C.views.indexOf('dec'); } return; }
       calcInsert('dmsmark'); return;
     case 'fact':
       if (S.st === 'result' && C && !C.pair) { if (C.factV) C.factV = false; else if (factDesc(C.v)) { C.factV = true; C.eng = null; C.dmsV = false; } }
@@ -1710,7 +1712,7 @@ function lcdText() {
    KEYS[id] = { m: main action, s: SHIFT action, a: ALPHA action, lab, sl (shift legend), al (alpha legend) }
    ====================================================================== */
 var BX = '<span class="czkb"></span>', BXF = '<span class="czkb czkbf"></span>';
-var ASSETV = (function () { var s = document.currentScript && document.currentScript.src || ''; return s.indexOf('?') > 0 ? s.slice(s.indexOf('?')) : ''; })();
+var ASSETV = (function () { var s = typeof document !== 'undefined' && document.currentScript && document.currentScript.src || ''; return s.indexOf('?') > 0 ? s.slice(s.indexOf('?')) : ''; })();
 var KEYS = {
   shift: { m: 'shift' }, alpha: { m: 'alpha' }, menu: { m: 'menu', s: 'setup' }, on: { m: 'on' },
   up: { m: 'up' }, down: { m: 'down' }, left: { m: 'left', s: 'jl' }, right: { m: 'right', s: 'jr' },

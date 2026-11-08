@@ -1,5 +1,10 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v5 (calculator test suite)
+- `tools/calc-test.js` (run with `node tools/calc-test.js`): 234 checks that press real keys on a fresh calculator and compare the result with the fx-85GT X's behaviour (checked against its manual): arithmetic and order of operations, minus signs everywhere, implied multiplication, powers and roots, fractions, S⇔D and recurring decimals, trig in degrees and radians, logs, factorials, nPr/nCr, percent, Ans, memory and every variable, Abs, ENG, range limits, syntax errors, multi-statements, Pol/Rec, DMS, Line I/O, Statistics, Table and Ratio.
+- Fixed: results smaller than 1×10⁻⁹⁹ show 0 (the calculation range), not 1×10⁻¹⁰⁰; °′″ on a sexagesimal result converts to the decimal (2°30′0″ → 2.5), not a fraction.
+- calc.js loads in Node again (for the tests).
+
 ## November 2026 — v2026-11-08-v4 (calculator fixes)
 - The subtraction key now works as a minus sign where a number is expected, as on the real calculator: (−9)×(−1), −9×−1 and 2×−3 no longer give Syntax ERROR.
 - ALPHA then cos inserts the variable E again (it showed and worked as ×10, because both used the same internal token; Line-mode ×10ⁿ now has its own).
