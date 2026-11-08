@@ -1,100 +1,27 @@
-/* Studio styles for baking the calculator (tools/bake.py). Never loaded by the site: everything here is rendered
-   once into calc/body.webp and calc/keys.webp, so the live calculator pays for none of it. 1em = 36px here. */
+/* Ink passes for tools/bake.py: only printed legends are drawn, on a transparent page. Never loaded by the site. */
 html,body{margin:0;background:transparent}
-.bakepage{min-height:2200px}
-#calc.czbake{filter:none!important;--grain:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='1.15' numOctaves='2' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 .32 -.13'/></filter><rect width='100%25' height='100%25' filter='url(%23g)'/></svg>");
-  --mottle:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='900' height='900'><filter id='m'><feTurbulence type='fractalNoise' baseFrequency='.008' numOctaves='3' seed='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .12 -.04'/></filter><rect width='100%25' height='100%25' filter='url(%23m)'/></svg>")}
-#calc.czbake .czhead{display:none}
-#calc.czbake .czscr{visibility:hidden}
-#calc.czbake .czk::after{display:none}
-#calc.czbake .czk{transition:none}
+.bakepage{min-height:2400px}
+#calc.czbake{filter:none!important}
+#calc.czbake .czhead,#calc.czbake .czscr,#calc.czbake .czsolar,#calc.czbake .czpad{visibility:hidden}
+#calc.czbake .czbody,#calc.czbake .czbezel,#calc.czbake .czglass{background:none!important;box-shadow:none!important}
+#calc.czbake .czbody::before,#calc.czbake .czbezel::after,#calc.czbake .czglass::after,#calc.czbake .czk::after{display:none}
+#calc.czbake .czk{background:none!important;box-shadow:none!important;transition:none}
 
-/* ================================================================ BODY PASS */
-/* Moulded matte plastic, dark charcoal with a slight blue cast: smooth, not grainy, lit from the top left.
-   The display panel (top) is a separate, slightly smoother moulding with a step line above the keys. */
-#calc.czb-body .czbody{
-  background:
-    linear-gradient(103deg,rgba(255,255,255,.075) 0%,rgba(255,255,255,.02) 30%,transparent 46%,transparent 78%,rgba(0,0,0,.14) 100%),
-    linear-gradient(180deg,rgba(255,255,255,.05) 0%,transparent 9%,transparent 31%,rgba(0,0,0,.07) 31.8%,rgba(255,255,255,.045) 32.2%,transparent 34%,transparent 80%,rgba(0,0,0,.22) 100%),
-    var(--mottle),
-    var(--grain),
-    linear-gradient(180deg,#2f3137 0%,#2b2d33 31.9%,#25272c 32.1%,#24262b 70%,#202126 100%);
-  background-size:100% 100%,100% 100%,900px 900px,300px 300px,100% 100%;
-  box-shadow:
-    inset 0 0 0 .05em #0a0b0d,
-    inset 0 0 0 .16em #34363d,
-    inset 0 .12em .1em .12em rgba(255,255,255,.07),
-    inset .3em .3em .5em rgba(255,255,255,.05),
-    inset -.25em -.55em .8em rgba(0,0,0,.55)}
-#calc.czb-body .czbody::before{background:radial-gradient(70% 22% at 22% 3%,rgba(255,255,255,.07),transparent 70%)}
+/* legends printed on the case */
+#calc.czb-inkbody .czk{visibility:hidden}
+#calc.czb-inkbody .czbrand{color:#e7e8ec;text-shadow:none}
+#calc.czb-inkbody .czmark{color:#e7e8ec;filter:none}
+#calc.czb-inkbody .czmark text{stroke:none}
+#calc.czb-inkbody .czmodel{color:#b9bbc3}
+#calc.czb-inkbody .czrlt{color:#e8e9ed;font-family:'Saira Semi Condensed',sans-serif;font-weight:600;letter-spacing:.04em}
+#calc.czb-inkbody .czsl,#calc.czb-inkbody .czal{font-family:'Saira Semi Condensed',sans-serif;font-weight:600}
+#calc.czb-inkbody .czsl{color:#d9b23d}
+#calc.czb-inkbody .czal{color:#e0477a}
 
-/* printing: white and coloured ink, slightly matte */
-#calc.czb-body .czbrand{color:#e6e7ec;text-shadow:0 .02em 0 rgba(0,0,0,.5)}
-#calc.czb-body .czmark{color:#e6e7ec;filter:none}
-#calc.czb-body .czmodel{color:#b4b6be;text-shadow:none}
-#calc.czb-body .czrlt{color:#e8e9ed;font-family:'Saira Semi Condensed',sans-serif;font-weight:600;letter-spacing:.04em}
-#calc.czb-body .czsl,#calc.czb-body .czal{font-family:'Saira Semi Condensed',sans-serif;font-weight:600}
-#calc.czb-body .czsl{color:#dcb43c}
-#calc.czb-body .czal{color:#e2497b}
-
-/* solar panel: four amber cells under glass in a black surround */
-#calc.czb-body .czsolar{background:linear-gradient(#0e0e10,#1a1a1d);box-shadow:inset 0 .08em .14em rgba(0,0,0,.9),0 .05em 0 rgba(255,255,255,.08),0 0 0 .05em #0b0b0d}
-#calc.czb-body .czsolar i{position:relative;background:
-    repeating-linear-gradient(90deg,rgba(0,0,0,.18) 0 .03em,transparent .03em .5em),
-    linear-gradient(172deg,#7a5a45 0%,#5a4232 40%,#43312a 75%,#3a2a22 100%);
-  box-shadow:inset 0 0 .2em rgba(0,0,0,.6),inset 0 .04em 0 rgba(255,230,200,.12)}
-#calc.czb-body .czsolar::after{content:'';position:absolute;inset:.42em;pointer-events:none;
-  background:linear-gradient(160deg,rgba(255,255,255,.16) 0%,rgba(255,255,255,.04) 38%,transparent 39%,transparent 100%)}
-#calc.czb-body .czsolar{position:absolute}
-
-/* display window: glossy black frame, LCD set below it */
-#calc.czb-body .czbezel{background:
-    linear-gradient(180deg,rgba(255,255,255,.07),transparent 18%),
-    linear-gradient(#151618,#1d1e21);
-  box-shadow:inset 0 .1em .2em rgba(0,0,0,.95),inset 0 -.04em 0 rgba(255,255,255,.06),0 .06em 0 rgba(255,255,255,.08),0 0 0 .05em #0a0a0c}
-#calc.czb-body .czbezel::after{display:none}
-#calc.czb-body .czglass{background:
-    radial-gradient(120% 90% at 30% 20%,rgba(255,255,255,.08),transparent 60%),
-    linear-gradient(178deg,#c8cebf 0%,#bfc6b6 50%,#b3baa9 100%);
-  box-shadow:inset 0 .16em .3em rgba(0,0,0,.55),inset 0 0 .9em rgba(0,0,0,.18),inset 0 -.04em 0 rgba(255,255,255,.2)}
-#calc.czb-body .czglass::after{display:none}
-
-/* key wells: each key sits in an opening with a dark gap, its skirt and a soft shadow below */
-#calc.czb-body .czk{background:transparent!important;color:transparent;
-  box-shadow:0 0 0 .05em #08090a,0 .09em 0 .03em #0c0d0f,0 .16em .22em rgba(0,0,0,.6)!important}
-#calc.czb-body .czk .czkl{visibility:hidden}
-#calc.czb-body .czround{box-shadow:0 0 0 .12em #0b0c0e,0 0 0 .17em rgba(255,255,255,.05),0 .12em .2em .1em rgba(0,0,0,.55)!important}
-#calc.czb-body .czpad{background:none;box-shadow:0 .14em .3em rgba(0,0,0,.6);overflow:visible;border-radius:50%}
-#calc.czb-body .czpad::before,#calc.czb-body .czpc{display:none}
-#calc.czb-body .czpk{display:none}
-
-/* ================================================================ KEYS PASS */
-#calc.czb-keys .czbody{background:none!important;box-shadow:none!important}
-#calc.czb-keys .czbody::before,#calc.czb-keys .czbrand,#calc.czb-keys .czmodel,#calc.czb-keys .czsolar,#calc.czb-keys .czbezel,
-#calc.czb-keys .czrlab,#calc.czb-keys .czleg,#calc.czb-keys .czpad{visibility:hidden}
-#calc.czb-keys .czk{box-shadow:none!important;color:#f3f3f5;font-family:'Saira Semi Condensed',sans-serif;filter:url(#kbs)}
-#calc.czb-keys .czk .czkl{text-shadow:0 .015em 0 rgba(0,0,0,.35)}
-/* function keys: dark grey, gently domed */
-#calc.czb-keys .czkf{border-radius:.42em/.48em;background:
-    radial-gradient(130% 70% at 50% 8%,rgba(255,255,255,.09),transparent 62%),
-    var(--grain),
-    linear-gradient(180deg,#3d3f46 0%,#32343a 40%,#2a2b31 80%,#212226 100%);
-  background-size:100% 100%,300px 300px,100% 100%}
-/* number keys: near-black, a flatter top face */
-#calc.czb-keys .czbig{border-radius:.46em/.52em;background:
-    radial-gradient(120% 60% at 50% 6%,rgba(255,255,255,.07),transparent 60%),
-    var(--grain),
-    linear-gradient(180deg,#2a2b30 0%,#1f2024 45%,#18191c 85%,#121315 100%);
-  background-size:100% 100%,300px 300px,100% 100%;filter:url(#kb)}
-#calc.czb-keys .czyel{color:#141414;background:
-    radial-gradient(120% 60% at 50% 6%,rgba(255,255,255,.28),transparent 60%),
-    var(--grain),
-    linear-gradient(180deg,#ffd52a 0%,#f4c400 45%,#e3b100 85%,#cc9d00 100%);
-  background-size:100% 100%,300px 300px,100% 100%}
-#calc.czb-keys .czyel .czkl{text-shadow:none}
-/* round keys: black with the fine radial "record" lines and a moving sheen across them */
-#calc.czb-keys .czround{background:
-    conic-gradient(from 10deg,rgba(255,255,255,0) 0deg,rgba(255,255,255,.1) 35deg,rgba(255,255,255,0) 80deg,rgba(255,255,255,0) 180deg,rgba(255,255,255,.08) 215deg,rgba(255,255,255,0) 260deg,rgba(255,255,255,0) 360deg),
-    var(--record) center/100% 100%,
-    radial-gradient(circle at 50% 50%,#2a2b30 0%,#222327 45%,#1b1c1f 75%,#141517 100%);
-  filter:url(#kb)}
+/* legends printed on the keys */
+#calc.czb-inkkeys .czbrand,#calc.czb-inkkeys .czmodel,#calc.czb-inkkeys .czrlab,#calc.czb-inkkeys .czleg{visibility:hidden}
+#calc.czb-inkkeys .czk{color:#f1f1f4;font-family:'Saira Semi Condensed',sans-serif}
+#calc.czb-inkkeys .czyel{color:#151515}
+/* operator legends are as large as the digits on the real keypad */
+#calc.czb-inkkeys [data-id="mul"] .czkl,#calc.czb-inkkeys [data-id="div"] .czkl,#calc.czb-inkkeys [data-id="add"] .czkl,
+#calc.czb-inkkeys [data-id="sub"] .czkl,#calc.czb-inkkeys [data-id="eq"] .czkl{font-size:2.3em;font-weight:500}

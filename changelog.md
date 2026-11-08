@@ -1,5 +1,11 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v3 (photo-real calculator)
+- **Rendered like a product photo:** `tools/bake.py` now renders the body and keys itself (numpy + OpenCV) as a lit height field instead of styling HTML: rounded case edge, raised keys with rounded top edges sitting in dark gaps, domed round keys with fine radial lines, recessed display window and solar panel, a soft key light from the top left, ambient occlusion, soft cast shadows, a studio softbox reflection and sensor grain, rendered at 2x and scaled down. The browser only supplies the layout and the printed legends.
+- **Cursor pad like the real one:** a sunken rounded-diamond well with four separate raised keys (curved up and down keys, wedge-shaped left and right keys) around a sunken hub. The pad keys come from the keys picture, move when pressed, and their hit areas follow the drawn keys.
+- **Case texture:** the fine staggered moulded pattern of the real case (repeat about 1.1em x 0.3em, about 3.5% in brightness), measured from a close-up photo (`tools/panel-texture.npy`), replacing the plain gradient.
+- Operator legends (×, ÷, +, −, =) are as large as the digits, like the real keypad.
+
 ## November 2026 — v2026-11-08-v2 (calculator screen font, baked look)
 - **LCD font:** the screen uses "ClassWiz X Display" by Windy Deng (SIL Open Font License 1.1, `fonts/classwiz-x-display/`), embedded unmodified in `calc-lcd.js`, at 14px so each font pixel is one LCD pixel. `tools/lcdfont.py` builds three companion faces on the same grid: SN LCD Small (exponents, root indexes: the font's superscript digits on the baseline plus drawn brackets and signs), SN LCD Italic (variables x, y, e, π, θ from the font's maths italics) and SN LCD (StudyNet's own glyphs for the ~20 characters the font lacks). The derived faces keep the OFL and their own names.
 - **Indicators** (S, A, M, STO, Math, D/R/G, FIX/SCI, ▲▼, multi-statement pause) are the font's own indicator glyphs, drawn smoothly in the top row like LCD segments instead of blurry text.
