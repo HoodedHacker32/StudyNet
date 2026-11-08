@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v6 (Maths: walk through the question you got wrong)
+- A wrong answer in a Maths skill now shows your answer next to the right one, then walks through **that same question** one step at a time ("Let's go through your question", with the question at the top), instead of showing every step at once under "Learn from this example".
+
 ## November 2026 — v2026-11-08-v5 (calculator test suite)
 - `tools/calc-test.js` (run with `node tools/calc-test.js`): 234 checks that press real keys on a fresh calculator and compare the result with the fx-85GT X's behaviour (checked against its manual): arithmetic and order of operations, minus signs everywhere, implied multiplication, powers and roots, fractions, S⇔D and recurring decimals, trig in degrees and radians, logs, factorials, nPr/nCr, percent, Ans, memory and every variable, Abs, ENG, range limits, syntax errors, multi-statements, Pol/Rec, DMS, Line I/O, Statistics, Table and Ratio.
 - Fixed: results smaller than 1×10⁻⁹⁹ show 0 (the calculation range), not 1×10⁻¹⁰⁰; °′″ on a sexagesimal result converts to the decimal (2°30′0″ → 2.5), not a fraction.

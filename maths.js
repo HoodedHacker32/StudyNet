@@ -1009,13 +1009,15 @@
           fb.innerHTML = '<p class="skill-msg good">' + ic('check') + ' <span>' + (hinted ? 'Correct. Answers after a hint count half.' : PRAISE[Math.floor(Math.random() * PRAISE.length)]) + up + '</span></p>' +
             '<button type="button" class="btn primary" id="sk-next">Next question ' + ic('arrow-right') + '</button>';
         } else {
-          fb.innerHTML = '<p class="skill-msg bad">Not quite' + (r.msg ? ': ' + esc(r.msg) : '.') + ' The answer is ' + q.show + '.</p>' +
+          // Walk through the question they just got wrong (not a different example), one step at a time.
+          fb.innerHTML = '<p class="skill-msg bad">Not quite' + (r.msg ? ': ' + esc(r.msg) : '.') + ' You answered <b>' + esc(inp.value.trim()) + '</b>. The answer is ' + q.show + '.</p>' +
             (meth ? '<p class="skill-msg">' + ic('check') + ' <span>Method marks: ' + esc(meth.why) + '.' + (meth.band === 'hi' ? ' That counts half. Check the arithmetic in your last steps.' : '') + '</span></p>' : '') +
-            '<div class="skill-learn"><h3>Learn from this example</h3>' + api.stepsHtml(q.steps) + '</div>' +
+            '<div class="skill-learn"><h3>Let’s go through your question</h3>' + api.stepsHtml(q.steps, q.q) +
+            '<p class="skill-foot">Compare each step with what you did. The first step that’s different is where it went wrong.</p></div>' +
             '<button type="button" class="btn primary" id="sk-next">Got it, next question ' + ic('arrow-right') + '</button>';
-          var all = fb.querySelector('[data-step="all"]'); if (all) all.click();
         }
-        document.getElementById('sk-next').focus();
+        var stepBtn = !r.ok && fb.querySelector('[data-step="next"]');
+        (stepBtn || document.getElementById('sk-next')).focus();
         api.updateScore();
       }
       el.onclick = function (e) {
