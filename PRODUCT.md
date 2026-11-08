@@ -25,7 +25,7 @@ Content follows what the class's teachers actually set for each assessment (gath
 ## Capabilities and Constraints
 - Static site: plain HTML/CSS/JS, no build step, no framework.
 - Subject pages share `subject.js` and `app.css`; content lives in `data/<subject>.js`.
-- 2nd Year subjects so far: Gaeilge, Français, History, Geography, Science, Maths. English, Deutsch and Español are planned.
+- 2nd Year subjects so far: Gaeilge, Français, History, Geography, Science, Maths. English, Deutsch and Español are planned. Choice subjects aren't offered, except Business, which is secret and unlocks with a cheat code in the student's name.
 - AI is used only to mark written answers and maths working against a marking scheme (Ollama locally, a Cloudflare Worker in production). Questions never come from AI. Everything works without AI: students can mark themselves.
 - Irish content must be checked against teanglann.ie / focloir.ie.
 

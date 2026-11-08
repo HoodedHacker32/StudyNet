@@ -72,6 +72,10 @@
   /* ── Icons: one inline SVG sprite for the whole app ───────── */
   var ICONS = {
     home:'<path d="M3 9.5 12 3l9 6.5V20a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/>',
+    briefcase:'<rect x="2.5" y="7" width="19" height="13.5" rx="2"/><path d="M8.5 7V5a2 2 0 012-2h3a2 2 0 012 2v2"/><path d="M2.5 13h19"/><path d="M11 13v2h2v-2"/>',
+    shield:'<path d="M12 21.5s7.5-3.6 7.5-9.5V5.2L12 2.5 4.5 5.2V12c0 5.9 7.5 9.5 7.5 9.5z"/><path d="M8.8 11.8l2.2 2.2 4.2-4.4"/>',
+    leaf:'<path d="M11 20.5A7 7 0 019.8 6.6C15.5 5.5 17 5 19.5 2.5c1 2 2 4.2 2 8 0 5.5-4.8 10-10.5 10z"/><path d="M2.5 21.5c0-3 1.9-5.4 5.1-6 2.4-.5 4.9-2 5.9-3"/>',
+    store:'<path d="M3.5 9 5 4h14l1.5 5"/><path d="M3.5 9h17v1.5a2.8 2.8 0 01-5.7 0 2.8 2.8 0 01-5.6 0 2.8 2.8 0 01-5.7 0z"/><path d="M5 12.8V21h14v-8.2"/><path d="M10 21v-4.5h4V21"/>',
     books:'<path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/>',
     notes:'<path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>',
     cards:'<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h11a3 3 0 013 3v11"/>',
@@ -164,7 +168,11 @@
     delete p.year;
     return p;
   };
-  SN.saveProfile = function (p) { return SN.writeJSON('sn_profile', p); };
+  SN.saveProfile = function (p) {
+    var was = SN.secretUnlocked(SN.getProfile()), ok = SN.writeJSON('sn_profile', p);
+    if (ok && !was && SN.secretUnlocked(p)) { try { sessionStorage.setItem('sn_unlock', 'business'); } catch (e) {} }
+    return ok;
+  };
 
   /* ── Subjects ────────────────────────────────────────────────
      years: years with content. Score keys: '<id>' for 1st Year, '<id>_y2' for 2nd Year. */
@@ -175,6 +183,8 @@
     { id: 'geography', name: 'Geography', glyph: 'globe',  href: 'geography.html', years: ['2'] },
     { id: 'science',   name: 'Science',   glyph: 'flask',  href: 'science.html',   years: ['2'], calc: true },
     { id: 'maths',     name: 'Maths',     glyph: 'pi',     href: 'maths.html',     years: ['2'], calc: true },
+    // A secret subject: only listed once the student's name contains the cheat code (SN.secretUnlocked).
+    { id: 'business',  name: 'Business',  glyph: 'briefcase', href: 'business.html', years: ['2'], secret: true },
     { id: 'english',   name: 'English',   glyph: 'quill',  years: [] },
     { id: 'german',    name: 'Deutsch',   flag: 'de', years: [], lang: 'de' },
     { id: 'spanish',   name: 'Español',   flag: 'es', years: [], lang: 'es' }
@@ -193,6 +203,9 @@
     return '<span class="logo' + (size ? ' ' + size : '') + '" data-sc="' + s.id + '" aria-hidden="true">' + inner + '</span>';
   };
   SN.subject = function (id) { return SN.SUBJECTS.filter(function (s) { return s.id === id; })[0]; };
+  /* Cheat code: "$$" (or "€€") anywhere in the student's name unlocks the secret Business subject. */
+  SN.CHEAT = /\$\$|€€/;
+  SN.secretUnlocked = function (p) { p = p || SN.getProfile(); return SN.CHEAT.test(p.name || ''); };
   // Years of a subject this student can open (2nd Year mode includes 1st Year).
   SN.yearsFor = function (s, p) {
     p = p || SN.getProfile();
@@ -204,6 +217,7 @@
     p = p || SN.getProfile();
     var out = { open: [], soon: [], hidden: [] };
     SN.SUBJECTS.forEach(function (s) {
+      if (s.secret && !SN.secretUnlocked(p)) return;
       if (s.lang) {
         if (p.exempt === 'language') { if (s.lang === (p.lang || 'fr') && s.href) out.hidden.push({ s: s, why: 'language' }); return; }
         if (s.lang !== (p.lang || 'fr')) return;
@@ -362,6 +376,39 @@
     shellCurrent = current;
     updateThemeIcons();
     if (deferredInstall) showInstall(true);
+    var unlock = null; try { unlock = sessionStorage.getItem('sn_unlock'); sessionStorage.removeItem('sn_unlock'); } catch (e) {}
+    if (unlock && SN.secretUnlocked()) setTimeout(function () { SN.playUnlock(unlock); }, 250);
+  };
+
+  /* ── Secret subject unlocked ─────────────────────────────────
+     A briefcase drops in, its lid flips open with a burst of light and coins, then Business is yours. */
+  SN.playUnlock = function (id) {
+    var s = SN.subject(id); if (!s) return;
+    var coins = '';
+    for (var i = 0; i < 14; i++) {
+      var a = (i / 14) * 360 + (i % 2 ? 9 : -9), d = 120 + (i * 37) % 70;
+      coins += '<span class="ul-coin" style="--a:' + a + 'deg;--d:' + d + 'px;--t:' + (0.04 * (i % 5)) + 's"></span>';
+    }
+    var el = document.createElement('div');
+    el.className = 'overlay unlock-ov';
+    el.innerHTML = '<div class="dialog unlock" role="dialog" aria-modal="true" aria-labelledby="ul-t" aria-describedby="ul-d" data-sc="' + s.id + '">' +
+      '<div class="ul-stage" aria-hidden="true"><span class="ul-rays"></span>' + coins +
+        '<span class="ul-case"><span class="ul-lid"></span><span class="ul-body">' + SN.ic(s.glyph) + '</span></span></div>' +
+      '<h2 id="ul-t">' + esc(s.name) + ' unlocked</h2>' +
+      '<p class="lead" id="ul-d">Cheat code accepted. A secret subject is now in your subjects, with notes, quizzes and practice exams for the November assessment.</p>' +
+      '<div class="dialog-actions"><button type="button" class="btn" data-ul="later">Not now</button>' +
+      '<a class="btn primary" href="' + s.href + '">Open ' + esc(s.name) + ' ' + SN.ic('arrow-right') + '</a></div></div>';
+    document.body.appendChild(el);
+    var close = function () {
+      SN.closeDialog(el); setTimeout(function () { el.remove(); }, 300);
+      var link = document.querySelector('a.sb-link[href="' + s.href + '"]') || document.querySelector('a[href="' + s.href + '"]');
+      if (link && link.offsetParent) link.focus(); // land on the new subject, not the top of the page
+    };
+    el.addEventListener('click', function (e) { if (e.target === el || e.target.closest('[data-ul="later"]')) close(); });
+    SN.openDialog(el, { onEscape: close, initialFocus: '.btn.primary' });
+    requestAnimationFrame(function () { el.classList.add('go'); });
+    // its row in the subject lists gets a moment of shine too
+    document.querySelectorAll('a[href="' + s.href + '"]').forEach(function (a) { a.classList.add('sn-new'); });
   };
   /* ── Calculator: on every page, loaded the first time it's opened ── */
   var calcSrc = (function () { var s = document.currentScript && document.currentScript.src || ''; return 'calc.js' + (s.indexOf('?') > 0 ? s.slice(s.indexOf('?')) : ''); })();

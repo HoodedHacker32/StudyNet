@@ -1,5 +1,10 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v7 (secret Business subject)
+- **Business (2nd Year)**, hidden: it only appears when the profile name contains `$$` (or `€€`). The first time, an unlock animation plays: the violet briefcase drops in, its lid hinges open, light and coins burst out, then "Business unlocked" with Open Business / Not now (reduced motion lands on the final frame). The Business row in the subject lists shines once.
+- Content from the Business team's notes: Ch 12 Protecting the Consumer, Ch 13 Ethical & Sustainable Consumption, Ch 15 Entrepreneurs, Ch 16 Types of Enterprise (the November assessment) and Ch 17 Impact of Organisations, with notes, flashcards, quizzes, matching, fill-in practice and an 18-question exam bank with marking schemes. Written in StudyNet's own words; textbook case studies aren't copied.
+- New icons: briefcase, shield, leaf, store.
+
 ## November 2026 — v2026-11-08-v6 (Maths: walk through the question you got wrong)
 - A wrong answer in a Maths skill now shows your answer next to the right one, then walks through **that same question** one step at a time ("Let's go through your question", with the question at the top), instead of showing every step at once under "Learn from this example".
 

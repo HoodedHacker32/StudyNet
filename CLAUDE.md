@@ -11,9 +11,11 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
   - Gaeilge, Français and History: 1st and 2nd Year.
   - Geography, Science and Maths: 2nd Year only.
   - English, Deutsch and Español are "Coming soon".
+  - **Business** (2nd Year) is a secret subject: no choice subjects are listed, but Business unlocks when the profile name contains the cheat code `$$` (or `€€`). `SN.secretUnlocked()` decides; `SN.saveProfile` notices the first unlock and `SN.playUnlock` shows the unlock animation after the reload. `business.html` sends locked visitors home. Don't mention it in the What's new dialog.
 - **Where 2nd Year content comes from:**
   - Most subjects follow the November assessment topics and notes posted in each class's Teams (General posts, Classwork, Class Notebook).
   - Maths follows the class OneNote notes and the F2 class test.
+  - Business follows the notes in the Business team's Files (Shared Documents, one folder per chapter): Ch 12, 13, 15, 16 for the November assessment, plus Ch 17 (class test).
 - **Public site:** **never** put personal data or real names (students or teachers) in the code, placeholders or examples. That includes names printed on class tests and notes.
 
 ## Files
@@ -21,7 +23,7 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
 |---|---|
 | `about.html` | About StudyNet and exactly how AI was used to build it and is used to mark (keep it true when anything changes) |
 | `index.html` | Dashboard: welcome (first run), Continue, the student's subjects, Quick Quiz (built from `data/*.js`), What's new dialog (`CHANGELOG_VER`) |
-| `irish.html` `french.html` `history.html` `geography.html` `science.html` `maths.html` | Thin shells. They load `shared.js`, `subject.js`, `ai-core.js`, `ai.js`, `exam.js` (+ `maths.js` / `periodic.js`), then `calc.js` and `data/<id>.js` in the body, then call `SubjectApp.start(SN_DATA.<id>)` |
+| `irish.html` `french.html` `history.html` `geography.html` `science.html` `maths.html` `business.html` | Thin shells. They load `shared.js`, `subject.js`, `ai-core.js`, `ai.js`, `exam.js` (+ `maths.js` / `periodic.js`), then `calc.js` and `data/<id>.js` in the body, then call `SubjectApp.start(SN_DATA.<id>)` |
 | `app.css` | The **only** stylesheet: tokens, shell, rows, controls, every activity, maths, periodic table, exams, calculator, dialogs, responsive, print |
 | `shared.js` | Loaded in `<head>` on every page. Theme (applied before paint), icon sprite (`SN.ic`), subject registry (`SN.SUBJECTS`, `SN.mySubjects`), profile, streak, scores, accessible dialogs, app shell (`SN.mountShell`), Settings drawer (`SN.openSettings`, extended via `SN.settingsHooks`) |
 | `subject.js` | Subject engine: Topics, then a topic's activities, then an activity with tabs. Built-in activities: Notes, Flashcards, Quiz, Match, Timeline, Practice. Extension points: `SubjectApp.addMode` (per-topic activity), `addView` (subject-level tool, hash `#v=<id>`), `addWidget` (notes `widget`). Notes sections also take `steps` (worked example) and `html`. The URL hash `#t=<topic>&m=<activity>` and `?y=<year>` record the view |
@@ -52,13 +54,13 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
   - `sn_exam_prefs_<id>`: the student's last builder options.
 - `sn_last`: the last activity opened (drives "Continue where you left off").
 - `sn_streak`: a day counts only when `SN.markStudied()` runs (on answering), never on page load.
-- `sn_theme`, `sn_changelog_seen`. `sessionStorage.sn_view_<id>` remembers the year viewed on a subject page.
+- `sn_theme`, `sn_changelog_seen`. `sessionStorage.sn_view_<id>` remembers the year viewed on a subject page; `sessionStorage.sn_unlock` plays the secret-subject unlock animation once after a reload.
 
 ## Conventions
 - **Design system:**
   - Monochrome UI, Atkinson Hyperlegible Next, light and dark tokens in `app.css`.
   - Each subject has a logo (`SN.logo`: a flag for languages, a drawn glyph otherwise) and one colour (`--sc`, set by `data-sc`). The colour is used only for its logo, progress bars, active tab, selected pill and year switch.
-  - Colours: Gaeilge flag green, Geography leaf green, Français blue, History amber, Science blue, Maths red, English golden yellow.
+  - Colours: Gaeilge flag green, Geography leaf green, Français blue, History amber, Science blue, Maths red, English golden yellow, Business violet.
   - Every page uses the same shell (sidebar on desktop, top bar under 900px), page header (`.ph`), rows (`.rows`/`.row`), buttons (`.btn`, `.btn.primary`), pills, tabs and dialogs.
   - Never add page-specific CSS; extend `app.css`.
   - Exam papers have their own tokens (`--paper`, `--desk`, `--rule`, `--grid`) and one marking colour, `--pen` (red), used only for marks on a marked paper.
