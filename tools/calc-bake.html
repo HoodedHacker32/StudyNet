@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Calculator bake</title>
+<!-- Not part of the site. tools/bake.py opens this page in headless Chromium and saves the calculator's body and keys
+     as images (calc/body.webp, calc/keys.webp), so the live calculator shows two pictures instead of running
+     textures, lighting and filters in real time. -->
+<link href="https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&family=Atkinson+Hyperlegible+Next:wght@400..800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../app.css">
+<link rel="stylesheet" href="calc-bake.css">
+</head>
+<body class="bakepage">
+<script>window.SN_CALC_BAKE = true;</script>
+<script src="../calc-lcd.js"></script>
+<script src="../calc.js"></script>
+<script src="calc-bake.js"></script>
+</body>
+</html>

@@ -714,11 +714,16 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 .015em,transparent .015em .1em),repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 .015em,transparent .015em .1em)}
 /* ---------- LCD ---------- */
 #calc .czscr{--czink:.68;--czbg:#bac3be;position:absolute;left:.65em;top:.95em;width:19.2em;height:6.3em;overflow:hidden;
-  color:rgba(16,20,14,var(--czink));font-family:'Courier New',Courier,'Liberation Mono','Nimbus Mono PS',monospace;font-weight:700;font-variant-numeric:tabular-nums lining-nums;
+  color:rgba(16,20,14,var(--czink));font-family:'SN CW','SN LCD','Courier New',Courier,monospace;font-weight:400;font-variant-numeric:tabular-nums lining-nums;
   text-shadow:.05em .07em 0 rgba(0,0,0,.1);line-height:1;-webkit-font-smoothing:none;font-smooth:never}
 #calc .czpix{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;z-index:2;
   opacity:calc(var(--czink) + .12);filter:drop-shadow(.05em .07em 0 rgba(0,0,0,.12))}
 #calc .czscr:not(.czpixon) .czpix{display:none}
+#calc .czpix4{image-rendering:auto}
+#calc .czcurc{animation:czblink 1.06s steps(1) infinite}
+#calc .czstc{position:absolute;left:0;top:0;width:100%;height:.8em;pointer-events:none;z-index:2;opacity:calc(var(--czink) + .12)}
+#calc .czscr:not(.czpixon) .czstc{display:none}
+#calc .czscr.czpixon .czcur::after,#calc .czscr.czpixon .czcur::before{animation:none}
 #calc .czscr.czpixon>.czstat,#calc .czscr.czpixon>.czmain{opacity:0}
 /* Pixel gaps over the lit segments, like the dot-matrix screen in the calculator's manual. */
 #calc .czscr::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:3;
@@ -737,51 +742,52 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
 /* natural display */
 #calc .czin{position:absolute;left:0;right:0;top:.8em;height:3.6em;overflow:hidden}
 #calc .czin2{position:relative;top:.8em;height:auto;min-height:2em}
-#calc .czinr{position:absolute;left:0;top:0;white-space:nowrap;font-size:1.65em;line-height:1.12;padding-top:.08em}
+#calc .czinr{position:absolute;left:0;top:0;white-space:nowrap;font-size:1.4em;line-height:1;padding-top:.143em}
 #calc .czin.czmoreR::after{content:'▸';position:absolute;right:0;top:.2em;font-size:.9em}
 #calc .czout{position:absolute;left:0;right:0;bottom:0;height:3.4em;display:flex;justify-content:flex-end;align-items:flex-end;overflow:hidden}
-#calc .czoutr{white-space:nowrap;font-size:1.65em;line-height:1.05;flex:none}
+#calc .czoutr{white-space:nowrap;font-size:1.4em;line-height:1.072;flex:none}
 #calc .czout.czclip{justify-content:flex-start;padding-right:.9em}
 #calc .czout.czclip::after{content:'▶';position:absolute;right:0;bottom:.15em;font-size:.95em;background:var(--czbg)}
 #calc .czfr{display:inline-flex;flex-direction:column;align-items:stretch;vertical-align:middle;text-align:center;margin:0 .06em;line-height:1}
-#calc .czfn{border-bottom:.075em solid currentColor;padding:0 .06em .04em;white-space:nowrap}
-#calc .czfd{padding:.06em .06em 0;white-space:nowrap}
+#calc .czfn{border-bottom:.0715em solid currentColor;padding:0 .0715em .0715em;white-space:nowrap}
+#calc .czfd{padding:.0715em .0715em 0;white-space:nowrap}
 #calc .czrt{display:inline-block;position:relative;padding-left:.48em;white-space:nowrap}
 #calc .czrs{position:absolute;left:0;top:.02em;bottom:0;width:.5em;height:auto;overflow:visible}
-#calc .czrb{display:inline-block;border-top:.075em solid currentColor;padding:.07em .04em 0 .02em}
-#calc .czri{position:absolute;left:-.08em;top:-.05em;font-size:.58em;line-height:1}
+#calc .czrb{display:inline-block;border-top:.0715em solid currentColor;padding:.143em .0715em 0 .0715em}
+#calc .czri{position:absolute;left:-.143em;top:-.215em;font-size:1em;line-height:1;font-family:'SN LCD Small',monospace}
 #calc .czri+.czrs{left:.12em}
 #calc .czrt:has(.czri){padding-left:.62em}
-#calc .czsup{font-size:.6em;vertical-align:.72em;line-height:0;white-space:nowrap}
-#calc .czsupt{display:inline-block;line-height:1;vertical-align:.62em}
-#calc .czsub{font-size:.6em;vertical-align:-.3em;line-height:0}
-#calc .czsb{font-size:.6em;vertical-align:-.25em;line-height:0}
-#calc .czab{display:inline-block;border-left:.08em solid currentColor;border-right:.08em solid currentColor;padding:0 .1em;margin:0 .05em}
-#calc .czbx{display:inline-block;position:relative;width:.52em;height:.72em;border:.07em solid currentColor;vertical-align:-.04em;margin:0 .04em;opacity:.85}
+#calc .czsup{font-size:1em;vertical-align:.5em;line-height:0;white-space:nowrap;font-family:'SN LCD Small',monospace}
+#calc .czsupt{display:inline-block;line-height:1;vertical-align:.429em}
+#calc .czsub{font-size:1em;vertical-align:-.215em;line-height:0;font-family:'SN LCD Small',monospace}
+#calc .czsb{font-size:1em;vertical-align:-.215em;line-height:0;font-family:'SN LCD Small',monospace}
+#calc .czsup .czv,#calc .czsup .cze,#calc .czsup .czpi,#calc .czsub .czv,#calc .czri .czv{font-family:'SN LCD Small',monospace}
+#calc .czab{display:inline-block;border-left:.143em solid currentColor;border-right:.143em solid currentColor;padding:0 .143em;margin:0 .0715em}
+#calc .czbx{display:inline-block;position:relative;width:.643em;height:.858em;border:.0715em solid currentColor;vertical-align:0;margin:0 .0715em}
 #calc .czbx .czcur{position:absolute;left:.08em;top:-.05em}
 #calc .czdot{position:relative;display:inline-block}
-#calc .czdot::before,#calc .czdotb::before{content:'';position:absolute;left:50%;top:-.16em;width:.14em;height:.14em;margin-left:-.07em;background:currentColor;border-radius:50%}
-#calc .czx10{font-size:.62em;letter-spacing:-.02em}
+#calc .czdot::before,#calc .czdotb::before{content:'';position:absolute;left:50%;top:-.215em;width:.143em;height:.143em;margin-left:-.0715em;background:currentColor}
+#calc .czx10{font-size:1em;font-family:'SN LCD Small',monospace}
 #calc .czpc{font-weight:900;font-family:Georgia,'Times New Roman',serif}
-#calc .czng,#calc .czmi{display:inline-block;transform:scaleX(.7)}
-#calc .czpi,#calc .cze,#calc .czv{font-family:Georgia,'Times New Roman',serif;font-style:italic}
-#calc .czfl{display:inline-block;width:.36em;height:.5em;border-right:.085em solid currentColor;border-bottom:.085em solid currentColor;margin:0 .05em}
-#calc .czcur{display:inline-block;position:relative;width:0;height:.95em;vertical-align:-.15em}
+#calc .czng,#calc .czmi{display:inline-block}
+#calc .czpi,#calc .cze,#calc .czv,#calc .czscr i{font-family:'SN LCD Italic','SN CW',Georgia,serif;font-style:normal}
+#calc .czfl{display:inline-block;width:.429em;height:.572em;border-right:.143em solid currentColor;border-bottom:.143em solid currentColor;margin:0 .0715em}
+#calc .czcur{display:inline-block;position:relative;width:0;height:.858em;vertical-align:0}
 #calc .czcur::after{content:'';position:absolute;left:-.04em;top:0;width:.12em;height:1em;background:currentColor;animation:czblink 1s steps(1) infinite}
 #calc .czcur.czov::after{top:auto;bottom:-.08em;width:.6em;height:.12em}
 #calc .czcur.czinc::after{width:.12em;box-shadow:.12em 0 0 0 currentColor;height:.7em;top:.3em}
 #calc .czcur.czinc::before{content:'';position:absolute;left:-.04em;top:0;width:.45em;height:.12em;background:currentColor}
 @keyframes czblink{50%{opacity:0}}
 /* linear display */
-#calc .czln{position:relative;padding-top:.8em;font-size:1.6em;line-height:1;white-space:normal;word-break:break-all;overflow-wrap:anywhere}
+#calc .czln{position:relative;padding-top:.8em;font-size:1.4em;line-height:1;white-space:normal;word-break:break-all;overflow-wrap:anywhere}
 #calc .czln{padding-top:0;margin-top:.5em}
-#calc .czlr{font-size:1.6em;line-height:1;text-align:right;white-space:nowrap;overflow:hidden}
-#calc .czlr2{display:flex;justify-content:space-between;font-size:1.6em;line-height:1}
-#calc .czln.czsmall,#calc .czlr.czsmall{font-size:1.15em}
-#calc .czidle{position:absolute;right:0;bottom:0;text-align:right;font-size:1.6em;line-height:1}
+#calc .czlr{font-size:1.4em;line-height:1;text-align:right;white-space:nowrap;overflow:hidden}
+#calc .czlr2{display:flex;justify-content:space-between;font-size:1.4em;line-height:1}
+#calc .czln.czsmall,#calc .czlr.czsmall{font-size:1em;font-family:'SN LCD Small',monospace}
+#calc .czidle{position:absolute;right:0;bottom:0;text-align:right;font-size:1.4em;line-height:1}
 /* menus */
-#calc .czmenu{position:absolute;inset:0;padding:.02em 0 0 .1em;font-size:1.48em;line-height:1.06}
-#calc .czml{height:1.06em;white-space:nowrap;overflow:hidden}
+#calc .czmenu{position:absolute;inset:0;padding:.143em 0 0 .0715em;font-size:1.4em;line-height:1.072em}
+#calc .czml{height:1.072em;white-space:nowrap;overflow:hidden}
 #calc .czm2{display:grid;grid-template-columns:1fr 1fr;align-content:start}
 #calc .czsel{background:rgba(18,22,20,var(--czink));color:var(--czbg)}
 #calc .czsubar{position:absolute;right:.75em;top:-.05em;font-size:.8em}
@@ -865,10 +871,10 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
 #calc .czpad{position:absolute;left:8.65em;top:19.75em;width:7.7em;height:5.3em;border-radius:48%/50%;
   background:linear-gradient(180deg,#2a2b30,#18191c);box-shadow:inset 0 0 0 .07em #44454c,inset 0 .1em 0 rgba(255,255,255,.1),0 .16em 0 #09090b,0 .3em .5em rgba(0,0,0,.6);overflow:hidden}
 #calc .czpk{position:absolute;inset:0;margin:0;padding:0;border:0;outline:none;cursor:pointer;background:transparent;-webkit-tap-highlight-color:transparent}
-#calc .czpu{clip-path:polygon(0 0,100% 0,50% 50%)}
-#calc .czpd{clip-path:polygon(0 100%,100% 100%,50% 50%)}
-#calc .czpl{clip-path:polygon(0 0,0 100%,50% 50%)}
-#calc .czpr{clip-path:polygon(100% 0,100% 100%,50% 50%)}
+#calc .czpu{clip-path:polygon(0 0,100% 0,100% 6.4%,50% 50%,0 6.4%)}
+#calc .czpd{clip-path:polygon(0 100%,100% 100%,100% 93.6%,50% 50%,0 93.6%)}
+#calc .czpl{clip-path:polygon(0 6.4%,50% 50%,0 93.6%)}
+#calc .czpr{clip-path:polygon(100% 6.4%,50% 50%,100% 93.6%)}
 #calc .czpk:hover{background:rgba(255,255,255,.05)}
 #calc .czpk:active,#calc .czpk.czdn{background:rgba(255,255,255,.16)}
 #calc .czpad::before{content:'';position:absolute;inset:0;pointer-events:none;
@@ -876,6 +882,20 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
              linear-gradient(-34.5deg,transparent calc(50% - .05em),rgba(0,0,0,.55) calc(50% - .05em),rgba(0,0,0,.55) calc(50% + .05em),transparent calc(50% + .05em))}
 #calc .czpc{position:absolute;left:50%;top:50%;width:2.5em;height:2.1em;margin:-1.05em 0 0 -1.25em;border-radius:50%;pointer-events:none;
   background:radial-gradient(circle at 50% 60%,#2e2f35,#202125);box-shadow:inset 0 .12em .2em rgba(0,0,0,.7),0 .05em 0 rgba(255,255,255,.08)}
+/* Baked look: calc/body.webp and calc/keys.webp (tools/bake.py) replace every texture, gradient and shadow above. */
+#calc.czbaked{filter:none}
+#calc.czbaked .czbody{background:url(calc/body.webp?v=25) 0 0/100% 100% no-repeat;box-shadow:0 .7em 1.4em rgba(0,0,0,.42),0 .15em .3em rgba(0,0,0,.3)}
+#calc.czbaked .czbody::before,#calc.czbaked .czbezel::before,#calc.czbaked .czpad::before{display:none}
+#calc.czbaked .czbrand,#calc.czbaked .czmodel,#calc.czbaked .czsolar,#calc.czbaked .czrlab,#calc.czbaked .czleg,#calc.czbaked .czpc{visibility:hidden}
+#calc.czbaked .czbezel,#calc.czbaked .czglass,#calc.czbaked .czpad{background:none;box-shadow:none}
+#calc.czbaked .czpad{border-radius:50%}
+#calc.czbaked .czk{background:url(calc/keys.webp?v=25) no-repeat;background-size:25.4em 54.9em;box-shadow:none;color:transparent}
+#calc.czbaked .czk::after{display:none}
+#calc.czbaked .czk .czkl{visibility:hidden}
+#calc.czbaked .czk:hover{filter:brightness(1.07)}
+#calc.czbaked .czk:active,#calc.czbaked .czk.czdn{transform:translateY(.07em);filter:brightness(.8);box-shadow:none}
+#calc.czbaked .czpk:hover{background:rgba(255,255,255,.04)}
+#calc.czbaked .czpk:active,#calc.czbaked .czpk.czdn{background:rgba(0,0,0,.3)}
 @media print{#calc{display:none!important}}
 /* Desktop: docked on the right; the page makes room for it. */
 #calc.czdock{top:0;right:0;bottom:0;left:auto;width:auto;box-sizing:content-box;padding:16px 12px;background:var(--panel);border-left:1px solid var(--border);filter:none;overflow-y:auto;}

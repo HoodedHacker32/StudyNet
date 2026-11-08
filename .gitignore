@@ -11,3 +11,5 @@ template.html
 worker/.wrangler/
 .impeccable/review/
 .impeccable/hook.cache.json
+tools/*.png
+__pycache__/

@@ -367,11 +367,14 @@
   var calcSrc = (function () { var s = document.currentScript && document.currentScript.src || ''; return 'calc.js' + (s.indexOf('?') > 0 ? s.slice(s.indexOf('?')) : ''); })();
   SN.openCalc = function () {
     if (window.__calc) return window.__calc.toggle(true);
-    var s = document.createElement('script');
-    s.src = calcSrc;
-    s.onload = function () { if (window.__calc) window.__calc.toggle(true); };
-    s.onerror = function () { alert('The calculator didn’t load. Check your connection and try again.'); };
-    document.body.appendChild(s);
+    if (SN._calcLoading) return; SN._calcLoading = true;
+    function load(src, then) {
+      var s = document.createElement('script'); s.src = src; s.onload = then;
+      s.onerror = function () { SN._calcLoading = false; alert('The calculator didn’t load. Check your connection and try again.'); };
+      document.body.appendChild(s);
+    }
+    // the LCD's pixel fonts first, then the calculator
+    load(calcSrc.replace('calc.js', 'calc-lcd.js'), function () { load(calcSrc, function () { if (window.__calc) window.__calc.toggle(true); }); });
   };
   document.addEventListener('click', function (e) { // calc.js handles [data-calc] itself once it's loaded
     if (!window.__calc && e.target.closest && e.target.closest('[data-calc]')) SN.openCalc();

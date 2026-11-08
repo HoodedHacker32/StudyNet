@@ -1498,23 +1498,36 @@ function ratresKey(a) { if (a === 'eq' || a === 'ac') S.scr = 'ratio'; else if (
    ====================================================================== */
 var MATHICON = '<svg viewBox="0 0 9 6" class="czmicon"><path d="M0.3 3.4 L1.3 3 L2.2 5.6 L3.6 0.4 H8.6 V5.6 H4.6 V2" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M6.3 1.2 L8.7 3.6 L7.6 4.6 L5.4 2.4 Z" fill="currentColor"/></svg>';
 function icon(x, cls, html) { return '<span class="czi" style="left:' + (x / 10) + 'em"><span class="czic ' + cls + '">' + html + '</span></span>'; }
-function statusHTML() {
-  var h = '';
-  if (S.shift) h += icon(1, 'czinv', 'S'); else if (S.alpha) h += icon(1, 'czinv', 'A');
-  if (!isZero(VARS.M)) h += icon(13, '', 'M');
-  if (S.sto) h += icon(21, 'czsto', '→<span class="czinv">x</span>');
-  if (isMathIn() && !(S.mode === 'stat' && (S.scr === 'calc' || S.scr === 'stated' || S.scr === 'slist'))) h += icon(40, 'czmi2', MATHICON);
-  h += icon(57, 'czinv', { deg: 'D', rad: 'R', gra: 'G' }[SET.angle]);
-  if (SET.fmt.t !== 'norm') h += icon(73, 'czsm', SET.fmt.t === 'fix' ? 'FIX' : 'SCI');
+/* indicators: [LCD x, name]; the pixel screen draws them from ICONS, the HTML fallback from statusHTML */
+function statusList() {
+  var L = [];
+  if (S.shift) L.push([1, 'S']); else if (S.alpha) L.push([1, 'A']);
+  if (!isZero(VARS.M)) L.push([10, 'M']);
+  if (S.sto) L.push([20, 'STO']);
+  if (isMathIn() && !(S.mode === 'stat' && (S.scr === 'calc' || S.scr === 'stated' || S.scr === 'slist'))) L.push([54, 'MATH']);
+  L.push([70, { deg: 'D', rad: 'R', gra: 'G' }[SET.angle]]);
+  if (SET.fmt.t !== 'norm') L.push([80, SET.fmt.t === 'fix' ? 'FIX' : 'SCI']);
   if (S.scr === 'calc' && S.st === 'result' && S.R) {
     var R = S.R;
-    if (R.mi < R.stmts.length - 1) h += icon(178, 'czinv czpause', '<b></b><b></b>');
+    if (R.mi < R.stmts.length - 1) L.push([176, 'PAUSE']);
     if (S.mode === 'calc') {
       var up = S.hi > 0 || (S.hi === S.hist.length - 1 && S.hist.length > 0), dn = S.hi < S.hist.length - 1;
-      if (dn) h += icon(156, 'czar', '▼'); if (up) h += icon(164, 'czar', '▲');
+      if (dn) L.push([150, 'DN']); if (up) L.push([158, 'UP']);
     }
   }
-  return h;
+  return L;
+}
+function statusHTML() {
+  return statusList().map(function (it) {
+    var n = it[1];
+    if (n === 'S' || n === 'A' || n === 'D' || n === 'R' || n === 'G') return icon(it[0], 'czinv', n);
+    if (n === 'STO') return icon(it[0], 'czsto', '→<span class="czinv">x</span>');
+    if (n === 'MATH') return icon(it[0], 'czmi2', MATHICON);
+    if (n === 'FIX' || n === 'SCI') return icon(it[0], 'czsm', n);
+    if (n === 'PAUSE') return icon(it[0], 'czinv czpause', '<b></b><b></b>');
+    if (n === 'UP' || n === 'DN') return icon(it[0], 'czar', n === 'UP' ? '▲' : '▼');
+    return icon(it[0], '', n);
+  }).join('');
 }
 function resultHTML(C, line) {
   var x = toF(C.v);
@@ -1697,6 +1710,7 @@ function lcdText() {
    KEYS[id] = { m: main action, s: SHIFT action, a: ALPHA action, lab, sl (shift legend), al (alpha legend) }
    ====================================================================== */
 var BX = '<span class="czkb"></span>', BXF = '<span class="czkb czkbf"></span>';
+var ASSETV = (function () { var s = document.currentScript && document.currentScript.src || ''; return s.indexOf('?') > 0 ? s.slice(s.indexOf('?')) : ''; })();
 var KEYS = {
   shift: { m: 'shift' }, alpha: { m: 'alpha' }, menu: { m: 'menu', s: 'setup' }, on: { m: 'on' },
   up: { m: 'up' }, down: { m: 'down' }, left: { m: 'left', s: 'jl' }, right: { m: 'right', s: 'jr' },
@@ -1867,6 +1881,16 @@ if (typeof document !== 'undefined') (function () {
   h += '</div>';
   el.innerHTML = h;
   document.body.appendChild(el);
+  // The body and keys are two baked pictures (tools/bake.py renders them once), so no textures, lighting or filters
+  // run live. Each key shows its own part of the keys picture; the HTML legends stay underneath for screen readers
+  // and as the look if the pictures can't load.
+  el.querySelectorAll('.czk').forEach(function (b) { b.style.backgroundPosition = '-' + b.style.left + ' -' + b.style.top; });
+  if (!window.SN_CALC_BAKE) (function () {
+    var n = 0;
+    ['calc/body.webp', 'calc/keys.webp'].forEach(function (u) {
+      var im = new Image(); im.onload = function () { if (++n === 2) el.classList.add('czbaked'); }; im.src = u + ASSETV;
+    });
+  })();
   var scr = el.querySelector('.czscr'), stEl = el.querySelector('.czstat'), mainEl = el.querySelector('.czmain'), scrollX = 0;
   function post() {
     var inr = mainEl.querySelector('.czin .czinr'), cur = mainEl.querySelector('.czcur');
@@ -1891,54 +1915,94 @@ if (typeof document !== 'undefined') (function () {
     try { post(); } catch (e) { /* layout only */ }
     pixelRender();
   }
-  /* The screen is rendered from the same HTML into a 192 × 63 image (1 LCD pixel = 0.1em at a 10px base),
-     every pixel is snapped fully on or off, and the result is scaled up with no smoothing, so characters sit on a real
-     pixel grid like the dot-matrix screen in the manual. If the browser can't do this, the HTML shows instead. */
-  var pix = document.createElement('canvas'), pctx = pix.getContext('2d'), pixOk = false, pixBusy = false, pixAgain = false, pixCss = null, blinkOn = true;
-  pix.width = 192; pix.height = 63; pix.className = 'czpix'; pix.setAttribute('aria-hidden', 'true');
-  scr.appendChild(pix);
+  /* The screen is rendered from the same HTML into a 768 × 252 image (4 x 4 per LCD pixel; 1 LCD pixel = 0.1em) using
+     StudyNet's pixel fonts (calc-lcd.js); every pixel is snapped fully on or off and the result is scaled up with no
+     smoothing, so characters sit on a real pixel grid. Indicators are fixed pixel icons, and the cursor has its own
+     layer that blinks with CSS, so nothing is re-rendered while the calculator sits idle. If the browser can't do
+     this, the HTML shows instead. */
+  var pix = document.createElement('canvas'), pctx = pix.getContext('2d'), pixOk = false, pixBusy = false, pixAgain = false, pixCss = null;
+  var curc = document.createElement('canvas'), cctx = curc.getContext('2d'), stc = document.createElement('canvas'), sctx = stc.getContext('2d');
+  pix.width = 768; pix.height = 252; curc.width = 192; curc.height = 63; pix.className = 'czpix czpix4'; curc.className = 'czpix czcurc';
+  stc.width = 768; stc.height = 32; stc.className = 'czstc';
+  [pix, curc, stc].forEach(function (c) { c.setAttribute('aria-hidden', 'true'); scr.appendChild(c); });
+  // Fonts (calc-lcd.js): "ClassWiz X Display" by Windy Deng (SIL OFL 1.1) for the text and indicators, plus StudyNet's
+  // small (exponents), italic (variables) and fallback faces, all on the same 14px grid (1 font pixel = 1 LCD pixel).
+  var FONTS = window.SN_LCD_FONTS, fontCss = '';
+  if (FONTS) {
+    fontCss = [['SN CW', 'cw', 'woff2'], ['SN LCD Small', 'small', 'truetype'], ['SN LCD Italic', 'ital', 'truetype'], ['SN LCD', 'fall', 'truetype']].map(function (f) {
+      return '@font-face{font-family:"' + f[0] + '";src:url(data:font/' + (f[2] === 'woff2' ? 'woff2' : 'ttf') + ';base64,' + FONTS[f[1]] + ') format("' + f[2] + '")}';
+    }).join('\n');
+    var fst = document.createElement('style'); fst.textContent = fontCss; document.head.appendChild(fst);
+    if (document.fonts && document.fonts.load) Promise.all(['14px "SN CW"', '14px "SN LCD Small"', '14px "SN LCD Italic"', '14px "SN LCD"'].map(function (f) { return document.fonts.load(f); })).then(function () { draw(); }, function () {});
+  }
   function lcdCss() {
     if (pixCss != null) return pixCss;
-    var out = [];
+    var out = [fontCss];
     Array.prototype.forEach.call(document.styleSheets, function (sh) {
       var rules; try { rules = sh.cssRules; } catch (e) { return; }
       // Only rules for things inside the panel ("#calc .x"), never the panel's own position and size.
-      Array.prototype.forEach.call(rules || [], function (ru) { if (ru.selectorText && /#calc[ ]/.test(ru.selectorText) && !/#calc[.:\[]/.test(ru.selectorText)) out.push(ru.cssText.replace(/#calc/g, '.czroot')); });
+      Array.prototype.forEach.call(rules || [], function (ru) {
+        var t = ru.selectorText;
+        if (t && /#calc /.test(t) && !/#calc[:.\[]/.test(t)) out.push(ru.cssText.replace(/#calc/g, '.czroot'));
+      });
     });
-    out.push('.czroot{position:relative;font-size:10px;width:192px;height:63px;overflow:hidden;margin:0;padding:0;font-family:Arial,sans-serif;line-height:normal}',
+    out.push('.czroot{position:relative;font-size:40px;width:768px;height:252px;overflow:hidden;margin:0;padding:0;font-family:Arial,sans-serif;line-height:normal}',
       '.czroot .czscr{position:relative!important;left:0!important;top:0!important;--czink:1!important;color:#000!important}',
-      '.czroot .czscr::after,.czroot .czpix{display:none!important}',
-      '.czroot .czscr>.czstat,.czroot .czscr>.czmain{opacity:1!important}',
-      '.czroot *,.czroot *::before,.czroot *::after{animation:none!important;transition:none!important;text-shadow:none!important}',
-      '.czroot.czboff .czcur::before,.czroot.czboff .czcur::after{opacity:0!important}');
+      '.czroot .czscr::after,.czroot canvas,.czroot .czstat{display:none!important}',
+      '.czroot .czscr>.czmain{opacity:1!important}',
+      '.czroot .czcur::before,.czroot .czcur::after{display:none!important}',
+      '.czroot *,.czroot *::before,.czroot *::after{animation:none!important;transition:none!important;text-shadow:none!important}');
     pixCss = out.join('\n');
     return pixCss;
+  }
+  // Indicators: the font's indicator glyphs (Private Use Area), drawn smoothly in the top row like LCD segments.
+  var ICONS = { S: '\ue200', A: '\ue201', M: '\ue202', STO: '\ue203', MATH: '\ue204', D: '\ue205', R: '\ue206', G: '\ue207',
+    FIX: '\ue208', SCI: '\ue209', DN: '\ue20f', UP: '\ue210', PAUSE: '\ue212' };
+  function drawIcons(L) {
+    sctx.clearRect(0, 0, 768, 32);
+    sctx.fillStyle = '#000'; sctx.font = '28px "SN CW"'; sctx.textBaseline = 'alphabetic';
+    L.forEach(function (it) { if (ICONS[it[1]]) sctx.fillText(ICONS[it[1]], it[0] * 4, 28); });
+  }
+  // The cursor: measured from the live screen HTML (same fonts, same layout) and drawn on its own blinking layer.
+  function drawCursor() {
+    cctx.clearRect(0, 0, 192, 63);
+    var c = mainEl.querySelector('.czcur');
+    if (!c || !S.on) return;
+    var sr = scr.getBoundingClientRect(), cr = c.getBoundingClientRect(), k = sr.width / 192;
+    if (!k) return;
+    var x = Math.round((cr.left - sr.left) / k), y = Math.round((cr.top - sr.top) / k), h = Math.max(6, Math.round(cr.height / k));
+    if (x < 0 || x > 192 || y > 63) return;
+    cctx.fillStyle = '#000';
+    if (c.classList.contains('czov')) cctx.fillRect(x, y + h - 1, 9, 2);
+    else if (c.classList.contains('czinc')) { cctx.fillRect(x - 1, y, 6, 2); cctx.fillRect(x - 1, y + 3, 2, h - 3); cctx.fillRect(x + 2, y + 3, 2, h - 3); }
+    else cctx.fillRect(x - 1, y, 2, h);
+    curc.style.animation = 'none'; void curc.offsetWidth; curc.style.animation = '';
   }
   function pixelRender() {
     if (el.style.display === 'none') return;
     if (pixBusy) { pixAgain = true; return; }
     pixBusy = true;
     var wrap = document.createElement('div'), st = document.createElement('style'), root = document.createElement('div'), sc = scr.cloneNode(true);
-    var oldPix = sc.querySelector('.czpix'); if (oldPix) oldPix.remove();
-    root.className = 'czroot' + (blinkOn ? '' : ' czboff');
+    sc.querySelectorAll('canvas').forEach(function (n) { n.remove(); });
+    root.className = 'czroot';
     st.textContent = lcdCss();
     root.appendChild(sc); wrap.appendChild(st); wrap.appendChild(root);
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="192" height="63"><defs><filter id="b" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="768" height="252"><defs><filter id="b" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
       '<feComponentTransfer><feFuncA type="discrete" tableValues="0 1"/></feComponentTransfer></filter></defs>' +
-      '<g filter="url(#b)"><foreignObject x="0" y="0" width="192" height="63">' + new XMLSerializer().serializeToString(wrap) + '</foreignObject></g></svg>';
-    var img = new Image();
+      '<g filter="url(#b)"><foreignObject x="0" y="0" width="768" height="252">' + new XMLSerializer().serializeToString(wrap) + '</foreignObject></g></svg>';
+    var img = new Image(), url = URL.createObjectURL(new Blob([svg], { type: 'image/svg+xml' }));
+    var icons = S.on && stEl.innerHTML ? statusList() : [];
+    function done() { URL.revokeObjectURL(url); pixBusy = false; if (pixAgain) { pixAgain = false; pixelRender(); } }
     img.onload = function () {
-      pctx.clearRect(0, 0, 192, 63); pctx.drawImage(img, 0, 0);
+      // kept at 4 x 4 per LCD pixel (each lit pixel is an exact block); the browser scales it to the screen size
+      pctx.clearRect(0, 0, 768, 252); pctx.drawImage(img, 0, 0);
+      drawIcons(icons); drawCursor();
       if (!pixOk) { pixOk = true; scr.classList.add('czpixon'); }
-      pixBusy = false; if (pixAgain) { pixAgain = false; pixelRender(); }
+      done();
     };
-    img.onerror = function () { pixOk = false; scr.classList.remove('czpixon'); pixBusy = false; };
-    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    img.onerror = function () { pixOk = false; scr.classList.remove('czpixon'); done(); };
+    img.src = url;
   }
-  setInterval(function () { // the cursor blinks on the pixel screen too
-    if (el.style.display === 'none' || !mainEl.querySelector('.czcur')) { if (!blinkOn) { blinkOn = true; } return; }
-    blinkOn = !blinkOn; pixelRender();
-  }, 530);
   onDraw = draw;
   onFlash = function (id) {
     var b = el.querySelector('[data-id="' + id + '"]'); if (!b) return;
@@ -1996,16 +2060,8 @@ if (typeof document !== 'undefined') (function () {
     else if (k === '%') { press('shift'); id = 'ans'; }
     if (id) { e.preventDefault(); e.stopPropagation(); press(id); }
   });
-  var fontAsked = false;
-  function lcdFont() { // the key-legend face (the LCD itself is drawn pixel by pixel, below)
-    if (fontAsked) return; fontAsked = true;
-    var l = document.createElement('link'); l.rel = 'stylesheet';
-    l.href = 'https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&display=swap';
-    document.head.appendChild(l);
-  }
   API.toggle = function (force) {
     var show = force != null ? !!force : el.style.display === 'none';
-    if (show) lcdFont();
     el.style.display = show ? 'block' : 'none';
     if (show) {
       // Phones: start nearly as wide as the screen so the keys are big enough to tap (- makes it smaller, drag to move).
