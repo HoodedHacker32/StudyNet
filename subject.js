@@ -82,12 +82,42 @@
     }), exact: false };
   }
   // Four options: the answer plus plausible wrong ones (explicit, then smart, then other answers in the set).
+  /* What kind of answer is this? Wrong options borrowed from other questions should look like the right one:
+     a year with years, a person's name with names, a single word with single words, a sentence with sentences. */
+  var MONTHS = /\b(january|february|march|april|may|june|july|august|september|october|november|december|janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\b/i;
+  function answerKind(a) {
+    var s = String(a).trim(), words = s.split(/\s+/);
+    if (/^c?\.?\s*\d{1,4}\s*(ad|bc|bce|ce)?$/i.test(s) || /\b(1[0-9]{3}|20[0-9]{2})\b/.test(s) || MONTHS.test(s)) return 'date';
+    if (/^[\d\s.,%€$£:\/–-]+$/.test(s) || /^(about |over |c\. ?)?[\d.,]+\s*(million|billion|thousand|%|km|m|kg|cm)?$/i.test(s)) return 'num';
+    if (/[.!?]$/.test(s) && words.length > 3) return 'sentence';
+    if (words.length > 1 && /,/.test(s)) return 'list';
+    // "What did … do?" answers start with a past-tense verb: Divided…, Discovered…, Built…
+    if (words.length > 1 && /^([a-z]+ed|made|took|gave|brought|built|won|led|found|began|wrote|set|sent|became|fought|kept|held|lost|sold|taught|went|came|drew|grew|used|ruled|painted|sculpted)$/i.test(words[0])) return 'action';
+    if (words.length === 1) return 'word';
+    var caps = words.filter(function (w) { return /^[A-ZÁÉÍÓÚÀÈÂÊÎÔÛÇ]/.test(w); }).length;
+    if (words.length <= 4 && caps / words.length >= 0.6) return 'proper';
+    return 'phrase';
+  }
+  // How far apart two kinds are: the same kind is best, a related kind (an action and a phrase) is close, anything else is far.
+  var NEAR = { 'action|phrase': 3, 'phrase|sentence': 3, 'action|sentence': 4, 'list|phrase': 4, 'date|num': 4, 'proper|word': 5, 'phrase|proper': 6 };
+  function kindGap(x, y) { if (x === y) return 0; return NEAR[[x, y].sort().join('|')] || 10; }
   function quizOptions(set, q) {
     var taken = q.ans.map(norm), picks = [];
     function add(c) { var n = norm(c); if (c && taken.indexOf(n) < 0) { taken.push(n); picks.push(c); } }
     (q.opts ? SN.shuffle(q.opts) : []).forEach(function (c) { if (picks.length < 3) add(c); });
     if (picks.length < 3 && set.distractors) set.distractors(q).forEach(function (c) { if (picks.length < 3) add(c); });
-    SN.shuffle(set.questions.map(function (x) { return x.ans[0]; })).forEach(function (c) { if (picks.length < 3) add(c); });
+    if (picks.length < 3) {
+      // Borrow from other answers, closest in kind and size first: this quiz first, then the year's other quizzes
+      // (a small penalty), so a short quiz doesn't fall back on answers of a different kind. A little randomness keeps it fresh.
+      var a = String(q.ans[0]), kind = answerKind(a), wc = a.split(/\s+/).length, pool = [];
+      set.questions.forEach(function (x) { pool.push({ c: String(x.ans[0]), far: 0 }); });
+      if (Y && Y.quizzes) Object.keys(Y.quizzes).forEach(function (k) {
+        if (Y.quizzes[k] !== set) Y.quizzes[k].questions.forEach(function (x) { pool.push({ c: String(x.ans[0]), far: 3 }); });
+      });
+      pool.map(function (o) {
+        return { c: o.c, s: kindGap(answerKind(o.c), kind) + o.far + Math.abs(o.c.split(/\s+/).length - wc) + Math.abs(o.c.length - a.length) / 12 + Math.random() * 1.5 };
+      }).sort(function (x, y) { return x.s - y.s; }).forEach(function (o) { if (picks.length < 3) add(o.c); });
+    }
     return SN.shuffle([q.ans[0]].concat(picks));
   }
   function questionHtml(q) {

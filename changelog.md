@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v9 (sensible wrong answers in tick-box questions)
+- When a quiz question has no hand-written wrong options, `quizOptions` (Quiz activity and exam top-ups) now borrows wrong answers of the same kind as the right one: years with years, people with people, single words with single words, phrases with phrases, actions with actions, of similar length. It borrows from the year's other quizzes when one quiz is too small. Before, it picked at random, so a date could be offered for a conquistador. Tested on 4,680 generated options: no date/number options mixed with text answers.
+
 ## November 2026 — v2026-11-08-v8 (bigger practice exam banks)
 - About 150 new exam-bank questions across every subject, modelled on the question types that come up again and again in the 2024 and 2025 Junior Cycle papers (studied on examinations.ie), written in StudyNet's own words and scenarios. Every content topic now has at least three bank questions, including 1st Year History, Gaeilge and Français, which had none. Recurring patterns now covered include earthquake labelling, epicentre and responses; weather-chart reading; six-figure grid references; cause vs consequence and a named reformer's beliefs and actions; the Plantation's undertakers and its impact; investigation skills (variables, hypothesis, repeats) and the breathing system in Science; grouping, long division, simultaneous equations and quadratic word problems in Maths; refunds when you change your mind, misleading advertising, social and cultural enterprises in Business; verb forms and reading comprehension in Gaeilge; profile and passé composé writing tasks in Français.
 - The dashboard only loads the secret Business data once it is unlocked.
