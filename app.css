@@ -713,7 +713,7 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
 #calc .czglass::after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:.15em;
   background:repeating-linear-gradient(0deg,rgba(0,0,0,.05) 0 .015em,transparent .015em .1em),repeating-linear-gradient(90deg,rgba(0,0,0,.05) 0 .015em,transparent .015em .1em)}
 /* ---------- LCD ---------- */
-#calc .czscr{--czink:.68;--czbg:#bac3be;position:absolute;left:.65em;top:.95em;width:19.2em;height:6.3em;overflow:hidden;
+#calc .czscr{--czink:.68;--czbg:#bac3be;position:absolute;left:.65em;top:.45em;width:19.2em;height:6.3em;overflow:hidden;
   color:rgba(16,20,14,var(--czink));font-family:'SN CW','SN LCD','Courier New',Courier,monospace;font-weight:400;font-variant-numeric:tabular-nums lining-nums;
   text-shadow:.05em .07em 0 rgba(0,0,0,.1);line-height:1;-webkit-font-smoothing:none;font-smooth:never}
 #calc .czpix{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;z-index:2;
@@ -721,8 +721,7 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
 #calc .czscr:not(.czpixon) .czpix{display:none}
 #calc .czpix4{image-rendering:auto}
 #calc .czcurc{animation:czblink 1.06s steps(1) infinite}
-#calc .czstc{position:absolute;left:0;top:0;width:100%;height:.8em;pointer-events:none;z-index:2;opacity:calc(var(--czink) + .12)}
-#calc .czscr:not(.czpixon) .czstc{display:none}
+#calc .czstc{position:absolute;left:.65em;top:.12em;width:19.2em;height:.8em;pointer-events:none;z-index:3;--czink:.68;opacity:calc(var(--czink) + .12)}
 #calc .czscr.czpixon .czcur::after,#calc .czscr.czpixon .czcur::before{animation:none}
 #calc .czscr.czpixon>.czstat,#calc .czscr.czpixon>.czmain{opacity:0}
 /* Pixel gaps over the lit segments, like the dot-matrix screen in the calculator's manual. */
@@ -885,17 +884,17 @@ html.theme-dark{--paper:#191919;--desk:#050505;--rule:#4b535a;--grid:#30363b;--p
   background:radial-gradient(circle at 50% 60%,#2e2f35,#202125);box-shadow:inset 0 .12em .2em rgba(0,0,0,.7),0 .05em 0 rgba(255,255,255,.08)}
 /* Baked look: calc/body.webp and calc/keys.webp (tools/bake.py) replace every texture, gradient and shadow above. */
 #calc.czbaked{filter:none}
-#calc.czbaked .czbody{background:url(calc/body.webp?v=26) 0 0/100% 100% no-repeat;box-shadow:0 .7em 1.4em rgba(0,0,0,.42),0 .15em .3em rgba(0,0,0,.3)}
+#calc.czbaked .czbody{background:url(calc/body.webp?v=27) 0 0/100% 100% no-repeat;box-shadow:0 .7em 1.4em rgba(0,0,0,.42),0 .15em .3em rgba(0,0,0,.3)}
 #calc.czbaked .czbody::before,#calc.czbaked .czbezel::before,#calc.czbaked .czpad::before{display:none}
 #calc.czbaked .czbrand,#calc.czbaked .czmodel,#calc.czbaked .czsolar,#calc.czbaked .czrlab,#calc.czbaked .czleg,#calc.czbaked .czpc{visibility:hidden}
 #calc.czbaked .czbezel,#calc.czbaked .czglass,#calc.czbaked .czpad{background:none;box-shadow:none}
 #calc.czbaked .czpad{border-radius:0;overflow:visible}
-#calc.czbaked .czk{background:url(calc/keys.webp?v=26) no-repeat;background-size:25.4em 54.9em;box-shadow:none;color:transparent}
+#calc.czbaked .czk{background:url(calc/keys.webp?v=27) no-repeat;background-size:25.4em 54.9em;box-shadow:none;color:transparent}
 #calc.czbaked .czk::after{display:none}
 #calc.czbaked .czk .czkl{visibility:hidden}
 #calc.czbaked .czk:hover{filter:brightness(1.07)}
 #calc.czbaked .czk:active,#calc.czbaked .czk.czdn{transform:translateY(.07em);filter:brightness(.8);box-shadow:none}
-#calc.czbaked .czpk{background:url(calc/keys.webp?v=26) -8.65em -19.75em/25.4em 54.9em no-repeat;transition:transform .05s,filter .05s}
+#calc.czbaked .czpk{background:url(calc/keys.webp?v=27) -8.65em -19.75em/25.4em 54.9em no-repeat;transition:transform .05s,filter .05s}
 #calc.czbaked .czpk:hover{filter:brightness(1.07)}
 #calc.czbaked .czpk:active,#calc.czbaked .czpk.czdn{transform:translateY(.06em);filter:brightness(.8)}
 @media print{#calc{display:none!important}}

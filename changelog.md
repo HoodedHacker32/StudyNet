@@ -1,5 +1,11 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v4 (calculator fixes)
+- The subtraction key now works as a minus sign where a number is expected, as on the real calculator: (−9)×(−1), −9×−1 and 2×−3 no longer give Syntax ERROR.
+- ALPHA then cos inserts the variable E again (it showed and worked as ×10, because both used the same internal token; Line-mode ×10ⁿ now has its own).
+- Indicators sit in their own row at the top of the LCD glass, above the dot matrix, and aren't shown on error screens.
+- Solar panel and display window are smooth glass again (the case texture was being subtracted twice there, leaving a bumpy relief); the logo's "S" has its dark outline back.
+
 ## November 2026 — v2026-11-08-v3 (photo-real calculator)
 - **Rendered like a product photo:** `tools/bake.py` now renders the body and keys itself (numpy + OpenCV) as a lit height field instead of styling HTML: rounded case edge, raised keys with rounded top edges sitting in dark gaps, domed round keys with fine radial lines, recessed display window and solar panel, a soft key light from the top left, ambient occlusion, soft cast shadows, a studio softbox reflection and sensor grain, rendered at 2x and scaled down. The browser only supplies the layout and the printed legends.
 - **Cursor pad like the real one:** a sunken rounded-diamond well with four separate raised keys (curved up and down keys, wedge-shaped left and right keys) around a sunken hub. The pad keys come from the keys picture, move when pressed, and their hit areas follow the drawn keys.

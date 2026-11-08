@@ -523,7 +523,7 @@ function isDigitT(t) { return t !== undefined && t.length === 1 && t >= '0' && t
 function isStatTok(t) { return t !== undefined && t.charAt(0) === '§'; }
 function startsOperand(t) {
   if (t === undefined) return false;
-  if (isDigitT(t) || t === '.' || t === 'E[' || t === 'E' || t === '(' || t === 'neg') return true;
+  if (isDigitT(t) || t === '.' || t === 'E[' || t === 'ᴇ' || t === '(' || t === 'neg') return true;
   if (FUN1[t] || (SLOTS[t] && t !== '^[' && t !== 'RD[')) return true;
   if (t === 'π' || t === 'e' || t === 'Ans' || t === 'Ran#' || VARN[t] || isStatTok(t)) return true;
   return false;
@@ -556,7 +556,7 @@ function pEst() {
   return v;
 }
 function pNeg() {
-  if (pk() === 'neg') { P.p++; var v = pNeg(), r = neg(v); return v.g ? G(r) : r; }
+  if (pk() === 'neg' || pk() === '−') { P.p++; var v = pNeg(), r = neg(v); return v.g ? G(r) : r; }
   return pLfrac();
 }
 function pLfrac() {
@@ -628,7 +628,7 @@ function pNum() {
   }
   var t2 = pk();
   if (t2 === 'E[') { P.p++; deeper(); var e = pSlot(']'); P.depth--; var ei = intOf(e); if (ei === null) merr(); v = mul(v, vten(e)); }
-  else if (t2 === 'E') {
+  else if (t2 === 'ᴇ') {
     P.p++; var sg = 1n, ds = '';
     if (pk() === 'neg' || pk() === '−') { P.p++; sg = -1n; }
     while (isDigitT(pk())) { ds += pk(); P.p++; }
@@ -649,7 +649,7 @@ function pNum() {
 function pAtom() {
   var t = pk();
   if (t === undefined) serr();
-  if (isDigitT(t) || t === '.' || t === 'E[' || t === 'E') return pNum();
+  if (isDigitT(t) || t === '.' || t === 'E[' || t === 'ᴇ') return pNum();
   P.p++;
   var a, b, c, v;
   if (t === '(') { deeper(); v = pExpr(); closeP(); return v; }
@@ -755,7 +755,7 @@ var TXT = {
   'π': '<i class="czpi">π</i>', 'e': '<i class="cze">e</i>', 'x': '<i class="czv">x</i>', 'y': '<i class="czv">y</i>',
   'sin⁻¹(': 'sin' + sup('-1') + '(', 'cos⁻¹(': 'cos' + sup('-1') + '(', 'tan⁻¹(': 'tan' + sup('-1') + '(',
   'sinh⁻¹(': 'sinh' + sup('-1') + '(', 'cosh⁻¹(': 'cosh' + sup('-1') + '(', 'tanh⁻¹(': 'tanh' + sup('-1') + '(',
-  '³√(': sup('3') + '√(', 'ˣ√(': sup('x') + '√(', 'e^(': '<i class="cze">e</i>^(', 'E': '<span class="czx10">×10</span>',
+  '³√(': sup('3') + '√(', 'ˣ√(': sup('x') + '√(', 'e^(': '<i class="cze">e</i>^(', 'ᴇ': '<span class="czx10">×10</span>',
   '⌟': '<span class="czfl"></span>', 'STO': '→', 'M+': 'M+', 'M−': 'M−', '§x̂': 'x̂', 'x̂': 'x̂', 'ŷ': 'ŷ', 'x̂₁': 'x̂<span class="czsb">1</span>', 'x̂₂': 'x̂<span class="czsb">2</span>',
   '&': '&amp;', '<': '&lt;'
 };
@@ -907,7 +907,7 @@ function tokFor(a, line) {
     case 'abs': return M ? [['A[', ']'], 1] : [['Abs('], 0];
     case 'ten': return M ? [['TEN[', ']'], 1] : [['10^('], 0];
     case 'epow': return M ? [['EXP[', ']'], 1] : [['e^('], 0];
-    case 'exp10': return M ? [['E[', ']'], 1] : [['E'], 0];
+    case 'exp10': return M ? [['E[', ']'], 1] : [['ᴇ'], 0];
     case 'recur': return M ? [['RD[', ']'], 1] : null;
   }
   var simple = {
@@ -1681,7 +1681,7 @@ function render() {
     case 'calc': body = calcBody(); break;
     case 'menu': body = menuBody(); st = ''; break;
     case 'mainmenu': body = mainMenuBody(); st = ''; break;
-    case 'error': body = linesBody([esc(S.err.m), '', '[AC]&nbsp;&nbsp;:Cancel', '[◄][►]:Goto']); break;
+    case 'error': body = linesBody([esc(S.err.m), '', '[AC]&nbsp;&nbsp;:Cancel', '[◄][►]:Goto']); st = ''; break;
     case 'recall': body = recallBody(); st = ''; break;
     case 'contrast': body = linesBody(['Contrast', '', '<span>Light</span><span class="czrt2">Dark</span>', '&nbsp;[◄]<span class="czrt2">[►]</span>']); st = ''; break;
     case 'fmtsel': body = linesBody([{ fix: 'Fix 0~9?', sci: 'Sci 0~9?', norm: 'Norm 1~2?' }[S.fmtsel]]); st = ''; break;
@@ -1911,6 +1911,7 @@ if (typeof document !== 'undefined') (function () {
     var r = render();
     scr.className = 'czscr ' + r.cls + (S.on ? '' : ' czoff') + (SET.font === 'small' ? ' czfsm' : '') + (pixOk ? ' czpixon' : '');
     scr.style.setProperty('--czink', String(0.35 + 0.065 * SET.contrast));
+    if (stc) { stc.style.setProperty('--czink', String(0.35 + 0.065 * SET.contrast)); stc.style.display = pixOk && S.on ? '' : 'none'; }
     stEl.innerHTML = r.st; mainEl.innerHTML = r.body;
     try { post(); } catch (e) { /* layout only */ }
     pixelRender();
@@ -1925,6 +1926,7 @@ if (typeof document !== 'undefined') (function () {
   pix.width = 768; pix.height = 252; curc.width = 192; curc.height = 63; pix.className = 'czpix czpix4'; curc.className = 'czpix czcurc';
   stc.width = 768; stc.height = 32; stc.className = 'czstc';
   [pix, curc, stc].forEach(function (c) { c.setAttribute('aria-hidden', 'true'); scr.appendChild(c); });
+  scr.parentNode.appendChild(stc); // the indicators have their own row at the top of the glass, above the dot matrix
   // Fonts (calc-lcd.js): "ClassWiz X Display" by Windy Deng (SIL OFL 1.1) for the text and indicators, plus StudyNet's
   // small (exponents), italic (variables) and fallback faces, all on the same 14px grid (1 font pixel = 1 LCD pixel).
   var FONTS = window.SN_LCD_FONTS, fontCss = '';
@@ -1998,6 +2000,7 @@ if (typeof document !== 'undefined') (function () {
       pctx.clearRect(0, 0, 768, 252); pctx.drawImage(img, 0, 0);
       drawIcons(icons); drawCursor();
       if (!pixOk) { pixOk = true; scr.classList.add('czpixon'); }
+      stc.style.display = S.on ? '' : 'none';
       done();
     };
     img.onerror = function () { pixOk = false; scr.classList.remove('czpixon'); done(); };

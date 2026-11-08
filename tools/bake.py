@@ -113,7 +113,7 @@ def render(geom, inks):
     bx, by, bw, bh = [v * em for v in geom['bezel']]
     sdb = sd_rrect(X, Y, bx, by, bw, bh, .7 * em, 1 * em)
     mb = np.clip(.5 - sdb, 0, 1)
-    hgt -= (peb * .1 + fine * .5) * mb                                    # smooth inside the window
+    hgt -= (peb * .1 + fine * .25) * mb                                    # smooth inside the window
     hgt -= 7 * smooth(-sdb / 3)
     paint(mb, '#0e0f11', .5, 90)
     gx_, gy_, gw_, gh_ = [v * em for v in geom['glass']]
@@ -128,18 +128,19 @@ def render(geom, inks):
     sx, sy, sw, sh = [v * em for v in geom['solar']]
     sds = sd_rrect(X, Y, sx, sy, sw, sh, .45 * em)
     ms = np.clip(.5 - sds, 0, 1)
-    hgt -= (peb * .1 + fine * .5) * ms
+    hgt -= (peb * .1 + fine * .25) * ms
     hgt -= 4 * smooth(-sds / 3)
-    paint(ms, '#111214', .35, 70)
+    paint(ms, '#0f1012', .18, 80)
     pad_ = .42 * em; cw = (sw - 2 * pad_ - 3 * .08 * em) / 4
     for i in range(4):
         cx0 = sx + pad_ + i * (cw + .08 * em)
         sdc = sd_rrect(X, Y, cx0, sy + pad_, cw, sh - 2 * pad_, .06 * em)
         mc = np.clip(.5 - sdc, 0, 1)
-        stripes = .9 + .1 * (np.sin((X - cx0) / (.5 * em) * 2 * math.pi) > .96)
-        paint(mc, '#4d3b30', .45, 140)
+        stripes = .93 + .07 * (np.sin((X - cx0) / (.5 * em) * 2 * math.pi) > .97)
+        paint(mc, '#3d2c22', .22, 120)
         alb *= (1 - mc * (1 - stripes))[..., None]
 
+    glassA = np.maximum(mb, ms)
     # --- keys
     def key_profile(di, hk, bevel, dome, U=None, V=None):
         t = np.clip(di / bevel, 0, 1)
@@ -239,9 +240,9 @@ def render(geom, inks):
 
     # --- printed ink (from the browser) on the case and on the keys
     ib, ik = inks['inkbody'][:H, :W], inks['inkkeys'][:H, :W]
-    for ink, where in ((ib, 1 - keyA), (ik, keyA)):
+    for ink, where, gain in ((ib, 1 - keyA, 1.0), (ik, keyA, .9)):
         a = (ink[..., 3] * where)[..., None]
-        alb[:ink.shape[0], :ink.shape[1]] = alb[:ink.shape[0], :ink.shape[1]] * (1 - a) + srgb2lin(ink[..., :3]) * .85 * a
+        alb[:ink.shape[0], :ink.shape[1]] = alb[:ink.shape[0], :ink.shape[1]] * (1 - a) + srgb2lin(ink[..., :3]) * gain * a
         ks[:ink.shape[0], :ink.shape[1]] *= (1 - .4 * a[..., 0])
 
     # ---------------------------------------------------------------- lighting
@@ -281,7 +282,7 @@ def render(geom, inks):
     # light falls off a little towards the bottom right, like a lamp above the top
     rgb *= (1.06 - .1 * (Y / H) - .04 * (X / W))[..., None]
     out = lin2srgb(np.clip(rgb, 0, 1))
-    out += rng.normal(0, 1.3 / 255, out.shape[:2]).astype(np.float32)[..., None]   # sensor grain
+    out += (rng.normal(0, 1.1 / 255, out.shape[:2]).astype(np.float32) * (1 - glassA))[..., None]   # sensor grain, not on glass
     out = np.clip(out, 0, 1)
     return out, caseA, keyA, (W, H)
 

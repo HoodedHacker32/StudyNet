@@ -2,7 +2,7 @@
 html,body{margin:0;background:transparent}
 .bakepage{min-height:2400px}
 #calc.czbake{filter:none!important}
-#calc.czbake .czhead,#calc.czbake .czscr,#calc.czbake .czsolar,#calc.czbake .czpad{visibility:hidden}
+#calc.czbake .czhead,#calc.czbake .czscr,#calc.czbake .czsolar,#calc.czbake .czpad,#calc.czbake .czstc{visibility:hidden}
 #calc.czbake .czbody,#calc.czbake .czbezel,#calc.czbake .czglass{background:none!important;box-shadow:none!important}
 #calc.czbake .czbody::before,#calc.czbake .czbezel::after,#calc.czbake .czglass::after,#calc.czbake .czk::after{display:none}
 #calc.czbake .czk{background:none!important;box-shadow:none!important;transition:none}
@@ -11,7 +11,7 @@ html,body{margin:0;background:transparent}
 #calc.czb-inkbody .czk{visibility:hidden}
 #calc.czb-inkbody .czbrand{color:#e7e8ec;text-shadow:none}
 #calc.czb-inkbody .czmark{color:#e7e8ec;filter:none}
-#calc.czb-inkbody .czmark text{stroke:none}
+#calc.czb-inkbody .czmark text{stroke:#26272f}
 #calc.czb-inkbody .czmodel{color:#b9bbc3}
 #calc.czb-inkbody .czrlt{color:#e8e9ed;font-family:'Saira Semi Condensed',sans-serif;font-weight:600;letter-spacing:.04em}
 #calc.czb-inkbody .czsl,#calc.czb-inkbody .czal{font-family:'Saira Semi Condensed',sans-serif;font-weight:600}
