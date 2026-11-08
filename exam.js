@@ -11,9 +11,15 @@
   'use strict';
   if (!window.SubjectApp) return;
   var ic = SN.ic, esc = SN.escHtml;
-  var LEN = { short: { n: 2, label: 'Quick: 2 questions' }, standard: { n: 4, label: 'Class test: 4 questions' }, full: { n: 7, label: 'Full paper: 7 questions' } };
+  var LEN = { short: 2, standard: 4, full: 7 }; // older paper codes
+  // Question size: marks each question aims for, and how many lettered parts it can have.
+  var SIZE = { s: { min: 8, max: 15, parts: 3, label: 'Short', hint: 'about 10 marks each' }, m: { min: 15, max: 30, parts: 5, label: 'Standard', hint: 'about 20 marks each' },
+    l: { min: 25, max: 45, parts: 6, label: 'Long', hint: 'about 35 marks each' } };
+  var KINDS = [['written', 'Written answers'], ['short', 'Short answers'], ['mcq', 'Tick the box'], ['gen', 'Maths with working']];
+  function kindOfPart(p) { return p.type === 'fill' ? 'short' : p.type; }
+  var DEFAULTS = { n: 4, z: 'm', k: ['written', 'short', 'mcq', 'gen'], m: 0, mm: 40, hc: 0, w: 0, c: 1 };
   var LETTERS = 'abcdefgh', ROMAN = ['i', 'ii', 'iii', 'iv', 'v', 'vi'];
-  var Q_MIN = 15, Q_MAX = 30, MAX_PARTS = 5;
+
   function descriptor(p) { return p >= 90 ? 'Distinction' : p >= 75 ? 'Higher Merit' : p >= 55 ? 'Merit' : p >= 40 ? 'Achieved' : p >= 20 ? 'Partially Achieved' : 'Not Graded'; }
   function rng(seed) { return window.MX ? MX.rng(seed) : (function (a) { return function () { a = (a * 1664525 + 1013904223) >>> 0; return a / 4294967296; }; })(seed); }
   function shuffle(arr, r) { arr = arr.slice(); for (var i = arr.length - 1; i > 0; i--) { var j = Math.floor(r() * (i + 1)); var t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; }
@@ -27,7 +33,8 @@
   function decode(s) { try { return JSON.parse(decodeURIComponent(escape(atob(s.replace(/-/g, '+').replace(/_/g, '/'))))); } catch (e) { return null; } }
   function stepText(st) { return typeof st === 'string' ? st : (st.h ? st.h + ' ' : '') + st.t; }
 
-  var api, cfg, Y, el, timerId = null, photos = {};
+  var api, cfg, Y, el, timerId = null, photos = {}, calcWasOpen = false;
+  function calcBack() { document.documentElement.classList.remove('no-calc'); if (calcWasOpen && window.__calc) window.__calc.toggle(true); calcWasOpen = false; }
   function curKey() { return 'sn_exam_cur_' + cfg.id + '_y' + api.year; }
   function history() { var h = SN.readJSON('sn_exams', []); return Array.isArray(h) ? h.filter(function (x) { return x.subject === cfg.id && x.year === api.year; }) : []; }
   function spelling(item) { return item.spell || (cfg.marking && cfg.marking.spelling) || 'strict'; }
@@ -89,33 +96,41 @@
     if (!tps.length) return null;
     var pools = {};
     tps.forEach(function (t) { pools[t] = { bank: shuffle(bt[t].bank, r), short: shuffle(bt[t].short, r) }; });
-    var nQ = (LEN[conf.l] || LEN.standard).n, perf = conf.w ? topicPerf() : null, order = shuffle(tps, r), qs = [], guard = 0;
+    conf = normConf(conf);
+    var SZ = SIZE[conf.z] || SIZE.m, Q_MIN = SZ.min, Q_MAX = SZ.max, MAX_PARTS = SZ.parts, kinds = conf.k;
+    function allowed(p) { return kinds.indexOf(kindOfPart(p)) >= 0; }
+    var nQ = conf.n, perf = conf.w === 1 ? topicPerf() : null, qs = [], guard = 0;
+    // Mixed: random order; weakest first: by past results; notes order: the order of the topics in the subject.
+    var order = conf.w === 2 ? tps.slice() : shuffle(tps, r);
+    if (conf.w === 1) order.sort(function (a, b) { return (perf[a] != null ? perf[a] : 0.5) - (perf[b] != null ? perf[b] : 0.5); });
     while (qs.length < nQ && guard++ < 40) {
       var avail = order.filter(function (t) { return pools[t].bank.length || pools[t].short.length >= 2; });
       if (!avail.length) break;
       var t = avail[qs.length % avail.length];
-      if (perf) { // weaker topics come up more often
-        var w = avail.map(function (x) { return 1.6 - (perf[x] != null ? perf[x] : 0.5); }), sum = w.reduce(function (a, b) { return a + b; }, 0), x = r() * sum;
-        for (var i = 0; i < avail.length; i++) { x -= w[i]; if (x <= 0) { t = avail[i]; break; } }
-      }
+
       var q = { topic: t, parts: [] }, marks = 0, ticks = 0, topped = false, used = {}, pool = pools[t];
       while (q.parts.length < MAX_PARTS && marks < Q_MIN) {
         var it = null;
-        for (var b = 0; b < pool.bank.length; b++) { if (!q.parts.length || marks + marksOf(pool.bank[b]) <= Q_MAX) { it = pool.bank.splice(b, 1)[0]; break; } }
+        var subs = null;
+        for (var b = 0; b < pool.bank.length; b++) {
+          var cand = pool.bank[b], cs = (cand.type === 'group' ? cand.parts : [cand]).filter(function (p) { return allowed(p.type === 'gen' ? { type: 'gen' } : p); });
+          if (!cs.length) { pool.bank.splice(b, 1); b--; continue; } // no part of this question is a type the student chose
+          var cm = cs.reduce(function (sm, p) { return sm + (p.marks || 2); }, 0);
+          if (!q.parts.length || marks + cm <= Q_MAX) { it = pool.bank.splice(b, 1)[0]; subs = cs.map(function (p) { return realiseItem(p, r); }); break; }
+        }
         if (it) {
-          var subs = it.type === 'group' ? it.parts.map(function (p) { return realiseItem(p, r); }) : [realiseItem(it, r)];
           subs.forEach(function (p) { if (p.ans) used[SubjectApp.norm(Array.isArray(p.ans) ? (Array.isArray(p.ans[0]) ? p.ans[0][0] : p.ans[0]) : p.ans)] = 1; plain(p.q).toLowerCase().split(/\W+/).forEach(function (w) { if (w.length > 6) used[w] = 1; }); });
           q.parts.push({ stem: it.type === 'group' ? it.q : '', sub: subs, src: it.src });
           marks += subs.reduce(function (s, p) { return s + p.marks; }, 0);
           continue;
         }
         // Top up with two or three short questions as one lettered part (once per question).
-        if (topped) break;
+        if (topped || (kinds.indexOf('short') < 0 && kinds.indexOf('mcq') < 0)) break;
         topped = true;
         var shorts = [];
         while (pool.short.length && shorts.length < 3 && marks + 3 * (shorts.length + 1) <= Q_MAX) {
-          var si = shortItem(pool.short.shift(), r, ticks < 1);
-          if (!si) continue;
+          var si = shortItem(pool.short.shift(), r, ticks < 1 && kinds.indexOf('mcq') >= 0);
+          if (!si || !allowed(si)) continue;
           // Skip a top-up that repeats an answer already asked in this question.
           var key = SubjectApp.norm(Array.isArray(si.ans) ? si.ans[0] : si.ans);
           if (used[key] || key.split(' ').some(function (w) { return w.length > 6 && used[w]; })) continue;
@@ -148,22 +163,40 @@
   function setup(params) {
     stopTimer();
     var bt = bankByTopic(), tps = (Y.topics || []).filter(function (t) { return bt[t.id] && (bt[t.id].bank.length || bt[t.id].short.length >= 2); });
-    var cur = SN.readJSON(curKey(), null), hist = history().slice(-6).reverse(), perf = topicPerf();
+    var cur = SN.readJSON(curKey(), null), hist = history().slice(-6).reverse(), perf = topicPerf(), pr = prefs();
     var h = '<header class="ph"><div class="ph-title">' + SN.logo(api.subj, 'lg') + '<h1 tabindex="-1">Practice exam</h1></div>' +
       '<p>' + esc(SN.YEAR_NAMES[api.year]) + ' ' + esc(cfg.title) + '. A paper laid out like your class tests, built from exam-style questions on the topics you choose, then marked against a marking scheme.</p></header>';
     if (cur && !cur.done && cur.v === 2) h += '<div class="notice" role="note">' + ic('clock') + '<div>You have a paper in progress. <button type="button" class="link" data-ex="resume">Continue it</button> or build a new one below.</div></div>';
-    h += '<form id="ex-form">';
-    h += '<section class="ex-sec"><h2 id="ex-h-t">Topics</h2><p>Each question on the paper covers one topic.' + (Object.keys(perf).length ? ' The % is your average on that topic in past papers.' : '') + '</p>' +
+    h += '<form id="ex-form" novalidate>';
+    h += '<section class="ex-sec"><h2 id="ex-h-t">Topics</h2><p>Each question on the paper covers one topic. <button type="button" class="link" data-ex="all">All</button> · <button type="button" class="link" data-ex="none">None</button>.' + (Object.keys(perf).length ? ' The % is your average on that topic in past papers.' : '') + '</p>' +
       '<div class="ex-opts" data-group="t" role="group" aria-labelledby="ex-h-t">' + tps.map(function (t) {
         var pf = perf[t.id];
-        return '<button type="button" class="pill" data-v="' + t.id + '" aria-pressed="true">' + esc(t.label) + (pf != null ? ' <span class="pill-n num">' + Math.round(pf * 100) + '%</span>' : '') + '</button>';
+        return '<button type="button" class="pill" data-v="' + t.id + '" aria-pressed="' + (!pr.t || pr.t.indexOf(t.id) >= 0) + '">' + esc(t.label) + (pf != null ? ' <span class="pill-n num">' + Math.round(pf * 100) + '%</span>' : '') + '</button>';
       }).join('') + '</div></section>';
-    h += '<section class="ex-sec"><h2 id="ex-h-l">Length</h2><div class="ex-opts" data-group="l" data-one role="group" aria-labelledby="ex-h-l">' + Object.keys(LEN).map(function (k) {
-      return '<button type="button" class="pill" data-v="' + k + '" aria-pressed="' + (k === 'standard') + '">' + LEN[k].label + '</button>';
-    }).join('') + '</div>' +
-      '<div class="ex-opts gap-s" data-group="m" data-one role="group" aria-label="Timing"><button type="button" class="pill" data-v="0" aria-pressed="true">No timer</button><button type="button" class="pill" data-v="1" aria-pressed="false">Timed, like the real thing</button></div>' +
-      '<div class="ex-opts gap-s" data-group="w" data-one role="group" aria-label="Topic mix"><button type="button" class="pill" data-v="0" aria-pressed="true">Even spread of topics</button><button type="button" class="pill" data-v="1" aria-pressed="false"' + (hist.length ? '' : ' disabled title="Sit a paper first"') + '>More on my weakest topics</button></div></section>';
-    h += '<div class="ex-actions"><button type="submit" class="btn primary">' + ic('paper') + ' Build my paper</button>' +
+    var have = kindsHere(bt), calcSubj = !!cfg.calculator;
+    function pill(g, v, label, on, extra) { return '<button type="button" class="pill" data-v="' + v + '" aria-pressed="' + !!on + '"' + (extra || '') + '>' + label + '</button>'; }
+    h += '<section class="ex-sec"><h2>The paper</h2>' +
+      '<div class="ex-row"><label for="ex-n">Questions</label><div class="stepper"><button type="button" class="btn" data-inc="-1" aria-label="One fewer question">−</button>' +
+        '<input class="input num" type="number" id="ex-n" min="1" max="10" value="' + pr.n + '" inputmode="numeric"><button type="button" class="btn" data-inc="1" aria-label="One more question">+</button></div></div>' +
+      '<div class="ex-row"><span class="ex-lbl" id="ex-h-z">Question size</span><div class="ex-opts" data-group="z" data-one role="group" aria-labelledby="ex-h-z">' +
+        Object.keys(SIZE).map(function (k) { return pill('z', k, SIZE[k].label + ' <span class="ex-meta">' + SIZE[k].hint + '</span>', pr.z === k); }).join('') + '</div></div>' +
+      '<div class="ex-row"><span class="ex-lbl" id="ex-h-k">Question types</span><div class="ex-opts" data-group="k" role="group" aria-labelledby="ex-h-k">' +
+        KINDS.filter(function (k) { return have[k[0]]; }).map(function (k) { return pill('k', k[0], k[1], pr.k.indexOf(k[0]) >= 0); }).join('') + '</div></div>' +
+      (calcSubj ? '<div class="ex-row"><span class="ex-lbl" id="ex-h-c">Calculator</span><div class="ex-opts" data-group="c" data-one role="group" aria-labelledby="ex-h-c">' +
+        pill('c', 1, 'Allowed', pr.c === 1) + pill('c', 0, 'Not allowed', pr.c === 0) + '</div></div>' : '') +
+      '</section>';
+    h += '<section class="ex-sec"><h2>Timing</h2>' +
+      '<div class="ex-row"><span class="ex-lbl" id="ex-h-m">Timer</span><div class="ex-opts" data-group="m" data-one role="group" aria-labelledby="ex-h-m">' +
+        pill('m', 0, 'No timer', pr.m === 0) + pill('m', 1, 'Suggested time', pr.m === 1) + pill('m', 2, 'My own time', pr.m === 2) + '</div></div>' +
+      '<div class="ex-row' + (pr.m === 2 ? '' : ' hidden') + '" id="ex-mm-row"><label for="ex-mm">Minutes</label><div class="stepper"><button type="button" class="btn" data-inc-mm="-5" aria-label="5 minutes less">−</button>' +
+        '<input class="input num" type="number" id="ex-mm" min="5" max="180" step="5" value="' + pr.mm + '" inputmode="numeric"><button type="button" class="btn" data-inc-mm="5" aria-label="5 minutes more">+</button></div></div>' +
+      '<div class="ex-row' + (pr.m ? '' : ' hidden') + '" id="ex-hc-row"><span class="ex-lbl" id="ex-h-hc">Clock</span><div class="ex-opts" data-group="hc" data-one role="group" aria-labelledby="ex-h-hc">' +
+        pill('hc', 0, 'Show time left', pr.hc === 0) + pill('hc', 1, 'Hide it; warn me at 5 and 1 minutes', pr.hc === 1) + '</div></div>' +
+      '</section>';
+    h += '<section class="ex-sec"><h2 id="ex-h-w">Order of questions</h2><div class="ex-opts" data-group="w" data-one role="group" aria-labelledby="ex-h-w">' +
+      pill('w', 0, 'Mixed', pr.w === 0) + pill('w', 1, 'Weakest topics first', pr.w === 1, hist.length ? '' : ' disabled title="Sit a paper first"') + pill('w', 2, 'Same order as my notes', pr.w === 2) + '</div></section>';
+    h += '<p class="ex-sum" id="ex-sum" aria-live="polite"></p>';
+    h += '<div class="ex-actions"><button type="submit" class="btn primary">' + ic('paper') + ' Build my paper</button><button type="button" class="link" data-ex="defaults">Reset options</button>' +
       '<span class="ex-meta">or open a friend’s paper:</span><input class="input ex-code" id="ex-code" placeholder="Paper code" aria-label="Paper code" autocomplete="off"><button type="button" class="btn" data-ex="code">Open</button></div>';
     h += '<p class="ex-meta" id="ex-err" role="alert"></p></form>';
     h += '<section class="ex-sec gap"><h2>How it’s marked</h2><p id="ex-ai">Checking…</p>' +
@@ -179,18 +212,62 @@
         (maths ? 'Maths is marked like a State Exam: full marks for a correct answer, and partial credit for correct steps in your working, so always show it. ' : '');
       p.innerHTML = base + 'Written answers are marked by AI against each question’s marking scheme. If the marker can’t be reached (for example offline), you’ll mark them yourself against the scheme.';
     });
+    summary();
     if (params && params.code) { el.querySelector('#ex-code').value = params.code; openCode(params.code); }
+  }
+  // Which question types this subject's bank can produce.
+  function kindsHere(bt) {
+    var k = {};
+    Object.keys(bt).forEach(function (t) {
+      bt[t].bank.forEach(function (it) { (it.type === 'group' ? it.parts : [it]).forEach(function (p) { k[kindOfPart(p)] = 1; }); });
+      if (bt[t].short.length) { k.short = 1; if (bt[t].short.some(function (x) { return x.raw; })) k.mcq = 1; }
+    });
+    return k;
+  }
+  function prefsKey() { return 'sn_exam_prefs_' + cfg.id; }
+  function prefs() { var p = SN.readJSON(prefsKey(), null); return normConf(Object.assign({}, DEFAULTS, p && typeof p === 'object' ? p : {})); }
+  function normConf(c) {
+    c = Object.assign({}, c);
+    if (c.n == null) c.n = c.l ? LEN[c.l] || 4 : DEFAULTS.n; // old codes
+    c.n = Math.max(1, Math.min(10, Math.round(+c.n) || 4));
+    if (!SIZE[c.z]) c.z = 'm';
+    if (!Array.isArray(c.k)) c.k = DEFAULTS.k.slice();
+    c.m = +c.m || 0; c.mm = Math.max(5, Math.min(180, Math.round(+c.mm) || 40)); c.hc = +c.hc || 0; c.w = +c.w || 0; c.c = c.c == null ? 1 : +c.c;
+    return c;
+  }
+  function snapFields() { // keep the number boxes on valid values: 1–10 questions, 5–180 minutes in steps of 5
+    var n = el.querySelector('#ex-n'), mm = el.querySelector('#ex-mm');
+    if (n) n.value = Math.max(1, Math.min(10, Math.round(+n.value) || 1));
+    if (mm) mm.value = Math.max(5, Math.min(180, Math.round((+mm.value || 5) / 5) * 5));
+  }
+  function suggestedMinutes(marks) { return Math.max(10, Math.round(marks * 0.5 / 5) * 5); }
+  function summary() {
+    var f = readForm(), el2 = el.querySelector('#ex-sum'); if (!el2) return;
+    var sample = f.t.length && f.k.length ? build(Object.assign({}, f, { s: 1 })) : null;
+    var marks = sample ? sample.reduce(function (sm, q) { return sm + q.marks; }, 0) : 0, nq = sample ? sample.length : 0;
+    var time = f.m === 2 ? f.mm + ' minutes' : f.m === 1 ? 'about ' + suggestedMinutes(marks) + ' minutes' : 'no time limit';
+    var warn = !f.t.length ? 'Choose at least one topic.' : !f.k.length ? 'Choose at least one question type.' : !sample ? 'There aren’t questions of those types for those topics yet.' : '';
+    if (!warn && nq < f.n) warn = '';
+    el2.innerHTML = warn ? '<b>' + warn + '</b>' : '<b>' + nq + ' question' + (nq > 1 ? 's' : '') + '</b>' + (nq < f.n ? ' (that’s all there are for these choices)' : '') + ' · about ' + marks + ' marks · ' + time + (cfg.calculator ? ' · calculator ' + (f.c ? 'allowed' : 'not allowed') : '');
+    el.querySelector('#ex-mm-row').classList.toggle('hidden', f.m !== 2);
+    el.querySelector('#ex-hc-row').classList.toggle('hidden', !f.m);
   }
   function readForm() {
     function vals(g) { return Array.prototype.map.call(el.querySelectorAll('[data-group="' + g + '"] [aria-pressed="true"]'), function (b) { return b.dataset.v; }); }
-    return { t: vals('t'), l: vals('l')[0] || 'standard', m: +vals('m')[0] || 0, w: +vals('w')[0] || 0, s: Math.floor(Math.random() * 1e9), y: api.year };
+    var n = el.querySelector('#ex-n'), mm = el.querySelector('#ex-mm');
+    return normConf({ t: vals('t'), n: n ? n.value : 4, z: vals('z')[0], k: vals('k'), m: +vals('m')[0] || 0, mm: mm ? mm.value : 40, hc: +vals('hc')[0] || 0,
+      w: +vals('w')[0] || 0, c: cfg.calculator ? +(vals('c')[0] || 0) : 1, s: Math.floor(Math.random() * 1e9), y: api.year });
   }
-  function start(conf) {
-    var qs = build(conf), err = el.querySelector('#ex-err');
-    if (!qs) { if (err) err.textContent = 'No questions for those topics yet. Choose more topics.'; return; }
+  function start(conf, fromForm) {
+    conf = normConf(conf);
+    var err = el.querySelector('#ex-err');
+    if (!conf.t.length || !conf.k.length) { if (err) err.textContent = !conf.t.length ? 'Choose at least one topic.' : 'Choose at least one question type.'; return; }
+    if (fromForm) { var keep = Object.assign({}, conf); delete keep.s; delete keep.y; SN.writeJSON(prefsKey(), keep); }
+    var qs = build(conf);
+    if (!qs) { if (err) err.textContent = 'There aren’t questions of those types for those topics yet. Choose more topics or question types.'; return; }
     var total = qs.reduce(function (s, q) { return s + q.marks; }, 0);
     var cur = { v: 2, code: encode(conf), conf: conf, qs: qs, answers: {}, started: Date.now(), total: total,
-      limit: conf.m ? Math.max(10, Math.round(total * 0.5 / 5) * 5) * 60000 : 0 };
+      limit: conf.m === 2 ? conf.mm * 60000 : conf.m === 1 ? suggestedMinutes(total) * 60000 : 0, hideClock: !!(conf.m && conf.hc), noCalc: !!(cfg.calculator && !conf.c) };
     photos = {};
     SN.writeJSON(curKey(), cur);
     paper(cur);
@@ -229,7 +306,8 @@
       '<div class="cover-title">' + SN.logo(api.subj, 'md') + '<h2 tabindex="-1" class="cover-h">' + esc(cfg.title) + ': practice paper</h2></div>' +
       '<p class="cover-sub">' + (cur.limit ? 'Time allowed: ' + min + ' minutes' : 'Suggested time: ' + min + ' minutes') + ' · ' + cur.total + ' marks · ' + cur.qs.length + ' questions</p>' +
       '<div class="cover-grid"><div class="cover-ins"><h2>Instructions</h2><ul><li>Answer <b>all</b> questions.</li><li>Write your answers in the spaces provided.</li>' +
-        (maths ? '<li>Show all your work clearly. Marks may be lost if necessary work is not shown.</li><li>You may use a calculator.</li>' : '') +
+        (maths ? '<li>Show all your work clearly. Marks may be lost if necessary work is not shown.</li>' : '') +
+        (cfg.calculator ? (cur.noCalc ? '<li><b>Calculators may not be used</b> in this paper.</li>' : '<li>You may use a calculator.</li>') : '') +
         '<li>The marks for each part are shown in brackets on the right.</li></ul></div>' +
         '<table class="cover-marks"><caption class="sr-only">Marks for each question</caption><thead><tr><th scope="col">Question</th><th scope="col">Mark</th></tr></thead><tbody>' + rows +
         '<tr class="tot"><th scope="row">Total</th><td>' + (tot ? '<span class="pen num">' + (busy ? '–' : tot.got) + '</span>' : '<span class="blank-mark" aria-hidden="true"></span>') + '<span class="of num">/' + cur.total + '</span></td></tr></tbody></table></div>' +
@@ -256,6 +334,9 @@
     h += '<p class="sheet-end">End of paper</p></article></div>' +
       '<div class="ex-actions gap"><button type="button" class="btn primary" data-ex="finish">' + ic('check') + ' Finish and mark</button></div>';
     el.innerHTML = h;
+    document.documentElement.classList.toggle('no-calc', !!cur.noCalc);
+    calcWasOpen = !!(cur.noCalc && window.__calc && window.__calc.el && window.__calc.el.style.display !== 'none');
+    if (cur.noCalc && window.__calc) window.__calc.toggle(false);
     el.querySelector('.cover-h').focus({ preventScroll: true });
     window.scrollTo(0, 0);
     tick(cur); stopTimer(); timerId = setInterval(function () { tick(SN.readJSON(curKey(), cur)); }, 1000);
@@ -270,7 +351,7 @@
     var used = Date.now() - cur.started;
     if (cur.limit) {
       var left = cur.limit - used;
-      t.textContent = fmt(left) + ' left' + (left < 5 * 60000 ? ' (nearly out of time)' : ''); t.classList.toggle('low', left < 5 * 60000);
+      t.textContent = cur.hideClock ? (left < 5 * 60000 ? 'Under 5 minutes left' : 'Timed paper') : fmt(left) + ' left' + (left < 5 * 60000 ? ' (nearly out of time)' : ''); t.classList.toggle('low', left < 5 * 60000);
       [5, 1].forEach(function (mins) { if (left < mins * 60000 && !warned[cur.started + '' + mins]) { warned[cur.started + '' + mins] = 1; say(mins + ' minute' + (mins > 1 ? 's' : '') + ' left.'); } });
       if (left <= 0) { stopTimer(); finish(true); }
     } else t.textContent = fmt(used);
@@ -303,10 +384,12 @@
     if (!timeUp && left && btn && !btn.dataset.armed) {
       btn.dataset.armed = '1'; btn.innerHTML = ic('check') + ' ' + left + ' unanswered. Tap again to finish';
       say(left + ' parts unanswered. Press Finish again to finish anyway.');
-      setTimeout(function () { if (btn.isConnected) { delete btn.dataset.armed; btn.innerHTML = ic('check') + ' Finish and mark'; } }, 4000);
+      var cnt = el.querySelector('#ex-count'); if (cnt && !el.querySelector('[data-ex="first-blank"]')) cnt.insertAdjacentHTML('afterend', ' <button type="button" class="link" data-ex="first-blank">Go to the first blank</button>');
+      setTimeout(function () { if (btn.isConnected) { delete btn.dataset.armed; btn.innerHTML = ic('check') + ' Finish and mark'; } }, 8000);
       return;
     }
     stopTimer();
+    calcBack();
     SN.markStudied();
     cur.done = true; cur.finished = Date.now(); cur.timeUp = !!timeUp; cur.marks = {};
     eachItem(cur, function (p, id) { cur.marks[id] = autoMark(p, cur.answers[id], id); });
@@ -494,7 +577,12 @@
         var g = b.closest('[data-group]');
         if (g.hasAttribute('data-one')) g.querySelectorAll('.pill').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
         else b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
-        return;
+        summary(); return;
+      }
+      var inc = e.target.closest('[data-inc],[data-inc-mm]');
+      if (inc) {
+        var box = el.querySelector(inc.hasAttribute('data-inc') ? '#ex-n' : '#ex-mm'), d = +(inc.dataset.inc || inc.dataset.incMm);
+        box.value = Math.max(+box.min, Math.min(+box.max, (+box.value || 0) + d)); snapFields(); summary(); return;
       }
       var ph = e.target.closest('[data-photo]'); if (ph) return pickPhoto(ph.dataset.photo);
       var a = e.target.closest('[data-ex]'); if (!a) return;
@@ -502,6 +590,11 @@
       if (act === 'finish') finish(false);
       else if (act === 'resume') { photos = {}; paper(SN.readJSON(curKey(), null)); }
       else if (act === 'code') openCode(el.querySelector('#ex-code').value);
+      else if (act === 'all' || act === 'none') { el.querySelectorAll('[data-group="t"] .pill').forEach(function (p) { p.setAttribute('aria-pressed', act === 'all' ? 'true' : 'false'); }); summary(); }
+      else if (act === 'defaults') { try { localStorage.removeItem(prefsKey()); } catch (x) {} setup(); }
+      else if (act === 'first-blank') { var cur2 = collect(), first = null; eachItem(cur2, function (p, id) { if (!first && !answered(cur2.answers[id]) && !photos[id]) first = id; });
+        var tgt = first && (el.querySelector('#' + first) || el.querySelector('[name="' + first + '"]') || el.querySelector('[data-fill="' + first + '"]'));
+        if (tgt) { tgt.scrollIntoView({ block: 'center' }); tgt.focus({ preventScroll: true }); } }
       else if (act === 'new') api.open('exam', null, true);
       else if (act === 'print') { collect(); window.print(); }
       else if (act === 'copy') {
@@ -509,7 +602,8 @@
         (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () { a.textContent = 'Link copied'; }, function () { a.textContent = url; });
       } else if (act === 'revise') api.goTopic(a.dataset.topicId);
     });
-    el.addEventListener('submit', function (e) { e.preventDefault(); start(readForm()); });
+    el.addEventListener('submit', function (e) { e.preventDefault(); snapFields(); start(readForm(), true); });
+    el.addEventListener('focusout', function (e) { if (e.target.id === 'ex-n' || e.target.id === 'ex-mm') { snapFields(); summary(); } });
     el.addEventListener('change', function (e) {
       var s = e.target.closest('[data-self]');
       if (s) {
@@ -522,7 +616,7 @@
       }
       if (el.querySelector('.ex-bar')) { var c = collect(); if (c) countAnswered(c); }
     });
-    el.addEventListener('input', function () { if (el.querySelector('.ex-bar')) { clearTimeout(el._t); el._t = setTimeout(function () { var c = collect(); if (c) countAnswered(c); }, 400); } });
+    el.addEventListener('input', function (e) { if (e.target.id === 'ex-n' || e.target.id === 'ex-mm') summary(); if (el.querySelector('.ex-bar')) { clearTimeout(el._t); el._t = setTimeout(function () { var c = collect(); if (c) countAnswered(c); }, 400); } });
   }
   function pickPhoto(id) {
     var f = document.createElement('input'); f.type = 'file'; f.accept = 'image/*'; f.capture = 'environment';
@@ -553,6 +647,6 @@
       if (fresh) wire();
       setup(params);
     },
-    leave: function () { stopTimer(); if (el && el.querySelector('.ex-bar')) collect(); }
+    leave: function () { stopTimer(); calcBack(); if (el && el.querySelector('.ex-bar')) collect(); }
   });
 })();

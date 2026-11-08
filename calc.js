@@ -1843,7 +1843,10 @@ if (typeof document !== 'undefined') (function () {
   }
   h += '<div class="czhead"><span class="czttl">Calculator</span><span class="czctl"><button type="button" data-z="-1" title="Smaller" aria-label="Make calculator smaller">−</button><button type="button" data-z="1" title="Bigger" aria-label="Make calculator bigger">+</button><button type="button" data-x="1" title="Close" aria-label="Close calculator">×</button></span></div>';
   h += '<div class="czbody">';
-  h += '<div class="czcasio">StudyNet</div><div class="czmodel">SN-2 SCIENTIFIC</div>';
+  h += '<div class="czbrand"><svg class="czmark" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10.6" fill="none" stroke="currentColor" stroke-width="1.7"/>' +
+    '<ellipse cx="12" cy="12" rx="5.2" ry="10.6" fill="none" stroke="currentColor" stroke-width="1.1"/><path d="M2.4 8.6h19.2M1.6 12h20.8M2.4 15.4h19.2" stroke="currentColor" stroke-width="1.1"/>' +
+    '<text x="12.3" y="18.4" text-anchor="middle" font-size="18" font-weight="900" font-family="Georgia,Times New Roman,serif" font-style="italic" fill="currentColor" stroke="#2b2d33" stroke-width="2.2" paint-order="stroke">S</text></svg>' +
+    '<span>StudyNet</span></div><div class="czmodel">SN-2 SCIENTIFIC</div>';
   h += '<div class="czsolar"><i></i><i></i><i></i><i></i></div>';
   h += '<div class="czbezel"><div class="czglass"><div class="czscr"><div class="czstat"></div><div class="czmain"></div></div></div></div>';
   // round keys + their printed labels
@@ -1882,11 +1885,60 @@ if (typeof document !== 'undefined') (function () {
   }
   function draw() {
     var r = render();
-    scr.className = 'czscr ' + r.cls + (S.on ? '' : ' czoff') + (SET.font === 'small' ? ' czfsm' : '');
+    scr.className = 'czscr ' + r.cls + (S.on ? '' : ' czoff') + (SET.font === 'small' ? ' czfsm' : '') + (pixOk ? ' czpixon' : '');
     scr.style.setProperty('--czink', String(0.35 + 0.065 * SET.contrast));
     stEl.innerHTML = r.st; mainEl.innerHTML = r.body;
     try { post(); } catch (e) { /* layout only */ }
+    pixelRender();
   }
+  /* The screen is rendered from the same HTML into a 192 × 63 image (1 LCD pixel = 0.1em at a 10px base),
+     every pixel is snapped fully on or off, and the result is scaled up with no smoothing, so characters sit on a real
+     pixel grid like the dot-matrix screen in the manual. If the browser can't do this, the HTML shows instead. */
+  var pix = document.createElement('canvas'), pctx = pix.getContext('2d'), pixOk = false, pixBusy = false, pixAgain = false, pixCss = null, blinkOn = true;
+  pix.width = 192; pix.height = 63; pix.className = 'czpix'; pix.setAttribute('aria-hidden', 'true');
+  scr.appendChild(pix);
+  function lcdCss() {
+    if (pixCss != null) return pixCss;
+    var out = [];
+    Array.prototype.forEach.call(document.styleSheets, function (sh) {
+      var rules; try { rules = sh.cssRules; } catch (e) { return; }
+      // Only rules for things inside the panel ("#calc .x"), never the panel's own position and size.
+      Array.prototype.forEach.call(rules || [], function (ru) { if (ru.selectorText && /#calc[ ]/.test(ru.selectorText) && !/#calc[.:\[]/.test(ru.selectorText)) out.push(ru.cssText.replace(/#calc/g, '.czroot')); });
+    });
+    out.push('.czroot{position:relative;font-size:10px;width:192px;height:63px;overflow:hidden;margin:0;padding:0;font-family:Arial,sans-serif;line-height:normal}',
+      '.czroot .czscr{position:relative!important;left:0!important;top:0!important;--czink:1!important;color:#000!important}',
+      '.czroot .czscr::after,.czroot .czpix{display:none!important}',
+      '.czroot .czscr>.czstat,.czroot .czscr>.czmain{opacity:1!important}',
+      '.czroot *,.czroot *::before,.czroot *::after{animation:none!important;transition:none!important;text-shadow:none!important}',
+      '.czroot.czboff .czcur::before,.czroot.czboff .czcur::after{opacity:0!important}');
+    pixCss = out.join('\n');
+    return pixCss;
+  }
+  function pixelRender() {
+    if (el.style.display === 'none') return;
+    if (pixBusy) { pixAgain = true; return; }
+    pixBusy = true;
+    var wrap = document.createElement('div'), st = document.createElement('style'), root = document.createElement('div'), sc = scr.cloneNode(true);
+    var oldPix = sc.querySelector('.czpix'); if (oldPix) oldPix.remove();
+    root.className = 'czroot' + (blinkOn ? '' : ' czboff');
+    st.textContent = lcdCss();
+    root.appendChild(sc); wrap.appendChild(st); wrap.appendChild(root);
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="192" height="63"><defs><filter id="b" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB">' +
+      '<feComponentTransfer><feFuncA type="discrete" tableValues="0 1"/></feComponentTransfer></filter></defs>' +
+      '<g filter="url(#b)"><foreignObject x="0" y="0" width="192" height="63">' + new XMLSerializer().serializeToString(wrap) + '</foreignObject></g></svg>';
+    var img = new Image();
+    img.onload = function () {
+      pctx.clearRect(0, 0, 192, 63); pctx.drawImage(img, 0, 0);
+      if (!pixOk) { pixOk = true; scr.classList.add('czpixon'); }
+      pixBusy = false; if (pixAgain) { pixAgain = false; pixelRender(); }
+    };
+    img.onerror = function () { pixOk = false; scr.classList.remove('czpixon'); pixBusy = false; };
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  }
+  setInterval(function () { // the cursor blinks on the pixel screen too
+    if (el.style.display === 'none' || !mainEl.querySelector('.czcur')) { if (!blinkOn) { blinkOn = true; } return; }
+    blinkOn = !blinkOn; pixelRender();
+  }, 530);
   onDraw = draw;
   onFlash = function (id) {
     var b = el.querySelector('[data-id="' + id + '"]'); if (!b) return;
@@ -1944,12 +1996,20 @@ if (typeof document !== 'undefined') (function () {
     else if (k === '%') { press('shift'); id = 'ans'; }
     if (id) { e.preventDefault(); e.stopPropagation(); press(id); }
   });
+  var fontAsked = false;
+  function lcdFont() { // the key-legend face (the LCD itself is drawn pixel by pixel, below)
+    if (fontAsked) return; fontAsked = true;
+    var l = document.createElement('link'); l.rel = 'stylesheet';
+    l.href = 'https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@500;600;700&display=swap';
+    document.head.appendChild(l);
+  }
   API.toggle = function (force) {
     var show = force != null ? !!force : el.style.display === 'none';
+    if (show) lcdFont();
     el.style.display = show ? 'block' : 'none';
     if (show) {
-      // Phones: start at about two thirds of the screen height so the question stays visible (+ makes it bigger).
-      if (!zoomed && window.innerWidth < 600) { size = Math.max(7, Math.floor(window.innerHeight * 0.5 / 57)); el.style.fontSize = size + 'px'; }
+      // Phones: start nearly as wide as the screen so the keys are big enough to tap (- makes it smaller, drag to move).
+      if (!zoomed && window.innerWidth < 600) { size = Math.max(7, Math.floor(Math.min(window.innerWidth * 0.94 / 26, window.innerHeight * 0.86 / 57))); el.style.fontSize = size + 'px'; }
       dock();
       if (!el.classList.contains('czdock')) fit();
       draw(); el.focus({ preventScroll: true });

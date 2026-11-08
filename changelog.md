@@ -1,5 +1,10 @@
 # StudyNet Changelog
 
+## November 2026 — v2026-11-08-v1 (exam builder options, calculator look)
+- **Exam builder:** choose 1–10 questions, question size (short / standard / long), which question types appear, whether a calculator is allowed (Maths, Science), timer off / suggested / your own minutes, an optional hidden clock with 5- and 1-minute warnings, and question order (mixed / weakest first / notes order). A live summary shows questions, marks and time; options are remembered per subject; "Go to the first blank" when finishing with gaps. Older paper links still open.
+- **Calculator:** looks like a real calculator, StudyNet-branded (globe-S logo, no Casio names or marks), modelled on a photo of the fx-85GT X: near-black rounded keys with a light edge, squared key digits, yellow DEL/AC, moulded grain with a cross-hatched keyboard area. The LCD is drawn at its real 192×63 resolution with every pixel on or off, so characters look like the manual's screens. On desktop it docks on the right; a paper with "calculator not allowed" hides it.
+- **Marking:** always by StudyNet's marker; the AI-marking choice is removed from Settings.
+
 ## November 2026 — v2026-11-07-v3 (+ Back to basics)
 - **Back to basics** (Maths): six 1st Year skills that 2nd Year algebra depends on (negative numbers, like terms, expanding one bracket, substitution, simple equations, two numbers that multiply and add), with notes. **Show me how** walks through the current question; a new skill opens with a worked example first. Method marks ignore working that only copies the question, and read the maths after labels like "HCF first:".
 
