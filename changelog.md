@@ -1,5 +1,12 @@
 # StudyNet Changelog
 
+## v2026-11-09-v2 (French exam run-through, clearer maths steps)
+- New `course.js`: a Run-through activity on the Français L’examen topic, built from the November exam post in the class Team. Quick checks for reading/vocab and grammar (from the existing quizzes), and a writing workshop for Moi, Ma famille, Ma ville and Mes loisirs: the teacher's checklist ticks live, sentence starters, .txt or photo upload, instant rule-based checks with "Fix it", and an AI check.
+- Worker: new `POST /check` (mistakes with fixes, checklist items missing, one next step; never rewrites). `parseCheck` keeps only mistakes that quote the paragraph, drops "this is correct" items and overlaps.
+- Maths: clearer worked steps for HCF, factorising (HCF, grouping, trinomials, fully), solving by factorising, the −b formula, surds, roots, simultaneous equations (and word problems), long division and fractions. Self-test: 23 skills × 300 seeds, all answers pass their own check, no broken step text.
+- about.html: says AI also checks French paragraphs, and never writes them. What's new updated (CHANGELOG_VER 2026-11-09-v1).
+- Cache v44, assets ?v=34, course.js in SHELL.
+
 ## v2026-11-09 (fairer AI marking, clearer expanding brackets)
 - AI marking: marks per scheme point with part marks; the total is the sum of the points, so marks and feedback agree. "/" means any one alternative; "Any two … (n marks each)" and "max N" are scored properly (`SNAIcore.pointMarks`, `tidyPoints`). Stronger prompt-injection wording. Worker needs redeploying.
 - Short answers: the right answer with an aside in brackets counts ("H2O (water)"), unless the aside offers another answer.

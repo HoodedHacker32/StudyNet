@@ -555,8 +555,12 @@
       var lead = rem[i], qc = lead / den[0], p = num.length - 2 - i;
       q.push(qc);
       var qt = ps([[qc, p === 0 ? '' : p === 1 ? 'x' : 'x^' + p]]);
-      steps.push({ h: 'Divide:', t: MX.m(ps([[lead, (num.length - 1 - i) === 1 ? 'x' : 'x^' + (num.length - 1 - i)]])) + ' ÷ ' + MX.m(ps([[den[0], 'x']])) + ' = ' + MX.m(qt) + '. Multiply ' + MX.m(qt) + ' by ' + MX.m(br(lin(den[0], den[1]))) + ' and subtract.' });
+      var back = ps([[qc * den[0], 'x^' + (p + 1)], [qc * den[1], p === 0 ? '' : p === 1 ? 'x' : 'x^' + p]]).replace(/x\^1(?!\d)/g, 'x');
       rem[i] -= qc * den[0]; rem[i + 1] -= qc * den[1];
+      var left = []; for (var k = i + 1; k < num.length; k++) { var pk = num.length - 1 - k; left.push([rem[k], pk === 0 ? '' : pk === 1 ? 'x' : 'x^' + pk]); }
+      var leftS = left.some(function (t) { return t[0]; }) ? ps(left) : '0';
+      steps.push({ h: (i ? 'Repeat with what’s left:' : 'Divide the first term:'), t: MX.m(ps([[lead, (num.length - 1 - i) === 1 ? 'x' : 'x^' + (num.length - 1 - i)]])) + ' ÷ ' + MX.m(ps([[den[0], 'x']])) + ' = ' + MX.m(qt) +
+        ', the next part of the answer. Multiply it back: ' + MX.m(qt + ' × ' + br(lin(den[0], den[1]))) + ' = ' + MX.m(back) + '. Take that away' + (leftS === '0' ? ': nothing is left.' : ' to leave ' + MX.m(leftS) + '.') });
     }
     return { q: q, steps: steps };
   }
@@ -564,6 +568,20 @@
   /* ── Skills (IXL-style generators) ─────────────────────────────── */
   // Each gen(r) returns { q: HTML, spec, steps:[HTML or {h,t}], hint, show: HTML answer }
   function S(id, label, desc, gen) { return { id: id, label: label, desc: desc, gen: gen }; }
+  function pw(v, e) { return v + (e > 1 ? '^' + e : ''); } // x, x^2, x^3
+  // Worked steps for the word problems: x + y = S and either x − y = D (add them) or Px + Qy = T (match the y terms, subtract).
+  function wordSteps(t, x, y, e1, e2, pq) {
+    var S = x + y, out = [{ h: 'Equation 1 (the total):', t: MX.m(e1) }, { h: 'Equation 2:', t: MX.m(e2) }];
+    if (t === 3) {
+      out.push({ h: 'Add the two equations:', t: 'the +y and −y cancel: ' + MX.m('2x = ' + S + ' + ' + (x - y)) + ' = ' + 2 * x + ', so ' + MX.m('x = ' + x) + '.' });
+    } else {
+      var P = pq[0], Q = pq[1], T = P * x + Q * y;
+      out.push({ h: 'Make the y terms the same:', t: 'multiply equation 1 by ' + Q + ': ' + MX.m(Q + 'x + ' + Q + 'y = ' + Q * S) + '.' });
+      out.push({ h: 'Subtract to get rid of y:', t: 'take this from equation 2: ' + MX.m((P - Q) + 'x = ' + T + ' - ' + Q * S) + ' = ' + (T - Q * S) + ', so ' + MX.m('x = ' + x) + '.' });
+    }
+    out.push({ h: 'Find y:', t: 'put x into equation 1: ' + MX.m(x + ' + y = ' + S) + ', so ' + MX.m('y = ' + S + ' - ' + x + ' = ' + y) + '.' });
+    return out;
+  }
   function vpick(r) { return pick(r, ['x', 'x', 'x', 'y', 'a', 'p', 'k']); }
   MX.skills = {};
   [
@@ -589,9 +607,10 @@
       return { q: 'Find the highest common factor (HCF) of ' + MX.m(t1) + ' and ' + MX.m(t2) + '.', spec: { kind: 'expr', expr: ans }, show: MX.m(ans),
         cp: [{ band: 'lo', kind: 'num', n: g, why: 'You found the HCF of the numbers' }],
         hint: 'Find the HCF of the numbers, then take the lowest power of each letter that is in both terms.',
-        steps: [{ h: 'Numbers:', t: 'the HCF of ' + g * m[0] + ' and ' + g * m[1] + ' is ' + g + '.' },
-          { h: 'Letters:', t: 'the lowest power of ' + MX.m(v) + ' in both is ' + MX.m(v + (Math.min(e1, e2) > 1 ? '^' + Math.min(e1, e2) : '')) + (two ? ', and of ' + MX.m(w) + ' it is ' + MX.m(w + (Math.min(f1, f2) > 1 ? '^' + Math.min(f1, f2) : '')) : '') + '.' },
-          { h: 'HCF =', t: MX.m(ans) }] };
+        steps: [{ h: 'The numbers:', t: 'find the biggest number that divides into both ' + g * m[0] + ' and ' + g * m[1] + '. It’s ' + g + ', because ' + g * m[0] + ' = ' + g + ' × ' + m[0] + ' and ' + g * m[1] + ' = ' + g + ' × ' + m[1] + '.' },
+          { h: 'The letters:', t: 'keep each letter that is in both terms, with its smaller power. ' + MX.m(pw(v, e1)) + ' and ' + MX.m(pw(v, e2)) + ' give ' + MX.m(pw(v, Math.min(e1, e2))) +
+            (two ? '; ' + MX.m(pw(w, f1)) + ' and ' + MX.m(pw(w, f2)) + ' give ' + MX.m(pw(w, Math.min(f1, f2))) : '') + '.' },
+          { h: 'Put them together:', t: 'HCF = ' + MX.m(ans) }] };
     }),
     S('factHcf', 'Factorise: take out the HCF', 'Type 1, e.g. 15pq + 3q²', function (r) {
       var v = pick(r, ['x', 'p', 'a']), w = pick(r, ['y', 'q', 'b']), inner, gc = pick(r, [2, 3, 4, 5, 6]), gv = pick(r, ['', v, w]);
@@ -604,8 +623,8 @@
       return { q: 'Factorise ' + MX.m(e) + '.', spec: { kind: 'expr', expr: e, form: 'factorised' }, show: MX.m(ans),
         cp: [{ band: 'hi', kind: 'product', e: e, why: 'You took out a common factor correctly (but not the highest one)' }, { band: 'lo', kind: 'num', n: gc, why: 'You found the number part of the HCF' }],
         hint: 'Find the HCF of every term and put it outside the bracket.',
-        steps: [{ h: 'Step 1:', t: 'the HCF of the terms is ' + MX.m(hcf) + '. Put it outside the bracket.' },
-          { h: 'Step 2:', t: 'divide each term by ' + MX.m(hcf) + ' to get what goes in the bracket: ' + MX.m(ps(inner)) + '.' },
+        steps: [{ h: 'Step 1:', t: 'find the HCF: the biggest number' + (gv ? ' and the letters' : '') + ' that go into every term. It’s ' + MX.m(hcf) + ', so it goes outside the bracket.' },
+          { h: 'Step 2:', t: 'divide each term by ' + MX.m(hcf) + ' to find what goes inside: ' + inner.map(function (t) { var one = ps([t]); return MX.m(expandTerms(hcf + '*(' + one + ')')) + ' ÷ ' + MX.m(hcf) + ' = ' + MX.m(one); }).join(', ') + '.' },
           { h: 'Answer:', t: MX.m(ans) }] };
     }),
     S('group', 'Factorise by grouping', 'Type 2: four terms, two pairs', function (r) {
@@ -624,8 +643,9 @@
         cp: [{ band: 'hi', kind: 'factor', e: ex.e, f: [ex.f1, ex.f2], why: 'You found a correct common bracket' }, { band: 'lo', kind: 'has', e: ex.e, f: [ex.f1, ex.f2], why: 'You took out the HCF of a pair correctly' }],
         hint: 'Pair up terms that share a factor, take out the HCF of each pair, then take out the common bracket.',
         steps: [ex.re ? { h: 'Rearrange', t: 'so each pair shares a factor: ' + MX.m(ps(ex.t)) + '.' } : { h: 'Pair up:', t: MX.m(br(ps(ex.t.slice(0, 2))) + ' + ' + br(ps(ex.t.slice(2)))) + '.' },
-          { h: 'HCF of each pair:', t: MX.m(A + br(ex.f2) + (B[0] === '-' ? ' - ' + B.slice(1) : ' + ' + B) + br(ex.f2)) + '. The brackets must match.' },
-          { h: 'Take out the common bracket:', t: MX.m(ans) }] };
+          { h: 'Take the HCF out of each pair:', t: MX.m(ps(ex.t.slice(0, 2))) + ' has ' + MX.m(A) + ' in both terms, and ' + MX.m(ps(ex.t.slice(2))) + ' has ' + MX.m(B) + '. That gives ' +
+            MX.m(A + br(ex.f2) + (B[0] === '-' ? ' - ' + B.slice(1) : ' + ' + B) + br(ex.f2)) + '. The two brackets match.' },
+          { h: 'Take out the matching bracket:', t: MX.m(br(ex.f2)) + ' is in both parts, so write it once. What was in front of it, ' + MX.m(ex.f1) + ', makes the other bracket: ' + MX.m(ans) }] };
     }),
     S('quad1', 'Factorise x² + bx + c', 'Type 3 with one x²', function (r) {
       var p, q, v = vpick(r);
@@ -649,7 +669,7 @@
         cp: [{ band: 'hi', kind: 'factor', e: e, f: [A + ' + ' + B, A + ' - ' + B], why: 'You found a correct bracket' }, { band: 'lo', kind: 'step', e: e, why: 'You wrote each term as a square' }],
         hint: 'Write each term as something squared, then use a² − b² = (a + b)(a − b).',
         steps: [{ h: 'Step 1:', t: 'write each term as a perfect square: ' + MX.m('(' + A + ')^2 - (' + B + ')^2') + '.' },
-          { h: 'Step 2:', t: 'use ' + MX.m('a^2 - b^2 = (a + b)(a - b)') + '.' }, { h: 'Answer:', t: MX.m(ans) }] };
+          { h: 'Step 2:', t: 'use ' + MX.m('a^2 - b^2 = (a + b)(a - b)') + ', with ' + MX.m(A) + ' in place of a and ' + MX.m(B) + ' in place of b.' }, { h: 'Answer:', t: MX.m(ans) }] };
     }),
     S('fully', 'Factorise fully', 'Take out the HCF, then factorise again', function (r) {
       var g = pick(r, [2, 3, 4, 5]), kind = r() < 0.5, inner, ans, e, how;
@@ -660,18 +680,20 @@
         cp: [{ band: 'hi', kind: 'factor', e: e, f: ans.slice(String(g).length).replace(/^\(|\)$/g, '').split(')('), why: 'You factorised the bracket correctly' },
           { band: 'lo', kind: 'has', e: e, f: [inner], why: 'You took out the HCF first' }],
         hint: 'Take out the HCF first. Then look at what is left in the bracket.',
-        steps: [{ h: 'HCF first:', t: MX.m(g + br(inner)) + '.' }, { h: 'The bracket is', t: how + ', so factorise it again.' }, { h: 'Answer:', t: MX.m(ans) }] };
+        steps: [{ h: 'HCF first:', t: g + ' divides into every term, so take it out: ' + MX.m(g + br(inner)) + '.' },
+          { h: 'Look in the bracket:', t: MX.m(inner) + ' is ' + how + ', so it factorises again' + (kind ? ' using a² − b² = (a + b)(a − b).' : ': find two numbers that multiply to ' + num(m * n) + ' and add to ' + num(m + n) + '.') },
+          { h: 'Answer:', t: 'keep the ' + g + ' in front: ' + MX.m(ans) }] };
     }),
     S('solveFact', 'Solve quadratics by factorising', 'Three types: three terms, no constant, no x term', function (r) {
       var type = ri(r, 0, 3), steps, e, vals;
       if (type === 0) {
         var p, q; do { p = nz(r, -9, 9); q = nz(r, -9, 9); } while (p === q || p + q === 0);
         e = ps([[1, 'x^2'], [-(p + q), 'x'], [p * q, '']]) + ' = 0'; vals = [p, q];
-        steps = [{ h: 'Factorise:', t: MX.m(br(lin(1, -p)) + br(lin(1, -q)) + ' = 0') }, { h: 'Let each factor = 0:', t: MX.m(lin(1, -p) + ' = 0') + ' or ' + MX.m(lin(1, -q) + ' = 0') }];
+        steps = [{ h: 'Factorise:', t: MX.m(br(lin(1, -p)) + br(lin(1, -q)) + ' = 0') }, { h: 'Set each bracket equal to 0:', t: 'two things multiply to make 0, so one of them must be 0: ' + MX.m(lin(1, -p) + ' = 0') + ' or ' + MX.m(lin(1, -q) + ' = 0') }];
       } else if (type === 1) {
         var a = ri(r, 1, 4), b = nz(r, -12, 12); if (b % a) b = a * nz(r, -5, 5);
         e = ps([[a, 'x^2'], [b, 'x']]) + ' = 0'; vals = [0, -b / a];
-        steps = [{ h: 'Take out the HCF:', t: MX.m(ps([[a, 'x']]) + br(lin(1, b / a)) + ' = 0') }, { h: 'Let each factor = 0:', t: MX.m(ps([[a, 'x']]) + ' = 0') + ' or ' + MX.m(lin(1, b / a) + ' = 0') }];
+        steps = [{ h: 'Take out the HCF:', t: MX.m(ps([[a, 'x']]) + br(lin(1, b / a)) + ' = 0') }, { h: 'Set each bracket equal to 0:', t: 'two things multiply to make 0, so one of them must be 0: ' + MX.m(ps([[a, 'x']]) + ' = 0') + ' or ' + MX.m(lin(1, b / a) + ' = 0') }];
       } else if (type === 2) {
         var k = ri(r, 1, 10);
         e = r() < 0.5 ? 'x^2 = ' + k * k : 'x^2 - ' + k * k + ' = 0'; vals = [k, -k];
@@ -683,14 +705,14 @@
         if (!B || !C) { B = b2 - a2 * 2; C = -b2 * 2; n = 2; }
         e = ps([[a2, 'x^2'], [B, 'x']]) + ' = ' + (-C); vals = [-b2 / a2, n];
         steps = [{ h: 'Bring everything to the left:', t: MX.m(ps([[a2, 'x^2'], [B, 'x'], [C, '']]) + ' = 0') }, { h: 'Factorise:', t: MX.m(br(lin(a2, b2)) + br(lin(1, -n)) + ' = 0') },
-          { h: 'Let each factor = 0:', t: MX.m(lin(a2, b2) + ' = 0') + ' or ' + MX.m(lin(1, -n) + ' = 0') }];
+          { h: 'Set each bracket equal to 0:', t: 'two things multiply to make 0, so one of them must be 0: ' + MX.m(lin(a2, b2) + ' = 0') + ' or ' + MX.m(lin(1, -n) + ' = 0') }];
       }
       var show = vals.map(function (v) { return MX.m('x = ' + (Math.round(v) === v ? num(v) : fracStr(Math.round(v * 6), 6))); }).join(' or ');
       steps.push({ h: 'Solve:', t: show });
       var sides = e.split('='), eq = sides[0] + ' - (' + sides[1] + ')';
       return { q: 'Solve ' + MX.m(e) + '.', spec: { kind: 'values', vals: vals }, show: show,
         cp: [{ band: 'hi', kind: 'value', vals: vals, why: 'You found one of the solutions' }, { band: 'hi', kind: 'eqfactor', e: eq, why: 'You factorised the equation correctly' },
-          { band: 'lo', kind: 'eqn', e: eq, why: 'You rearranged the equation to = 0' }], hint: 'Get everything on the left equal to 0, factorise, then let each factor equal 0.', steps: steps, placeholder: 'e.g. x = 3, x = −5' };
+          { band: 'lo', kind: 'eqn', e: eq, why: 'You rearranged the equation to = 0' }], hint: 'Get everything on the left with 0 on the right, factorise, then set each bracket equal to 0.', steps: steps, placeholder: 'e.g. x = 3, x = −5' };
     }),
     S('formula', 'The −b formula (decimals)', 'Solve to 1 or 2 decimal places', function (r) {
       var a, b, c, D;
@@ -702,10 +724,10 @@
         cp: [{ band: 'hi', kind: 'value', vals: [x1, x2], dp: dp, why: 'You found one of the solutions' }, { band: 'hi', kind: 'num', n: D, why: 'You worked out b² − 4ac correctly' },
           { band: 'lo', kind: 'abc', a: a, b: b, c: c, why: 'You labelled a, b and c correctly' }],
         hint: 'Label a, b and c, then use x = (−b ± √(b² − 4ac)) / 2a. It’s on page 20 of the log tables.', placeholder: 'e.g. 2.90, −0.23',
-        steps: [{ h: 'Label:', t: 'a = ' + a + ', b = ' + b + ', c = ' + c + '.' },
+        steps: [{ h: 'Find a, b and c:', t: 'a = ' + a + ' (the number in front of x²), b = ' + b + ' (in front of x), c = ' + c + ' (on its own).' },
           { h: 'Fill into the formula:', t: MX.m('x = frac(-' + paren(b) + ' +- sqrt(' + paren(b) + '^2 - 4' + '(' + a + ')(' + c + ')), 2(' + a + '))') },
-          { h: 'Simplify:', t: MX.m('x = frac(' + (-b) + ' +- sqrt(' + D + '), ' + 2 * a + ')') },
-          { h: 'Work out both:', t: show }] };
+          { h: 'Work out the part under the √ first:', t: MX.m(paren(b) + '^2 - 4(' + a + ')(' + c + ')') + ' = ' + b * b + ' − ' + paren(4 * a * c) + ' = ' + D + ', so ' + MX.m('x = frac(' + (-b) + ' +- sqrt(' + D + '), ' + 2 * a + ')') },
+          { h: 'Work out both, once with + and once with −:', t: show }] };
     }),
     S('formulaSurd', 'The −b formula (surd form)', 'Answers like 3 ± 2√2', function (r) {
       var h, s, rr, c;
@@ -715,9 +737,9 @@
       return { q: 'Solve ' + MX.m(e) + ', giving your answers in surd form.', spec: { kind: 'values', vals: [h + s * Math.sqrt(rr), h - s * Math.sqrt(rr)], surd: true }, show: show,
         cp: [{ band: 'hi', kind: 'num', n: D, why: 'You worked out b² − 4ac correctly' }, { band: 'lo', kind: 'abc', a: 1, b: b, c: c, why: 'You labelled a, b and c correctly' }],
         hint: 'Use the −b formula, then simplify the surd: find a square number that divides into the number under the √.', placeholder: 'e.g. 3 ± 2√2',
-        steps: [{ h: 'Label:', t: 'a = 1, b = ' + b + ', c = ' + c + '.' },
-          { h: 'Fill in:', t: MX.m('x = frac(' + (-b) + ' +- sqrt(' + D + '), 2)') },
-          { h: 'Simplify the surd:', t: MX.m('sqrt(' + D + ') = sqrt(' + 4 * s * s + ' * ' + rr + ') = ' + 2 * s + 'sqrt(' + rr + ')') },
+        steps: [{ h: 'Find a, b and c:', t: 'a = 1 (the number in front of x²), b = ' + b + ' (in front of x), c = ' + c + ' (on its own).' },
+          { h: 'Fill into the formula:', t: 'under the √: ' + MX.m(paren(b) + '^2 - 4(1)(' + c + ')') + ' = ' + b * b + ' − ' + paren(4 * c) + ' = ' + D + ', so ' + MX.m('x = frac(' + (-b) + ' +- sqrt(' + D + '), 2)') },
+          { h: 'Simplify the surd:', t: 'find the biggest square number that divides into ' + D + ' (square numbers: 4, 9, 16, 25, 36, …): ' + MX.m('sqrt(' + D + ') = sqrt(' + 4 * s * s + ') * sqrt(' + rr + ') = ' + 2 * s + 'sqrt(' + rr + ')') },
           { h: 'Divide each term by 2:', t: show }] };
     }),
     S('surd', 'Simplify surds', 'Write √32 as 4√2', function (r) {
@@ -725,7 +747,7 @@
       return { q: 'Express ' + MX.m('sqrt(' + n + ')') + ' in the form ' + MX.m('a sqrt(b)') + ', where b is a prime number or has no square factor.', spec: { kind: 'expr', expr: String(k * Math.sqrt(rr)), form: 'surd' }, show: MX.m(k + 'sqrt(' + rr + ')'),
         cp: [{ band: 'hi', kind: 'num', n: k * k, why: 'You found the square factor' }],
         hint: 'Find the biggest square number that divides into ' + n + '.', placeholder: 'e.g. 4√2',
-        steps: [{ h: 'Biggest square factor:', t: n + ' = ' + k * k + ' × ' + rr + '.' }, { h: 'Split the root:', t: MX.m('sqrt(' + k * k + ') * sqrt(' + rr + ')') }, { h: 'Answer:', t: MX.m(k + 'sqrt(' + rr + ')') }] };
+        steps: [{ h: 'Biggest square factor:', t: 'square numbers are 4, 9, 16, 25, 36, … The biggest one that divides into ' + n + ' is ' + k * k + ': ' + n + ' = ' + k * k + ' × ' + rr + '.' }, { h: 'Split the root:', t: MX.m('sqrt(' + n + ') = sqrt(' + k * k + ') * sqrt(' + rr + ')') }, { h: 'Answer:', t: MX.m('sqrt(' + k * k + ')') + ' = ' + k + ', so the answer is ' + MX.m(k + 'sqrt(' + rr + ')') }] };
     }),
     S('fromRoots', 'Form a quadratic from its roots', 'Given the roots, find ax² + bx + c = 0', function (r) {
       var frac = r() < 0.4, p, q, f1, f2;
@@ -737,8 +759,8 @@
         spec: { kind: 'equation', expr: e }, show: MX.m(e + ' = 0'), hint: 'Work backwards: x = root becomes a factor equal to 0. Multiply the two factors.',
         cp: [{ band: 'hi', kind: 'eqfactor', e: e, both: true, why: 'You turned both roots into factors' }, { band: 'lo', kind: 'eqfactor', e: e, why: 'You turned a root into a factor' }],
         placeholder: 'e.g. x² − x − 6 = 0',
-        steps: [{ h: 'Make each root a factor:', t: MX.m('x = ' + rs[0]) + ' gives ' + MX.m(lin(f1[0], f1[1]) + ' = 0') + '; ' + MX.m('x = ' + rs[1]) + ' gives ' + MX.m(lin(f2[0], f2[1]) + ' = 0') + '.' },
-          { h: 'Multiply:', t: MX.m(br(lin(f1[0], f1[1])) + br(lin(f2[0], f2[1])) + ' = 0') }, { h: 'Expand:', t: MX.m(e + ' = 0') }] };
+        steps: [{ h: 'Turn each root into a bracket:', t: 'a root is an answer for x. ' + (frac ? 'Multiply both sides by the bottom number, then move everything to one side: ' : 'Move the number to the other side: ') +MX.m('x = ' + rs[0]) + ' gives ' + MX.m(lin(f1[0], f1[1]) + ' = 0') + '; ' + MX.m('x = ' + rs[1]) + ' gives ' + MX.m(lin(f2[0], f2[1]) + ' = 0') + '.' },
+          { h: 'Multiply the brackets:', t: 'the equation is ' + MX.m(br(lin(f1[0], f1[1])) + br(lin(f2[0], f2[1])) + ' = 0') + ', because either bracket can be 0.' }, { h: 'Expand:', t: MX.m(e + ' = 0') }] };
     }),
     S('simul', 'Simultaneous equations', 'Solve two equations with two unknowns', function (r) {
       var x, y, a1, b1, a2, b2;
@@ -749,9 +771,11 @@
       return { q: 'Solve the simultaneous equations ' + MX.m(e1) + ' and ' + MX.m(e2) + '.', spec: { kind: 'pair', vals: { x: x, y: y } }, show: MX.m('x = ' + x + ', y = ' + y),
         cp: [{ band: 'hi', kind: 'named', vals: { x: x, y: y }, why: 'You found one of the values' }, { band: 'lo', kind: 'sat', vals: { x: x, y: y }, not: [e1, e2], why: 'You combined the equations correctly' }],
         hint: 'Multiply one or both equations so the x terms are the same, then subtract to cancel x.', placeholder: 'x = …, y = …',
-        steps: [{ h: 'Line up and multiply:', t: MX.m(e1) + ' (× ' + MX.m(num(m1)) + ') and ' + MX.m(e2) + ' (× ' + MX.m(num(m2)) + ') so both x terms are ' + MX.m(L + 'x') + '.' },
-          { h: 'Subtract to cancel x:', t: MX.m(ps([[ny, 'y']]) + ' = ' + nc) + ', so ' + MX.m('y = ' + y) + '.' },
-          { h: 'Substitute back:', t: MX.m(ps([[a1, 'x']]) + ' ' + sgn(b1 * y) + ' = ' + c1) + ', so ' + MX.m('x = ' + x) + '.' },
+        steps: [{ h: 'Make the x terms the same:', t: (m1 === 1 ? 'keep equation 1 as it is: ' + MX.m(e1) : 'multiply every term in equation 1 by ' + num(m1) + ': ' + MX.m(ps([[L, 'x'], [m1 * b1, 'y']]) + ' = ' + m1 * c1)) + '. ' +
+            (m2 === 1 ? 'Keep equation 2 as it is: ' + MX.m(e2) : 'Multiply every term in equation 2 by ' + num(m2) + ': ' + MX.m(ps([[L, 'x'], [m2 * b2, 'y']]) + ' = ' + m2 * c2)) + '. Both now have ' + MX.m(L + 'x') + '.' },
+          { h: 'Subtract to get rid of x:', t: 'take the second from the first. The ' + MX.m(L + 'x') + ' terms cancel: ' + MX.m(ps([[m1 * b1, 'y']]) + ' - ' + (m2 * b2 < 0 ? '(' + ps([[m2 * b2, 'y']]) + ')' : ps([[m2 * b2, 'y']])) + ' = ' + m1 * c1 + ' - ' + paren(m2 * c2)) +
+            ', so ' + MX.m(ps([[ny, 'y']]) + ' = ' + nc) + '. Divide by ' + num(ny) + ': ' + MX.m('y = ' + y) + '.' },
+          { h: 'Put y back in:', t: 'in equation 1, ' + MX.m(ps([[a1, 'x']]) + ' ' + sgn(b1 * y) + ' = ' + c1) + ', so ' + MX.m(ps([[a1, 'x']]) + ' = ' + (c1 - b1 * y)) + ' and ' + MX.m('x = ' + x) + '.' },
           { h: 'Check', t: 'in the second equation: ' + MX.m(a2 + '(' + x + ') + ' + paren(b2) + '(' + y + ') = ' + c2) + ' ✓' }] };
     }),
     S('simulWord', 'Simultaneous equations in context', 'Write two equations from a problem, then solve', function (r) {
@@ -777,7 +801,7 @@
       return { q: txt, spec: { kind: 'pair', vals: { x: x, y: y } }, show: MX.m('x = ' + x + ', y = ' + y), placeholder: 'x = …, y = …',
         cp: [{ band: 'hi', kind: 'named', vals: { x: x, y: y }, why: 'You found one of the values' }, { band: 'lo', kind: 'sat', vals: { x: x, y: y }, why: 'You wrote a correct equation' }],
         hint: 'Write one equation for the totals of the two quantities and one for the cost (or legs, or difference).',
-        steps: [{ h: 'Equation 1:', t: MX.m(e1) }, { h: 'Equation 2:', t: MX.m(e2) }, { h: 'Solve together', t: 'by elimination: ' + MX.m('x = ' + x) + ', ' + MX.m('y = ' + y) + '.' }] };
+        steps: wordSteps(t, x, y, e1, e2, t === 0 ? [d, n] : t === 1 ? [A, C] : [2, 4]) };
     }),
     S('longDiv', 'Long division in algebra', 'Divide a cubic by (x − a) or (2x − 1)', function (r) {
       var den = r() < 0.7 ? [1, nz(r, -5, 5)] : [2, pick(r, [-1, 1, -3, 3])], q = [ri(r, 1, 3), nz(r, -6, 6), nz(r, -9, 9)];
@@ -800,8 +824,8 @@
       return { q: 'Solve for x: ' + MX.m(e) + '.', spec: { kind: 'values', vals: [x] }, show: MX.m('x = ' + x), placeholder: 'x = …',
         cp: [{ band: 'hi', kind: 'cleared', x: x, why: 'You cleared the fractions correctly' }, { band: 'lo', kind: 'num', n: Ln, why: 'You found the LCM' }],
         hint: 'Find the LCM of the denominators and multiply every term by it.',
-        steps: [{ h: 'LCM:', t: 'the LCM of ' + p + ', ' + q + (/frac/.test(rhs) ? ' and ' + Ln : '') + ' is ' + Ln + '. Multiply every term by ' + Ln + '.' },
-          { h: 'Clear fractions:', t: MX.m((Ln / p) + br(lin(1, a)) + (s > 0 ? ' + ' : ' - ') + (Ln / q) + br(lin(1, b)) + ' = ' + top) },
+        steps: [{ h: 'Find the LCM:', t: 'the smallest number that ' + p + ', ' + q + (/frac/.test(rhs) ? ' and ' + Ln : '') + ' all divide into is ' + Ln + '. Multiply every term by ' + Ln + '.' },
+          { h: 'Clear the fractions:', t: Ln + ' ÷ ' + p + ' = ' + (Ln / p) + ' and ' + Ln + ' ÷ ' + q + ' = ' + (Ln / q) + ', so multiply each top by that' + (/frac/.test(rhs) ? '' : ', and the right side by ' + Ln) + ': ' + MX.m((Ln / p) + br(lin(1, a)) + (s > 0 ? ' + ' : ' - ') + (Ln / q) + br(lin(1, b)) + ' = ' + top) },
           { h: 'Expand and collect:', t: MX.m(ps([[k, 'x'], [(Ln / p) * a + s * (Ln / q) * b, '']]) + ' = ' + top) },
           { h: 'Solve:', t: MX.m('x = ' + x) }] };
     }),
@@ -908,10 +932,12 @@
       cp: [{ band: 'hi', kind: 'factor', e: e, f: [lin(a, b, v), lin(c, d, v)], why: 'You found a correct factor' },
         { band: 'lo', kind: 'step', e: e, why: 'You split the middle term correctly' }, { band: 'lo', kind: 'num', n: A * C, why: 'You multiplied a × c' }],
       hint: 'Multiply the number in front of ' + v + '² by the constant. Find two factors of that which add to the number in front of ' + v + '.',
-      steps: [{ h: 'Step 1:', t: A + ' × ' + paren(C) + ' = ' + A * C + '. Two numbers that multiply to ' + A * C + ' and add to ' + B + ': ' + num(split1) + ' and ' + num(split2) + '.' },
-        { h: 'Step 2:', t: 'split the middle term: ' + MX.m(ps([[A, v + '^2'], [split1, v], [split2, v], [C, '']])) + '.' },
-        { h: 'Step 3:', t: 'take out the HCF of each pair. The brackets match.' },
-        { h: 'Answer:', t: MX.m(ans) }] };
+      steps: [{ h: 'Step 1:', t: 'multiply the number in front of ' + MX.m(v + '^2') + ' by the number on its own: ' + A + ' × ' + paren(C) + ' = ' + A * C +
+          '. Now find two numbers that multiply to ' + A * C + ' and add to ' + B + ' (the number in front of ' + MX.m(v) + '): ' + num(split1) + ' and ' + num(split2) + '.' },
+        { h: 'Step 2:', t: 'use them to split the middle term into two: ' + MX.m(ps([[A, v + '^2'], [split1, v], [split2, v], [C, '']])) + '.' },
+        { h: 'Step 3:', t: 'take the HCF out of the first two terms and out of the last two: ' +
+          MX.m(ps([[a, v]]) + br(lin(c, d, v)) + (b === 1 ? ' + ' : b === -1 ? ' - ' : b < 0 ? ' - ' + Math.abs(b) : ' + ' + b) + br(lin(c, d, v))) + '. The brackets match.' },
+        { h: 'Answer:', t: MX.m(br(lin(c, d, v))) + ' is in both parts, so write it once, with what was in front of it, ' + MX.m(lin(a, b, v)) + ', in the other bracket: ' + MX.m(ans) }] };
   }
 
   /* ── Skills activity (registered with the subject engine) ─────── */

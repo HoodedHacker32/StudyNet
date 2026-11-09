@@ -22,4 +22,12 @@
       .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'the marker said no (' + r.status + ')'); return j; }); })
       .then(function (j) { j.by = 'StudyNet’s marker'; return j; });
   };
+
+  // A student's own paragraph (language subjects): req see SNAIcore.buildCheckMessages. Resolves { text?, issues, missing, next, praise }.
+  SNAI.check = function (req) {
+    var bad = SNAIcore.validCheck(req);
+    if (bad) return Promise.reject(new Error(bad));
+    return timeout(60000, fetch(SNAI.SERVER + '/check', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(req) }))
+      .then(function (r) { return r.json().then(function (j) { if (!r.ok) throw new Error(j.error || 'the checker said no (' + r.status + ')'); return j; }); });
+  };
 })();

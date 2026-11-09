@@ -1,8 +1,13 @@
 # StudyNet marking server
 
-A small Cloudflare Worker that marks practice-exam answers against their marking scheme. The site works without it: students can mark themselves, and locally the site uses Ollama.
+A small Cloudflare Worker with two jobs:
 
-It only marks answers. It never writes questions, and it builds the prompt itself from `../ai-core.js`. Callers can't send their own instructions to the model.
+- `POST /mark` marks practice-exam answers against their marking scheme.
+- `POST /check` checks a student's own paragraph (French run-through). It returns the mistakes with a fix for each, the checklist items that are missing and one next step. It never rewrites the paragraph.
+
+The site works without it: students can mark themselves, and the paragraph quick check runs in the browser.
+
+It never writes questions, and it builds every prompt itself from `../ai-core.js`. Callers can't send their own instructions to the model. To try a prompt change without touching the live server, run `npx wrangler versions upload`, test against the preview URL it prints, then `npx wrangler deploy`.
 
 ## Providers
 

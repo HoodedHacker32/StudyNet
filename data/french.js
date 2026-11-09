@@ -350,7 +350,7 @@ window.SN_DATA = window.SN_DATA || {};
         { type: 'short', q: 'What will the weather be like in the afternoon?', ans: ['windy', 'it will be windy', 'wind'], marks: 2, spell: 'lenient' }] }
     ],
     topics: [
-      { id: 'examen', info: true, label: 'L’examen', icon: 'target', desc: 'What’s on the November exam and how to write your paragraphs', notes: ['examen', 'ecrire'], prac: ['moi'] },
+      { id: 'examen', info: true, label: 'L’examen', icon: 'target', desc: 'What’s on the November exam, a run-through of all of it, and your paragraphs', course: ['nov'], notes: ['examen', 'ecrire'], prac: ['moi'] },
       { id: 'sports', label: 'Les sports', icon: 'activity', desc: 'Jouer à + sport and faire de + activity',
         notes: ['jouerFaire'], fc: ['sportsJouer', 'sportsFaire'], quiz: ['jouerFaire'], match: ['sportsFaire'], prac: ['jouerFaire'] },
       { id: 'musique', label: 'La musique', icon: 'music', desc: 'Instruments (jouer de) and music you like',
@@ -481,6 +481,65 @@ window.SN_DATA = window.SN_DATA || {};
         ['soixante-dix', '70'], ['soixante-seize', '76'], ['quatre-vingts', '80'], ['quatre-vingt-treize', '93'], ['cent', '100']]) },
       vetements: { label: 'Les vêtements', colL: 'Français', colR: 'English', pairs: toMatch(vetements.slice(0, 8)) },
       meteo: { label: 'La météo', colL: 'Français', colR: 'English', pairs: toMatch(meteo.slice(0, 8)) }
+    },
+    /* The November exam run-through (course.js). Built from the exam post in the class Team: reading and vocab, grammar,
+       and the writing paragraphs (age, date of birth, family, town, hobbies). The town checklist is the teacher's own list. */
+    courses: {
+      nov: { label: 'November exam run-through', intro: 'Work through everything on the November test, one step at a time. Pass each check, then get your paragraphs ready.',
+        sections: [
+          { id: 'read', h: 'Reading and vocabulary', p: 'Recognise the words you’ll meet in the reading questions. Get 5 of 6 to pass each check.', checks: [
+            { id: 'ville', label: 'Buildings in town', quiz: 'ville', topic: 'ville' },
+            { id: 'loisirs', label: 'Hobbies', quiz: 'loisirs', topic: 'loisirs' },
+            { id: 'musique', label: 'Music', quiz: 'musique', topic: 'musique' },
+            { id: 'nombres', label: 'Numbers 1–100', quiz: 'nombres', topic: 'nombres' },
+            { id: 'vetements', label: 'Clothes', quiz: 'vetements', topic: 'vetements' },
+            { id: 'meteo', label: 'Weather', quiz: 'meteo', topic: 'meteo' }] },
+          { id: 'gram', h: 'Grammar', p: 'Jouer à for sports, jouer de for instruments, faire de for activities, and aller + au / à la / à l’ / aux.', checks: [
+            { id: 'jouerFaire', label: 'Jouer à or faire de?', quiz: 'jouerFaire', topic: 'sports' },
+            { id: 'instruments', label: 'Jouer de + instrument', quiz: 'instruments', topic: 'musique' },
+            { id: 'aller', label: 'Aller + au / à la / à l’ / aux', quiz: 'aller', topic: 'aller' }] },
+          { id: 'write', h: 'Writing', p: 'Learn a paragraph for each of these. Write it here (or upload a photo of your copy), tick off what your teacher asked for, then check your French.', paras: [
+            { id: 'moi', title: 'Moi: my age and date of birth',
+              items: [
+                { t: 'Your name: Je m’appelle …', re: /je m['’]appelle\s+\S+/i },
+                { t: 'Your age: J’ai … ans', re: /j['’]ai\s+\S+\s+ans\b/i },
+                { t: 'Your birthday: Mon anniversaire, c’est le … (day and month)', re: /anniversaire[^.]*\ble\s+\S+\s+(janvier|f[ée]vrier|mars|avril|mai|juin|juillet|ao[uû]t|septembre|octobre|novembre|d[ée]cembre)/i },
+                { t: 'Your date of birth: Je suis né(e) le … deux mille …', re: /je suis n[ée]e?\s+le\b/i }],
+              starters: ['Je m’appelle …', 'J’ai treize ans.', 'Mon anniversaire, c’est le cinq mars.', 'Je suis né(e) le cinq mars deux mille treize.'] },
+            { id: 'famille', title: 'Ma famille: my family',
+              items: [
+                { t: 'How many people: Il y a … personnes dans ma famille', re: /il y a\s+\S+\s+personnes/i },
+                { t: 'Who they are: mon père, ma mère, mon frère … (at least two)', re: /\b(mon|ma|mes)\s+(p[èe]re|m[èe]re|fr[èe]res?|s(œ|oe)urs?|parents|grand-p[èe]re|grand-m[èe]re|beau-p[èe]re|belle-m[èe]re|demi-fr[èe]re|demi-s(œ|oe)ur|cousine?s?|oncle|tante|chien|chat)\b/gi, min: 2 },
+                { t: 'Brothers and sisters: J’ai … frère(s) / sœur(s), or Je suis fils / fille unique', re: /j['’]ai\s+\S+\s+(demi-)?(fr[èe]re|s(œ|oe)ur)|(fils|fille)\s+unique|je n['’]ai pas de (fr[èe]re|s(œ|oe)ur)/i },
+                { t: 'A name: Il / Elle s’appelle …', re: /s['’]appellent?\s+\S+/i },
+                { t: 'An age: Il / Elle a … ans', re: /\b(il|elle|ils|elles)\s+(a|ont)\s+\S+\s+ans\b/i },
+                { t: 'A description: Il est grand et drôle / Elle est gentille', re: /\b(il|elle|ils|elles|p[èe]re|m[èe]re|fr[èe]re|s(œ|oe)ur)\s+(est|sont)\s+(tr[èe]s\s+|assez\s+|un peu\s+)?[a-zàâçéèêëîïôûùü-]{3,}/i }],
+              starters: ['Il y a quatre personnes dans ma famille :', 'mon père, ma mère, mon frère et moi.', 'J’ai un frère et une sœur.', 'Je suis fils unique / fille unique.',
+                'Mon frère s’appelle …', 'Il a dix ans.', 'Il est grand et drôle.', 'Ma mère est gentille et mon père est sportif.'] },
+            { id: 'ville', title: 'Ma ville: where I live',
+              items: [
+                { t: 'Your name: Je m’appelle …', re: /je m['’]appelle\s+\S+/i },
+                { t: 'Where you live: J’habite à …', re: /j['’]habite\s+(à|a)\s+\S+/i },
+                { t: 'An extra detail: C’est un petit village / une petite ville dans l’ouest de Cork', re: /c['’]est\s+(un|une)\s+[^.]*(village|ville)/i },
+                { t: 'Lots to do or nothing to do: Il y a beaucoup de choses à faire / Il n’y a rien à faire', re: /(beaucoup de choses [àa] faire|rien [àa] faire)/i },
+                { t: 'What there is (5 to 8 places): Il y a un cinéma, une piscine …', re: /\b(cin[ée]ma|piscine|parc|stade|biblioth[èe]que|gare|[ée]glise|magasins?|supermarch[ée]|centre commercial|patinoire|plage|mus[ée]e|ch[âa]teau|caf[ée]s?|restaurants?|[ée]cole|coll[èe]ge|h[ôo]pital|banque|poste|boulangerie|pharmacie|march[ée]|centre sportif|mairie|th[ée][âa]tre|boucherie|librairie|h[ôo]tel|port|aire de jeux|salle de sport|terrain de foot|bowling|club des jeunes)\b/gi, min: 5 },
+                { t: 'A place that isn’t there: Il n’y a pas de gare / Il n’y a ni … ni …', re: /il n['’]y a (pas d|ni\b)/i },
+                { t: 'Extra: what you think of it, e.g. J’adore ma ville parce qu’elle est très animée', re: /(j['’]adore|j['’]aime|je n['’]aime pas|je d[ée]teste)[^.]*(ville|village)/i, extra: true }],
+              starters: ['J’habite à …', 'C’est une petite ville calme dans le sud de l’Irlande.', 'C’est un joli village dans l’ouest du comté de Cork.', 'Il y a beaucoup de choses à faire.', 'Il n’y a rien à faire.',
+                'Dans ma ville, il y a un cinéma, une piscine et beaucoup de magasins.', 'Il n’y a pas de gare.', 'Il n’y a ni centre commercial ni patinoire.', 'J’adore ma ville parce qu’elle est très animée.'] },
+            { id: 'loisirs', title: 'Mes loisirs: my hobbies',
+              items: [
+                { t: 'When: Pendant mon temps libre / Le week-end …', re: /(temps libre|le week-?end|le samedi|le dimanche|le soir|apr[èe]s l['’][ée]cole)/i },
+                { t: 'A sport with jouer à: Je joue au foot', re: /\bjou\w*\s+(au|[àa] la|[àa] l['’]|aux)\s+\S+/i },
+                { t: 'An instrument with jouer de: Je joue du piano / de la guitare', re: /\bjou\w*\s+(du|de la|de l['’]|des)\s+\S+/i },
+                { t: 'An activity with faire de: Je fais du vélo / de la natation', re: /\b(fais|fait|faisons|faites|font|faire)\s+(du|de la|de l['’]|des)\s+\S+/i },
+                { t: 'Music: Mon genre de musique préféré, c’est …', re: /musique/i },
+                { t: 'An opinion with a reason: J’adore … parce que …', re: /(parce que|parce qu['’]|\bcar\b)/i },
+                { t: 'Extra: how often, e.g. deux fois par semaine / le samedi', re: /(fois par|tous les|chaque|souvent|le (lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche))/i, extra: true }],
+              starters: ['Pendant mon temps libre, j’aime jouer au football et écouter de la musique.', 'Le week-end, je fais du vélo avec mes amis.', 'Je joue de la guitare depuis trois ans.',
+                'Je fais de la natation deux fois par semaine.', 'Mon genre de musique préféré, c’est la pop.', 'J’adore le sport parce que c’est amusant.'] }] }
+        ],
+        rules: 'fr' }
     },
     practice: {
       moi: { label: 'Moi et ma famille', type: 'lines', intro: 'Complete the sentences for your writing paragraphs.', items: [
