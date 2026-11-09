@@ -573,10 +573,11 @@
       return { q: 'Expand and simplify ' + MX.m(br(lin(a, b, v)) + br(lin(c, d, v))) + '.', spec: { kind: 'expr', expr: e, form: 'expanded' }, show: MX.m(e),
         cp: [{ band: 'hi', kind: 'equiv', e: e, why: 'Your working reaches the right expansion' }, { band: 'lo', kind: 'term', c: a * c, m: v + '2', why: 'You multiplied the first terms correctly' }],
         hint: 'Multiply each term in the first bracket by each term in the second.',
-        steps: [{ h: 'First × first:', t: MX.m(ps([[a, v]]) + '*' + ps([[c, v]])) + ' = ' + MX.m(ps([[a * c, v + '^2']])) },
-          { h: 'Outside and inside:', t: MX.m(ps([[a * d, v]])) + ' and ' + MX.m(ps([[b * c, v]])) },
-          { h: 'Last × last:', t: MX.m(num(b) + ' * ' + paren(d)) + ' = ' + MX.m(num(b * d)) },
-          { h: 'Collect like terms:', t: MX.m(e) }] };
+        steps: [{ h: 'Multiply the first term of each bracket:', t: MX.m(ps([[a, v]]) + '*' + ps([[c, v]])) + ' = ' + MX.m(ps([[a * c, v + '^2']])) },
+          { h: 'First term of bracket 1 × second term of bracket 2:', t: MX.m(ps([[a, v]]) + '*' + paren(d)) + ' = ' + MX.m(ps([[a * d, v]])) },
+          { h: 'Second term of bracket 1 × first term of bracket 2:', t: MX.m(num(b) + '*' + ps([[c, v]])) + ' = ' + MX.m(ps([[b * c, v]])) },
+          { h: 'Multiply the second term of each bracket:', t: MX.m(num(b) + ' * ' + paren(d)) + ' = ' + MX.m(num(b * d)) },
+          { h: 'Add the two ' + v + ' terms together and write the answer:', t: MX.m(ps([[a * d, v]]) + ' + ' + (b * c < 0 ? '(' + ps([[b * c, v]]) + ')' : ps([[b * c, v]]))) + ' = ' + MX.m(ps([[a * d + b * c, v]])) + ', so the answer is ' + MX.m(e) }] };
     }),
     S('hcf', 'Highest common factor of terms', 'Find the HCF, e.g. of 18a³ and 24a²', function (r) {
       var g = pick(r, [2, 3, 4, 5, 6, 7, 8]), m = pick(r, [[1, 2], [2, 3], [3, 4], [2, 5], [3, 5], [1, 3], [4, 5], [5, 6]]);

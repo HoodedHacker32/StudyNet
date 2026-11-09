@@ -90,6 +90,18 @@
     return { type: 'mcq', marks: 3, q: SubjectApp.questionHtml(q2), ans: a, opts: shuffle(SubjectApp.quizOptions(Y.quizzes[s.quizKey], q2), r) };
   }
 
+  /* Two bank questions that ask the same thing ("Describe how to test a food for starch…" twice) never share a paper.
+     Compared by their content words: alike when 70% of the shorter one’s words are in the other. */
+  var STOP = { what: 1, which: 1, when: 1, where: 1, with: 1, that: 1, this: 1, from: 1, your: 1, their: 1, there: 1, they: 1, have: 1, does: 1, give: 1, name: 1,
+    explain: 1, describe: 1, state: 1, list: 1, write: 1, using: 1, each: 1, into: 1, about: 1, should: 1, would: 1, could: 1, also: 1, them: 1, most: 1, some: 1, been: 1 };
+  function sig(q) { var o = {}; plain(q).toLowerCase().split(/[^a-z0-9áéíóúàèâêîôûç]+/).forEach(function (w) { if (w.length > 3 && !STOP[w]) o[w.replace(/s$/, '')] = 1; }); return Object.keys(o); }
+  function alike(a, b) {
+    var small = a.length <= b.length ? a : b, big = small === a ? b : a;
+    if (small.length < 4) return false;
+    var hit = small.filter(function (w) { return big.indexOf(w) >= 0; }).length;
+    return hit / small.length >= 0.7;
+  }
+
   // Builds the paper: one topic per question, each 15–30 marks, made of lettered parts.
   function build(conf) {
     var r = rng(conf.s), bt = bankByTopic(), tps = conf.t.filter(function (t) { return bt[t]; });
@@ -99,7 +111,7 @@
     conf = normConf(conf);
     var SZ = SIZE[conf.z] || SIZE.m, Q_MIN = SZ.min, Q_MAX = SZ.max, MAX_PARTS = SZ.parts, kinds = conf.k;
     function allowed(p) { return kinds.indexOf(kindOfPart(p)) >= 0; }
-    var nQ = conf.n, perf = conf.w === 1 ? topicPerf() : null, qs = [], guard = 0;
+    var nQ = conf.n, perf = conf.w === 1 ? topicPerf() : null, qs = [], guard = 0, asked = [];
     // Mixed: random order; weakest first: by past results; notes order: the order of the topics in the subject.
     var order = conf.w === 2 ? tps.slice() : shuffle(tps, r);
     if (conf.w === 1) order.sort(function (a, b) { return (perf[a] != null ? perf[a] : 0.5) - (perf[b] != null ? perf[b] : 0.5); });
@@ -115,8 +127,10 @@
         for (var b = 0; b < pool.bank.length; b++) {
           var cand = pool.bank[b], cs = (cand.type === 'group' ? cand.parts : [cand]).filter(function (p) { return allowed(p.type === 'gen' ? { type: 'gen' } : p); });
           if (!cs.length) { pool.bank.splice(b, 1); b--; continue; } // no part of this question is a type the student chose
+          var sigs = cs.filter(function (p) { return p.type === 'written'; }).map(function (p) { return sig(p.q); });
+          if (sigs.some(function (sg) { return asked.some(function (a) { return alike(sg, a); }); })) { pool.bank.splice(b, 1); b--; continue; } // asks what this paper already asked
           var cm = cs.reduce(function (sm, p) { return sm + (p.marks || 2); }, 0);
-          if (!q.parts.length || marks + cm <= Q_MAX) { it = pool.bank.splice(b, 1)[0]; subs = cs.map(function (p) { return realiseItem(p, r); }); break; }
+          if (!q.parts.length || marks + cm <= Q_MAX) { it = pool.bank.splice(b, 1)[0]; subs = cs.map(function (p) { return realiseItem(p, r); }); asked = asked.concat(sigs); break; }
         }
         if (it) {
           subs.forEach(function (p) { if (p.ans) used[SubjectApp.norm(Array.isArray(p.ans) ? (Array.isArray(p.ans[0]) ? p.ans[0][0] : p.ans[0]) : p.ans)] = 1; plain(p.q).toLowerCase().split(/\W+/).forEach(function (w) { if (w.length > 6) used[w] = 1; }); });
@@ -422,12 +436,8 @@
     var blank = !answered(v) && !photos[id];
     return { got: 0, of: p.marks, by: blank ? 'auto' : 'pending', note: blank ? 'No answer.' : '', self: (p.scheme || []).map(function () { return false; }) };
   }
-  function schemeMarks(p) {
-    var parsed = p.scheme.map(function (s) { var m = /\((\d+)\s*marks?\)/.exec(s); return m ? +m[1] : null; });
-    if (parsed.every(function (x) { return x != null; })) return parsed;
-    var each = p.marks / Math.max(1, p.scheme.length);
-    return p.scheme.map(function () { return each; });
-  }
+  // What each scheme point is worth: "(2 marks)", "Any two … (2 marks each)" = 4, "(2 marks each, max 4)" = 4 (ai-core.js).
+  function schemeMarks(p) { return SNAIcore.pointMarks(p.scheme, p.marks); }
   function partGot(p, m) {
     if (m.by !== 'self') return m.got;
     if (p.scale) return Math.max(m.got || 0, m.self[0] ? p.marks : m.self[1] ? p.hi : m.self[2] ? p.lo : 0);
@@ -452,9 +462,9 @@
           spelling: spelling(j.p), note: cfg.marking && cfg.marking.note, image: photos[j.id] || undefined, scale: !!j.p.scale };
         return SNAI.mark(req).then(function (res) {
           var prev = cur.marks[j.id], got = res.marks;
-          if (!j.p.scale && res.points && res.points.length && j.p.scheme && j.p.scheme.length) { // trust the points over a mismatched total
-            var w = schemeMarks(j.p), fromPts = Math.min(j.p.marks, Math.round(res.points.reduce(function (s, pt) { return s + (pt.awarded && w[pt.point - 1] ? w[pt.point - 1] : 0); }, 0)));
-            if (fromPts !== got) got = fromPts;
+          if (!j.p.scale && j.p.scheme && j.p.scheme.length) { // one entry per point, each within its limit; the total is their sum
+            res.points = SNAIcore.tidyPoints(res.points, schemeMarks(j.p));
+            got = Math.min(j.p.marks, res.points.reduce(function (s, pt) { return s + pt.marks; }, 0));
           }
           // The maths checker knows the final answer is wrong: AI can give method marks, never full marks, and never less than the checker found.
           if (j.p.type === 'gen') got = Math.max(prev.got || 0, Math.min(got, j.p.hi));
@@ -514,7 +524,10 @@
     }
     if (m.by === 'ai') {
       h += '<p>' + esc(m.feedback || '') + '</p>';
-      if (m.points && m.points.length && p.scheme && !p.scale) h += '<ul>' + m.points.map(function (pt) { var s = p.scheme[pt.point - 1]; return s ? '<li>' + (pt.awarded ? 'Got: ' : 'Missed: ') + esc(s) + '</li>' : ''; }).join('') + '</ul>';
+      if (m.points && m.points.length && p.scheme && !p.scale) h += '<ul>' + SNAIcore.tidyPoints(m.points, schemeMarks(p)).map(function (pt) {
+        var s = p.scheme[pt.point - 1];
+        return '<li>' + (pt.awarded ? 'Got' : pt.marks ? 'Partly (' + pt.marks + ' of ' + pt.of + ')' : 'Missed') + ': ' + esc(s) + '</li>';
+      }).join('') + '</ul>';
       h += '<p class="mk-by">Marked by AI (' + esc(m.who || '') + ') against the marking scheme. If it looks wrong, ask your teacher.</p>';
     }
     if (m.by === 'self') {

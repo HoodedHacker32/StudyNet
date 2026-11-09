@@ -82,7 +82,7 @@ export default {
     if (env.GROQ_API_KEY && !req.image) tries.push(() => viaGroq(env, messages));
     if (env.AI) tries.push(() => viaWorkersAI(env, messages, req.image));
     for (const t of tries) {
-      try { return json(core.parseMark(await t(), marks), 200, h); }
+      try { return json(core.parseMark(await t(), marks, req.scheme, req.scale), 200, h); }
       catch (e) { /* try the next provider */ }
     }
     return json({ error: 'The marking service is busy. Mark this one yourself, or try again later.' }, 503, h);

@@ -71,6 +71,21 @@
   }
   // { ok, exact }: lenient matching only when asked for.
   function match(v, ans, lenient) {
+    var r = match1(v, ans, lenient);
+    // "H2O (water)", "alveoli (singular: alveolus)": the answer with an aside in brackets still counts,
+    // unless the aside offers a different answer as an alternative ("insoluble (or soluble)").
+    if (!r.ok && /\(.*\)/.test(v)) {
+      var outside = String(v).replace(/\([^)]*\)/g, ' '), inside = (String(v).match(/\([^)]*\)/g) || []).join(' '), alt, hedge = false, re = /(?:\bor\b|\/)\s*([^,;\/)]+)/gi;
+      while ((alt = re.exec(inside))) {
+        var b = norm(alt[1]);
+        if (/^(commonly|also|usually|singular|plural|aka|ie|eg|called|known|chemical|formula|symbol)\b/.test(b)) continue; // a gloss, not an alternative
+        if (b && ((vocab && vocab[b]) || CONF[b]) && !ans.some(function (a) { return norm(a) === b; })) hedge = true;
+      }
+      if (!hedge) r = match1(outside, ans, lenient);
+    }
+    return r;
+  }
+  function match1(v, ans, lenient) {
     var n = norm(v);
     if (!n) return { ok: false };
     if (ans.some(function (a) { return norm(a) === n; })) return { ok: true, exact: true };

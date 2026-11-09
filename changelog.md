@@ -1,5 +1,12 @@
 # StudyNet Changelog
 
+## v2026-11-09 (fairer AI marking, clearer expanding brackets)
+- AI marking: marks per scheme point with part marks; the total is the sum of the points, so marks and feedback agree. "/" means any one alternative; "Any two … (n marks each)" and "max N" are scored properly (`SNAIcore.pointMarks`, `tidyPoints`). Stronger prompt-injection wording. Worker needs redeploying.
+- Short answers: the right answer with an aside in brackets counts ("H2O (water)"), unless the aside offers another answer.
+- Papers skip a bank question that asks the same thing as one already on the paper.
+- Maths: "Expand two brackets" steps now say which terms are multiplied, instead of "outside and inside".
+- Cache v43, assets ?v=33.
+
 ## November 2026 — v2026-11-08-v9 (sensible wrong answers in tick-box questions)
 - When a quiz question has no hand-written wrong options, `quizOptions` (Quiz activity and exam top-ups) now borrows wrong answers of the same kind as the right one: years with years, people with people, single words with single words, phrases with phrases, actions with actions, of similar length. It borrows from the year's other quizzes when one quiz is too small. Before, it picked at random, so a date could be offered for a conquistador. Tested on 4,680 generated options: no date/number options mixed with text answers.
 
