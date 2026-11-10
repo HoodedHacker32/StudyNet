@@ -95,14 +95,42 @@ window.SN_DATA = window.SN_DATA || {};
           model: 'Waves crashed and hissed against the empty shore. The sand was as cold and grey as ash.' }] }
     ],
     topics: [
-      { id: 'exam', info: true, label: 'The exam', icon: 'target', desc: 'What’s on the November exam and how to answer', notes: ['exam'] },
+      { id: 'exam', info: true, label: 'The exam', icon: 'target', desc: 'Run-through, a last-minute cram sheet with every quote, and how to answer', course: ['nov'], notes: ['cram', 'exam'] },
       { id: 'comp', label: 'Comprehension', icon: 'text', desc: 'What / how / why answers, parts of speech and sound images',
         notes: ['whw', 'speech', 'images'], fc: ['speech', 'techniques'], quiz: ['speech', 'techniques'], match: ['speech'], prac: ['speech'] },
       { id: 'mass', label: 'When all the others were away at Mass', icon: 'quill', desc: 'Seamus Heaney: a memory of his mother', notes: ['mass'], fc: ['mass'], quiz: ['mass'] },
       { id: 'purges', label: 'The Early Purges', icon: 'quill', desc: 'Seamus Heaney: growing up on the farm', notes: ['purges'], fc: ['purges'], quiz: ['purges'] },
       { id: 'writing', label: 'Descriptive writing', icon: 'pencil', desc: 'Writing from a picture prompt', notes: ['describe'], fc: ['techniques'], quiz: ['describe'], match: ['techniques'], prac: ['describe'] }
     ],
+    courses: {
+      nov: { label: 'English exam run-through', intro: 'Read the cram sheet (Notes tab) first, then pass each check. 15 minutes is enough.',
+        sections: [
+          { id: 'comp', h: 'Comprehension', p: 'Parts of speech and techniques: spot them fast.', checks: [
+            { id: 'speech', label: 'Parts of speech (adjective, adverb…)', quiz: 'speech', topic: 'comp' },
+            { id: 'tech', label: 'Name the technique (simile, sound image…)', quiz: 'techniques', topic: 'comp' }] },
+          { id: 'poems', h: 'Poetry', p: 'Know what happens, the themes and the class quotes.', checks: [
+            { id: 'mass', label: 'When all the others were away at Mass', quiz: 'mass', topic: 'mass' },
+            { id: 'purges', label: 'The Early Purges', quiz: 'purges', topic: 'purges' }] },
+          { id: 'write', h: 'Descriptive writing', p: 'Senses, techniques, structure.', checks: [
+            { id: 'describe', label: 'Descriptive writing', quiz: 'describe', topic: 'writing' }] }
+        ], rules: 'en' }
+    },
     notes: {
+      cram: { label: 'Cram sheet', sections: [
+        { h: '1. Comprehension: what / how / why', kv: [['What', 'Your point, answering the question.'], ['How', 'The technique + a short quote.'], ['Why', 'The effect on the reader.']],
+          tip: 'Adjective describes a noun (a <b>cold</b> wind). Adverb describes a verb (crept <b>slowly</b>). Sound image = something you hear (the rain <b>hissed</b>).' },
+        { h: '2. When all the others were away at Mass (Heaney)', p: ['Sonnet. Memory of peeling potatoes alone with his mother (he was the eldest of nine), then the turn to her deathbed. Love, memory, grief. Tone: tender, nostalgic, sad.'],
+          kv: [['“I was all hers”', 'closeness'], ['“Like solder weeping off the soldering iron”', 'simile: unbreakable bond; <i>weeping</i> foreshadows the tears'],
+            ['“Little pleasant splashes”', 'sound image: homely, calm'], ['“Went hammer and tongs at the prayers for the dying”', 'contrast: the noisy deathbed'],
+            ['“our fluent dipping knives”', 'they work in rhythm together'], ['“Never closer the whole rest of our lives”', 'heart-breaking last line']] },
+        { h: '3. The Early Purges (Heaney)', p: ['Tercets. At six he sees Dan Taggart drown kittens; horrified. As he grows up he becomes hardened and accepts killing pests. Growing up, life and death on the farm, town v country.'],
+          kv: [['“I was six when I first saw kittens drown”', 'blunt, shocking opening'], ['“scraggy wee shits”', 'Dan’s callous disregard'], ['“Soft paws scraping like mad”', 'sound image: their struggle'],
+            ['“Like wet gloves they bobbed and shone till he sluiced / Them out on the dunghill, glossy and dead”', 'simile: now just objects'], ['“turn mealy and crisp”', 'grotesque, unsettling image'],
+            ['“I just shrug ‘Bloody pups’. It makes sense”', 'he’s become hardened'], ['“But on well-run farms pests have to be kept down”', 'he accepts the farm’s logic']] },
+        { h: '4. The 20-mark poetry question', list: ['Short intro with one fact (e.g. Heaney was the eldest of nine).', '3 or 4 points: WHAT → HOW (quote) → WHY (effect on you).', 'Verbs: uses, creates, conveys, presents. Feelings: moved, reflective, nostalgic.', 'Short conclusion.'] },
+        { h: '5. Descriptive writing (picture prompt)', list: ['Describe, don’t tell a long story. Use all five senses.', 'Simile, metaphor, personification, onomatopoeia, alliteration, strong verbs.',
+            'Class sentences: “-er, more, more” (smaller, more useless, more ineffective) and Fortunately / Unfortunately pairs.', 'Open with a striking image, zoom in on details, end with a change of light or mood. Short sentences for tension.', 'Leave time to check spelling and paragraphs.'] }
+      ] },
       exam: { label: 'The exam', sections: [
         { h: 'What’s on it', kv: [['Comprehension', 'Short questions on an unseen passage, and longer <b>what / how / why</b> answers. Be able to spot parts of speech (e.g. an <b>adjective</b> or <b>adverb</b>) and <b>sound images</b>.'],
           ['Poetry', 'Two Seamus Heaney poems: <i>When all the others were away at Mass</i> and <i>The Early Purges</i>. Re-read both in your book.'],
