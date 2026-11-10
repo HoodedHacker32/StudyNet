@@ -656,7 +656,7 @@
   }
   function inputHtml(id, ans, saved, wide, label) {
     var ok = saved && pchk(saved, ans);
-    return '<span class="inp-wrap"><input class="prac-inp' + (ok ? ' ok' : '') + (wide ? ' wide' : '') + '" data-id="' + esc(id) + '" type="text" value="' + esc(saved || '') +
+    return '<span class="inp-wrap"><input class="prac-inp' + (ok ? ' ok' : saved ? ' err' : '') + (wide ? ' wide' : '') + '" data-id="' + esc(id) + '" type="text" value="' + esc(saved || '') +
       '" placeholder="&#8230;" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="' + esc(label || 'Answer') + '">' +
       (ok ? tickHtml() : '') + '</span>';
   }
@@ -712,13 +712,13 @@
     Object.keys(Y.practice).some(function (k) { return inputsOf(k).some(function (x) { if (x.id === id) { hit = x.ans; return true; } return false; }); });
     return hit;
   }
-  function checkInput(inp) {
+  function checkInput(inp, force) { // force: re-mark even if unchanged (the Check answers button)
     var id = inp.dataset.id, val = inp.value.trim(), ans = findAns(id);
     if (!ans) return;
     var holder = inp.closest('td') || inp.closest('.prac-q'), old = holder.querySelector('.prac-ans'), tick = holder.querySelector('.prac-tick');
     if (!val) { inp.classList.remove('ok', 'err'); if (old) old.remove(); if (tick) tick.remove(); return; }
     var store = loadStore();
-    if (store.inputs[id] === val) return; // unchanged: don't re-flash on blur
+    if (!force && store.inputs[id] === val) return; // unchanged: don't re-flash on blur
     store.inputs[id] = val;
     SN.writeJSON(Y.store, store);
     SN.markStudied();
@@ -774,7 +774,7 @@
       if ((el = t.closest('[data-go]'))) return go(el.dataset.go === 'topics' ? null : topic, null);
       if ((el = t.closest('#years button'))) { if (el.dataset.year !== yearKey) switchYear(el.dataset.year); return; }
       if ((el = t.closest('[data-reset]'))) return resetSet(el, el.dataset.reset);
-      if (t.closest('[data-check]')) { $('prac').querySelectorAll('.prac-inp').forEach(checkInput); return; }
+      if (t.closest('[data-check]')) { $('prac').querySelectorAll('.prac-inp').forEach(function (i) { checkInput(i, true); }); return; }
       if ((el = t.closest('[data-ref]'))) {
         var w = $('prac').querySelector('.ref-wrap'), open = w.classList.toggle('open');
         el.textContent = open ? 'Hide reference table' : 'Show reference table';

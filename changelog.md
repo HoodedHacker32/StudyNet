@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-10-v6 (practice: saved wrong answers)
+- subject.js: saved wrong answers kept the 'Not quite' line but lost the red 'err' style after a reload, so they looked accepted, and Check answers skipped unchanged answers. Saved wrong answers now render as wrong, and Check answers re-marks everything. Cache v50, assets ?v=40.
+
 ## v2026-11-10-v5 (paragraph checker fixes)
 - Quick check: the right little word in the wrong form (au échecs → aux échecs, du guitare → de la guitare, de la vélo → du vélo).
 - AI check: drops a 'fix' already in the paragraph, never turns French into English (indé), knows plural aux/des, and is told which checklist items are already covered so 'Next' suggests something missing. Cache v49, assets ?v=39.
