@@ -1040,3 +1040,6 @@ html.calc-docked body{padding-right:var(--calc-w,0px);}
 .course-ok-msg{display:flex;gap:.4rem;align-items:center;font-weight:600;font-size:.875rem;}
 .course-ok-msg .icon{width:1rem;height:1rem;}
 @media (max-width:900px){.course-ws{grid-template-columns:1fr;}.course-side{position:static;}.course-row{grid-template-columns:1.6rem 1fr;}.course-row .course-btns{grid-column:2;}.course-quiz{padding-left:0;}}
+
+/* Comprehension passages (English) */
+.passage{border-left:3px solid var(--sc-line);padding:.6rem 1rem;margin:.75rem 0;color:var(--fg);font-style:normal;line-height:1.65;}

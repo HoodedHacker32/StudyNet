@@ -185,7 +185,7 @@
     { id: 'maths',     name: 'Maths',     glyph: 'pi',     href: 'maths.html',     years: ['2'], calc: true },
     // A secret subject: only listed once the student's name contains the cheat code (SN.secretUnlocked).
     { id: 'business',  name: 'Business',  glyph: 'briefcase', href: 'business.html', years: ['2'], secret: true },
-    { id: 'english',   name: 'English',   glyph: 'quill',  years: [] },
+    { id: 'english',   name: 'English',   glyph: 'quill',  href: 'english.html',   years: ['2'] },
     { id: 'german',    name: 'Deutsch',   flag: 'de', years: [], lang: 'de' },
     { id: 'spanish',   name: 'Español',   flag: 'es', years: [], lang: 'es' }
   ];

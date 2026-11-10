@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-10 (English)
+- New 2nd Year English (english.html, data/english.js) from the F2 English exam post: comprehension, the two Heaney poems (notes in own words with short key quotes for analysis; link to the publisher's page for Clearances III), descriptive writing with the class sentence patterns. 12 exam-bank questions. Cache v45, assets ?v=35.
+
 ## v2026-11-09-v2 (French exam run-through, clearer maths steps)
 - New `course.js`: a Run-through activity on the Français L’examen topic, built from the November exam post in the class Team. Quick checks for reading/vocab and grammar (from the existing quizzes), and a writing workshop for Moi, Ma famille, Ma ville and Mes loisirs: the teacher's checklist ticks live, sentence starters, .txt or photo upload, instant rule-based checks with "Fix it", and an AI check.
 - Worker: new `POST /check` (mistakes with fixes, checklist items missing, one next step; never rewrites). `parseCheck` keeps only mistakes that quote the paragraph, drops "this is correct" items and overlaps.

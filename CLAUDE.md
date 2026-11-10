@@ -9,12 +9,13 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
   - **3rd Year** is greyed out as "Coming soon".
 - **Subjects with content:**
   - Gaeilge, Français and History: 1st and 2nd Year.
-  - Geography, Science and Maths: 2nd Year only.
-  - English, Deutsch and Español are "Coming soon".
+  - Geography, Science, Maths and English: 2nd Year only.
+  - Deutsch and Español are "Coming soon".
   - **Business** (2nd Year) is a secret subject: no choice subjects are listed, but Business unlocks when the profile name contains the cheat code `$$` (or `€€`). `SN.secretUnlocked()` decides; `SN.saveProfile` notices the first unlock and `SN.playUnlock` shows the unlock animation after the reload. `business.html` sends locked visitors home. Don't mention it in the What's new dialog.
 - **Where 2nd Year content comes from:**
   - Most subjects follow the November assessment topics and notes posted in each class's Teams (General posts, Classwork, Class Notebook).
   - Maths follows the class OneNote notes and the F2 class test.
+  - English follows the F2 English exam post (comprehension, the two Heaney poems, descriptive writing). The poems are copyrighted: notes in StudyNet's own words, no quoted lines; link only to legitimate public copies.
   - Business follows the notes in the Business team's Files (Shared Documents, one folder per chapter): Ch 12, 13, 15, 16 for the November assessment, plus Ch 17 (class test).
 - **Public site:** **never** put personal data or real names (students or teachers) in the code, placeholders or examples. That includes names printed on class tests and notes.
 
@@ -23,7 +24,7 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
 |---|---|
 | `about.html` | About StudyNet and exactly how AI was used to build it and is used to mark (keep it true when anything changes) |
 | `index.html` | Dashboard: welcome (first run), Continue, the student's subjects, Quick Quiz (built from `data/*.js`), What's new dialog (`CHANGELOG_VER`) |
-| `irish.html` `french.html` `history.html` `geography.html` `science.html` `maths.html` `business.html` | Thin shells. They load `shared.js`, `subject.js`, `ai-core.js`, `ai.js`, `exam.js` (+ `maths.js` / `periodic.js` / `course.js`), then `calc.js` and `data/<id>.js` in the body, then call `SubjectApp.start(SN_DATA.<id>)` |
+| `irish.html` `french.html` `history.html` `geography.html` `science.html` `maths.html` `english.html` `business.html` | Thin shells. They load `shared.js`, `subject.js`, `ai-core.js`, `ai.js`, `exam.js` (+ `maths.js` / `periodic.js` / `course.js`), then `calc.js` and `data/<id>.js` in the body, then call `SubjectApp.start(SN_DATA.<id>)` |
 | `app.css` | The **only** stylesheet: tokens, shell, rows, controls, every activity, maths, periodic table, exams, calculator, dialogs, responsive, print |
 | `shared.js` | Loaded in `<head>` on every page. Theme (applied before paint), icon sprite (`SN.ic`), subject registry (`SN.SUBJECTS`, `SN.mySubjects`), profile, streak, scores, accessible dialogs, app shell (`SN.mountShell`), Settings drawer (`SN.openSettings`, extended via `SN.settingsHooks`) |
 | `subject.js` | Subject engine: Topics, then a topic's activities, then an activity with tabs. Built-in activities: Notes, Flashcards, Quiz, Match, Timeline, Practice. Extension points: `SubjectApp.addMode` (per-topic activity), `addView` (subject-level tool, hash `#v=<id>`), `addWidget` (notes `widget`). Notes sections also take `steps` (worked example) and `html`. The URL hash `#t=<topic>&m=<activity>` and `?y=<year>` record the view |
@@ -102,7 +103,7 @@ A public, static PWA of revision activities for Irish **Junior Cycle** students.
 
 ## Known follow-ups
 - The marking Worker is live at `https://studynet-ai.studynet.workers.dev` (account subdomain `studynet`, chosen to keep real names out of public code). Redeploy with `cd worker && npx wrangler deploy`. The Groq key is a Wrangler secret (`GROQ_API_KEY`), set by the owner, never committed.
-- Add 3rd Year, and English, Deutsch and Español content. Maths needs more strands (number, geometry, statistics) as they're taught.
+- Add 3rd Year, and Deutsch and Español content. Maths needs more strands (number, geometry, statistics) as they're taught.
 - Geography, Science and Maths have no 1st Year content yet; in 1st Year mode they appear as "Coming soon".
 - The Quick Quiz uses each subject's default year only.
 - Exam banks are exam-style questions written for StudyNet. Real SEC past-paper questions could be added (with `src`) if their reuse is allowed.
