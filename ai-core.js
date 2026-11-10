@@ -142,6 +142,9 @@
       'For each mistake: "wrong" is the exact words copied from the paragraph (keep it short, 1 to 6 words), "right" is the corrected words, and "why" is the real grammar reason in one short, accurate sentence of plain English a 13-year-old understands ' +
         '(for example: "piscine is feminine, so it\'s une piscine", "ville is feminine, so the adjective adds -e: petite", "le and la become l\' before a vowel", "que becomes qu\' before a vowel: parce qu\'elle", "after pas, un/une become de", "à + le joins up to make au", "age uses avoir: j\'ai 13 ans").',
       'Count a checklist item as covered when the student has attempted it, even with mistakes in it.',
+      'Before listing a mistake, read the words around it: if the correct form is already there (for example the student already wrote "aux jeux vidéo"), it is not a mistake.',
+      'Never change a French word into English, and accept everyday French words and short forms (for example indé, ado, sympa, accro). Only flag a spelling when you are sure it is not French.',
+      'Watch for the right little word in the wrong form: plural nouns need aux / des (je joue aux échecs, aux cartes); feminine nouns need à la / de la; a vowel needs à l\' / de l\'.',
       'Every item in "issues" must be a real mistake. If the student\'s words are correct French, leave them out, even if a model answer would say it differently. Do not suggest style improvements as mistakes.',
       'Only correct what is wrong. Never rewrite the paragraph, never add new sentences or ideas to it, and never mark correct French as wrong. At most 8 mistakes, the most important first. If there are none, return an empty list.',
       'Then look at the checklist of what the teacher asked for. List the numbers of the items the paragraph does NOT cover yet.',
@@ -151,7 +154,9 @@
       req.image ? 'The paragraph is in the attached photo of the student\'s handwriting. Copy it exactly as written, mistakes included, into "text". Quote "wrong" from that text.' : '',
       'Reply with JSON only: {' + (req.image ? '"text": <string>, ' : '') + '"issues": [{"wrong": <string>, "right": <string>, "why": <string>}], "missing": [<checklist item number>], "next": <string>, "praise": <string>}'
     ].filter(Boolean).join('\n');
+    var done = (Array.isArray(req.done) ? req.done : []).map(function (n) { return Math.round(+n); }).filter(function (n) { return n >= 1 && n <= 12; });
     var user = 'PARAGRAPH TOPIC: ' + clip(req.title, CHECK_MAX.title) + '\n\nWHAT THE TEACHER ASKED FOR:\n' + (list || '(no checklist)') +
+      (done.length ? '\n\nAlready covered, so do not suggest these in "next": items ' + done.join(', ') + '.' : '') +
       (req.image ? '\n\nThe paragraph is in the attached photo.' : '\n\n<student_paragraph>\n' + clip(req.text, CHECK_MAX.text) + '\n</student_paragraph>');
     return [{ role: 'system', content: sys }, { role: 'user', content: user }];
   }
@@ -179,6 +184,8 @@
       if (/\b(is|are|was) (already |actually |also )?(correct|right|fine)\b|\bnot (a |really a )?mistake\b/i.test(x.why)) return false; // "this is correct, but…" isn't a mistake
       var w = x.wrong.toLowerCase();
       if (low.indexOf(w) < 0) return false; // must quote the paragraph
+      var r = x.right.toLowerCase();
+      if (r.indexOf(w) >= 0 && low.indexOf(r) >= 0) return false; // the fix is already there: "jeux vidéo" → "aux jeux vidéo" when it says "aux jeux vidéo"
       if (kept.some(function (k) { return k.indexOf(w) >= 0 || w.indexOf(k) >= 0; })) return false; // the same mistake twice
       kept.push(w);
       return true;

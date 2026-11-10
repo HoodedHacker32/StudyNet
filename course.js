@@ -58,6 +58,16 @@
     { re: new RegExp('\\b(jou(?:e|es|ons|ez|ent|er))\\s+(' + SP + '|' + IN + ')\\b', 'gi'), fix: function (m, v, w) {
         var g = gender(INSTR, w); return v + ' ' + (g ? join(deForm(g, w), w) : join(aForm(gender(SPORTS, w), w), w)); },
       why: 'Jouer needs a little word: à for sports (je joue au foot), de for instruments (je joue du piano).' },
+    // The right little word, but the wrong form of it: je joue au échecs → aux échecs, du guitare → de la guitare, de la vélo → du vélo.
+    { re: new RegExp('\\b(jou(?:e|es|ons|ez|ent|er))\\s+(au|à la|à l[\'’]|aux)\\s*(' + SP + ')\\b', 'gi'), fix: function (m, v, art, w) {
+        var right = aForm(gender(SPORTS, w), w); return right.replace('’', '') === art.toLowerCase().replace(/['’]/, '') ? null : v + ' ' + join(right, w); },
+      why: function (m, v, art, w) { var g = gender(SPORTS, w); return w + ' is ' + (g === 'p' ? 'plural, so à + les = aux' : vowel(w) ? 'a word starting with a vowel, so it’s à l’' : g === 'f' ? 'feminine, so it’s à la' : 'masculine, so à + le = au') + '.'; } },
+    { re: new RegExp('\\b(jou(?:e|es|ons|ez|ent|er))\\s+(du|de la|de l[\'’]|des)\\s*(' + IN + ')\\b', 'gi'), fix: function (m, v, art, w) {
+        var right = deForm(gender(INSTR, w), w); return right.replace('’', '') === art.toLowerCase().replace(/['’]/, '') ? null : v + ' ' + join(right, w); },
+      why: function (m, v, art, w) { var g = gender(INSTR, w); return w + ' is ' + (vowel(w) ? 'a word starting with a vowel, so it’s de l’' : g === 'f' ? 'feminine, so it’s de la' : 'masculine, so de + le = du') + '.'; } },
+    { re: new RegExp('\\b(fais|fait|faisons|faites|font|faire)\\s+(du|de la|de l[\'’]|des)\\s*(' + AC + ')\\b', 'gi'), fix: function (m, v, art, w) {
+        var right = deForm(gender(ACTS, w), w); return right.replace('’', '') === art.toLowerCase().replace(/['’]/, '') ? null : v + ' ' + join(right, w); },
+      why: function (m, v, art, w) { var g = gender(ACTS, w); return w + ' is ' + (vowel(w) ? 'a word starting with a vowel, so it’s de l’' : g === 'f' ? 'feminine, so it’s de la' : 'masculine, so de + le = du') + '.'; } },
     { re: new RegExp('\\b(fais|fait|faisons|faites|font|faire)\\s+(le|la|les|au|à la|à l[\'’])\\s*(' + AC + ')\\b', 'gi'), fix: function (m, v, art, w) { return v + ' ' + join(deForm(gender(ACTS, w), w), w); },
       why: 'Faire uses de (du / de la / de l’): je fais du vélo, je fais de la natation.' },
     { re: new RegExp('\\b(fais|fait|faisons|faites|font)\\s+(' + AC + ')\\b', 'gi'), fix: function (m, v, w) { return v + ' ' + join(deForm(gender(ACTS, w), w), w); },
@@ -242,7 +252,10 @@
       }
       function render(local) {
         var out = document.getElementById('cw-out'), text = ta().value;
-        aiIssues = aiIssues.filter(function (x) { return text.toLowerCase().indexOf(x.wrong.toLowerCase()) >= 0; });
+        aiIssues = aiIssues.filter(function (x) { // still in the paragraph, and not already fixed there
+          var lt = text.toLowerCase(), w = x.wrong.toLowerCase(), r = x.right.toLowerCase();
+          return lt.indexOf(w) >= 0 && !(r.indexOf(w) >= 0 && lt.indexOf(r) >= 0);
+        });
         // An AI point about the same words as a quick-check point is the same mistake: show it once.
         var low = text.toLowerCase(), spans = local.map(function (x) { var i = low.indexOf(x.wrong.toLowerCase()); return [i, i + x.wrong.length]; });
         var ai = aiIssues.filter(function (x) {
@@ -269,7 +282,8 @@
       function askAI(extra) {
         if (!window.SNAI || !SNAI.check) { aiNote = '<p class="course-sub">The checker isn’t available here. The quick check above still works.</p>'; return render(refresh(false)); }
         busy = true; render(refresh(false));
-        var req = Object.assign({ subject: api.cfg.title, year: SN.YEAR_NAMES[api.year], title: para.title, checklist: para.items.map(function (it) { return it.t; }) }, extra);
+        var req = Object.assign({ subject: api.cfg.title, year: SN.YEAR_NAMES[api.year], title: para.title, checklist: para.items.map(function (it) { return it.t; }),
+          done: para.items.map(function (it, i) { return covers(it, ta().value) ? i + 1 : 0; }).filter(Boolean) }, extra);
         SNAI.check(req).then(function (res) {
           busy = false;
           if (res.text != null) showRead(res.text);
