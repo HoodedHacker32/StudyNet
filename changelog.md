@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-10-v4 (run-through fix)
+- course.js: reopening the Run-through tab stacked click handlers, so two quizzes answered one click and the feedback named the wrong answer. Each opening now removes the previous handlers. Cache v48, assets ?v=38.
+
 ## v2026-11-10-v2 (English quotes checked)
 - Poem quotes checked against the poem files in the English team's SharePoint (all matched; one comma fixed). The Early Purges now uses the teacher's quote sheet first. Added the class 20-mark poetry question plan and an exam question modelled on it. Cache v46, assets ?v=36.
 

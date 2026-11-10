@@ -339,7 +339,9 @@
         f.click();
       }
 
-      el.addEventListener('click', function (e) {
+      // The panel is reused each time the activity opens: drop the last opening's handlers, or two quizzes answer one click.
+      if (el._courseOff) el._courseOff();
+      function onClick(e) {
         var b = e.target.closest('button'); if (!b || !el.contains(b)) return;
         var d = b.dataset;
         if (d.cGo) startCheck(d.cGo);
@@ -356,11 +358,14 @@
         else if (d.cUse != null) { var box = document.getElementById('cw-read'); ta().value = box._text; box.classList.add('hidden'); render(refresh(false)); ta().focus(); }
         else if (d.cNoread != null) document.getElementById('cw-read').classList.add('hidden');
         else if (d.cReady != null) { var s = st(); (s.p[para.id] = s.p[para.id] || {}).done = true; save(s); refresh(false); }
-      });
-      el.addEventListener('input', function (e) {
+      }
+      function onInput(e) {
         if (e.target.id !== 'cw-ta') return;
         clearTimeout(el._t); el._t = setTimeout(function () { refresh(false); if (document.getElementById('cw-out').innerHTML) render(localIssues(ta().value, C.rules)); }, 350);
-      });
+      }
+      el.addEventListener('click', onClick);
+      el.addEventListener('input', onInput);
+      el._courseOff = function () { el.removeEventListener('click', onClick); el.removeEventListener('input', onInput); clearTimeout(el._t); };
       home();
     }
   });
