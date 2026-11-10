@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-10-v2 (English quotes checked)
+- Poem quotes checked against the poem files in the English team's SharePoint (all matched; one comma fixed). The Early Purges now uses the teacher's quote sheet first. Added the class 20-mark poetry question plan and an exam question modelled on it. Cache v46, assets ?v=36.
+
 ## v2026-11-10 (English)
 - New 2nd Year English (english.html, data/english.js) from the F2 English exam post: comprehension, the two Heaney poems (notes in own words with short key quotes for analysis; link to the publisher's page for Clearances III), descriptive writing with the class sentence patterns. 12 exam-bank questions. Cache v45, assets ?v=35.
 
