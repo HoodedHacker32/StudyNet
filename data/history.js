@@ -299,7 +299,78 @@ window.SN_DATA = window.SN_DATA || {};
           scheme: ['Colonists (dressed as Mohawks) boarded British ships in Boston harbour (2 marks)', 'Threw the tea overboard in protest at the tax on tea (2 marks)'],
           model: 'Colonists dressed as Mohawk Indians boarded ships in Boston harbour and dumped the tea into the sea to protest against the tax on tea.' }] }
     ],
+    /* The November exam run-through (course.js), built from the "November Exams topics" post in the History team:
+       every question on the teacher's revision list, the Plantation causes / course / consequences homework and the four battles. */
+    courses: {
+      nov: { label: 'November exam run-through', intro: 'Every question on your teacher’s revision list, topic by topic. Do the drill, then the quick check. Exam: 12:00 to 13:00.',
+        sections: [
+          { id: 'ref', h: 'The Reformation', p: 'The 17 questions on the revision list.', drills: [
+            { id: 'refList', label: 'Reformation: revision list', topic: 'reformation', items: [
+              { q: 'What were the 2 main religions in Europe around 1500?', a: '<b>Christianity and Islam.</b> Most of Europe was Christian: <b>Catholic</b> in the west (led by the Pope) and <b>Orthodox</b> in the east. Islam was the religion of the Ottoman Empire in the south-east.' },
+              { q: 'What was the Reformation?', a: 'A movement in the 1500s to <b>reform the Catholic Church</b>. It led to new <b>Protestant</b> churches breaking away from Rome.' },
+              { q: 'Name 2 abuses in the Catholic Church at the time of the Reformation.', a: 'Any two: <b>simony</b> (buying and selling Church jobs), <b>pluralism</b> (holding several Church jobs at once), <b>absenteeism</b> (bishops not living in their dioceses), <b>nepotism</b> (giving jobs to relatives), poorly educated priests, the <b>sale of indulgences</b>.' },
+              { q: 'What does “justification by faith alone” mean?', a: 'People are saved (get to heaven) by their <b>faith in God</b> alone, not by good works or by buying indulgences.' },
+              { q: 'Why did Luther oppose the sale of indulgences?', a: 'They suggested people could <b>buy forgiveness for their sins</b>. Johann <b>Tetzel</b> sold them to raise money to rebuild <b>St Peter’s</b> in Rome.' },
+              { q: 'What were Luther’s 95 Theses?', a: 'A list of <b>95 arguments against indulgences</b> and Church abuses, which Luther nailed to the church door in <b>Wittenberg</b> in <b>1517</b>.' },
+              { q: 'Who did Luther debate his ideas with?', a: '<b>Johann Eck</b>, at <b>Leipzig</b> in 1519.' },
+              { q: 'What name is given to the letter the Pope sent Luther warning him to recant?', a: 'A <b>papal bull</b> (1520). Luther burned it in public.' },
+              { q: 'What did the Edict of Worms say?', a: 'It declared Luther an <b>outlaw</b> (1521) and <b>banned his writings</b>.' },
+              { q: 'How did Luther’s ideas spread so quickly?', a: 'The <b>printing press</b> (pamphlets and his Bible were printed quickly and cheaply) and the support of <b>German princes</b>.' },
+              { q: 'What did Luther do at Wartburg Castle?', a: 'He hid there, protected by Frederick the Wise, and <b>translated the New Testament into German</b>.' },
+              { q: 'Who did Luther marry?', a: '<b>Katharina von Bora</b>, a former nun.' },
+              { q: 'List 2 of the ideas of Luther’s religion.', a: 'Any two: <b>faith alone</b> saves you; the <b>Bible is the only authority</b>; only <b>two sacraments</b> (baptism and the Eucharist); services in the <b>people’s own language</b> (German); <b>priests could marry</b>.' },
+              { q: 'What did the Peace of Augsburg state?', a: 'In <b>1555</b>: each German <b>prince could choose the religion</b> of his state (Catholic or Lutheran), and his people had to follow it.' },
+              { q: 'What was the Catholic response to the Reformation?', a: 'The <b>Counter-Reformation</b>: the <b>Council of Trent</b> (1545–63) reformed abuses and restated Catholic teaching; the <b>Jesuits</b> were set up; the <b>Inquisition</b>; the <b>Index</b> of forbidden books.' },
+              { q: 'Who set up the Jesuits?', a: '<b>Ignatius of Loyola</b> (1540). They set up schools and sent out missionaries.' },
+              { q: 'What was the Inquisition?', a: '<b>Church courts</b> that tried people accused of <b>heresy</b> (beliefs against Church teaching).' }] }],
+            checks: [{ id: 'refQ', label: 'Reformation: quick check', quiz: 'reformation', topic: 'reformation' }] },
+          { id: 'pla', h: 'The Plantation of Ulster', p: 'The 13 questions on the revision list, then causes, course and consequences.', drills: [
+            { id: 'plaList', label: 'Plantation: revision list', topic: 'plantation', items: [
+              { q: 'What name was given to the part of Ireland that was loyal to the King?', a: '<b>The Pale</b> (the area around Dublin).' },
+              { q: 'Where was the first plantation carried out?', a: '<b>Laois and Offaly</b> (1550s, under Mary I).' },
+              { q: 'What was the Flight of the Earls?', a: 'In <b>1607</b> the Earls of <b>Tyrone (Hugh O’Neill)</b> and <b>Tyrconnell (Rory O’Donnell)</b> fled to Europe after losing the Nine Years’ War. Their lands were confiscated, which made the plantation possible.' },
+              { q: 'What monarch carried out the Ulster Plantation?', a: '<b>King James I</b> (from 1609).' },
+              { q: 'Name the 6 counties that were planted.', a: '<b>Donegal, Coleraine (Derry), Tyrone, Armagh, Fermanagh and Cavan.</b>' },
+              { q: 'Who carried out the private plantation in Ulster?', a: 'Two Scots, <b>Hugh Montgomery and James Hamilton</b>, in <b>Antrim and Down</b>.' },
+              { q: 'What size were the estates in Ulster capped at?', a: '<b>2,000 acres</b> (estates were 1,000, 1,500 or 2,000 acres).' },
+              { q: 'Name 2 groups of people that were given land in Ulster.', a: 'Any two: <b>undertakers</b> (English and Scottish settlers who had to bring Protestant tenants), <b>servitors</b> (soldiers and officials who served the Crown), <b>deserving Irish</b> (Irish loyal to the Crown).' },
+              { q: 'What was a bawn?', a: 'A <b>walled enclosure</b> built around a planter’s house for <b>defence</b>.' },
+              { q: 'Who helped with the plantation of Derry?', a: 'The <b>London companies</b> (guilds of the City of London). Derry was renamed <b>Londonderry</b>.' },
+              { q: 'Name 2 towns that were built during the Ulster Plantation.', a: 'Any two: <b>Derry (Londonderry), Coleraine, Enniskillen, Cavan, Strabane</b>.' },
+              { q: 'Name 2 features of plantation towns.', a: 'Any two: a central square called the <b>Diamond</b>, <b>wide streets</b>, <b>town walls</b>, a <b>market</b>, a <b>Protestant church</b>.' },
+              { q: 'List 1 way in which plantation farming methods differed from those of the Gaelic Irish.', a: 'Planters used <b>enclosed fields</b>, grew <b>crops (tillage)</b> and sold for money; the Gaelic Irish practised <b>booleying</b> (moving cattle to summer pastures) and measured wealth in <b>cattle</b>.' }] },
+            { id: 'plaCcc', label: 'Plantation: causes, course and consequences', topic: 'plantation', items: [
+              { q: '<b>Causes:</b> why did the English want to plant Ulster? Give as many as you can (aim for 5).', a: 'To <b>control</b> Ireland and make it <b>loyal</b>; to spread the <b>Protestant</b> religion; to spread the <b>English language and law</b>; to stop Spain using Ireland to <b>attack England</b>; the <b>Flight of the Earls</b> (1607) left their lands free to confiscate; Ulster was the most <b>Gaelic and rebellious</b> province (the Nine Years’ War).' },
+              { q: '<b>Course:</b> how was the plantation carried out? Aim for 5 points.', a: '<b>James I</b> from <b>1609</b>; <b>six counties</b> planted; land split into estates of <b>1,000–2,000 acres</b>; given to <b>undertakers, servitors and deserving Irish</b>; undertakers had to bring <b>Protestant tenants</b> and build a <b>bawn</b>; the <b>London companies</b> planted Derry; Antrim and Down planted <b>privately</b> by Montgomery and Hamilton.' },
+              { q: '<b>Consequences:</b> what were the results? Aim for 5 points.', a: '<b>New towns</b> with a Diamond, walls and a market; <b>new farming</b> (enclosed fields, tillage); <b>English law and language</b> spread; the <b>Protestant</b> religion spread; many native Irish were <b>moved to poorer land</b>; <b>two communities</b> with different religions and identities, the roots of later conflict in Northern Ireland.' }] }],
+            checks: [{ id: 'plaQ', label: 'Plantation: quick check', quiz: 'plantation', topic: 'plantation' }] },
+          { id: 'am', h: 'The American Revolution', p: 'The 15 questions on the revision list, then the four key battles.', drills: [
+            { id: 'amList', label: 'American Revolution: revision list', topic: 'america', items: [
+              { q: 'How many colonies did English settlers establish in North America?', a: '<b>13</b> colonies, on the east coast.' },
+              { q: 'What were the Navigation Acts?', a: 'Laws saying colonial trade had to <b>go through Britain</b> and be carried in <b>British ships</b>.' },
+              { q: 'What did the Sons of Liberty do after the introduction of the Stamp Act?', a: 'They <b>protested</b>, <b>attacked tax collectors</b> and organised <b>boycotts</b> of British goods. (The Stamp Act, 1765, was a tax on printed paper.)' },
+              { q: 'What slogan is associated with American discontent over taxation?', a: '<b>“No taxation without representation”</b>: the colonists had no MPs in the British parliament.' },
+              { q: 'What happened during the Boston Tea Party?', a: 'In <b>1773</b> the Sons of Liberty, dressed as Mohawks, dumped <b>342 chests of British tea</b> into Boston Harbour in protest at the Tea Act.' },
+              { q: 'What was the Boston Massacre?', a: 'In <b>1770</b> British soldiers <b>fired on a crowd</b> in Boston, killing <b>five</b> colonists.' },
+              { q: 'Where were the first shots of the American Revolution fired?', a: 'At <b>Lexington and Concord</b> (1775).' },
+              { q: 'Who wrote Common Sense?', a: '<b>Thomas Paine</b> (1776). It argued for independence.' },
+              { q: 'What position was George Washington appointed to at the Second Continental Congress?', a: '<b>Commander-in-chief</b> of the Continental Army.' },
+              { q: 'When was the Declaration of Independence adopted?', a: '<b>4 July 1776</b> (written mainly by Thomas Jefferson).' },
+              { q: 'Name 2 countries that joined the war on the American side.', a: 'Any two: <b>France, Spain</b>, the <b>Dutch Republic</b>.' },
+              { q: 'Who trained the American troops at Valley Forge?', a: '<b>Baron von Steuben</b> (winter 1777–78).' },
+              { q: 'What treaty recognised the independence of the former British colonies?', a: 'The <b>Treaty of Paris</b> (1783).' },
+              { q: 'Who was the first president of the United States?', a: '<b>George Washington</b> (1789).' },
+              { q: 'Give 2 results of the American Revolution.', a: 'Any two: the USA became <b>independent</b>; a <b>republic</b> with a new constitution and no king; Washington the first president; it <b>inspired other revolutions</b> (the French Revolution, the 1798 Rebellion in Ireland); Britain <b>lost its 13 colonies</b>; Native Americans and enslaved people gained little.' }] },
+            { id: 'amBattles', label: 'The four key battles', topic: 'america', items: [
+              { q: '<b>Lexington and Concord</b>: when, who won, and why does it matter?', a: '<b>April 1775</b>, Massachusetts. British troops marched to seize colonial weapons; colonial militia (minutemen) forced them back to Boston. <b>The first shots of the Revolution</b>: the war had begun.' },
+              { q: '<b>Bunker Hill</b>: when, who won, and why does it matter?', a: '<b>June 1775</b>, near Boston. A <b>British victory</b>, but with <b>heavy British losses</b> (over 1,000 casualties). It showed the colonists could stand up to the British army.' },
+              { q: '<b>Saratoga</b>: when, who won, and why does it matter?', a: '<b>1777</b>, New York. A major <b>American victory</b>: British general Burgoyne surrendered. <b>The turning point</b>: it persuaded <b>France</b> to join the war on the American side.' },
+              { q: '<b>Yorktown</b>: when, who won, and why does it matter?', a: '<b>1781</b>, Virginia. Washington’s army and the <b>French</b> army and navy trapped the British; <b>Cornwallis surrendered</b>. The <b>last major battle</b>: it led to peace and the Treaty of Paris (1783).' }] }],
+            checks: [{ id: 'amQ', label: 'American Revolution: quick check', quiz: 'america', topic: 'america' }] }
+        ] }
+    },
     topics: [
+      { id: 'exam', info: true, label: 'The November exam', icon: 'target', desc: 'What’s on it, and a run-through of every question on the revision list', course: ['nov'], notes: ['examHist'] },
       { id: 'reformation', label: 'The Reformation', icon: 'cross', desc: 'Luther, the spread of Protestantism and the Catholic response',
         notes: ['reformation'], fc: ['reformation'], quiz: ['reformation'], match: ['reformation'], tl: ['reformation'], prac: ['reformation'] },
       { id: 'plantation', label: 'The Plantation of Ulster', icon: 'map', desc: 'Causes, course and consequences',
@@ -308,6 +379,12 @@ window.SN_DATA = window.SN_DATA || {};
         notes: ['america'], fc: ['america'], quiz: ['america'], match: ['battles'], tl: ['america'], prac: ['america'] }
     ],
     notes: {
+      examHist: { label: 'What’s on the exam', sections: [
+        { h: 'Three topics', kv: [['The Reformation', 'Luther, his ideas and how they spread, and the Catholic response.'], ['The Plantation of Ulster', 'Causes, course and consequences.'],
+          ['The American Revolution', 'Causes, the four key battles and the results.']], tip: 'Your teacher said: know the answers to every question on the revision list. The Run-through tab drills every one.' },
+        { h: 'In the exam (12:00 to 13:00)', list: ['Read each question twice and underline the key words (name, explain, why).', 'Look at the marks: 2 marks usually means 2 points.',
+          'For “explain” or “why” questions, give a fact and then say why it matters.', 'Use names, dates and places: Luther 1517, James I 1609, Declaration of Independence 1776.', 'Leave five minutes to read back over your answers.'] }
+      ] },
       reformation: { label: 'The Reformation', sections: [
         { h: 'Background', list: ['Around 1500 Europe was mostly <b>Christian</b>: <b>Catholic</b> in the west (led by the Pope in Rome) and <b>Orthodox</b> in the east. <b>Islam</b> was the religion of the Ottoman Empire in the south-east. Check which pair your textbook uses for the “two main religions” question.',
           'The <b>Reformation</b> was the movement to reform the Catholic Church that led to new Protestant churches.',

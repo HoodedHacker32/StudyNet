@@ -1058,3 +1058,9 @@ html.calc-docked body{padding-right:var(--calc-w,0px);}
 .gap-ans{font-size:.8125rem;color:var(--muted);margin:0 .3rem 0 .1rem;}
 .lw-miss{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--danger);text-underline-offset:4px;font-weight:600;}
 .lw-extra{text-decoration:line-through;}
+
+/* Revision-list drill (course.js) */
+.drill{border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;display:grid;gap:1rem;max-width:44rem;}
+.drill .course-sub{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.drill-q{font-size:1.25rem;font-weight:700;line-height:1.4;}
+.drill-a{border-left:3px solid var(--sc-line);padding:.6rem 1rem;font-size:1.0625rem;line-height:1.6;background:var(--panel);border-radius:0 var(--radius) var(--radius) 0;}

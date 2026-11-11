@@ -1,5 +1,9 @@
 # StudyNet Changelog
 
+## v2026-11-12 (History run-through)
+- History: 'The November exam' topic with a Run-through built from the History team's 'November Exams topics' post: a revision-list drill for every question (17 Reformation, 13 Plantation, 15 American Revolution), Plantation causes/course/consequences, the four battles, and a quick check per topic.
+- course.js: new 'drills' section type (question, show answer, I knew it / Not yet; not-yet questions come back; first-time score saved in d[id]). Cache v56, assets ?v=46.
+
 ## v2026-11-11-v5 (ag/ar table)
 - Gaeilge Ag agus Ar: new Notes page with a table of mé, tú, sé… with English, and the ag / ar forms with their English, plus how each is used. Cache v55, assets ?v=45.
 

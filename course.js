@@ -146,16 +146,17 @@
 
   SubjectApp.addMode({
     id: 'course', label: 'Run-through', icon: 'target', key: 'course', src: 'courses', at: 0,
-    count: function (t, Y) { var c = Y.courses[t.course[0]]; var n = 0; c.sections.forEach(function (s) { n += (s.checks || s.paras).length; }); return n + ' steps'; },
+    count: function (t, Y) { var c = Y.courses[t.course[0]]; var n = 0; c.sections.forEach(function (s) { n += (s.drills || []).length + (s.checks || []).length + (s.paras || []).length; }); return n + ' steps'; },
     init: function (el, api, keys) {
       var ic = api.ic, esc = api.esc, Y = api.Y, C = Y.courses[keys[0]], LANG = { fr: 'French', ga: 'Irish', en: 'English' }[C.rules] || 'writing', KEY = 'sn_course_' + api.cfg.id + '_y' + api.year;
-      function st() { var s = SN.readJSON(KEY, null); if (!s || typeof s !== 'object') s = {}; s.q = s.q || {}; s.p = s.p || {}; return s; }
+      function st() { var s = SN.readJSON(KEY, null); if (!s || typeof s !== 'object') s = {}; s.q = s.q || {}; s.p = s.p || {}; s.d = s.d || {}; return s; }
       function save(s) { SN.writeJSON(KEY, s); }
       var quiz = null; // the check in progress
 
       function progress() {
         var s = st(), done = 0, all = 0;
         C.sections.forEach(function (sec) {
+          (sec.drills || []).forEach(function (d) { all++; if (s.d[d.id] && s.d[d.id].done) done++; });
           (sec.checks || []).forEach(function (c) { all++; if ((s.q[c.id] || 0) >= 5) done++; });
           (sec.paras || []).forEach(function (p) { all++; if (s.p[p.id] && s.p[p.id].done) done++; });
         });
@@ -168,6 +169,13 @@
           '<div class="course-prog"><span><b class="num">' + pr.done + '</b> of <span class="num">' + pr.all + '</span> done</span><span class="bar" aria-hidden="true"><i style="width:' + Math.round(pr.done / pr.all * 100) + '%"></i></span></div></div>';
         C.sections.forEach(function (sec, si) {
           h += '<section class="course-sec" aria-labelledby="cs-' + sec.id + '"><h3 id="cs-' + sec.id + '"><span class="course-n num">' + (si + 1) + '</span>' + esc(sec.h) + '</h3><p class="course-p">' + esc(sec.p) + '</p><ul class="course-list">';
+          (sec.drills || []).forEach(function (d) {
+            var ds = s.d[d.id] || {}, ok = !!ds.done;
+            h += '<li class="course-row' + (ok ? ' on' : '') + '"><span class="course-ok" aria-hidden="true">' + (ok ? ic('check') : '') + '</span><span class="course-l">' + esc(d.label) +
+              '<span class="course-sub">' + d.items.length + ' questions · ' + (ok ? 'All known' : ds.first != null ? 'Knew ' + ds.first + ' of ' + d.items.length + ' first time' : 'Not started') + '</span></span>' +
+              '<span class="course-btns"><button type="button" class="btn' + (ok ? '' : ' primary') + '" data-c-drill="' + d.id + '">' + (ok ? 'Again' : 'Start') + '</button>' +
+              (d.topic ? '<button type="button" class="btn" data-c-rev="' + d.topic + '">Notes</button>' : '') + '</span></li>';
+          });
           (sec.checks || []).forEach(function (c) {
             var best = s.q[c.id], ok = best >= 5;
             h += '<li class="course-row' + (ok ? ' on' : '') + '"><span class="course-ok" aria-hidden="true">' + (ok ? ic('check') : '') + '</span><span class="course-l">' + esc(c.label) +
@@ -186,6 +194,43 @@
           h += '</ul></section>';
         });
         el.innerHTML = h + '</div>';
+      }
+
+      /* ── Revision-list drill: a question, think of the answer, reveal, then "I knew it" or "Not yet". Not-yet ones come back. ── */
+      var drill = null;
+      function findDrill(id) { var out = null; C.sections.forEach(function (s) { (s.drills || []).forEach(function (d) { if (d.id === id) out = d; }); }); return out; }
+      function startDrill(id) {
+        var d = findDrill(id);
+        drill = { d: d, queue: d.items.map(function (x, i) { return i; }), known: 0, first: 0, seen: {}, shown: false };
+        drawDrill();
+      }
+      function drawDrill() {
+        var d = drill.d, n = d.items.length;
+        if (!drill.queue.length) {
+          var s = st(); s.d[d.id] = { done: true, first: Math.max((s.d[d.id] || {}).first || 0, drill.first), at: Date.now() }; save(s);
+          el.innerHTML = '<div class="course"><button type="button" class="link course-back" data-c-home>' + ic('arrow-left') + ' Back to the run-through</button>' +
+            '<div class="drill" role="status"><h2 class="course-t">' + esc(d.label) + ': all ' + n + ' known</h2><p class="course-p">You knew <b>' + drill.first + '</b> of ' + n + ' the first time. ' +
+            (drill.first === n ? 'Perfect.' : 'Run it again later to get them all first time.') + '</p><div class="course-btns"><button type="button" class="btn primary" data-c-home>Next step</button>' +
+            '<button type="button" class="btn" data-c-drill="' + d.id + '">Again</button></div></div></div>';
+          el.querySelector('.drill [data-c-home]').focus(); return;
+        }
+        var it = d.items[drill.queue[0]];
+        el.innerHTML = '<div class="course"><button type="button" class="link course-back" data-c-home>' + ic('arrow-left') + ' Back to the run-through</button>' +
+          '<div class="drill"><p class="course-sub">' + esc(d.label) + ' · <span class="num">' + drill.known + '</span> of <span class="num">' + n + '</span> known' +
+          '<span class="bar" aria-hidden="true"><i style="width:' + Math.round(drill.known / n * 100) + '%"></i></span></p>' +
+          '<p class="drill-q">' + it.q + '</p>' +
+          (drill.shown ? '<div class="drill-a" role="status">' + it.a + '</div><div class="course-btns"><button type="button" class="btn primary" data-c-knew>' + ic('check') + ' I knew it</button>' +
+            '<button type="button" class="btn" data-c-notyet>Not yet: ask me again</button></div>' :
+            '<p class="course-sub">Answer it in your head (or out loud), then check.</p><div class="course-btns"><button type="button" class="btn primary" data-c-show>Show the answer</button></div>') +
+          '</div></div>';
+        var b = el.querySelector('[data-c-knew], [data-c-show]'); if (b) b.focus();
+      }
+      function drillMark(knew) {
+        var i = drill.queue.shift();
+        SN.markStudied();
+        if (knew) { drill.known++; if (!drill.seen[i]) drill.first++; }
+        else drill.queue.splice(Math.min(drill.queue.length, 3), 0, i); // comes back after a few others
+        drill.seen[i] = 1; drill.shown = false; drawDrill();
       }
 
       /* ── Quick checks ── */
@@ -496,6 +541,10 @@
         else if (d.cGaps != null) checkGaps();
         else if (d.cReshuffle != null) { learn.seed++; drawLearn(); }
         else if (d.cMem != null) checkMemory();
+        else if (d.cDrill) startDrill(d.cDrill);
+        else if (d.cShow != null) { drill.shown = true; drawDrill(); }
+        else if (d.cKnew != null) drillMark(true);
+        else if (d.cNotyet != null) drillMark(false);
       }
       function onInput(e) {
         if (e.target.id !== 'cw-ta') return;
