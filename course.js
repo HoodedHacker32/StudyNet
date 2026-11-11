@@ -201,7 +201,8 @@
       function findDrill(id) { var out = null; C.sections.forEach(function (s) { (s.drills || []).forEach(function (d) { if (d.id === id) out = d; }); }); return out; }
       function startDrill(id) {
         var d = findDrill(id);
-        drill = { d: d, queue: d.items.map(function (x, i) { return i; }), known: 0, first: 0, seen: {}, shown: false };
+        var secH = ''; C.sections.forEach(function (sc) { (sc.drills || []).forEach(function (x) { if (x.id === id) secH = sc.h; }); });
+        drill = { d: d, secH: secH, queue: d.items.map(function (x, i) { return i; }), known: 0, first: 0, seen: {}, shown: false };
         drawDrill();
       }
       function drawDrill() {
@@ -216,7 +217,7 @@
         }
         var it = d.items[drill.queue[0]];
         el.innerHTML = '<div class="course"><button type="button" class="link course-back" data-c-home>' + ic('arrow-left') + ' Back to the run-through</button>' +
-          '<div class="drill"><p class="course-sub">' + esc(d.label) + ' · <span class="num">' + drill.known + '</span> of <span class="num">' + n + '</span> known' +
+          '<div class="drill"><p class="course-sub">' + esc((drill.secH && d.label.indexOf(drill.secH) < 0 ? drill.secH + ' · ' : '') + d.label) + ' · <span class="num">' + drill.known + '</span> of <span class="num">' + n + '</span> known' +
           '<span class="bar" aria-hidden="true"><i style="width:' + Math.round(drill.known / n * 100) + '%"></i></span></p>' +
           '<label class="drill-q" for="dr-in">' + it.q + '</label>' +
           (drill.verdict ? verdictHtml(it, drill.verdict) :
@@ -229,13 +230,28 @@
       // Typed answers: each question lists groups of words that count (keys) and how many groups it needs (need).
       function dnorm(t) { return ' ' + String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/(\d),(\d)/g, '$1$2').replace(/['’]/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim() + ' '; }
       function dlev(a, b) { var d = [], i, j; for (i = 0; i <= a.length; i++) d[i] = [i]; for (j = 0; j <= b.length; j++) d[0][j] = j;
-        for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; }
+        for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) {
+          d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1); // mantel / mantle
+        }
+        return d[a.length][b.length]; }
+      // A key is a word or phrase. "=word" must be spelt exactly (hygrometer isn't hydrometer).
+      // "a ~ b" means b comes within 6 words after a, so the answer ties them together ("anticline is an upfold", not swapped).
+      function wordIs(w, k, exact) { return w === k || (!exact && k.length >= 5 && !/\d/.test(k) && w[0] === k[0] && Math.abs(w.length - k.length) <= 2 && dlev(w, k) <= (k.length >= 8 ? 2 : 1)); }
       function hasKey(text, words, key) {
-        var k = dnorm(key).trim();
+        if (key.indexOf('~') >= 0) {
+          var ab = key.split('~').map(function (x) { return dnorm(x).trim(); });
+          return words.some(function (w, i) {
+            if (!wordIs(w, ab[0], false)) return false;
+            var after = ' ' + words.slice(i + 1, i + 7).join(' ') + ' ';
+            return ab[1].indexOf(' ') >= 0 ? after.indexOf(' ' + ab[1] + ' ') >= 0 : words.slice(i + 1, i + 7).some(function (x) { return wordIs(x, ab[1], false); });
+          });
+        }
+        var exact = key.charAt(0) === '=', k = dnorm(exact ? key.slice(1) : key).trim();
         if (!k) return false;
         if (text.indexOf(' ' + k + ' ') >= 0) return true;
-        if (k.indexOf(' ') >= 0 || /\d/.test(k) || k.length < 5) return false; // phrases, numbers and short words must be exact
-        return words.some(function (w) { return w[0] === k[0] && Math.abs(w.length - k.length) <= 2 && dlev(w, k) <= (k.length >= 8 ? 2 : 1); });
+        if (exact || k.indexOf(' ') >= 0 || /\d/.test(k) || k.length < 5) return false; // phrases, numbers and short words must be exact
+        return words.some(function (w) { return wordIs(w, k, false); });
       }
       // An item can accept other correct reasonings too: alts: [{ keys, need }]. The best-scoring one is reported.
       function markTyped(it, typed) {

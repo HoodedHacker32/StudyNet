@@ -1,5 +1,10 @@
 # StudyNet Changelog
 
+## v2026-11-12-v4 (Geography run-through)
+- Geography: 'The November exam' topic with a Run-through from the Form 2 Geography team posts (20 Oct chapters; 3 Nov glaciation): typed-answer drills for Ch 1, 2, 3, 4, 12, 13 (45 questions) plus 'explain one feature' (cirque, esker), and a quick check per chapter.
+- Bug-tested by a Sonnet subagent with Playwright; fixed: swapped answers (anticline/syncline, magma/lava, focus/epicentre) counted as right; anticyclone/depression/isobars too loose; hygrometer accepted 'hydrometer'; several correct answers rejected (mantel, rain guage, super continent, cumulo nimbus, powerful). Dormant example now Kilimanjaro (Vesuvius is usually called active).
+- course.js keys: 'a ~ b' (b within 6 words after a), '=word' (exact spelling), letter swaps count as one slip; drill header names its section. Cache v60, assets ?v=50.
+
 ## v2026-11-12-v3 (drills: other correct answers)
 - Drill items can accept other correct reasonings (alts). Indulgences now accepts 'justification by faith alone' / 'only God forgives'; Augsburg accepts cuius regio; Navigation Acts accepts 'laws controlling trade'. Missed questions go to the end of the queue (they used to come back 3 later, so missing several cycled the same few). Cache v58, assets ?v=48.
 

@@ -143,7 +143,1255 @@ window.SN_DATA = window.SN_DATA || {};
           scheme: ['White reflects the sun’s heat, so readings are not too high (2 marks)', 'Slats let air flow freely through it (2 marks)'],
           model: 'It is white to reflect sunlight so the thermometers aren’t heated directly, and the slatted sides let air circulate freely so the readings show the true air temperature.' }] }
     ],
+    /* The November exam run-through (course.js), from the Geography team posts of 20 Oct (chapters) and 3 Nov (glaciation: plucking, abrasion, landforms, one feature). */
+    courses: {
+     "nov": {
+      "label": "November exam run-through",
+      "intro": "Every chapter on the November exam (Ch 1, 2, 3, 4, 12 and 13). Type your answer to each question and it’s checked; any you miss come back at the end. Then do the quick check.",
+      "sections": [
+       {
+        "id": "ch1",
+        "h": "Chapter 1: Dynamic Earth",
+        "p": "Layers, plates and plate boundaries.",
+        "drills": [
+         {
+          "id": "ch1",
+          "label": "Key questions",
+          "topic": "earth",
+          "items": [
+           {
+            "need": 4,
+            "keys": [
+             [
+              "crust"
+             ],
+             [
+              "mantle",
+              "mantel"
+             ],
+             [
+              "outer core",
+              "outer"
+             ],
+             [
+              "inner core",
+              "inner"
+             ]
+            ],
+            "q": "Name the four layers of the Earth.",
+            "a": "The <b>crust</b>, the <b>mantle</b>, the <b>outer core</b> and the <b>inner core</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "magma",
+              "molten",
+              "semi molten",
+              "liquid rock"
+             ]
+            ],
+            "q": "What is the mantle made of?",
+            "a": "<b>Semi-molten rock</b> called <b>magma</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "convection",
+              "currents"
+             ]
+            ],
+            "q": "What makes the plates move?",
+            "a": "<b>Convection currents</b> in the mantle, a few centimetres a year."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "supercontinent",
+              "one continent",
+              "single continent",
+              "all the land",
+              "joined",
+              "one big continent",
+              "super continent",
+              "land mass",
+              "landmass",
+              "giant continent",
+              "giant land"
+             ]
+            ],
+            "q": "What was Pangaea?",
+            "a": "One <b>supercontinent</b> about 200 million years ago, when all the land was joined together."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "wegener"
+             ]
+            ],
+            "q": "Who came up with the idea of continental drift?",
+            "a": "<b>Alfred Wegener</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "apart",
+              "separate",
+              "separating",
+              "away from each other",
+              "diverge"
+             ],
+             [
+              "magma",
+              "new crust",
+              "crust",
+              "lava"
+             ],
+             [
+              "mid atlantic",
+              "atlantic",
+              "iceland"
+             ]
+            ],
+            "q": "What happens at a constructive (separating) plate boundary? Give an example.",
+            "a": "The plates <b>move apart</b> and <b>magma rises to form new crust</b>, e.g. the <b>Mid-Atlantic Ridge</b> and Iceland."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "collide",
+              "colliding",
+              "towards",
+              "together",
+              "crash",
+              "converge"
+             ],
+             [
+              "subduction",
+              "sinks",
+              "sink",
+              "melts",
+              "oceanic",
+              "goes under",
+              "under"
+             ],
+             [
+              "andes",
+              "volcanoes",
+              "volcano",
+              "fold mountains",
+              "earthquakes",
+              "earthquake"
+             ]
+            ],
+            "q": "What happens at a destructive (colliding) plate boundary?",
+            "a": "The plates <b>collide</b>; the denser <b>oceanic plate sinks</b> under the other (<b>subduction</b>) and melts. This causes volcanoes, earthquakes and fold mountains, e.g. the <b>Andes</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "slide",
+              "sliding",
+              "past",
+              "side by side",
+              "rub"
+             ],
+             [
+              "san andreas",
+              "california",
+              "earthquakes",
+              "earthquake"
+             ]
+            ],
+            "q": "What happens at a passive (sliding) plate boundary? Give an example.",
+            "a": "The plates <b>slide past each other</b>; crust is neither made nor destroyed, but there are <b>earthquakes</b>, e.g. the <b>San Andreas Fault</b>, California."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "earthQ",
+          "label": "Dynamic Earth: quick check",
+          "quiz": "earth",
+          "topic": "earth"
+         }
+        ]
+       },
+       {
+        "id": "ch2",
+        "h": "Chapter 2: Volcanic activity",
+        "p": "Parts, types, how a volcano forms and its effects.",
+        "drills": [
+         {
+          "id": "ch2",
+          "label": "Key questions",
+          "topic": "volcanoes",
+          "items": [
+           {
+            "need": 1,
+            "keys": [
+             [
+              "magma ~ underground",
+              "magma ~ under",
+              "magma ~ below",
+              "magma ~ beneath",
+              "magma ~ inside",
+              "magma ~ mantle",
+              "lava ~ surface",
+              "lava ~ reached",
+              "lava ~ erupted",
+              "lava ~ outside",
+              "lava ~ above",
+              "lava ~ comes out"
+             ]
+            ],
+            "q": "What is the difference between magma and lava?",
+            "a": "<b>Magma</b> is molten rock <b>underground</b>; <b>lava</b> is magma that has reached the <b>surface</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "magma chamber",
+              "chamber"
+             ],
+             [
+              "vent"
+             ],
+             [
+              "crater"
+             ],
+             [
+              "cone"
+             ]
+            ],
+            "q": "Name three parts of a volcano.",
+            "a": "Any three: <b>magma chamber</b>, <b>vent</b>, <b>crater</b>, <b>cone</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "active"
+             ],
+             [
+              "dormant"
+             ],
+             [
+              "extinct"
+             ]
+            ],
+            "q": "Name the three types of volcano, with an example of each if you can.",
+            "a": "<b>Active</b> (Mount Etna, Italy), <b>dormant</b> (Mount Kilimanjaro, Tanzania), <b>extinct</b> (Slemish, Co. Antrim)."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "boundary",
+              "boundaries",
+              "plates",
+              "plate"
+             ],
+             [
+              "magma",
+              "molten"
+             ],
+             [
+              "vent",
+              "cracks",
+              "crack",
+              "forced up",
+              "rises",
+              "pushed up"
+             ],
+             [
+              "erupts",
+              "eruption",
+              "erupt",
+              "lava",
+              "ash"
+             ],
+             [
+              "layers",
+              "cone",
+              "builds up",
+              "cools",
+              "mountain"
+             ]
+            ],
+            "q": "Explain how a volcano forms.",
+            "a": "At a <b>plate boundary</b>, <b>magma</b> is forced up from the mantle through <b>cracks</b> in the crust. It <b>erupts</b> through the vent as lava, ash and gases. <b>Layers</b> of lava and ash cool and build up into a <b>cone</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "fertile",
+              "soil"
+             ],
+             [
+              "tourism",
+              "tourists"
+             ],
+             [
+              "geothermal",
+              "electricity",
+              "heating"
+             ],
+             [
+              "new land",
+              "islands",
+              "new islands"
+             ]
+            ],
+            "q": "Give two positive effects of volcanoes.",
+            "a": "Any two: <b>fertile soil</b>, <b>tourism</b>, <b>geothermal energy</b>, <b>new land</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "death",
+              "deaths",
+              "die",
+              "killed",
+              "loss of life",
+              "lives"
+             ],
+             [
+              "homes",
+              "houses",
+              "buildings",
+              "destroyed",
+              "towns"
+             ],
+             [
+              "crops",
+              "farm",
+              "farmland"
+             ],
+             [
+              "ash",
+              "flights",
+              "planes",
+              "air travel"
+             ]
+            ],
+            "q": "Give two negative effects of volcanoes.",
+            "a": "Any two: <b>loss of life</b>, <b>homes destroyed</b>, <b>crops destroyed</b>, <b>ash clouds</b> that stop flights (Eyjafjallajökull, Iceland, 2010)."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "antrim",
+              "giants causeway",
+              "causeway"
+             ]
+            ],
+            "q": "Name an Irish example of a lava plateau.",
+            "a": "The <b>Antrim Plateau</b>, with the <b>Giant’s Causeway</b>."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "volQ",
+          "label": "Volcanic activity: quick check",
+          "quiz": "volcanoes",
+          "topic": "volcanoes"
+         }
+        ]
+       },
+       {
+        "id": "ch3",
+        "h": "Chapter 3: Earthquakes",
+        "p": "Focus and epicentre, measuring, a case study, reducing damage.",
+        "drills": [
+         {
+          "id": "ch3",
+          "label": "Key questions",
+          "topic": "earthquakes",
+          "items": [
+           {
+            "need": 2,
+            "keys": [
+             [
+              "shaking",
+              "shake",
+              "shakes",
+              "vibration",
+              "vibrations",
+              "tremor",
+              "trembling"
+             ],
+             [
+              "plates",
+              "plate",
+              "crust",
+              "slip",
+              "move",
+              "movement"
+             ]
+            ],
+            "q": "What is an earthquake?",
+            "a": "A sudden <b>shaking</b> of the Earth’s crust when <b>plates slip</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "focus ~ underground",
+              "focus ~ under",
+              "focus ~ below",
+              "focus ~ starts",
+              "focus ~ start",
+              "focus ~ origin",
+              "focus ~ begins",
+              "focus ~ inside"
+             ],
+             [
+              "epicentre ~ surface",
+              "epicentre ~ above",
+              "epicenter ~ surface",
+              "epicenter ~ above",
+              "epicentre ~ top",
+              "epicenter ~ top"
+             ]
+            ],
+            "q": "What is the difference between the focus and the epicentre?",
+            "a": "The <b>focus</b> is the point <b>underground</b> where the earthquake starts; the <b>epicentre</b> is the point on the <b>surface directly above</b> it."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "seismograph",
+              "seismometer"
+             ]
+            ],
+            "q": "What instrument records earthquakes?",
+            "a": "A <b>seismograph</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "magnitude",
+              "strength",
+              "strong",
+              "power",
+              "energy",
+              "intensity",
+              "powerful",
+              "how strong",
+              "size"
+             ]
+            ],
+            "q": "What does the Richter scale measure?",
+            "a": "The <b>magnitude</b> (strength) of an earthquake. Each step up the scale is a much bigger earthquake (about 10 times more ground shaking)."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "damage",
+              "effects",
+              "destruction",
+              "effect"
+             ]
+            ],
+            "q": "What does the Mercalli scale measure?",
+            "a": "The <b>damage</b> an earthquake causes (I to XII)."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "wave",
+              "waves"
+             ],
+             [
+              "sea",
+              "ocean",
+              "underwater",
+              "under the sea",
+              "water"
+             ]
+            ],
+            "q": "What is a tsunami?",
+            "a": "A huge <b>sea wave</b> caused by an earthquake <b>under the sea</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "nepal",
+              "japan",
+              "chile",
+              "haiti",
+              "turkey",
+              "kathmandu"
+             ],
+             [
+              "2015",
+              "2011",
+              "2010",
+              "2023"
+             ],
+             [
+              "7 8",
+              "9 0",
+              "8 8",
+              "magnitude",
+              "richter"
+             ],
+             [
+              "died",
+              "deaths",
+              "killed",
+              "tsunami",
+              "avalanche",
+              "avalanches",
+              "fukushima",
+              "destroyed",
+              "homeless"
+             ]
+            ],
+            "q": "Give one earthquake case study: where, when, how strong and what happened.",
+            "a": "E.g. <b>Nepal 2015</b>, magnitude <b>7.8</b>: about 9,000 died, avalanches on Everest. Or <b>Japan 2011</b>, 9.0: a tsunami and the Fukushima nuclear accident. Or <b>Chile 2010</b>, 8.8."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "earthquake proof",
+              "foundations",
+              "steel",
+              "rubber",
+              "shock absorbers",
+              "buildings",
+              "building"
+             ],
+             [
+              "drills",
+              "drill",
+              "kits",
+              "kit",
+              "emergency",
+              "practice"
+             ],
+             [
+              "monitoring",
+              "warning",
+              "warnings",
+              "predict",
+              "prediction"
+             ]
+            ],
+            "q": "Give two ways to reduce earthquake damage.",
+            "a": "Any two: <b>earthquake-proof buildings</b> (deep foundations, steel frames, rubber shock absorbers), <b>drills</b> and emergency kits, <b>monitoring</b> and tsunami <b>warning</b> systems."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "eqQ",
+          "label": "Earthquakes: quick check",
+          "quiz": "earthquakes",
+          "topic": "earthquakes"
+         }
+        ]
+       },
+       {
+        "id": "ch4",
+        "h": "Chapter 4: Fold mountains",
+        "p": "How they form, folding periods and how people use them.",
+        "drills": [
+         {
+          "id": "ch4",
+          "label": "Key questions",
+          "topic": "fold",
+          "items": [
+           {
+            "need": 3,
+            "keys": [
+             [
+              "plates",
+              "collide",
+              "colliding",
+              "towards",
+              "together"
+             ],
+             [
+              "sedimentary",
+              "layers",
+              "rock",
+              "rocks"
+             ],
+             [
+              "squeezed",
+              "crumpled",
+              "buckle",
+              "buckled",
+              "folded",
+              "fold",
+              "compressed",
+              "pushed up"
+             ],
+             [
+              "anticline",
+              "anticlines",
+              "upfold",
+              "syncline",
+              "synclines",
+              "downfold"
+             ]
+            ],
+            "q": "Explain how fold mountains form.",
+            "a": "Two <b>plates move towards each other</b>. Layers of <b>sedimentary rock</b> between them are <b>squeezed and crumpled</b> into upfolds (<b>anticlines</b>) and downfolds (<b>synclines</b>), and over millions of years are pushed up into mountains."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "anticline ~ upfold",
+              "anticline ~ up fold",
+              "anticline ~ up",
+              "anticline ~ upwards",
+              "anticline ~ arch",
+              "anticline ~ peak",
+              "anticline ~ crest"
+             ],
+             [
+              "syncline ~ downfold",
+              "syncline ~ down fold",
+              "syncline ~ down",
+              "syncline ~ downwards",
+              "syncline ~ dip",
+              "syncline ~ trough"
+             ]
+            ],
+            "q": "What is an anticline, and what is a syncline?",
+            "a": "An <b>anticline</b> is an <b>upfold</b>; a <b>syncline</b> is a <b>downfold</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "caledonian"
+             ],
+             [
+              "armorican"
+             ],
+             [
+              "alpine"
+             ]
+            ],
+            "q": "Name the three periods of folding.",
+            "a": "<b>Caledonian</b> (about 400 million years ago), <b>Armorican</b> (about 250 million years ago), <b>Alpine</b> (about 30 million years ago)."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "macgillycuddy",
+              "macgillycuddys",
+              "reeks",
+              "galtees",
+              "galtee",
+              "munster",
+              "carrauntoohil"
+             ]
+            ],
+            "q": "Give an Irish example of Armorican fold mountains.",
+            "a": "The Munster ridges, e.g. <b>MacGillycuddy’s Reeks</b> or the <b>Galtees</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "donegal",
+              "mayo",
+              "wicklow",
+              "derryveagh",
+              "nephin"
+             ]
+            ],
+            "q": "Give an Irish example of Caledonian fold mountains.",
+            "a": "The mountains of <b>Donegal</b>, <b>Mayo</b> or <b>Wicklow</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "tourism",
+              "skiing",
+              "hiking",
+              "tourists",
+              "ski"
+             ],
+             [
+              "farming",
+              "sheep",
+              "grazing",
+              "cattle",
+              "farm"
+             ],
+             [
+              "hydroelectric",
+              "hep",
+              "electricity",
+              "power",
+              "dams"
+             ],
+             [
+              "forestry",
+              "mining",
+              "trees",
+              "mines"
+             ]
+            ],
+            "q": "Give two ways people use fold mountains.",
+            "a": "Any two: <b>tourism</b> (skiing, hiking), <b>farming</b> (grazing sheep and cattle), <b>hydroelectric power</b>, <b>forestry and mining</b>."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "foldQ",
+          "label": "Fold mountains: quick check",
+          "quiz": "fold",
+          "topic": "fold"
+         }
+        ]
+       },
+       {
+        "id": "ch12",
+        "h": "Chapter 12: Glaciation",
+        "p": "Plucking and abrasion, the landforms, and writing out one feature (cirque or esker).",
+        "drills": [
+         {
+          "id": "ch12",
+          "label": "Key questions",
+          "topic": "glaciation",
+          "items": [
+           {
+            "need": 3,
+            "keys": [
+             [
+              "meltwater",
+              "water",
+              "freezes",
+              "frozen",
+              "freeze",
+              "ice"
+             ],
+             [
+              "rock",
+              "rocks"
+             ],
+             [
+              "pulls",
+              "pulled",
+              "plucked",
+              "plucks",
+              "tears",
+              "torn",
+              "away",
+              "loose",
+              "rips"
+             ]
+            ],
+            "q": "Explain plucking.",
+            "a": "<b>Meltwater freezes</b> onto rock at the base and sides of the glacier. As the glacier moves, it <b>pulls (plucks) loose rock away</b>, leaving a jagged surface."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "rocks",
+              "stones",
+              "debris",
+              "boulders"
+             ],
+             [
+              "scrape",
+              "scraping",
+              "scrapes",
+              "grind",
+              "grinding",
+              "sandpaper",
+              "rub",
+              "rubs",
+              "scratch",
+              "scratches",
+              "wears"
+             ],
+             [
+              "smooth",
+              "striations",
+              "scratches",
+              "polished"
+             ]
+            ],
+            "q": "Explain abrasion.",
+            "a": "<b>Rocks frozen into the bottom</b> of the glacier <b>scrape and grind</b> the land like sandpaper, leaving it smooth with scratches called <b>striations</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "cirque",
+              "corrie",
+              "cwm"
+             ],
+             [
+              "arete"
+             ],
+             [
+              "pyramidal peak",
+              "pyramidal"
+             ],
+             [
+              "u shaped valley",
+              "u shaped",
+              "u valley"
+             ],
+             [
+              "hanging valley",
+              "hanging"
+             ],
+             [
+              "ribbon lake",
+              "ribbon"
+             ],
+             [
+              "truncated spur",
+              "truncated"
+             ],
+             [
+              "tarn"
+             ]
+            ],
+            "q": "Name three features (landforms) of glacial erosion.",
+            "a": "Any three: <b>cirque (corrie)</b>, <b>arête</b>, <b>pyramidal peak</b>, <b>U-shaped valley</b>, <b>hanging valley</b>, <b>ribbon lake</b>, <b>truncated spur</b>."
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "moraine",
+              "moraines"
+             ],
+             [
+              "drumlin",
+              "drumlins"
+             ],
+             [
+              "esker",
+              "eskers"
+             ],
+             [
+              "erratic",
+              "erratics"
+             ],
+             [
+              "boulder clay",
+              "till"
+             ],
+             [
+              "outwash plain",
+              "outwash"
+             ]
+            ],
+            "q": "Name three features (landforms) of glacial deposition.",
+            "a": "Any three: <b>moraine</b> (lateral, medial, terminal), <b>drumlin</b>, <b>esker</b>, <b>erratic</b>, <b>boulder clay</b>, <b>outwash plain</b>."
+           }
+          ]
+         },
+         {
+          "id": "feature",
+          "label": "Explain one feature: cirque or esker",
+          "topic": "glaciation",
+          "items": [
+           {
+            "need": 4,
+            "keys": [
+             [
+              "north facing",
+              "north",
+              "shaded",
+              "hollow"
+             ],
+             [
+              "neve",
+              "ice",
+              "compressed",
+              "snow"
+             ],
+             [
+              "plucking",
+              "plucked"
+             ],
+             [
+              "abrasion"
+             ],
+             [
+              "rotational",
+              "rotation",
+              "circular",
+              "rotating"
+             ],
+             [
+              "lip",
+              "tarn",
+              "lake"
+             ],
+             [
+              "coumshingaun",
+              "comeragh",
+              "waterford",
+              "devils punchbowl",
+              "kerry"
+             ]
+            ],
+            "q": "<b>Exam question:</b> name a feature of glacial erosion and explain how it formed. (Use the cirque.)",
+            "a": "A <b>cirque</b> (corrie), e.g. <b>Coumshingaun</b>, Co. Waterford. Snow gathered in a <b>hollow on a north-facing slope</b> and was compressed into névé and <b>ice</b>. <b>Plucking</b> tore rock from the back wall, making it steep. <b>Abrasion</b> deepened the floor. The ice moved with a <b>rotational</b> movement. A rock <b>lip</b> formed at the front. When the ice melted, a lake called a <b>tarn</b> filled the hollow."
+           },
+           {
+            "need": 4,
+            "keys": [
+             [
+              "melt",
+              "melted",
+              "melting",
+              "meltwater",
+              "retreat",
+              "retreated"
+             ],
+             [
+              "tunnel",
+              "tunnels",
+              "under the glacier",
+              "beneath",
+              "underneath"
+             ],
+             [
+              "sand",
+              "gravel"
+             ],
+             [
+              "deposited",
+              "deposit",
+              "dropped",
+              "deposits",
+              "dropping"
+             ],
+             [
+              "sorted",
+              "heavier",
+              "finer",
+              "layers"
+             ],
+             [
+              "ridge",
+              "winding",
+              "long",
+              "snake"
+             ],
+             [
+              "esker riada",
+              "riada"
+             ]
+            ],
+            "q": "<b>Exam question:</b> name a feature of glacial deposition and explain how it formed. (Use the esker.)",
+            "a": "An <b>esker</b>, e.g. the <b>Esker Riada</b> across the midlands. As the glacier <b>melted</b>, <b>meltwater streams</b> flowed in <b>tunnels under the glacier</b> carrying <b>sand and gravel</b>. They <b>deposited</b> it on the tunnel beds, <b>sorted</b> (heavier gravel first, finer sand further). When the glacier retreated, a long <b>winding ridge</b> was left."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "glacQ",
+          "label": "Glaciation: quick check",
+          "quiz": "glaciation",
+          "topic": "glaciation"
+         }
+        ]
+       },
+       {
+        "id": "ch13",
+        "h": "Chapter 13: Measuring and forecasting weather",
+        "p": "Instruments, pressure, isobars and forecasting.",
+        "drills": [
+         {
+          "id": "ch13",
+          "label": "Key questions",
+          "topic": "weather",
+          "items": [
+           {
+            "need": 1,
+            "keys": [
+             [
+              "barometer",
+              "barograph"
+             ]
+            ],
+            "q": "Which instrument measures air pressure?",
+            "a": "A <b>barometer</b> (in hectopascals or millibars)."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "anemometer"
+             ]
+            ],
+            "q": "Which instrument measures wind speed?",
+            "a": "An <b>anemometer</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "wind vane",
+              "weather vane",
+              "vane",
+              "windsock",
+              "windvane"
+             ]
+            ],
+            "q": "Which instrument shows wind direction?",
+            "a": "A <b>wind vane</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "rain gauge",
+              "gauge",
+              "raingauge",
+              "rain guage",
+              "guage"
+             ]
+            ],
+            "q": "Which instrument measures rainfall?",
+            "a": "A <b>rain gauge</b> (in mm)."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "=hygrometer"
+             ]
+            ],
+            "q": "Which instrument measures humidity?",
+            "a": "A <b>hygrometer</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "thermometer"
+             ]
+            ],
+            "q": "Which instrument measures temperature, and which records the highest and lowest?",
+            "a": "A <b>thermometer</b>; a <b>maximum–minimum thermometer</b> records the highest and lowest."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "box"
+             ],
+             [
+              "shade",
+              "shaded",
+              "thermometers",
+              "thermometer",
+              "sun"
+             ],
+             [
+              "white",
+              "slatted",
+              "slats",
+              "legs",
+              "wooden"
+             ]
+            ],
+            "q": "What is a Stevenson screen?",
+            "a": "A <b>white wooden box</b> on legs with <b>slatted sides</b> that holds <b>thermometers in the shade</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "high"
+             ],
+             [
+              "dry",
+              "settled",
+              "sunny",
+              "calm",
+              "clear",
+              "fine",
+              "frosty",
+              "good",
+              "nice",
+              "warm"
+             ]
+            ],
+            "q": "What weather does an anticyclone bring?",
+            "a": "<b>High pressure</b>: <b>dry, settled</b> weather (warm in summer, cold and frosty in winter).",
+            "alts": [
+             {
+              "keys": [
+               [
+                "dry",
+                "settled",
+                "sunny",
+                "calm",
+                "clear",
+                "fine",
+                "frosty",
+                "good",
+                "nice",
+                "warm"
+               ]
+              ],
+              "need": 1
+             }
+            ]
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "low"
+             ],
+             [
+              "wet",
+              "rain",
+              "rainy",
+              "windy",
+              "wind",
+              "cloudy",
+              "unsettled",
+              "stormy",
+              "bad"
+             ]
+            ],
+            "q": "What weather does a depression bring?",
+            "a": "<b>Low pressure</b>: <b>cloudy, wet and windy</b> weather.",
+            "alts": [
+             {
+              "keys": [
+               [
+                "wet",
+                "rain",
+                "rainy",
+                "windy",
+                "cloudy",
+                "unsettled",
+                "stormy"
+               ]
+              ],
+              "need": 1
+             }
+            ]
+           },
+           {
+            "need": 3,
+            "keys": [
+             [
+              "pressure"
+             ],
+             [
+              "equal",
+              "same",
+              "join",
+              "joining",
+              "joins",
+              "connect"
+             ],
+             [
+              "strong",
+              "windy",
+              "wind",
+              "stormy"
+             ]
+            ],
+            "q": "What are isobars, and what do close isobars mean?",
+            "a": "Lines on a weather map joining places of <b>equal pressure</b>. Close isobars mean <b>strong wind</b>."
+           },
+           {
+            "need": 2,
+            "keys": [
+             [
+              "satellite",
+              "satellites"
+             ],
+             [
+              "weather stations",
+              "stations",
+              "station"
+             ],
+             [
+              "balloons",
+              "balloon"
+             ],
+             [
+              "radar"
+             ],
+             [
+              "computer",
+              "computers",
+              "models"
+             ]
+            ],
+            "q": "Name two ways Met Éireann gathers information to forecast the weather.",
+            "a": "Any two: <b>weather stations</b>, <b>satellites</b>, <b>weather balloons</b>, <b>radar</b>, <b>computer models</b>."
+           },
+           {
+            "need": 1,
+            "keys": [
+             [
+              "cumulonimbus",
+              "cumulo nimbus"
+             ]
+            ],
+            "q": "What kind of cloud brings thunder, lightning and heavy rain?",
+            "a": "<b>Cumulonimbus</b>: tall, dark storm clouds."
+           }
+          ]
+         }
+        ],
+        "checks": [
+         {
+          "id": "wxQ",
+          "label": "Measuring and forecasting weather: quick check",
+          "quiz": "weather",
+          "topic": "weather"
+         }
+        ]
+       }
+      ]
+     }
+    },
     topics: [
+      { id: 'exam', info: true, label: 'The November exam', icon: 'target', desc: 'What’s on it, and a run-through of every chapter', course: ['nov'], notes: ['examGeo'] },
       { id: 'earth', label: 'Dynamic Earth', icon: 'globe', desc: 'Ch 1: the Earth’s layers, plates and plate boundaries',
         notes: ['earth'], fc: ['earth'], quiz: ['earth'], match: ['earth'], prac: ['earth'] },
       { id: 'volcanoes', label: 'Volcanic activity', icon: 'volcano', desc: 'Ch 2: how volcanoes form, their parts and effects',
@@ -160,6 +1408,12 @@ window.SN_DATA = window.SN_DATA || {};
     ],
 
     notes: {
+      examGeo: { label: 'What’s on the exam', sections: [
+        { h: 'Six chapters', list: ['Chapter 1: Dynamic Earth', 'Chapter 2: Volcanic Activity', 'Chapter 3: Earthquakes', 'Chapter 4: Fold Mountains', 'Chapter 12: Glaciation', 'Chapter 13: Measuring and Forecasting Weather'] },
+        { h: 'Glaciation: what your teacher said', list: ['Know the processes of glacial erosion: <b>plucking</b> and <b>abrasion</b>.', 'Know the landforms of glacial erosion and deposition, and be able to <b>recognise them in a diagram</b>.',
+          'You will be asked to write out <b>one</b> feature of glacial erosion <b>or</b> deposition: learn the <b>cirque</b> or the <b>esker</b>.'],
+          tip: 'For the feature: name it, give an Irish example, draw a labelled diagram, and explain how it formed in 4–5 points.' }
+      ] },
       earth: { label: 'Dynamic Earth', sections: [
         { h: 'Structure of the Earth', kv: [['Crust', 'The thin, solid outer layer. <b>Continental</b> crust is thicker and lighter; <b>oceanic</b> crust is thinner and denser.'],
           ['Mantle', 'The thickest layer, made of semi-molten rock called <b>magma</b>.'], ['Outer core', 'Liquid iron and nickel.'],
@@ -174,7 +1428,7 @@ window.SN_DATA = window.SN_DATA || {};
       volcanoes: { label: 'Volcanic activity', sections: [
         { h: 'Key words', kv: [['Magma', 'Molten rock under the surface.'], ['Lava', 'Magma that has reached the surface.'], ['Magma chamber', 'Store of magma below the volcano.'],
           ['Vent', 'The pipe magma travels up.'], ['Crater', 'The opening at the top.'], ['Cone', 'The mountain built from layers of lava and ash.']] },
-        { h: 'Types', kv: [['Active', 'Has erupted recently and may erupt again, e.g. Mount Etna (Italy).'], ['Dormant', 'Has not erupted for a long time but could, e.g. Mount Vesuvius.'],
+        { h: 'Types', kv: [['Active', 'Has erupted recently and may erupt again, e.g. Mount Etna (Italy).'], ['Dormant', 'Has not erupted for a long time but could, e.g. Mount Kilimanjaro (Tanzania).'],
           ['Extinct', 'Will not erupt again, e.g. Slemish (Co. Antrim).']] },
         { h: 'How a volcano forms', ol: ['At a plate boundary, magma is forced up from the mantle through cracks in the crust.', 'It erupts through the vent as lava, ash and gases.',
           'Layers of lava and ash cool and build up into a cone.', 'Over many eruptions the cone grows into a volcanic mountain.'] },
@@ -253,7 +1507,7 @@ window.SN_DATA = window.SN_DATA || {};
         ['Subduction', 'The denser plate sinks beneath the other and melts']]) },
       volcanoes: { label: 'Volcanoes', cards: cards([['Magma', 'Molten rock below the surface'], ['Lava', 'Magma that reaches the surface'], ['Vent', 'The pipe magma rises through'],
         ['Crater', 'The opening at the top of a volcano'], ['Magma chamber', 'Store of magma under a volcano'], ['Active volcano', 'Erupted recently, e.g. Etna'],
-        ['Dormant volcano', 'Not erupted for a long time, e.g. Vesuvius'], ['Extinct volcano', 'Will not erupt again, e.g. Slemish'],
+        ['Dormant volcano', 'Not erupted for a long time, e.g. Kilimanjaro'], ['Extinct volcano', 'Will not erupt again, e.g. Slemish'],
         ['Lava plateau', 'Flat area of basalt lava, e.g. Antrim Plateau'], ['Geyser', 'Hot water and steam shooting out of the ground']]) },
       earthquakes: { label: 'Earthquakes', cards: cards([['Focus', 'Point underground where an earthquake starts'], ['Epicentre', 'Point on the surface above the focus'],
         ['Seismic waves', 'Shock waves from the focus'], ['Seismograph', 'Instrument that records earthquakes'], ['Richter scale', 'Measures magnitude (strength)'],
