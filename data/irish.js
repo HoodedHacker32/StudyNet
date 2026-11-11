@@ -362,7 +362,7 @@ window.SN_DATA = window.SN_DATA || {};
       { id: 'ga-sp-2', topic: 'spas', src: 'Exam style', type: 'written', marks: 10, lines: 6,
         q: 'Spás: Cén marc as deich a thabharfá don scéal? Tabhair dhá fháth le d’fhreagra. (What mark out of ten would you give the story? Give two reasons.)',
         scheme: ['Gives a mark out of 10 (2 marks)', 'First reason based on the story (4 marks)', 'Second reason based on the story (4 marks)'],
-        model: 'Thabharfainn ocht as deich don scéal. Is maith liom é mar go bhfuil sé greannmhar agus réalaíoch. Tuigim conas a mhothaigh Pádraigín.' },
+        model: 'Thabharfainn ocht as deich don scéal. Is maith liom é mar go bhfuil sé réalaíoch: bíonn ar a lán déagóirí seomra a roinnt. Thuig mé conas a mhothaigh Pádraigín, agus tá críoch dhóchasach leis an scéal.' },
       { id: 'ga-gr-1', topic: 'mothu', src: 'Exam style', type: 'group', q: 'Gramadach: líon na bearnaí. (Fill in the blanks.)', parts: [
         { type: 'short', q: 'Tá ocras ___ (ar + mé).', ans: ['orm'], marks: 2 },
         { type: 'short', q: 'Tá brón ___ (ar + sí).', ans: ['uirthi'], marks: 2 },
@@ -453,7 +453,7 @@ window.SN_DATA = window.SN_DATA || {};
           'Her parents keep <b>pressuring</b> her to study more, but she can’t find a quiet corner. At weekends she has to mind Aoife and Peadar.',
           'Even at school there’s no relief: the <b>history teacher</b> accused her of looking out the window, so she was moved from the back bench to the <b>front</b> of the class.',
           'She feels like a <b>prisoner</b> locked in a cell and that everyone is against her.',
-          'She thinks of <b>Diarmaid</b>, a kind boy she met last summer while staying with her grandmother in the countryside. They wrote letters, but her parents made her stop because of her exams.',
+          'She thinks of <b>Diarmaid</b>, a kind boy she met last summer while staying with her grandmother in the countryside. They wrote letters, but her parents made her stop: her father says she should be ashamed, as she is doing her <b>Leaving Cert</b> this year.',
           'Now her parents won’t let her go to her grandmother’s on her own either. <b>Mamó’s house</b> was the one place she had her own room and her own space.',
           'She makes a <b>firm resolution (rún daingean)</b>: she will write to Mamó and ask to spend a holiday with her. If Mamó invites her, her parents can’t refuse. She’d have a month of space and a chance to see Diarmaid again.',
           'The bell rings and French is over. She gives a sigh — but this time it is a <b>sigh of happiness</b>.'
@@ -471,7 +471,7 @@ window.SN_DATA = window.SN_DATA || {};
           '<b>Cliste / diongbháilte</b> (clever / determined): she makes a plan to get her space back.'
         ] },
         { h: 'Mamó (a seanmháthair)', list: [
-          'Pádraigín and Mamó are <b>an-chéile</b> (very close). There is <b>tuiscint</b> (understanding) between them.',
+          'Pádraigín and Mamó are <b>an-cheanúil ar a chéile</b> (very fond of each other). There is <b>tuiscint</b> (understanding) between them.',
           'Mamó gives her space. In Mamó’s house she has her own room and can come and go as she pleases.'
         ] },
         { h: 'Na carachtair eile', kv: [
@@ -573,9 +573,9 @@ window.SN_DATA = window.SN_DATA || {};
         { front: 'ina chíor thuathail', sub: 'Bhí a saol ina chíor thuathail.', back: 'in a mess / in chaos' },
         { front: 'faoi bhois an chait', sub: 'Bhí sí faoi bhois an chait acu.', back: 'under someone’s thumb\n(lit. under the cat’s paw)' },
         { front: 'i ndeireadh na feide', sub: 'Bhí sí i ndeireadh na feide.', back: 'at the end of her tether' },
-        { front: 'ar a saimhín só', back: 'at ease / comfortable' },
+        { front: 'ar a sáimhín só', back: 'at ease / happy and content' },
         { front: 'rún daingean', sub: 'Rinne sí rún daingean.', back: 'a firm resolution' },
-        { front: 'an-chéile', sub: 'Bhí sí féin agus Mamó an-chéile.', back: 'very close / great friends' },
+        { front: 'an-cheanúil ar a chéile', sub: 'Bhí sí féin agus a Mamó an-cheanúil ar a chéile.', back: 'very fond of each other' },
         { front: 'ar a toil', sub: 'Bhí an saol ar a toil aici.', back: 'as she pleased' },
         { front: 'in ord is in eagar', back: 'neat and in order' },
         { front: 'chuir sé ina leith', back: 'he accused her' },
@@ -619,7 +619,7 @@ window.SN_DATA = window.SN_DATA || {};
         { q: 'Cad a chuir an múinteoir staire i leith Phádraigín?', ans: ['Go raibh sí ag féachaint amach an fhuinneog'], opts: ['Go raibh sí ag caint sa rang', 'Nach ndearna sí a hobair bhaile', 'Go raibh sí déanach don rang'] },
         { q: 'Cá raibh Pádraigín ina suí sa rang roimhe sin?', ans: ['Ar an mbinse cúil'], opts: ['Ar an mbinse tosaigh', 'In aice an dorais', 'In aice le hAoife'] },
         { q: 'Cé hé Diarmaid?', ans: ['Buachaill a bhuail sí leis faoin tuath an samhradh seo caite'], opts: ['A deartháir óg', 'An múinteoir staire', 'Cara scoile léi sa chathair'] },
-        { q: 'Cén fáth nár lig a tuismitheoirí di scríobh chuig Diarmaid?', ans: ['Bhí sí ag ullmhú do scrúdú mór'], opts: ['Ní raibh siad sásta le Mamó', 'Bhí Diarmaid ina chónaí thar lear', 'Ní raibh stampaí acu'] },
+        { q: 'Cén fáth nár lig a tuismitheoirí di scríobh chuig Diarmaid?', ans: ['Bhí sí ag ullmhú do scrúdú mór'], opts: ['Ní raibh siad sásta le Mamó', 'Bhí Diarmaid ina chónaí thar lear', 'Níor thaitin Diarmaid le Mamó'] },
         { q: 'Cén rún daingean a rinne sí?', ans: ['Scríobhfadh sí chuig a Mamó'], opts: ['Ghlanfadh sí a seomra', 'D’éistfeadh sí sa rang', 'Rachadh sí abhaile go luath'] },
         { q: 'Cén deis a bheadh aici dá gcaithfeadh sí mí le Mamó?', ans: ['Bheadh spás aici agus bhuailfeadh sí le Diarmaid arís'], opts: ['Bheadh sí in ann staidéar a dhéanamh', 'Bheadh sí in ann aire a thabhairt do Pheadar', 'Gheobhadh sí Playstation nua'] },
         { q: 'Cén sórt osna a lig sí ag deireadh an scéil?', ans: ['Osna áthais'], opts: ['Osna bróin', 'Osna feirge', 'Osna tuirse'] }
@@ -631,7 +631,7 @@ window.SN_DATA = window.SN_DATA || {};
         { q: 'How does she describe herself when she feels trapped?', ans: ['Like a prisoner locked in a cell'], opts: ['Like a bird in a cage', 'Like a fish out of water', 'Like a ghost in the house'] },
         { q: 'Why is Mamó’s house special to her?', ans: ['She has her own room and space there'], opts: ['It is beside the sea', 'Diarmaid lives there', 'She can watch TV all day'] },
         { q: 'What is the main theme of the story?', ans: ['A teenager’s need for space and privacy'], opts: ['Friendship at school', 'Life in the countryside', 'Learning a new language'] },
-        { q: 'Which two feelings did the class focus on?', ans: ['Sadness and hope'], opts: ['Anger and jealousy', 'Fear and embarrassment', 'Boredom and tiredness'] },
+        { q: 'How does Pádraigín feel at the start of the story, and at the end?', ans: ['Sad at the start, hopeful at the end'], opts: ['Angry at the start, calm at the end', 'Happy at the start, sad at the end', 'Bored at the start, excited at the end'] },
         { q: 'Why can’t her parents object to her plan?', ans: ['Mamó would be the one inviting her'], opts: ['She would pay for it herself', 'Diarmaid would ask them', 'The school arranged it'] }
       ] },
       aidiacht2: { label: 'Aidiacht Shealbhach', questions: [
@@ -696,7 +696,7 @@ window.SN_DATA = window.SN_DATA || {};
         { left: 'faoi bhois an chait', right: 'under someone’s thumb' },
         { left: 'i ndeireadh na feide', right: 'at the end of her tether' },
         { left: 'rún daingean', right: 'a firm resolution' },
-        { left: 'an-chéile', right: 'very close friends' },
+        { left: 'an-cheanúil ar a chéile', right: 'very fond of each other' },
         { left: 'osna áthais', right: 'a sigh of happiness' },
         { left: 'príosúnach', right: 'a prisoner' }
       ] },

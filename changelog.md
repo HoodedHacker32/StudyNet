@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-11-v2 (Spás checked against the text)
+- Checked every Spás question, card, match and note against the story in Turas 3. Fixed: 'an-chéile' (not in the story) → 'an-cheanúil ar a chéile'; 'saimhín' → 'sáimhín'; the marc-as-10 model no longer calls the story funny; a 'class focus' question reworded; a joke distractor replaced; the summary now says she is in her Leaving Cert year. Cache v52, assets ?v=42.
+
 ## v2026-11-11 (Gaeilge run-through)
 - Gaeilge An Scrúdú: Run-through with checks for Spás, gramadach (aidiacht shealbhach, ag/ar), mé féin (aoiseanna, uimhreacha, poist) and ceistfhocail, and a workshop for the Spás question: (a) téama and (b) marc as 10.
 - course.js: RULES.ga (séimhiú/urú after mo, do, ár, bhur; m'/d' before a vowel; feelings with ar; ag/ar + pronoun); overlapping quick-check hits shown once; labels follow the language.
