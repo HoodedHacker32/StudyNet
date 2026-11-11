@@ -374,7 +374,7 @@ window.SN_DATA = window.SN_DATA || {};
         model: 'Tá cúigear i mo theaghlach. Tá deartháir amháin agus deirfiúr amháin agam. Tá mo dheartháir dhá bhliain déag d’aois. Is múinteoir í mo mháthair. Tá m’athair cairdiúil agus greannmhar.' }
     ],
     topics: [
-      { id: 'scrudu', info: true, label: 'An Scrúdú', icon: 'target', desc: 'What’s on the November assessment', notes: ['scrudu'] },
+      { id: 'scrudu', info: true, label: 'An Scrúdú', icon: 'target', desc: 'What’s on the November assessment, and a run-through of all of it', course: ['nov'], notes: ['scrudu'] },
       { id: 'spas', label: 'Spás', icon: 'notes', desc: 'Gearrscéal le Mícheál Ó Ruairc',
         notes: ['spasScéal', 'spasCarachtair', 'spasTeama'], fc: ['spasFocail', 'spasNathanna'],
         quiz: ['spasCeisteanna', 'spasEnglish'], match: ['spasNathanna', 'spasMothu'], prac: ['spasAchoimre'] },
@@ -387,6 +387,42 @@ window.SN_DATA = window.SN_DATA || {};
       { id: 'leamh', label: 'Léamhthuiscint', icon: 'text', desc: 'Exam technique and question words', notes: ['leamh'], match: ['ceistfhocail'], quiz: ['ceistfhocail'] }
     ],
 
+    /* The November assessment run-through (course.js): Spás, gramadach, mé féin, léamhthuiscint. */
+    courses: {
+      nov: { label: 'November assessment run-through', intro: 'Pass each check, then get your two Spás answers ready. Read Spás and its notes first if you haven’t.',
+        sections: [
+          { id: 'spas', h: 'Spás (Mícheál Ó Ruairc)', p: 'Know the story, the characters and the key phrases. Get 5 of 6 to pass each check.', checks: [
+            { id: 'spasQ', label: 'Spás: ceisteanna', quiz: 'spasCeisteanna', topic: 'spas' },
+            { id: 'spasEn', label: 'Spás: what happens', quiz: 'spasEnglish', topic: 'spas' }] },
+          { id: 'gram', h: 'Gramadach', p: 'An aidiacht shealbhach (séimhiú, urú, h roimh ghuta) and ag / ar.', checks: [
+            { id: 'aidiacht', label: 'An aidiacht shealbhach', quiz: 'aidiacht2', topic: 'aidiacht2' },
+            { id: 'agAr', label: 'Ag agus ar', quiz: 'agAr', topic: 'mothu' }] },
+          { id: 'me', h: 'Mé féin & mo theaghlach', p: 'Ages, personal numbers and jobs.', checks: [
+            { id: 'aoiseanna', label: 'Aoiseanna', quiz: 'aoiseanna', topic: 'teaghlach' },
+            { id: 'uimhreacha', label: 'Uimhreacha pearsanta', quiz: 'uimhreacha', topic: 'teaghlach' },
+            { id: 'poist', label: 'Poist', quiz: 'poist', topic: 'teaghlach' }] },
+          { id: 'leamh', h: 'Léamhthuiscint', p: 'Know your question words so you answer the right question.', checks: [
+            { id: 'ceist', label: 'Ceistfhocail', quiz: 'ceistfhocail', topic: 'leamh' }] },
+          { id: 'write', h: 'Ceist ar an ngearrscéal', p: 'Write your two answers here (or add a photo of your copy). Tick off what the question needs, then check your Irish.', paras: [
+            { id: 'teama', title: '(a) An téama nó an teachtaireacht',
+              items: [
+                { t: 'The title and author: Spás le Mícheál Ó Ruairc', re: /sp[aá]s[^.]*[oó] ruairc|[oó] ruairc[^.]*sp[aá]s/i },
+                { t: 'Name the theme: Is é an téama atá sa ghearrscéal seo ná …', re: /(t[eé]ama|teachtaireacht)/i },
+                { t: 'Space and privacy: spás / príobháideacht', re: /(sp[aá]s|pr[ií]obh[aá]ideacht)\b[^.]*(sp[aá]s|pr[ií]obh[aá]ideacht|d[eé]ag[oó]ir)|d[eé]ag[oó]ir[^.]*(sp[aá]s|pr[ií]obh[aá]ideacht)/i },
+                { t: 'Two examples from the story (her room, Aoife, Peadar, school, Mamó, Diarmaid…)', re: /\b(seomra|aoife|peadar|leanbh|scoil|m[uú]inteoir|mam[oó]|diarmaid|pr[ií]os[uú]nach|cill|tuismitheoir[ií])\b/gi, min: 2 },
+                { t: 'A feeling: brón, frustrachas, dóchas…', re: /\b(br[oó]n|br[oó]nach|frustrachas|d[oó]chas|d[oó]chasach|uaigneas|fearg|br[uú])\b/i },
+                { t: 'Extra: a phrase from the story (rún daingean, i ndeireadh na feide…)', re: /(r[uú]n daingean|i ndeireadh na feide|faoi bhois an chait|c[ií]or thuathail|osna [aá]thais)/i, extra: true }],
+              starters: ['Is é Spás le Mícheál Ó Ruairc an gearrscéal a ndearna mé staidéar air.', 'Is é an téama atá sa ghearrscéal seo ná an gá atá ag déagóir le spás agus le príobháideacht.',
+                'Bhí a saol ina chíor thuathail.', 'Bhí sí faoi bhois an chait acu.', 'Bhí sí i ndeireadh na feide.', 'Rinne sí rún daingean.'] },
+            { id: 'marc', title: '(b) Marc as 10 agus do chúiseanna',
+              items: [
+                { t: 'The title and author: Spás le Mícheál Ó Ruairc', re: /sp[aá]s[^.]*[oó] ruairc|[oó] ruairc[^.]*sp[aá]s/i },
+                { t: 'A mark: Thabharfainn … as 10 don ghearrscéal seo', re: /\b(\d+|aon|dh[aá]|tr[ií]|ceithre|c[uú]ig|s[eé]|seacht|ocht|naoi|deich)\s+as\s+(10|deich)\b/i },
+                { t: 'Give a reason: mar … / toisc …', re: /\b(mar|toisc|de bharr|cionn is)\b/i },
+                { t: 'At least two reasons (réalaíoch, dóchasach, thuig mé…)', re: /\b(r[eé]ala[ií]och|d[oó]chasach|thuig m[eé]|suimi[uú]il|corraitheach|br[oó]nach|taitneamhach|greannmhar|deireadh|cr[ií]och|carachtar)\b/gi, min: 2 }],
+              starters: ['Thabharfainn 8 as 10 don ghearrscéal seo mar …', 'Tá an scéal réalaíoch.', 'Thuig mé conas a mhothaigh sí.', 'Tá an chríoch dóchasach.'] }] }
+        ], rules: 'ga' }
+    },
     notes: {
       scrudu: { label: 'An Scrúdú', sections: [
         { h: 'Na rannóga (the sections)', list: [

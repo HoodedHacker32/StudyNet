@@ -90,7 +90,30 @@
     { re: /\bil y a\s+(deux|trois|quatre|cinq|six|sept|huit|neuf|dix|\d+)\s+personne\b/gi, fix: function (m, n) { return 'il y a ' + n + ' personnes'; }, why: 'More than one person, so personne takes an -s: quatre personnes.' },
     { re: new RegExp('\\ble\\s+(\\S+)\\s+de\\s+(' + MONTHS + ')\\b', 'gi'), fix: function (m, d, mo) { return 'le ' + d + ' ' + mo; }, why: 'French dates have no “of”: le cinq mars.' },
     { re: new RegExp('([^.!?\\s«]\\s+)(' + CAP_DATES + ')\\b', 'g'), part: 2, fix: function (m, pre, w) { return w.toLowerCase(); }, why: 'Months and days have no capital letter in French: le cinq mars, le samedi.' }
+  ],
+  /* Irish: the grammar on the November assessment (an aidiacht shealbhach, ag agus ar). "a" (his / her / their) is left alone: it can't be told apart. */
+  ga: [
+    { re: /\b(mo|do)\s+([aeiouáéíóú][\wáéíóú-]*)/gi, fix: function (m, p, w) { return p.charAt(0) + '’' + w; },
+      why: 'mo and do become m’ and d’ before a vowel: m’athair, d’aintín.' },
+    { re: /\b(mo|do)\s+((?:[bcdfgmpt](?!h)|s(?=[aeiouáéíóúlnr]))[\wáéíóú-]*)/gi, fix: function (m, p, w) { return p + ' ' + lenite(w); },
+      why: 'mo and do put a séimhiú (h) on a consonant: mo chara, do theach.' },
+    { re: /\b(ár|bhur)\s+([bcdfgpt][\wáéíóú-]*)/gi, fix: function (m, p, w) { return eclipsed(w) ? null : p + ' ' + eclipse(w); },
+      why: 'ár and bhur put an urú on the word: ár dteach, ár gcara, bhur bpeann.' },
+    { re: /\b(ár|bhur)\s+([aeiouáéíóú][\wáéíóú-]*)/gi, fix: function (m, p, w) { return p + ' n-' + w; }, why: 'ár and bhur put n- before a vowel: ár n-athair.' },
+    { re: /\b(tá|bhí|beidh|níl|ní raibh)\s+(brón|áthas|fearg|eagla|tuirse|ocras|tart|imní|uaigneas|díomá|éad|náire|sceitimíní|bród|codladh|slaghdán|tinneas)\s+ag\s+([\wáéíóú-]+)/gi,
+      fix: function (m, v, f, who) { return v + ' ' + f + ' ' + arWith(who); }, why: 'Feelings use ar, not ag: tá brón ar Phádraigín (tá brón orm, uirthi, air).' },
+    { re: /\b(ar|ag)\s+(mé|tú|sé|sí|muid|sinn|sibh|siad)\b/gi, fix: function (m, p, who) {
+        var t = { ar: { 'mé': 'orm', 'tú': 'ort', 'sé': 'air', 'sí': 'uirthi', muid: 'orainn', sinn: 'orainn', sibh: 'oraibh', siad: 'orthu' },
+          ag: { 'mé': 'agam', 'tú': 'agat', 'sé': 'aige', 'sí': 'aici', muid: 'againn', sinn: 'againn', sibh: 'agaibh', siad: 'acu' } };
+        return t[p.toLowerCase()][who.toLowerCase()]; }, why: 'ar and ag join with the pronoun: orm, ort, air, uirthi; agam, agat, aige, aici.' }
   ] };
+  function lenite(w) { return /^([bcdfgmpt](?!h)|s(?=[aeiouáéíóúlnr]))/i.test(w) ? w.charAt(0) + (w.charAt(0) === w.charAt(0).toUpperCase() ? 'h' : 'h') + w.slice(1) : w; }
+  function eclipsed(w) { return /^(mb|gc|nd|bhf|ng|bp|dt)/i.test(w); }
+  function eclipse(w) { var u = { b: 'm', c: 'g', d: 'n', f: 'bh', g: 'n', p: 'b', t: 'd' }[w.charAt(0).toLowerCase()]; return u ? u + w : w; }
+  function arWith(who) {
+    var p = { 'mé': 'orm', 'tú': 'ort', 'sé': 'air', 'sí': 'uirthi', muid: 'orainn', sibh: 'oraibh', siad: 'orthu' }[who.toLowerCase()];
+    return p || 'ar ' + lenite(who);
+  }
   // JavaScript's \b doesn't count accented letters as letters (à, é), so every \b becomes a Unicode-aware boundary.
   var L = '[\\p{L}\\p{N}_]', BOUND = '(?:(?<!' + L + ')(?=' + L + ')|(?<=' + L + ')(?!' + L + '))';
   function uni(re, g) {
@@ -98,16 +121,16 @@
     return new RegExp(re.source.split('\\b').join(BOUND), f.indexOf('u') >= 0 ? f : f + 'u');
   }
   function localIssues(text, set) {
-    var out = [], seen = {};
+    var out = [], seen = {}, spans = [];
     (RULES[set] || []).forEach(function (r) {
       var re = uni(r.re, true), m;
       while ((m = re.exec(text))) {
         var right = typeof r.fix === 'function' ? r.fix.apply(null, m) : r.fix, wrong = r.part ? m[r.part] : m[0];
         if (right == null || right === wrong) continue;
         if (/^[A-ZÀ-Ý]/.test(wrong) && !r.part) right = right.charAt(0).toUpperCase() + right.slice(1);
-        var key = wrong.toLowerCase();
-        if (seen[key]) continue;
-        seen[key] = 1;
+        var key = wrong.toLowerCase(), at = m.index + (r.part ? m[0].lastIndexOf(wrong) : 0), end = at + wrong.length;
+        if (seen[key] || spans.some(function (sp) { return at < sp[1] && sp[0] < end; })) continue; // the same words already have a fix
+        seen[key] = 1; spans.push([at, end]);
         out.push({ wrong: wrong, right: right, why: typeof r.why === 'function' ? r.why.apply(null, m) : r.why });
       }
     });
@@ -125,7 +148,7 @@
     id: 'course', label: 'Run-through', icon: 'target', key: 'course', src: 'courses', at: 0,
     count: function (t, Y) { var c = Y.courses[t.course[0]]; var n = 0; c.sections.forEach(function (s) { n += (s.checks || s.paras).length; }); return n + ' steps'; },
     init: function (el, api, keys) {
-      var ic = api.ic, esc = api.esc, Y = api.Y, C = Y.courses[keys[0]], KEY = 'sn_course_' + api.cfg.id + '_y' + api.year;
+      var ic = api.ic, esc = api.esc, Y = api.Y, C = Y.courses[keys[0]], LANG = { fr: 'French', ga: 'Irish', en: 'English' }[C.rules] || 'writing', KEY = 'sn_course_' + api.cfg.id + '_y' + api.year;
       function st() { var s = SN.readJSON(KEY, null); if (!s || typeof s !== 'object') s = {}; s.q = s.q || {}; s.p = s.p || {}; return s; }
       function save(s) { SN.writeJSON(KEY, s); }
       var quiz = null; // the check in progress
@@ -216,9 +239,9 @@
         el.innerHTML = '<div class="course"><button type="button" class="link course-back" data-c-home>' + ic('arrow-left') + ' Back to the run-through</button>' +
           '<h2 class="course-t">' + esc(para.title) + '</h2>' +
           '<div class="course-ws"><div class="course-main">' +
-          '<label class="course-lbl" for="cw-ta">Your paragraph (in French)</label>' +
+          '<label class="course-lbl" for="cw-ta">Your answer (in ' + LANG + ')</label>' +
           '<textarea id="cw-ta" class="ex-ta course-ta" rows="9" spellcheck="false" lang="fr" placeholder="Type or paste your paragraph here, or add a photo of your copy.">' + esc(ps.text || '') + '</textarea>' +
-          '<div class="course-btns"><button type="button" class="btn primary" data-c-check>' + ic('check') + ' Check my French</button>' +
+          '<div class="course-btns"><button type="button" class="btn primary" data-c-check>' + ic('check') + ' Check my ' + LANG + '</button>' +
           '<button type="button" class="btn" data-c-photo>' + ic('camera') + ' Photo of my copy</button>' +
           '<button type="button" class="btn" data-c-file>' + ic('text') + ' Open a text file</button></div>' +
           '<div id="cw-read" class="course-read hidden"></div>' +
@@ -265,9 +288,10 @@
         var h = '';
         if (!text.trim()) h = '<p class="course-sub">Write something first.</p>';
         else {
-          h += '<h3>Quick check</h3>' + (local.length ? '<ul class="issues">' + local.map(function (x, i) { return issueHtml(x, i, 'l'); }).join('') + '</ul>' :
-            '<p class="course-sub">' + ic('check') + ' None of the common mistakes (au / à la, jouer à / de, faire de, agreement, avoir for age, capitals on months).</p>');
-          if (busy) h += '<h3>StudyNet’s checker</h3><p class="course-sub">Checking your French…</p>';
+          if (RULES[C.rules]) h += '<h3>Quick check</h3>' + (local.length ? '<ul class="issues">' + local.map(function (x, i) { return issueHtml(x, i, 'l'); }).join('') + '</ul>' :
+            '<p class="course-sub">' + ic('check') + ' None of the common mistakes (' + ({ fr: 'au / à la, jouer à / de, faire de, agreement, avoir for age, capitals on months',
+              ga: 'séimhiú and urú after mo, do, ár and bhur; m’ and d’ before a vowel; feelings with ar; ag and ar with pronouns' }[C.rules] || 'the usual ones') + ').</p>');
+          if (busy) h += '<h3>StudyNet’s checker</h3><p class="course-sub">Checking your ' + LANG + '…</p>';
           else if (aiNote) h += '<h3>StudyNet’s checker</h3>' + aiNote + (ai.length ? '<ul class="issues">' + ai.map(function (x) { return issueHtml(x, aiIssues.indexOf(x), 'a'); }).join('') + '</ul>' : '');
         }
         out.innerHTML = h;

@@ -134,6 +134,12 @@
      of the teacher's checklist items are missing. It never writes or rewrites the paragraph for the student.
      req: { subject, year, title, checklist:[str], text?, image? (a photo of their copy) } */
   var CHECK_MAX = { text: 3000, title: 80, item: 160 };
+  var LANG_TIPS = {
+    'Français': 'Watch for the right little word in the wrong form: plural nouns need aux / des (je joue aux échecs, aux cartes); feminine nouns need à la / de la; a vowel needs à l\' / de l\'.',
+    'Gaeilge': 'This is Irish, so ignore the French examples above and give Irish reasons. Check: séimhiú after mo, do and a (his) (mo theach); no change after a (her) but h before a vowel (a hathair); ' +
+      'urú after ár, bhur and a (their) (ár dteach, ár n-athair); m\' and d\' before a vowel (m\'athair); feelings with ar (tá brón orm, uirthi) and having with ag (tá … agam, aici); the fadas (á é í ó ú); verb forms. ' +
+      'Accept a correct mark like "8 as 10" and the story title Spás.'
+  };
   function buildCheckMessages(req) {
     var list = (req.checklist || []).slice(0, 12).map(function (c, i) { return (i + 1) + '. ' + clip(c, CHECK_MAX.item); }).join('\n');
     var sys = [
@@ -143,8 +149,8 @@
         '(for example: "piscine is feminine, so it\'s une piscine", "ville is feminine, so the adjective adds -e: petite", "le and la become l\' before a vowel", "que becomes qu\' before a vowel: parce qu\'elle", "after pas, un/une become de", "à + le joins up to make au", "age uses avoir: j\'ai 13 ans").',
       'Count a checklist item as covered when the student has attempted it, even with mistakes in it.',
       'Before listing a mistake, read the words around it: if the correct form is already there (for example the student already wrote "aux jeux vidéo"), it is not a mistake.',
-      'Never change a French word into English, and accept everyday French words and short forms (for example indé, ado, sympa, accro). Only flag a spelling when you are sure it is not French.',
-      'Watch for the right little word in the wrong form: plural nouns need aux / des (je joue aux échecs, aux cartes); feminine nouns need à la / de la; a vowel needs à l\' / de l\'.',
+      'Never change a word into English, and accept everyday words and short forms of the language (in French, for example indé, ado, sympa, accro). Only flag a spelling when you are sure it is wrong in that language.',
+      LANG_TIPS[req.subject] || '',
       'Every item in "issues" must be a real mistake. If the student\'s words are correct French, leave them out, even if a model answer would say it differently. Do not suggest style improvements as mistakes.',
       'Only correct what is wrong. Never rewrite the paragraph, never add new sentences or ideas to it, and never mark correct French as wrong. At most 8 mistakes, the most important first. If there are none, return an empty list.',
       'Then look at the checklist of what the teacher asked for. List the numbers of the items the paragraph does NOT cover yet.',
@@ -185,6 +191,7 @@
       var w = x.wrong.toLowerCase();
       if (low.indexOf(w) < 0) return false; // must quote the paragraph
       var r = x.right.toLowerCase();
+      if (/(^|[^a-záéíóú])[mdlj]['’](?!fh)[bcdfghjklmnpqrstvwxz]/i.test(r)) return false; // m' / d' / l' / j' only come before a vowel (or fh): "m'chara" is never right
       if (r.indexOf(w) >= 0 && low.indexOf(r) >= 0) return false; // the fix is already there: "jeux vidéo" → "aux jeux vidéo" when it says "aux jeux vidéo"
       if (kept.some(function (k) { return k.indexOf(w) >= 0 || w.indexOf(k) >= 0; })) return false; // the same mistake twice
       kept.push(w);

@@ -1,5 +1,10 @@
 # StudyNet Changelog
 
+## v2026-11-11 (Gaeilge run-through)
+- Gaeilge An Scrúdú: Run-through with checks for Spás, gramadach (aidiacht shealbhach, ag/ar), mé féin (aoiseanna, uimhreacha, poist) and ceistfhocail, and a workshop for the Spás question: (a) téama and (b) marc as 10.
+- course.js: RULES.ga (séimhiú/urú after mo, do, ár, bhur; m'/d' before a vowel; feelings with ar; ag/ar + pronoun); overlapping quick-check hits shown once; labels follow the language.
+- ai-core.js: per-language tips (LANG_TIPS), and fixes with m'/d'/l'/j' before a consonant are dropped. Cache v51, assets ?v=41.
+
 ## v2026-11-10-v6 (practice: saved wrong answers)
 - subject.js: saved wrong answers kept the 'Not quite' line but lost the red 'err' style after a reload, so they looked accepted, and Check answers skipped unchanged answers. Saved wrong answers now render as wrong, and Check answers re-marks everything. Cache v50, assets ?v=40.
 
