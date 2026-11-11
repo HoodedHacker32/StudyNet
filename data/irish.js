@@ -739,7 +739,7 @@ window.SN_DATA = window.SN_DATA || {};
         { q: 'Cuireadh a deirfiúr ___ isteach in aon seomra léi.', ans: ['Aoife'] },
         { q: 'Ní raibh aon ___ fágtha aici.', h: '(privacy)', ans: ['phríobháideacht', 'príobháideacht'] },
         { q: 'Bhí a tuismitheoirí ag cur ___ uirthi níos mó staidéir a dhéanamh.', h: '(pressure)', ans: ['brú'] },
-        { q: 'Cuireadh ina suí ar an mbinse ___ í.', h: '(front)', ans: ['tosaigh'] },
+        { q: 'Cuireadh ina suí ar an mbinse ___ í.', h: '(front: after binse, tosach changes form, like cúl in an binse cúil)', ans: ['tosaigh'] },
         { q: 'Bhí a saol ina chíor ___ ar fad.', ans: ['thuathail'] },
         { q: 'Bhí sí ar nós ___ faoi ghlas sa chillín.', h: '(a prisoner)', ans: ['príosúnaigh'] },
         { q: 'Bhuail sí le ___ an samhradh seo caite.', ans: ['Diarmaid'] },

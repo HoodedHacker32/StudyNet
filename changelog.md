@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-11-v4 (practice: cleared answers)
+- subject.js: clearing a practice box now deletes its saved answer, so an old wrong answer (and its 'Not quite') doesn't come back. Spás 'binse tosaigh' hint explains the changed form (checked against Turas 3 and teanglann: tosach, gs. tosaigh). Cache v54, assets ?v=44.
+
 ## v2026-11-11-v3 (learn your paragraphs)
 - course.js: 'Learn it off by heart' in each paragraph workshop: read and listen, first letters, fill the gaps (three levels), from memory with a word-by-word check and best score on the run-through. Typed text is saved before leaving the workshop (it could be lost within 350 ms). Cache v53, assets ?v=43.
 

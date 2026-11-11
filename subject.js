@@ -716,8 +716,12 @@
     var id = inp.dataset.id, val = inp.value.trim(), ans = findAns(id);
     if (!ans) return;
     var holder = inp.closest('td') || inp.closest('.prac-q'), old = holder.querySelector('.prac-ans'), tick = holder.querySelector('.prac-tick');
-    if (!val) { inp.classList.remove('ok', 'err'); if (old) old.remove(); if (tick) tick.remove(); return; }
     var store = loadStore();
+    if (!val) { // a cleared box forgets its saved answer, so an old wrong answer doesn't come back
+      inp.classList.remove('ok', 'err'); if (old) old.remove(); if (tick) tick.remove();
+      if (store.inputs[id] != null) { delete store.inputs[id]; SN.writeJSON(Y.store, store); updateScore(); }
+      return;
+    }
     if (!force && store.inputs[id] === val) return; // unchanged: don't re-flash on blur
     store.inputs[id] = val;
     SN.writeJSON(Y.store, store);
