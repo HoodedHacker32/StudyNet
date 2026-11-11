@@ -381,7 +381,7 @@ window.SN_DATA = window.SN_DATA || {};
       { id: 'aidiacht2', label: 'Aidiacht Shealbhach', icon: 'user', desc: 'Roimh chonsan agus roimh ghuta',
         notes: ['aidiachtNotes'], quiz: ['aidiacht2'], prac: ['aidiachtTable', 'aidiachtSentences'] },
       { id: 'mothu', label: 'Ag agus Ar', icon: 'heart', desc: 'Mothúcháin le ar, seilbh le ag',
-        fc: ['mothuFocail'], quiz: ['agAr'], match: ['mothuEn'], prac: ['agAr'] },
+        notes: ['agArNotes'], fc: ['mothuFocail'], quiz: ['agAr'], match: ['mothuEn'], prac: ['agAr'] },
       { id: 'teaghlach', label: 'Mé Féin & Mo Theaghlach', icon: 'users', desc: 'Aoiseanna, dátaí, uimhreacha pearsanta, poist',
         notes: ['teaghlachNotes'], fc: ['poist', 'uimhreacha'], quiz: ['poist', 'uimhreacha', 'aoiseanna'], match: ['poist', 'miosa'], prac: ['teaghlach'] },
       { id: 'leamh', label: 'Léamhthuiscint', icon: 'text', desc: 'Exam technique and question words', notes: ['leamh'], match: ['ceistfhocail'], quiz: ['ceistfhocail'] }
@@ -424,6 +424,20 @@ window.SN_DATA = window.SN_DATA || {};
         ], rules: 'ga' }
     },
     notes: {
+      agArNotes: { label: 'Ag agus ar: the table', sections: [
+        { h: 'Ag and ar with mé, tú, sé…', html: '<div class="tbl-wrap"><table class="tbl"><thead><tr><th scope="col">Irish</th><th scope="col">English</th><th scope="col">ag (at)</th><th scope="col">ar (on)</th></tr></thead><tbody>' +
+          '<tr><th scope="row">mé</th><td>I / me</td><td><b>agam</b> · at me</td><td><b>orm</b> · on me</td></tr>' +
+          '<tr><th scope="row">tú</th><td>you</td><td><b>agat</b> · at you</td><td><b>ort</b> · on you</td></tr>' +
+          '<tr><th scope="row">sé</th><td>he / him</td><td><b>aige</b> · at him</td><td><b>air</b> · on him</td></tr>' +
+          '<tr><th scope="row">sí</th><td>she / her</td><td><b>aici</b> · at her</td><td><b>uirthi</b> · on her</td></tr>' +
+          '<tr><th scope="row">sinn / muid</th><td>we / us</td><td><b>againn</b> · at us</td><td><b>orainn</b> · on us</td></tr>' +
+          '<tr><th scope="row">sibh</th><td>you (more than one)</td><td><b>agaibh</b> · at you (plural)</td><td><b>oraibh</b> · on you (plural)</td></tr>' +
+          '<tr><th scope="row">siad</th><td>they / them</td><td><b>acu</b> · at them</td><td><b>orthu</b> · on them</td></tr>' +
+          '</tbody></table></div>' },
+        { h: 'How they’re used', kv: [['ag: having', '<i>Tá madra <b>agam</b>.</i> I have a dog (a dog is at me).'], ['ar: feelings', '<i>Tá brón <b>orm</b>.</i> I am sad (sadness is on me).'],
+          ['With a name', '<i>Tá carr ag Seán.</i> Seán has a car. <i>Tá áthas ar Mháire.</i> Máire is happy (ar puts a séimhiú on the name).']],
+          tip: 'Feelings that go with ar: brón, áthas, fearg, eagla, tuirse, ocras, tart, imní, uaigneas.' }
+      ] },
       scrudu: { label: 'An Scrúdú', sections: [
         { h: 'Na rannóga (the sections)', list: [
           '<b>Spás</b> le Mícheál Ó Ruairc — the short story (Ceist 10 style, 25 marc).',

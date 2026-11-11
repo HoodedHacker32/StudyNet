@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-11-v5 (ag/ar table)
+- Gaeilge Ag agus Ar: new Notes page with a table of mé, tú, sé… with English, and the ag / ar forms with their English, plus how each is used. Cache v55, assets ?v=45.
+
 ## v2026-11-11-v4 (practice: cleared answers)
 - subject.js: clearing a practice box now deletes its saved answer, so an old wrong answer (and its 'Not quite') doesn't come back. Spás 'binse tosaigh' hint explains the changed form (checked against Turas 3 and teanglann: tosach, gs. tosaigh). Cache v54, assets ?v=44.
 
