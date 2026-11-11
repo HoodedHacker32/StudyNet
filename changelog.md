@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-12-v3 (drills: other correct answers)
+- Drill items can accept other correct reasonings (alts). Indulgences now accepts 'justification by faith alone' / 'only God forgives'; Augsburg accepts cuius regio; Navigation Acts accepts 'laws controlling trade'. Missed questions go to the end of the queue (they used to come back 3 later, so missing several cycled the same few). Cache v58, assets ?v=48.
+
 ## v2026-11-12-v2 (typed answers in drills)
 - course.js drills: type the answer and it's checked against each question's key points (keys groups + need), with spelling slips allowed on longer words; partly right says what you had; a 'My answer was right' override; wrong ones come back. History drill items have keys for all 52 questions. Cache v57, assets ?v=47.
 

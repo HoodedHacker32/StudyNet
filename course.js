@@ -237,11 +237,16 @@
         if (k.indexOf(' ') >= 0 || /\d/.test(k) || k.length < 5) return false; // phrases, numbers and short words must be exact
         return words.some(function (w) { return w[0] === k[0] && Math.abs(w.length - k.length) <= 2 && dlev(w, k) <= (k.length >= 8 ? 2 : 1); });
       }
+      // An item can accept other correct reasonings too: alts: [{ keys, need }]. The best-scoring one is reported.
       function markTyped(it, typed) {
         var text = dnorm(typed), words = text.trim().split(' ');
-        var hit = (it.keys || []).map(function (g) { return g.filter(function (k) { return hasKey(text, words, k); })[0] || null; });
-        var got = hit.filter(Boolean).length, need = it.need || 1;
-        return { ok: got >= need, got: got, need: need, hit: hit, blank: !typed.trim() };
+        var best = null;
+        [{ keys: it.keys, need: it.need }].concat(it.alts || []).forEach(function (set) {
+          var hit = (set.keys || []).map(function (g) { return g.filter(function (k) { return hasKey(text, words, k); })[0] || null; });
+          var got = hit.filter(Boolean).length, need = set.need || 1, r = { ok: got >= need, got: got, need: need, hit: hit, blank: !typed.trim() };
+          if (!best || (r.ok && !best.ok) || (r.ok === best.ok && got / need > best.got / best.need)) best = r;
+        });
+        return best;
       }
       function verdictHtml(it, v) {
         var head = v.ok ? ic('check') + ' Right.' : v.blank ? 'Here’s the answer.' : v.got ? 'Partly right: ' + v.got + ' of the ' + v.need + ' key points.' : 'Not quite.';
@@ -261,7 +266,7 @@
         var i = drill.queue.shift();
         SN.markStudied();
         if (knew) { drill.known++; if (!drill.seen[i]) drill.first++; }
-        else drill.queue.splice(Math.min(drill.queue.length, 3), 0, i); // comes back after a few others
+        else drill.queue.push(i); // comes back at the end, so every question is seen first
         drill.seen[i] = 1; drill.shown = false; drill.verdict = null; drawDrill();
       }
 
