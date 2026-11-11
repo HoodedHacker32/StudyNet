@@ -218,19 +218,51 @@
         el.innerHTML = '<div class="course"><button type="button" class="link course-back" data-c-home>' + ic('arrow-left') + ' Back to the run-through</button>' +
           '<div class="drill"><p class="course-sub">' + esc(d.label) + ' · <span class="num">' + drill.known + '</span> of <span class="num">' + n + '</span> known' +
           '<span class="bar" aria-hidden="true"><i style="width:' + Math.round(drill.known / n * 100) + '%"></i></span></p>' +
-          '<p class="drill-q">' + it.q + '</p>' +
-          (drill.shown ? '<div class="drill-a" role="status">' + it.a + '</div><div class="course-btns"><button type="button" class="btn primary" data-c-knew>' + ic('check') + ' I knew it</button>' +
-            '<button type="button" class="btn" data-c-notyet>Not yet: ask me again</button></div>' :
-            '<p class="course-sub">Answer it in your head (or out loud), then check.</p><div class="course-btns"><button type="button" class="btn primary" data-c-show>Show the answer</button></div>') +
+          '<label class="drill-q" for="dr-in">' + it.q + '</label>' +
+          (drill.verdict ? verdictHtml(it, drill.verdict) :
+            '<textarea id="dr-in" class="ex-ta drill-in" rows="2" spellcheck="true" placeholder="Type your answer" aria-describedby="dr-help"></textarea>' +
+            '<p class="course-sub" id="dr-help">Press Enter or Check. Spelling slips are fine.</p><div class="course-btns"><button type="button" class="btn primary" data-c-dcheck>' + ic('check') + ' Check</button>' +
+            '<button type="button" class="btn" data-c-dskip>I don’t know</button></div>') +
           '</div></div>';
-        var b = el.querySelector('[data-c-knew], [data-c-show]'); if (b) b.focus();
+        var b = el.querySelector('[data-c-dnext], #dr-in'); if (b) b.focus();
+      }
+      // Typed answers: each question lists groups of words that count (keys) and how many groups it needs (need).
+      function dnorm(t) { return ' ' + String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/(\d),(\d)/g, '$1$2').replace(/['’]/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim() + ' '; }
+      function dlev(a, b) { var d = [], i, j; for (i = 0; i <= a.length; i++) d[i] = [i]; for (j = 0; j <= b.length; j++) d[0][j] = j;
+        for (i = 1; i <= a.length; i++) for (j = 1; j <= b.length; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)); return d[a.length][b.length]; }
+      function hasKey(text, words, key) {
+        var k = dnorm(key).trim();
+        if (!k) return false;
+        if (text.indexOf(' ' + k + ' ') >= 0) return true;
+        if (k.indexOf(' ') >= 0 || /\d/.test(k) || k.length < 5) return false; // phrases, numbers and short words must be exact
+        return words.some(function (w) { return w[0] === k[0] && Math.abs(w.length - k.length) <= 2 && dlev(w, k) <= (k.length >= 8 ? 2 : 1); });
+      }
+      function markTyped(it, typed) {
+        var text = dnorm(typed), words = text.trim().split(' ');
+        var hit = (it.keys || []).map(function (g) { return g.filter(function (k) { return hasKey(text, words, k); })[0] || null; });
+        var got = hit.filter(Boolean).length, need = it.need || 1;
+        return { ok: got >= need, got: got, need: need, hit: hit, blank: !typed.trim() };
+      }
+      function verdictHtml(it, v) {
+        var head = v.ok ? ic('check') + ' Right.' : v.blank ? 'Here’s the answer.' : v.got ? 'Partly right: ' + v.got + ' of the ' + v.need + ' key points.' : 'Not quite.';
+        var found = v.hit.filter(Boolean);
+        return '<div class="drill-v' + (v.ok ? ' ok' : '') + '" role="status"><p><b>' + head + '</b>' + (found.length && !v.ok ? ' You had: ' + esc(found.join(', ')) + '.' : '') + '</p>' +
+          (v.typed ? '<p class="course-sub">You wrote: ' + esc(v.typed) + '</p>' : '') + '</div><div class="drill-a">' + it.a + '</div>' +
+          '<div class="course-btns"><button type="button" class="btn primary" data-c-dnext>' + (v.ok ? 'Next question' : 'Next: ask me again later') + '</button>' +
+          (v.ok || v.blank ? '' : '<button type="button" class="btn" data-c-dright>My answer was right</button>') + '</div>';
+      }
+      function drillCheck(skip) {
+        var it = drill.d.items[drill.queue[0]], inp = document.getElementById('dr-in'), typed = skip ? '' : (inp ? inp.value : '');
+        if (!skip && !typed.trim()) { inp.focus(); return; }
+        drill.verdict = markTyped(it, typed); drill.verdict.typed = typed.trim();
+        drawDrill();
       }
       function drillMark(knew) {
         var i = drill.queue.shift();
         SN.markStudied();
         if (knew) { drill.known++; if (!drill.seen[i]) drill.first++; }
         else drill.queue.splice(Math.min(drill.queue.length, 3), 0, i); // comes back after a few others
-        drill.seen[i] = 1; drill.shown = false; drawDrill();
+        drill.seen[i] = 1; drill.shown = false; drill.verdict = null; drawDrill();
       }
 
       /* ── Quick checks ── */
@@ -542,9 +574,13 @@
         else if (d.cReshuffle != null) { learn.seed++; drawLearn(); }
         else if (d.cMem != null) checkMemory();
         else if (d.cDrill) startDrill(d.cDrill);
-        else if (d.cShow != null) { drill.shown = true; drawDrill(); }
-        else if (d.cKnew != null) drillMark(true);
-        else if (d.cNotyet != null) drillMark(false);
+        else if (d.cDcheck != null) drillCheck(false);
+        else if (d.cDskip != null) drillCheck(true);
+        else if (d.cDnext != null) drillMark(drill.verdict && drill.verdict.ok);
+        else if (d.cDright != null) drillMark(true);
+      }
+      function onKey(e) {
+        if (e.target.id === 'dr-in' && e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); drillCheck(false); }
       }
       function onInput(e) {
         if (e.target.id !== 'cw-ta') return;
@@ -552,7 +588,8 @@
       }
       el.addEventListener('click', onClick);
       el.addEventListener('input', onInput);
-      el._courseOff = function () { el.removeEventListener('click', onClick); el.removeEventListener('input', onInput); clearTimeout(el._t); };
+      el.addEventListener('keydown', onKey);
+      el._courseOff = function () { el.removeEventListener('click', onClick); el.removeEventListener('input', onInput); el.removeEventListener('keydown', onKey); clearTimeout(el._t); };
       home();
     }
   });

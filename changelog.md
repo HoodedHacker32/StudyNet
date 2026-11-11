@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-12-v2 (typed answers in drills)
+- course.js drills: type the answer and it's checked against each question's key points (keys groups + need), with spelling slips allowed on longer words; partly right says what you had; a 'My answer was right' override; wrong ones come back. History drill items have keys for all 52 questions. Cache v57, assets ?v=47.
+
 ## v2026-11-12 (History run-through)
 - History: 'The November exam' topic with a Run-through built from the History team's 'November Exams topics' post: a revision-list drill for every question (17 Reformation, 13 Plantation, 15 American Revolution), Plantation causes/course/consequences, the four battles, and a quick check per topic.
 - course.js: new 'drills' section type (question, show answer, I knew it / Not yet; not-yet questions come back; first-time score saved in d[id]). Cache v56, assets ?v=46.
