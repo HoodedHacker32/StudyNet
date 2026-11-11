@@ -1,5 +1,8 @@
 # StudyNet Changelog
 
+## v2026-11-11-v3 (learn your paragraphs)
+- course.js: 'Learn it off by heart' in each paragraph workshop: read and listen, first letters, fill the gaps (three levels), from memory with a word-by-word check and best score on the run-through. Typed text is saved before leaving the workshop (it could be lost within 350 ms). Cache v53, assets ?v=43.
+
 ## v2026-11-11-v2 (Spás checked against the text)
 - Checked every Spás question, card, match and note against the story in Turas 3. Fixed: 'an-chéile' (not in the story) → 'an-cheanúil ar a chéile'; 'saimhín' → 'sáimhín'; the marc-as-10 model no longer calls the story funny; a 'class focus' question reworded; a joke distractor replaced; the summary now says she is in her Leaving Cert year. Cache v52, assets ?v=42.
 

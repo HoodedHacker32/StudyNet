@@ -179,7 +179,8 @@
           (sec.paras || []).forEach(function (p) {
             var ps = s.p[p.id] || {}, txt = ps.text || '', got = p.items.filter(function (it) { return !it.extra && covers(it, txt); }).length, need = p.items.filter(function (it) { return !it.extra; }).length;
             h += '<li class="course-row' + (ps.done ? ' on' : '') + '"><span class="course-ok" aria-hidden="true">' + (ps.done ? ic('check') : '') + '</span><span class="course-l">' + esc(p.title) +
-              '<span class="course-sub">' + (ps.done ? 'Ready' : txt ? got + ' of ' + need + ' things your teacher asked for' : 'Not started') + '</span></span>' +
+              '<span class="course-sub">' + (ps.done ? 'Ready' : txt ? got + ' of ' + need + ' things your teacher asked for' : 'Not started') +
+                (ps.learn != null ? ' · from memory: best ' + ps.learn + '%' : '') + '</span></span>' +
               '<span class="course-btns"><button type="button" class="btn" data-c-para="' + p.id + '">' + (txt ? 'Open' : 'Start') + '</button></span></li>';
           });
           h += '</ul></section>';
@@ -240,10 +241,11 @@
           '<h2 class="course-t">' + esc(para.title) + '</h2>' +
           '<div class="course-ws"><div class="course-main">' +
           '<label class="course-lbl" for="cw-ta">Your answer (in ' + LANG + ')</label>' +
-          '<textarea id="cw-ta" class="ex-ta course-ta" rows="9" spellcheck="false" lang="fr" placeholder="Type or paste your paragraph here, or add a photo of your copy.">' + esc(ps.text || '') + '</textarea>' +
+          '<textarea id="cw-ta" class="ex-ta course-ta" rows="9" spellcheck="false" lang="' + (C.rules || 'en') + '" placeholder="Type or paste your paragraph here, or add a photo of your copy.">' + esc(ps.text || '') + '</textarea>' +
           '<div class="course-btns"><button type="button" class="btn primary" data-c-check>' + ic('check') + ' Check my ' + LANG + '</button>' +
           '<button type="button" class="btn" data-c-photo>' + ic('camera') + ' Photo of my copy</button>' +
-          '<button type="button" class="btn" data-c-file>' + ic('text') + ' Open a text file</button></div>' +
+          '<button type="button" class="btn" data-c-file>' + ic('text') + ' Open a text file</button>' +
+          '<button type="button" class="btn" data-c-learn>' + ic('target') + ' Learn it off by heart</button></div>' +
           '<div id="cw-read" class="course-read hidden"></div>' +
           '<div id="cw-out" class="course-out" aria-live="polite"></div></div>' +
           '<aside class="course-side"><h3>What your teacher asked for</h3><ul class="ck" id="cw-ck"></ul><p class="course-sub" id="cw-ck-sum" aria-live="polite"></p><div class="course-done"></div>' +
@@ -253,6 +255,96 @@
         document.getElementById('cw-ta').focus();
       }
       function ta() { return document.getElementById('cw-ta'); }
+
+      /* ── Learn it off by heart: read and listen → first letters → fill the gaps → from memory ── */
+      var learn = null, VOICE = { fr: 'fr', ga: 'ga', en: 'en' }[C.rules] || 'en';
+      function lnorm(w) { return String(w).toLowerCase().replace(/[’']/g, '\'').replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ''); }
+      function sentencesOf(t) { return (t.replace(/\s+/g, ' ').trim().match(/[^.!?]+[.!?…]*["”»]?\s*/g) || []).map(function (x) { return x.trim(); }).filter(Boolean); }
+      function openLearn() {
+        clearTimeout(el._t);
+        if (ta()) refresh(false); // save what's typed before the workshop is replaced
+        var text = (ta() ? ta().value : (st().p[para.id] || {}).text || '').trim();
+        if (text.split(/\s+/).length < 4) { var out = document.getElementById('cw-out'); if (out) out.innerHTML = '<p class="course-sub">Write your paragraph first, then learn it here.</p>'; return; }
+        learn = { text: text, sents: sentencesOf(text), words: text.split(/\s+/), step: 1, level: 0, seed: Date.now() % 997 };
+        drawLearn();
+      }
+      function drawLearn() {
+        var steps = ['Read and listen', 'First letters', 'Fill the gaps', 'From memory'];
+        var h = '<div class="course"><button type="button" class="link course-back" data-c-para="' + para.id + '">' + ic('arrow-left') + ' Back to my paragraph</button>' +
+          '<h2 class="course-t">Learn it: ' + esc(para.title) + '</h2>' +
+          '<div class="pills" role="group" aria-label="Steps">' + steps.map(function (s, i) {
+            return '<button type="button" class="pill" data-c-step="' + (i + 1) + '" aria-pressed="' + (learn.step === i + 1) + '">' + (i + 1) + '. ' + s + '</button>'; }).join('') + '</div><div class="learn">';
+        if (learn.step === 1) {
+          h += '<p class="course-sub">Read it out loud, a sentence at a time. Then cover it and say it again.</p>' +
+            '<div class="course-btns"><button type="button" class="btn" data-c-say="all">' + ic('play') + ' Listen to it all</button></div><ol class="learn-list">' +
+            learn.sents.map(function (s, i) { return '<li><span lang="' + VOICE + '">' + esc(s) + '</span> <button type="button" class="link" data-c-say="' + i + '">Listen</button></li>'; }).join('') + '</ol>' +
+            '<p class="course-sub" id="cl-voice" role="status"></p>';
+        } else if (learn.step === 2) {
+          h += '<p class="course-sub">Only the first letter of each word is left. Say each sentence from memory, then tap it to check.</p><div class="learn-text">' +
+            learn.sents.map(function (s, i) {
+              var cue = s.split(/\s+/).map(function (w) { return w.replace(/^([^\p{L}\p{N}]*[\p{L}\p{N}])[\p{L}\p{N}’'-]*/u, '$1'); }).join(' ');
+              return '<button type="button" class="learn-sent" data-c-reveal="' + i + '" aria-pressed="false"><span class="learn-cue">' + esc(cue) + '</span><span class="learn-full hidden" lang="' + VOICE + '">' + esc(s) + '</span></button>';
+            }).join('') + '</div>';
+        } else if (learn.step === 3) {
+          var every = [4, 2, 1][learn.level], n = 0;
+          h += '<div class="pills" role="group" aria-label="How many gaps">' + ['A few gaps', 'Half', 'Every word'].map(function (l, i) {
+            return '<button type="button" class="pill" data-c-level="' + i + '" aria-pressed="' + (learn.level === i) + '">' + l + '</button>'; }).join('') + '</div>' +
+            '<p class="course-sub">Type the missing words, accents and fadas included, then check.</p><div class="learn-text" lang="' + VOICE + '">' +
+            learn.words.map(function (w, i) {
+              var core = lnorm(w);
+              if (!core || core.length < 2 || (i + learn.seed) % every) return esc(w);
+              var m = /^([^\p{L}\p{N}]*)(.*?)([^\p{L}\p{N}]*)$/u.exec(w), id = 'g' + (n++);
+              return esc(m[1]) + '<input class="gap" id="' + id + '" data-w="' + esc(core) + '" size="' + Math.max(3, m[2].length) + '" aria-label="Missing word ' + n + '" autocomplete="off" autocapitalize="off" spellcheck="false">' + esc(m[3]);
+            }).join(' ') + '</div><div class="course-btns"><button type="button" class="btn primary" data-c-gaps>' + ic('check') + ' Check</button>' +
+            '<button type="button" class="btn" data-c-reshuffle>New gaps</button></div><p class="course-sub" id="cl-gap-res" role="status"></p>';
+        } else {
+          h += '<p class="course-sub">Write the whole paragraph from memory, then check it word by word.</p>' +
+            '<textarea id="cl-mem" class="ex-ta course-ta" rows="8" spellcheck="false" lang="' + VOICE + '" aria-label="Your paragraph from memory"></textarea>' +
+            '<div class="course-btns"><button type="button" class="btn primary" data-c-mem>' + ic('check') + ' Check</button></div><div id="cl-mem-res" role="status" aria-live="polite"></div>';
+        }
+        el.innerHTML = h + '</div></div>';
+        var f = el.querySelector('.gap, #cl-mem'); if (f) f.focus();
+      }
+      function say(which) {
+        var msg = document.getElementById('cl-voice');
+        if (!('speechSynthesis' in window)) { if (msg) msg.textContent = 'This browser can’t read aloud.'; return; }
+        var v = speechSynthesis.getVoices().filter(function (x) { return x.lang.toLowerCase().indexOf(VOICE) === 0; })[0];
+        if (!v) { if (msg) msg.textContent = 'This device has no ' + LANG + ' voice, so it can’t read it aloud. Read it out loud yourself.'; return; }
+        speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(which === 'all' ? learn.text : learn.sents[+which]);
+        u.voice = v; u.lang = v.lang; u.rate = 0.85; speechSynthesis.speak(u);
+      }
+      function checkGaps() {
+        var gaps = el.querySelectorAll('.gap'), ok = 0;
+        gaps.forEach(function (g) {
+          var right = lnorm(g.value) === g.dataset.w;
+          g.classList.toggle('ok', right); g.classList.toggle('err', !right);
+          var next = g.nextElementSibling;
+          if (next && next.classList.contains('gap-ans')) next.remove();
+          if (right) ok++; else g.insertAdjacentHTML('afterend', '<span class="gap-ans">' + esc(g.dataset.w) + '</span>');
+        });
+        SN.markStudied();
+        document.getElementById('cl-gap-res').textContent = ok + ' of ' + gaps.length + ' right.' + (ok === gaps.length ? (learn.level < 2 ? ' Try more gaps.' : ' Now try it from memory.') : ' Check the ones in the dashed boxes, then press New gaps.');
+      }
+      // Word-by-word comparison (longest common subsequence), so one missed word doesn't knock every later word out.
+      function checkMemory() {
+        var a = learn.words, b = document.getElementById('cl-mem').value.trim().split(/\s+/).filter(Boolean);
+        var A = a.map(lnorm), B = b.map(lnorm), n = A.length, m = B.length, L = [], i, j;
+        for (i = 0; i <= n; i++) { L[i] = []; for (j = 0; j <= m; j++) L[i][j] = 0; }
+        for (i = n - 1; i >= 0; i--) for (j = m - 1; j >= 0; j--) L[i][j] = A[i] && A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+        var out = [], extra = [], got = 0; i = 0; j = 0;
+        while (i < n || j < m) {
+          if (i < n && j < m && A[i] && A[i] === B[j]) { out.push(esc(a[i])); got++; i++; j++; }
+          else if (j < m && (i >= n || L[i][j + 1] >= L[i + 1][j])) { extra.push(b[j]); j++; }
+          else { out.push(A[i] ? '<span class="lw-miss" title="You missed this">' + esc(a[i]) + '</span>' : esc(a[i])); if (!A[i]) got++; i++; }
+        }
+        var pct = Math.round(got / Math.max(1, n) * 100), s = st(), ps = s.p[para.id] = s.p[para.id] || {};
+        ps.learn = Math.max(ps.learn || 0, pct); save(s); SN.markStudied();
+        document.getElementById('cl-mem-res').innerHTML = '<p><b>' + pct + '%</b> of the words, in order. ' + (pct >= 95 ? 'You know it off by heart.' : pct >= 75 ? 'Nearly there: learn the marked words and try again.' : 'Go back to First letters, then try again.') + '</p>' +
+          '<div class="learn-text" lang="' + VOICE + '">' + out.join(' ') + '</div>' +
+          (extra.length ? '<p class="course-sub">Words you wrote that aren’t in your paragraph (or are spelt differently): <span class="lw-extra">' + esc(extra.join(' · ')) + '</span></p>' : '') +
+          '<p class="course-sub">Underlined words are the ones you missed. Best so far: ' + ps.learn + '%.</p>';
+      }
       function refresh(showLocal) {
         var text = ta().value, s = st(), ps = s.p[para.id] = s.p[para.id] || {};
         if (ps.text !== text) { ps.text = text; ps.done = false; save(s); }
@@ -387,7 +479,7 @@
         else if (d.cNext != null) nextQ();
         else if (d.cRev) api.goTopic(d.cRev);
         else if (d.cPara) openPara(d.cPara);
-        else if (d.cHome != null) home();
+        else if (d.cHome != null) { clearTimeout(el._t); if (para && ta()) refresh(false); home(); }
         else if (d.cCheck != null) check();
         else if (d.cPhoto != null) photo();
         else if (d.cFile != null) textFile();
@@ -396,10 +488,18 @@
         else if (d.cUse != null) { var box = document.getElementById('cw-read'); ta().value = box._text; box.classList.add('hidden'); render(refresh(false)); ta().focus(); }
         else if (d.cNoread != null) document.getElementById('cw-read').classList.add('hidden');
         else if (d.cReady != null) { var s = st(); (s.p[para.id] = s.p[para.id] || {}).done = true; save(s); refresh(false); }
+        else if (d.cLearn != null) openLearn();
+        else if (d.cStep) { learn.step = +d.cStep; if ('speechSynthesis' in window) speechSynthesis.cancel(); drawLearn(); }
+        else if (d.cSay) say(d.cSay);
+        else if (d.cReveal) { var on = b.getAttribute('aria-pressed') !== 'true'; b.setAttribute('aria-pressed', on); b.querySelector('.learn-cue').classList.toggle('hidden', on); b.querySelector('.learn-full').classList.toggle('hidden', !on); }
+        else if (d.cLevel) { learn.level = +d.cLevel; drawLearn(); }
+        else if (d.cGaps != null) checkGaps();
+        else if (d.cReshuffle != null) { learn.seed++; drawLearn(); }
+        else if (d.cMem != null) checkMemory();
       }
       function onInput(e) {
         if (e.target.id !== 'cw-ta') return;
-        clearTimeout(el._t); el._t = setTimeout(function () { refresh(false); if (document.getElementById('cw-out').innerHTML) render(localIssues(ta().value, C.rules)); }, 350);
+        clearTimeout(el._t); el._t = setTimeout(function () { if (!ta()) return; refresh(false); if (document.getElementById('cw-out').innerHTML) render(localIssues(ta().value, C.rules)); }, 350);
       }
       el.addEventListener('click', onClick);
       el.addEventListener('input', onInput);

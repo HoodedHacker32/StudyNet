@@ -1043,3 +1043,18 @@ html.calc-docked body{padding-right:var(--calc-w,0px);}
 
 /* Comprehension passages (English) */
 .passage{border-left:3px solid var(--sc-line);padding:.6rem 1rem;margin:.75rem 0;color:var(--fg);font-style:normal;line-height:1.65;}
+
+/* Learn it off by heart (course.js) */
+.learn{display:grid;gap:1rem;}
+.learn-list{display:grid;gap:.6rem;padding-left:1.4rem;font-size:1.0625rem;line-height:1.6;}
+.learn-text{font-size:1.0625rem;line-height:2.1;}
+.learn-sent{display:block;width:100%;text-align:left;padding:.45rem .7rem;border-radius:var(--radius);border:1px solid transparent;}
+.learn-sent:hover,.learn-sent[aria-pressed="true"]{background:var(--hover);}
+.learn-cue{letter-spacing:.12em;font-weight:600;}
+.gap{font:inherit;color:var(--fg);background:transparent;border:0;border-bottom:2px solid var(--line);padding:0 .2rem;margin:0 .1rem;text-align:center;max-width:100%;}
+.gap:focus{outline:2px solid var(--sc);outline-offset:2px;}
+.gap.ok{border-bottom-color:var(--sc-line);}
+.gap.err{border:1px dashed var(--danger);border-radius:4px;}
+.gap-ans{font-size:.8125rem;color:var(--muted);margin:0 .3rem 0 .1rem;}
+.lw-miss{text-decoration:underline;text-decoration-style:wavy;text-decoration-color:var(--danger);text-underline-offset:4px;font-weight:600;}
+.lw-extra{text-decoration:line-through;}
