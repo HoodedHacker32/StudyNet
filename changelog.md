@@ -1,5 +1,9 @@
 # StudyNet Changelog
 
+## v2026-11-12-v5 (user-controlled app updates)
+- Service worker checks for updates when StudyNet opens, returns to the foreground, reconnects, and hourly while open. A small in-app notice lets the user update and reload now or dismiss it for later.
+- New service workers wait for the user's Update action before taking control. Shared update handling is loaded on every app page. Cache v61, assets ?v=51.
+
 ## v2026-11-12-v4 (Geography run-through)
 - Geography: 'The November exam' topic with a Run-through from the Form 2 Geography team posts (20 Oct chapters; 3 Nov glaciation): typed-answer drills for Ch 1, 2, 3, 4, 12, 13 (45 questions) plus 'explain one feature' (cirque, esker), and a quick check per chapter.
 - Bug-tested by a Sonnet subagent with Playwright; fixed: swapped answers (anticline/syncline, magma/lava, focus/epicentre) counted as right; anticyclone/depression/isobars too loose; hygrometer accepted 'hydrometer'; several correct answers rejected (mantel, rain guage, super continent, cumulo nimbus, powerful). Dormant example now Kilimanjaro (Vesuvius is usually called active).

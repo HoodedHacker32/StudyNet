@@ -610,4 +610,59 @@
   window.addEventListener('load', function () {
     if (location.hash === '#settings') { history.replaceState(null, '', location.pathname + location.search); SN.openSettings(); }
   });
+
+  /* ── App updates ──────────────────────────────────────────── */
+  function setupAppUpdates() {
+    if (!('serviceWorker' in navigator)) return;
+    var registration = null, notice = null, dismissedWorker = null, refreshing = false;
+    function offerUpdate(worker) {
+      if (!worker || dismissedWorker === worker || notice || !navigator.serviceWorker.controller) return;
+      notice = document.createElement('aside');
+      notice.className = 'update-notice';
+      notice.setAttribute('role', 'status');
+      notice.setAttribute('aria-live', 'polite');
+      notice.innerHTML = '<p><b>Update ready.</b> A new version of StudyNet is available.</p>' +
+        '<div class="update-actions"><button type="button" class="btn primary" data-update-now>Update</button>' +
+        '<button type="button" class="btn" data-update-later>Later</button></div>';
+      document.body.appendChild(notice);
+      notice.querySelector('[data-update-now]').addEventListener('click', function () {
+        var button = this;
+        if (!registration || !registration.waiting) return;
+        button.disabled = true;
+        button.textContent = 'Updating…';
+        registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+      });
+      notice.querySelector('[data-update-later]').addEventListener('click', function () {
+        dismissedWorker = worker;
+        notice.remove();
+        notice = null;
+      });
+    }
+    function checkForUpdate() {
+      if (registration && document.visibilityState === 'visible') registration.update().catch(function () {});
+    }
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (refreshing) return;
+      refreshing = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register('sw.js').then(function (reg) {
+      registration = reg;
+      function inspect() { if (reg.waiting) offerUpdate(reg.waiting); }
+      reg.addEventListener('updatefound', function () {
+        var installing = reg.installing;
+        if (!installing) return;
+        installing.addEventListener('statechange', function () {
+          if (installing.state === 'installed') inspect();
+        });
+      });
+      inspect();
+      window.addEventListener('online', checkForUpdate);
+      document.addEventListener('visibilitychange', checkForUpdate);
+      window.setInterval(checkForUpdate, 60 * 60 * 1000);
+      checkForUpdate();
+    }).catch(function () {});
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', setupAppUpdates);
+  else setupAppUpdates();
 })();

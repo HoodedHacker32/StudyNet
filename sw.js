@@ -1,4 +1,4 @@
-const CACHE = 'studynet-v60';
+const CACHE = 'studynet-v61';
 const SHELL = [
   './',
   './index.html',
@@ -10,27 +10,27 @@ const SHELL = [
   './science.html',
   './maths.html',
   './about.html',
-  './app.css?v=50',
-  './shared.js?v=50',
-  './subject.js?v=50',
-  './maths.js?v=50',
-  './calc.js?v=50',
-  './calc-lcd.js?v=50',
-  './calc/body.webp?v=50',
-  './calc/keys.webp?v=50',
-  './periodic.js?v=50',
-  './exam.js?v=50',
-  './course.js?v=50',
-  './ai.js?v=50',
-  './ai-core.js?v=50',
-  './data/irish.js?v=50',
-  './data/french.js?v=50',
-  './data/history.js?v=50',
-  './data/geography.js?v=50',
-  './data/english.js?v=50',
-  './data/science.js?v=50',
-  './data/maths.js?v=50',
-  './data/elements.js?v=50',
+  './app.css?v=51',
+  './shared.js?v=51',
+  './subject.js?v=51',
+  './maths.js?v=51',
+  './calc.js?v=51',
+  './calc-lcd.js?v=51',
+  './calc/body.webp?v=51',
+  './calc/keys.webp?v=51',
+  './periodic.js?v=51',
+  './exam.js?v=51',
+  './course.js?v=51',
+  './ai.js?v=51',
+  './ai-core.js?v=51',
+  './data/irish.js?v=51',
+  './data/french.js?v=51',
+  './data/history.js?v=51',
+  './data/geography.js?v=51',
+  './data/english.js?v=51',
+  './data/science.js?v=51',
+  './data/maths.js?v=51',
+  './data/elements.js?v=51',
   './manifest.json',
   './icons/icon-192.png',
   './icons/icon-512.png',
@@ -41,8 +41,12 @@ const FONT_HOSTS = ['fonts.googleapis.com', 'fonts.gstatic.com'];
 
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())
+    caches.open(CACHE).then(c => c.addAll(SHELL))
   );
+});
+
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') e.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener('activate', e => {
