@@ -262,6 +262,11 @@ window.SN_DATA = window.SN_DATA || {};
            },
            {
             "need": 2,
+            "pointLabels": [
+             "The plates move towards each other (collide)",
+             "The denser oceanic plate sinks beneath the other (subduction)",
+             "An effect or example, such as volcanoes, earthquakes, fold mountains or the Andes"
+            ],
             "keys": [
              [
               "collide",
@@ -309,8 +314,8 @@ window.SN_DATA = window.SN_DATA || {};
               "earthquake"
              ]
             ],
-            "q": "What happens at a passive (sliding) plate boundary? Give an example.",
-            "a": "The plates <b>slide past each other</b>; crust is neither made nor destroyed, but there are <b>earthquakes</b>, e.g. the <b>San Andreas Fault</b>, California."
+            "q": "What happens at a passive (transform/sliding) plate boundary? Give an example.",
+            "a": "The plates <b>slide past each other</b>; crust is neither made nor destroyed, but there are <b>earthquakes</b>, e.g. the <b>San Andreas Fault</b>, California. A passive boundary is also called a <b>transform</b> boundary."
            }
           ]
          }
@@ -1423,7 +1428,7 @@ window.SN_DATA = window.SN_DATA || {};
           'About 200 million years ago all the land was one supercontinent, <b>Pangaea</b>. Alfred Wegener called the movement <b>continental drift</b>.'] },
         { h: 'Plate boundaries', kv: [['Constructive (separating)', 'Plates move apart; magma rises to form new crust, e.g. the <b>Mid-Atlantic Ridge</b> and Iceland.'],
           ['Destructive (colliding)', 'Plates collide; the denser oceanic plate sinks (<b>subduction</b>) and melts, causing volcanoes, earthquakes and fold mountains, e.g. the Andes.'],
-          ['Passive (sliding)', 'Plates slide past each other; crust is neither made nor destroyed, causing earthquakes, e.g. the <b>San Andreas Fault</b>, California.']] }
+          ['Passive (transform/sliding)', 'Also called a <b>transform</b> boundary: plates slide past each other; crust is neither made nor destroyed, causing earthquakes, e.g. the <b>San Andreas Fault</b>, California.']] }
       ] },
       volcanoes: { label: 'Volcanic activity', sections: [
         { h: 'Key words', kv: [['Magma', 'Molten rock under the surface.'], ['Lava', 'Magma that has reached the surface.'], ['Magma chamber', 'Store of magma below the volcano.'],
@@ -1503,7 +1508,7 @@ window.SN_DATA = window.SN_DATA || {};
         ['Outer core', 'Liquid iron and nickel'], ['Inner core', 'Solid iron and nickel, the hottest part'], ['Plate', 'A large piece of the Earth’s crust'],
         ['Convection currents', 'Currents in the mantle that move the plates'], ['Pangaea', 'The supercontinent that existed about 200 million years ago'],
         ['Continental drift', 'Wegener’s idea that continents move'], ['Constructive boundary', 'Plates separate; new crust forms (Mid-Atlantic Ridge)'],
-        ['Destructive boundary', 'Plates collide; crust is destroyed (subduction)'], ['Passive boundary', 'Plates slide past each other (San Andreas Fault)'],
+        ['Passive (transform) boundary', 'Plates slide past each other; crust is neither made nor destroyed (San Andreas Fault)'], ['Destructive boundary', 'Plates collide; crust is destroyed (subduction)'],
         ['Subduction', 'The denser plate sinks beneath the other and melts']]) },
       volcanoes: { label: 'Volcanoes', cards: cards([['Magma', 'Molten rock below the surface'], ['Lava', 'Magma that reaches the surface'], ['Vent', 'The pipe magma rises through'],
         ['Crater', 'The opening at the top of a volcano'], ['Magma chamber', 'Store of magma under a volcano'], ['Active volcano', 'Erupted recently, e.g. Etna'],
@@ -1537,7 +1542,7 @@ window.SN_DATA = window.SN_DATA || {};
         { q: 'What moves the Earth’s plates?', ans: ['Convection currents in the mantle'], opts: ['The moon’s gravity', 'Ocean tides', 'Wind'] },
         { q: 'What was Pangaea?', ans: ['A supercontinent'], opts: ['A volcano', 'A plate boundary', 'An ocean'] },
         { q: 'At which boundary do plates move apart?', ans: ['Constructive'], opts: ['Destructive', 'Passive', 'Subduction'] },
-        { q: 'The San Andreas Fault is an example of which boundary?', ans: ['Passive'], opts: ['Constructive', 'Destructive', 'Volcanic'] },
+        { q: 'The San Andreas Fault is an example of which boundary?', ans: ['Passive (transform)'], opts: ['Constructive', 'Destructive', 'Passive (transform)'] },
         { q: 'What is subduction?', ans: ['A denser plate sinking beneath another'], opts: ['Plates sliding past each other', 'New crust forming', 'Lava cooling'] },
         { q: 'The Mid-Atlantic Ridge is at which type of boundary?', ans: ['Constructive'], opts: ['Destructive', 'Passive', 'Fold'] }
       ] },

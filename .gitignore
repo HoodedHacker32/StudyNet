@@ -13,3 +13,6 @@ worker/.wrangler/
 .impeccable/hook.cache.json
 tools/*.png
 __pycache__/
+
+# ChatGPT session edit log
+CHATGPT-EDITS-12-11-2026.md

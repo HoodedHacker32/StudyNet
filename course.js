@@ -258,16 +258,21 @@
         var text = dnorm(typed), words = text.trim().split(' ');
         var best = null;
         [{ keys: it.keys, need: it.need }].concat(it.alts || []).forEach(function (set) {
-          var hit = (set.keys || []).map(function (g) { return g.filter(function (k) { return hasKey(text, words, k); })[0] || null; });
-          var got = hit.filter(Boolean).length, need = set.need || 1, r = { ok: got >= need, got: got, need: need, hit: hit, blank: !typed.trim() };
+          var hit = (set.keys || []).map(function (g) { return g.filter(function (k) { return hasKey(text, words, k); }); });
+          var got = hit.filter(function (matches) { return matches.length > 0; }).length, need = set.need || 1;
+          var r = { ok: got >= need, got: got, need: need, hit: hit, groups: set.keys || [], pointLabels: set.keys === it.keys ? (it.pointLabels || []) : [], blank: !typed.trim() };
           if (!best || (r.ok && !best.ok) || (r.ok === best.ok && got / need > best.got / best.need)) best = r;
         });
         return best;
       }
       function verdictHtml(it, v) {
         var head = v.ok ? ic('check') + ' Right.' : v.blank ? 'Here’s the answer.' : v.got ? 'Partly right: ' + v.got + ' of the ' + v.need + ' key points.' : 'Not quite.';
-        var found = v.hit.filter(Boolean);
-        return '<div class="drill-v' + (v.ok ? ' ok' : '') + '" role="status"><p><b>' + head + '</b>' + (found.length && !v.ok ? ' You had: ' + esc(found.join(', ')) + '.' : '') + '</p>' +
+        var found = v.hit.reduce(function (all, matches) { return all.concat(matches); }, []);
+        var missing = v.hit.map(function (matches, i) { return matches.length ? '' : (v.pointLabels[i] || (v.groups[i] || []).slice(0, 2).join(' / ')); }).filter(Boolean);
+        var feedback = found.length ? ' You included: ' + esc(found.join(', ')) + '.' : '';
+        if (!v.ok && !v.blank && missing.length) feedback += ' To earn ' + (v.need - v.got === 1 ? 'the remaining point' : 'more points') + ', add ' +
+          (v.need - v.got === 1 ? 'at least one of these missing ideas: ' : 'these missing ideas: ') + esc(missing.join('; ')) + '.';
+        return '<div class="drill-v' + (v.ok ? ' ok' : '') + '" role="status"><p><b>' + head + '</b>' + feedback + '</p>' +
           (v.typed ? '<p class="course-sub">You wrote: ' + esc(v.typed) + '</p>' : '') + '</div><div class="drill-a">' + it.a + '</div>' +
           '<div class="course-btns"><button type="button" class="btn primary" data-c-dnext>' + (v.ok ? 'Next question' : 'Next: ask me again later') + '</button>' +
           (v.ok || v.blank ? '' : '<button type="button" class="btn" data-c-dright>My answer was right</button>') + '</div>';
