@@ -345,6 +345,24 @@
     });
     return h;
   }
+  function projectCardHtml() {
+    try { if (+localStorage.getItem('sn_projects_notice_until') > Date.now()) return ''; } catch (e) {}
+    return '<aside class="sb-projects" aria-label="Other projects">' +
+      '<button type="button" class="sb-project-close" data-dismiss-projects aria-label="Dismiss project suggestions">' + SN.ic('x') + '</button>' +
+      '<p><b>Enjoying StudyNet?</b><br>Explore a few more projects.</p>' +
+      '<div class="sb-project-links">' +
+        '<a href="https://hoodedhacker32.github.io/learn-elvish/" target="_blank" rel="noopener noreferrer">Learn Elvish</a>' +
+        '<a href="https://hoodedhacker32.github.io/elvish-translator/" target="_blank" rel="noopener noreferrer">Elvish Translator</a>' +
+        '<a href="https://hoodedhacker32.github.io/webshelf/" target="_blank" rel="noopener noreferrer">Webshelf</a>' +
+        '<a href="https://hoodedhacker32.github.io/forge-pc-builder/" target="_blank" rel="noopener noreferrer">Forge PC Builder</a>' +
+      '</div><a class="sb-project-all" href="https://hoodedhacker32.github.io/" target="_blank" rel="noopener noreferrer">More projects</a></aside>';
+  }
+  document.addEventListener('click', function (e) {
+    var button = e.target.closest('[data-dismiss-projects]');
+    if (!button) return;
+    try { localStorage.setItem('sn_projects_notice_until', String(Date.now() + 24 * 60 * 60 * 1000)); } catch (x) {}
+    var card = button.closest('.sb-projects'); if (card) card.remove();
+  });
   // The calculator is offered on subjects where calculators are allowed (Maths, Science).
   function hasCalc(current) { var s = current && SN.subject(current); return !!(s && s.calc); }
   function navHtml(current) {
@@ -352,7 +370,7 @@
     var meta = SN.YEAR_NAMES[p.yearMode] + (p.name ? ' \u00b7 ' + esc(p.name) : '');
     var h = '<a class="sb-logo" href="index.html">StudyNet</a><div class="sb-meta">' + meta + '</div>';
     h += '<div class="sb-nav">' + linksHtml(current);
-    h += '</div><div class="sb-spacer"></div><div class="sb-foot">' +
+    h += '</div><div class="sb-spacer">' + projectCardHtml() + '</div><div class="sb-foot">' +
       '<div class="sb-streak">' + SN.ic('star', 'icon star') + '<span data-sn="streak">' + SN.streakText() + '</span></div>' +
       '<button type="button" class="sb-link hidden" data-sn="install">' + SN.ic('download') + ' Install app</button>' +
       (hasCalc(current) ? '<button type="button" class="sb-link" data-calc aria-pressed="false">' + SN.ic('calc') + ' Calculator</button>' : '') +
